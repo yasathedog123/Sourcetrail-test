@@ -47,9 +47,10 @@ std::wstring CxxTemplateArgumentNameResolver::getTemplateArgumentName(
 			true;		   // value "true": for a class A it prints "A" instead of "class A"
 		pp.Bool = true;	   // value "true": prints bool type as "bool" instead of "_Bool"
 
+		constexpr bool includeType = false;
 		std::string buf;
 		llvm::raw_string_ostream os(buf);
-		argument.print(pp, os);
+		argument.print(pp, os, includeType);
 		return utility::decodeFromUtf8(os.str());
 	}
 	case clang::TemplateArgument::Pack:
