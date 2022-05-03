@@ -1,0 +1,58 @@
+{
+	"version": 3,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 19
+	},
+	"configurePresets": [
+		{
+			"name": "defaults",
+			"hidden": true,
+			"generator": "Ninja",
+			"binaryDir": "${sourceParentDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_VERBOSE_MAKEFILE": {
+					"type": "BOOL",
+					"value": "TRUE"
+				},
+				"BUILD_CXX_LANGUAGE_PACKAGE": {
+					"type": "BOOL",
+					"value": "ON"
+				}
+			}
+		},
+		{
+			"name": "Debug",
+			"displayName": "Debug Build",
+			"inherits": "defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Debug"
+				}
+			}
+		},
+		{
+			"name": "Release",
+			"displayName": "Release Build",
+			"inherits": "defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Release"
+				}
+			}
+		},
+		{
+			"name": "RelWithDebInfo",
+			"displayName": "RelWithDebInfo Build",
+			"inherits": "defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "RelWithDebInfo"
+				}
+			}
+		}
+	]
+}
