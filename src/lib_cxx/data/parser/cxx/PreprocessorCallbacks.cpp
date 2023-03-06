@@ -52,13 +52,12 @@ void PreprocessorCallbacks::FileChanged(
 	}
 }
 
-void PreprocessorCallbacks::InclusionDirective(
-	clang::SourceLocation hashLocation,
+void PreprocessorCallbacks::InclusionDirective(clang::SourceLocation hashLocation,
 	const clang::Token& includeToken,
 	llvm::StringRef fileName,
 	bool isAngled,
 	clang::CharSourceRange fileNameRange,
-	const clang::FileEntry* fileEntry,
+	llvm::Optional<clang::FileEntryRef> fileEntry,
 	llvm::StringRef searchPath,
 	llvm::StringRef relativePath,
 	const clang::Module* imported,
@@ -66,7 +65,7 @@ void PreprocessorCallbacks::InclusionDirective(
 {
 	if (m_currentFileSymbolId && fileEntry)
 	{
-		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(fileEntry);
+		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(*fileEntry);
 		const NameHierarchy includedFileNameHierarchy(includedFilePath.wstr(), NAME_DELIMITER_FILE);
 
 		Id includedFileSymbolId = m_client->recordSymbol(includedFileNameHierarchy);
