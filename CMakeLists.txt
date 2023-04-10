@@ -1,15 +1,20 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.9)
+include(CMakePrintHelpers)
+
+# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
+if (CMAKE_VERBOSE_MAKEFILE)
+	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+endif()
 
 if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
 	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
 endif()
+
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
 set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
 set(DOCKER_BUILD OFF CACHE BOOL "Build runs in Docker")
 set(TREAT_WARNINGS_AS_ERRORS ON CACHE BOOL "Treat compiler warnings as errors")
-
-#set (CMAKE_VERBOSE_MAKEFILE ON)
 
 include(cmake/add_files.cmake)
 include(cmake/create_source_groups.cmake)
@@ -171,7 +176,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	endforeach()
 
 	if (CLANG_COMPILER_HEADER_SEARCH_PATH STREQUAL "")
-		message(FATAL_ERROR "Unable to copy Clang compiler headers from clang build dir.")
+		message(WARNING "Unable to copy Clang compiler headers from clang build dir.")
 	endif()
 
 endif()
@@ -183,8 +188,27 @@ set(Boost_USE_MULTITHREAD ON)
 set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Set to ON to force the use of the static libraries.")
 set(Boost_USE_STATIC_RUNTIME OFF)
 
-find_package(Boost 1.67 COMPONENTS system program_options filesystem date_time REQUIRED)
+find_package(Boost 1.81 REQUIRED COMPONENTS 
+	# compiled libraries:
+	system program_options filesystem date_time locale
 
+	# 'header-only' libraries (which can't be found):
+	# interprocess uuid asio process
+
+	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
+	# for a list of compiled libraries.
+)
+
+if (WIN32)
+	# Fix "Boost-uuid should link against bcrypt on windows" (https://github.com/microsoft/vcpkg/issues/4481)
+	add_compile_definitions(BOOST_UUID_FORCE_AUTO_LINK)
+
+	# Trying to add the definition to the boost target like this:
+	# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
+	# leads to the error:
+	# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
+	# So we have to define it globally.
+endif()
 
 # Qt ---------------------------------------------------------------------------
 
@@ -221,8 +245,13 @@ endif()
 # Setup ---------------------------------------------------------------------------
 
 if (WIN32)
-	get_filename_component(QT_BINARY_DIR "${QT_MOC_EXECUTABLE}" PATH)
-	set(QT_PLUGINS_DIR "${QT_BINARY_DIR}/../plugins")
+	cmake_path(GET QT_MOC_EXECUTABLE PARENT_PATH QT_BASE_DIR)
+	cmake_path(SET QT_BASE_DIR NORMALIZE "${QT_BASE_DIR}/../../../")
+	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+		cmake_path(APPEND QT_BASE_DIR "debug")
+	endif()
+	cmake_path(APPEND QT_BINARY_DIR ${QT_BASE_DIR} "bin/")
+	cmake_path(APPEND QT_PLUGINS_DIR ${QT_BASE_DIR} "plugins/")
 
 	function(COPY_QT_BINARIES IS_DEBUG IS_APP)
 		set(SUFFIX "")
@@ -274,10 +303,13 @@ if (WIN32)
 		configure_file("${QT_PLUGINS_DIR}/imageformats/qwebp${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qwebp${SUFFIX}.dll" COPYONLY)
 	endfunction(COPY_QT_BINARIES)
 
-	COPY_QT_BINARIES(True True)
-	COPY_QT_BINARIES(True False)
-	COPY_QT_BINARIES(False True)
-	COPY_QT_BINARIES(False False)
+	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+		COPY_QT_BINARIES(True True)
+		COPY_QT_BINARIES(True False)
+	else()
+		COPY_QT_BINARIES(False True)
+		COPY_QT_BINARIES(False False)
+	endif()
 
 	configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/sourcetrail.ico" COPYONLY)
 
@@ -863,23 +895,19 @@ message(STATUS "create symlink: "
 )
 
 if (UNIX)
-	execute_process(
-		COMMAND "${CMAKE_COMMAND}" "-E" "make_directory" "${CMAKE_BINARY_DIR}/app"
-		COMMAND "${CMAKE_COMMAND}" "-E" "make_directory" "${CMAKE_BINARY_DIR}/test"
-	)
-	execute_process(
-		COMMAND "${CMAKE_COMMAND}" "-E" "create_symlink" "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/app/data"
-		COMMAND "${CMAKE_COMMAND}" "-E" "create_symlink" "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/app/user"
-		COMMAND "${CMAKE_COMMAND}" "-E" "create_symlink" "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/test/data"
-	)
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/app")
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
+
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/app/data" SYMBOLIC)
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/app/user" SYMBOLIC)
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
 elseif(WIN32)
 	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-		if (EXISTS "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}")
-			execute_process(
-				COMMAND "cmd.exe" "/k" "rmdir" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\app\\data" & "mklink" "/d" "/j" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\app\\data" "${BACKSLASHED_CMAKE_SOURCE_DIR}\\bin\\app\\data" & exit
-				COMMAND "cmd.exe" "/k" "rmdir" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\app\\user" & "mklink" "/d" "/j" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\app\\user" "${BACKSLASHED_CMAKE_SOURCE_DIR}\\bin\\app\\user" & exit
-				COMMAND "cmd.exe" "/k" "rmdir" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\test\\data" & "mklink" "/d" "/j" "${BACKSLASHED_CMAKE_BINARY_DIR}\\${OUTPUTCONFIG}\\test\\data" "${BACKSLASHED_CMAKE_SOURCE_DIR}\\bin\\test\\data" & exit
-			)
-		endif()
+		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app")
+		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test")
+
+		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/data" SYMBOLIC)
+		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/user" SYMBOLIC)
+		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test/data" SYMBOLIC)
 	endforeach()
 endif ()

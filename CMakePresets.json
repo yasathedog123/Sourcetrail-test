@@ -1,23 +1,40 @@
 {
 	"version": 3,
-	"cmakeMinimumRequired": {
-		"major": 3,
-		"minor": 19
-	},
 	"configurePresets": [
 		{
 			"name": "defaults",
 			"hidden": true,
+			"warnings": { "dev": false },
 			"generator": "Ninja",
 			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
+				"CMAKE_TOOLCHAIN_FILE": {
+					"value": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+					"type": "FILEPATH"
+				},
 				"CMAKE_VERBOSE_MAKEFILE": {
-					"type": "BOOL",
-					"value": "TRUE"
+					"value": "TRUE",
+					"type": "BOOL"
+				},
+				"CMAKE_EXPORT_COMPILE_COMMANDS": {
+					"value": "TRUE",
+					"type": "BOOL"
+				},
+				"CMAKE_MESSAGE_LOG_LEVEL": {
+					"value": "VERBOSE",
+					"type": "STRING"
 				},
 				"BUILD_CXX_LANGUAGE_PACKAGE": {
-					"type": "BOOL",
-					"value": "ON"
+					"value": "ON",
+					"type": "BOOL"
+				},
+				"BUILD_JAVA_LANGUAGE_PACKAGE": {
+					"value": "ON",
+					"type": "BOOL"
+				},
+				"BUILD_PYTHON_LANGUAGE_PACKAGE": {
+					"value": "ON",
+					"type": "BOOL"
 				}
 			}
 		},
@@ -27,8 +44,8 @@
 			"inherits": "defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "Debug"
+					"value": "Debug",
+					"type": "STRING"
 				}
 			}
 		},
@@ -38,8 +55,8 @@
 			"inherits": "defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "Release"
+					"value": "Release",
+					"type": "STRING"
 				}
 			}
 		},
@@ -49,8 +66,8 @@
 			"inherits": "defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "RelWithDebInfo"
+					"value": "RelWithDebInfo",
+					"type": "STRING"
 				}
 			}
 		}

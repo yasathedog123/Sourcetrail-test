@@ -1,0 +1,30 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "sourcetrail",
+    "version": "1.0.0",
+    "dependencies": [
+        "boost-system",
+        "boost-date-time",
+        "boost-filesystem",
+        "boost-program-options",
+
+        "boost-locale",
+        "boost-interprocess",
+        "boost-uuid",
+        "boost-asio",
+        "boost-process",
+
+        "qt5-base",
+        "qt5-winextras",
+        "qt5-svg",
+        "qt5-imageformats",
+
+        {
+            "name": "llvm",
+            "default-features": false,
+            "features": [
+                "clang-tools-extra"
+            ]
+        }
+    ]
+}
