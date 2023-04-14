@@ -57,7 +57,11 @@ void PreprocessorCallbacks::InclusionDirective(clang::SourceLocation hashLocatio
 	llvm::StringRef fileName,
 	bool isAngled,
 	clang::CharSourceRange fileNameRange,
+#if LLVM_VERSION_MAJOR == 14
+	const clang::FileEntry* fileEntry,
+#else
 	llvm::Optional<clang::FileEntryRef> fileEntry,
+#endif
 	llvm::StringRef searchPath,
 	llvm::StringRef relativePath,
 	const clang::Module* imported,
@@ -65,7 +69,11 @@ void PreprocessorCallbacks::InclusionDirective(clang::SourceLocation hashLocatio
 {
 	if (m_currentFileSymbolId && fileEntry)
 	{
+#if LLVM_VERSION_MAJOR == 14
+		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(fileEntry);
+#else
 		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(*fileEntry);
+#endif
 		const NameHierarchy includedFileNameHierarchy(includedFilePath.wstr(), NAME_DELIMITER_FILE);
 
 		Id includedFileSymbolId = m_client->recordSymbol(includedFileNameHierarchy);

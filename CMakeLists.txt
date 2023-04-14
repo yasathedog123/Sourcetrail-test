@@ -1,6 +1,35 @@
 cmake_minimum_required(VERSION 3.9)
 include(CMakePrintHelpers)
 
+if (IS_VCPKG_BUILD)
+	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
+	if (UNIX)
+		set(VCPKG_TARGET_TRIPLET "x64-linux-dynamic" CACHE STRING "Target triplet for Linux")
+	elseif(WIN32)
+		set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "Target triplet for Windows")
+	endif()
+endif()
+
+#[[ To integrate the vcpkg build libraries manually:
+See also: https://learn.microsoft.com/en-us/vcpkg/users/buildsystems/manual-integration
+
+set(Boost_DEBUG ON)
+set(Boost_NO_SYSTEM_PATHS ON)
+set(BOOST_ROOT "vcpkg_installed/x64-windows")
+set(BOOST_INCLUDEDIR "vcpkg_installed/x64-windows/include")
+set(BOOST_LIBRARYDIR "vcpkg_installed/x64-windows/lib")
+
+# Extracted fom 'vcpkg/scripts/buildsystems/vcpkg.cmake':
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_NO_BOOST_CMAKE ON)
+set(Boost_USE_STATIC_RUNTIME)
+unset(Boost_USE_STATIC_RUNTIME CACHE)
+
+set(Clang_DIR "vcpkg_installed/x64-windows/share/clang")
+set(Qt5_DIR "vcpkg_installed/x64-windows/share/cmake/Qt5")
+]]
+
 # Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
 if (CMAKE_VERBOSE_MAKEFILE)
 	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
@@ -184,9 +213,11 @@ endif()
 
 # Boost ------------------------------------------------------------------------
 
-set(Boost_USE_MULTITHREAD ON)
-set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Set to ON to force the use of the static libraries.")
-set(Boost_USE_STATIC_RUNTIME OFF)
+if (NOT IS_VCPKG_BUILD)
+	set(Boost_USE_MULTITHREAD ON)
+	set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Set to ON to force the use of the static libraries.")
+	set(Boost_USE_STATIC_RUNTIME OFF)
+endif()
 
 find_package(Boost 1.81 REQUIRED COMPONENTS 
 	# compiled libraries:

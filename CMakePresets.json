@@ -2,73 +2,56 @@
 	"version": 3,
 	"configurePresets": [
 		{
-			"name": "defaults",
 			"hidden": true,
-			"warnings": { "dev": false },
+			"name": "defaults",
+			"warnings": {
+				"dev": false
+			},
+			"cacheVariables": {
+				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
+				"BUILD_JAVA_LANGUAGE_PACKAGE": "OFF",
+				"BUILD_PYTHON_LANGUAGE_PACKAGE": "OFF",
+
+				"Boost_NO_WARN_NEW_VERSIONS": "ON",
+
+				"CMAKE_VERBOSE_MAKEFILE": "TRUE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+			}
+		},
+		{
+			"hidden": true,
+			"name": "vcpkg-defaults",
+			"inherits": "defaults",
 			"generator": "Ninja",
 			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
-				"CMAKE_TOOLCHAIN_FILE": {
-					"value": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
-					"type": "FILEPATH"
-				},
-				"CMAKE_VERBOSE_MAKEFILE": {
-					"value": "TRUE",
-					"type": "BOOL"
-				},
-				"CMAKE_EXPORT_COMPILE_COMMANDS": {
-					"value": "TRUE",
-					"type": "BOOL"
-				},
-				"CMAKE_MESSAGE_LOG_LEVEL": {
-					"value": "VERBOSE",
-					"type": "STRING"
-				},
-				"BUILD_CXX_LANGUAGE_PACKAGE": {
-					"value": "ON",
-					"type": "BOOL"
-				},
-				"BUILD_JAVA_LANGUAGE_PACKAGE": {
-					"value": "ON",
-					"type": "BOOL"
-				},
-				"BUILD_PYTHON_LANGUAGE_PACKAGE": {
-					"value": "ON",
-					"type": "BOOL"
-				}
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+				"IS_VCPKG_BUILD": "TRUE",
+				"Boost_NO_SYSTEM_PATHS": "ON"
 			}
 		},
 		{
-			"name": "Debug",
-			"displayName": "Debug Build",
-			"inherits": "defaults",
+			"name": "vcpkg-Debug",
+			"displayName": "Ninja Debug Build",
+			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"value": "Debug",
-					"type": "STRING"
-				}
+				"CMAKE_BUILD_TYPE": "Debug"
 			}
 		},
 		{
-			"name": "Release",
-			"displayName": "Release Build",
-			"inherits": "defaults",
+			"name": "vcpkg-Release",
+			"displayName": "Ninja Release Build",
+			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"value": "Release",
-					"type": "STRING"
-				}
+				"CMAKE_BUILD_TYPE": "Release"
 			}
 		},
 		{
-			"name": "RelWithDebInfo",
-			"displayName": "RelWithDebInfo Build",
-			"inherits": "defaults",
+			"name": "vcpkg-RelWithDebInfo",
+			"displayName": "Ninja RelWithDebInfo Build",
+			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"value": "RelWithDebInfo",
-					"type": "STRING"
-				}
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
 		}
 	]

@@ -2,6 +2,7 @@
 build-*
 /distr/
 /deps/
+vcpkg_installed/
 
 /bin/app/data/cxx
 /bin/app/data/java/lib/
