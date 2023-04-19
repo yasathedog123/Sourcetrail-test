@@ -7,6 +7,7 @@
 			"warnings": {
 				"dev": false
 			},
+			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
 				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
 				"BUILD_JAVA_LANGUAGE_PACKAGE": "OFF",
@@ -23,33 +24,67 @@
 			"name": "vcpkg-defaults",
 			"inherits": "defaults",
 			"generator": "Ninja",
-			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
 				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
-				"IS_VCPKG_BUILD": "TRUE",
 				"Boost_NO_SYSTEM_PATHS": "ON"
 			}
 		},
 		{
-			"name": "vcpkg-Debug",
-			"displayName": "Ninja Debug Build",
+			"name": "vcpkg-ninja-debug",
+			"displayName": "Vcpkg Ninja Debug Build",
 			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			}
 		},
 		{
-			"name": "vcpkg-Release",
-			"displayName": "Ninja Release Build",
+			"name": "vcpkg-ninja-release",
+			"displayName": "Vcpkg Ninja Release Build",
 			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
 			}
 		},
 		{
-			"name": "vcpkg-RelWithDebInfo",
-			"displayName": "Ninja RelWithDebInfo Build",
+			"name": "vcpkg-ninja-relwithdebinfo",
+			"displayName": "Vcpkg Ninja RelWithDebInfo Build",
 			"inherits": "vcpkg-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
+			}
+		},
+
+
+
+
+		{
+			"hidden": true,
+			"name": "system-defaults",
+			"inherits": "defaults",
+			"generator": "Ninja",
+			"cacheVariables": {
+			}
+		},
+		{
+			"name": "system-ninja-debug",
+			"displayName": "System Ninja Debug Build",
+			"inherits": "system-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "system-ninja-release",
+			"displayName": "System Ninja Release Build",
+			"inherits": "system-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "system-ninja-relwithdebinfo",
+			"displayName": "System Ninja RelWithDebInfo Build",
+			"inherits": "system-defaults",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}

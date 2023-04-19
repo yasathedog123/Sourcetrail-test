@@ -1,12 +1,20 @@
 cmake_minimum_required(VERSION 3.9)
 include(CMakePrintHelpers)
 
-if (IS_VCPKG_BUILD)
+if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
+	message("Vcpkg Build")
+	set(IsVcpkgBuild TRUE)
+else()
+	message("System Build")
+	set(IsVcpkgBuild FALSE)
+endif()
+
+if (IsVcpkgBuild)
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
-		set(VCPKG_TARGET_TRIPLET "x64-linux-dynamic" CACHE STRING "Target triplet for Linux")
+		set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Target triplet for Linux")
 	elseif(WIN32)
-		set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "Target triplet for Windows")
+		set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Target triplet for Windows")
 	endif()
 endif()
 
@@ -213,13 +221,7 @@ endif()
 
 # Boost ------------------------------------------------------------------------
 
-if (NOT IS_VCPKG_BUILD)
-	set(Boost_USE_MULTITHREAD ON)
-	set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Set to ON to force the use of the static libraries.")
-	set(Boost_USE_STATIC_RUNTIME OFF)
-endif()
-
-find_package(Boost 1.81 REQUIRED COMPONENTS 
+find_package(Boost 1.74 REQUIRED COMPONENTS
 	# compiled libraries:
 	system program_options filesystem date_time locale
 
@@ -304,14 +306,15 @@ if (WIN32)
 		set(TARGET "test")
 		if (IS_APP)
 			set(TARGET "app")
-
+			#[[
 			file(GLOB MY_PUBLIC_HEADERS
 				"${CMAKE_SOURCE_DIR}/setup/dynamic_libraries/win${BITS}/app/${CONFIGURATION}/*"
 			)
 			file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/")
-
+			]]
 		endif()
 
+		#[[
 		configure_file("${QT_BINARY_DIR}/Qt5Core${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Core${SUFFIX}.dll" COPYONLY)
 		configure_file("${QT_BINARY_DIR}/Qt5Gui${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Gui${SUFFIX}.dll" COPYONLY)
 		configure_file("${QT_BINARY_DIR}/Qt5Network${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Network${SUFFIX}.dll" COPYONLY)
@@ -332,6 +335,7 @@ if (WIN32)
 		configure_file("${QT_PLUGINS_DIR}/imageformats/qtiff${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qtiff${SUFFIX}.dll" COPYONLY)
 		configure_file("${QT_PLUGINS_DIR}/imageformats/qwbmp${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qwbmp${SUFFIX}.dll" COPYONLY)
 		configure_file("${QT_PLUGINS_DIR}/imageformats/qwebp${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qwebp${SUFFIX}.dll" COPYONLY)
+		]]
 	endfunction(COPY_QT_BINARIES)
 
 	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -341,9 +345,7 @@ if (WIN32)
 		COPY_QT_BINARIES(False True)
 		COPY_QT_BINARIES(False False)
 	endif()
-
 	configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/sourcetrail.ico" COPYONLY)
-
 endif()
 
 
@@ -430,7 +432,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	set(CAPTURED_CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD})
 	set(CMAKE_CXX_STANDARD 14)
-	
+
 	add_library(${LIB_CXX_PROJECT_NAME} ${LIB_CXX_FILES})
 
 	create_source_groups(${LIB_CXX_FILES})
@@ -454,46 +456,46 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	link_directories(${LLVM_LIBRARY_DIRS} ${CLANG_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
 
-    if(LLVM_LINK_LLVM_DYLIB)
-        set(REQ_LLVM_LIBS LLVM)
-    else()
-        llvm_map_components_to_libnames(REQ_LLVM_LIBS
-            support core libdriver passes option
-        )
-        foreach(LLVM_TARGET ${LLVM_TARGETS_TO_BUILD})
-            get_property(lib_deps GLOBAL PROPERTY "LLVMBUILD_LIB_DEPS_LLVM${LLVM_TARGET}CodeGen")
-            list(APPEND REQ_LLVM_LIBS "LLVM${LLVM_TARGET}CodeGen")
-            list(APPEND REQ_LLVM_LIBS "${lib_deps}")
-            get_property(lib_deps GLOBAL PROPERTY "LLVMBUILD_LIB_DEPS_LLVM${LLVM_TARGET}AsmParser")
-            if (NOT "${lib_deps}" STREQUAL "")
-                list(APPEND REQ_LLVM_LIBS "LLVM${LLVM_TARGET}AsmParser")
-                list(APPEND REQ_LLVM_LIBS "${lib_deps}")
-            endif()
-        endforeach()
-    endif()
+	if(LLVM_LINK_LLVM_DYLIB)
+		set(REQ_LLVM_LIBS LLVM)
+	else()
+		llvm_map_components_to_libnames(REQ_LLVM_LIBS
+			support core libdriver passes option
+		)
+		foreach(LLVM_TARGET ${LLVM_TARGETS_TO_BUILD})
+			get_property(lib_deps GLOBAL PROPERTY "LLVMBUILD_LIB_DEPS_LLVM${LLVM_TARGET}CodeGen")
+			list(APPEND REQ_LLVM_LIBS "LLVM${LLVM_TARGET}CodeGen")
+			list(APPEND REQ_LLVM_LIBS "${lib_deps}")
+			get_property(lib_deps GLOBAL PROPERTY "LLVMBUILD_LIB_DEPS_LLVM${LLVM_TARGET}AsmParser")
+			if (NOT "${lib_deps}" STREQUAL "")
+				list(APPEND REQ_LLVM_LIBS "LLVM${LLVM_TARGET}AsmParser")
+				list(APPEND REQ_LLVM_LIBS "${lib_deps}")
+			endif()
+		endforeach()
+	endif()
 
-    if(LLVM_LINK_LLVM_DYLIB)  # Should be CLANG_LINK_CLANG_DYLIB in future LLVM release
-        set(CLANG_LIBRARIES clang-cpp)
-    else()
-        set(CLANG_LIBRARIES
-            clangASTMatchers
-            clangFrontend
-            clangSerialization
-            clangDriver
-            clangTooling
-            clangParse
-            clangSema
-            clangStaticAnalyzerFrontend
-            clangStaticAnalyzerCheckers
-            clangStaticAnalyzerCore
-            clangAnalysis
-            clangRewriteFrontend
-            clangEdit
-            clangAST
-            clangLex
-            clangBasic
-        )
-    endif()
+	if(LLVM_LINK_LLVM_DYLIB)  # Should be CLANG_LINK_CLANG_DYLIB in future LLVM release
+		set(CLANG_LIBRARIES clang-cpp)
+	else()
+		set(CLANG_LIBRARIES
+			clangASTMatchers
+			clangFrontend
+			clangSerialization
+			clangDriver
+			clangTooling
+			clangParse
+			clangSema
+			clangStaticAnalyzerFrontend
+			clangStaticAnalyzerCheckers
+			clangStaticAnalyzerCore
+			clangAnalysis
+			clangRewriteFrontend
+			clangEdit
+			clangAST
+			clangLex
+			clangBasic
+		)
+	endif()
 
 	target_link_libraries(${LIB_CXX_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${CLANG_LIBRARIES} ${REQ_LLVM_LIBS})
 

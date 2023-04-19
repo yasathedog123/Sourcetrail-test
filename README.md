@@ -2,46 +2,71 @@
 
 *__Important Note:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](COATI_SOFTWARE_README.md)
 .*
-# Fork
+# Note
+This is a fork of the Sourcetrail project and I want to keep this project at least buildable. 
 
-This is a fork of the Sourcetrail project and I want to keep this project at least buildable.
+# Cloning
+It is important to clone the repository with the **submodules**:
+```
+git clone https://github.com/petermost/Sourcetrail.git --recurse-submodules
+```
+
+# Building
+There are 2 ways to build the project:
+1. With the **system** provided packages ([System build](#system-build))
+2. With **vcpkg** provided packages ([Vcpkg build](#vcpkg-build-linuxwindows))
+
+## System build
+### Linux
 
 To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install the following packages:
 
-__CMake (3.24.2):__
+**CMake (3.24.2):**
 * cmake
 
-__Ninja (1.11.0):__
+**Ninja (1.11.0):**
 * ninja-build
 
-__Boost (1.74.0):__
+**Boost (1.74.0):**
 * libboost-dev
 * libboost-all-dev
 
-__Qt (5.15.6):__
+**Qt (5.15.6):**
 * qt5-qmake
 * qtbase5-dev
 * qtbase5-dev-tools
 * qttools5-dev-tools
 * libqt5svg5-dev
 
-__Clang (15.0.6):__
+**Clang (15.0.6):**
 * clang
 * libclang-dev
 
-Please let me know when I missed a package.
-# Building
+Prepare the build:
+```
+$ cd Sourcetrail
+$ cmake --preset=system-ninja-release
+```
 
-* To prepare your build environment run:
-    ```
-    $ cd Sourcetrail
-    $ cmake --preset=Release
-    ```
-* Now start the build with:
-    ```
-    $ cd ../build/Release
-    $ cmake --build .
-    ```
-# Future plans
-* Use a C++ package manager for the dependencies
-* Check/Update Windows build
+Build:
+```
+$ cd ../build/system-ninja-release
+$ cmake --build .
+```
+### Windows
+It's probably also possible to build with installed libraries, like the original build instructions describe, but I didn't/don't test it.
+
+## Vcpkg Build (Linux/Windows)
+Because **vcpkg** builds everything from source, additional packages are needed for building Qt5 on Linux. Install the additional packages with `script/install.ubuntu.qt5.dependencies.sh`.
+
+Prepare the build:
+```
+$ cd Sourcetrail
+$ cmake --preset=vcpkg-ninja-release
+```
+Note that the preparation (compilation of the packages) will take a **long** time! On my machine (AMD Ryzen 7 3700X) the Linux compilation takes about 2 hours and the Windows compilation about 3 hours!
+
+Build:
+```
+$ cd ../build/vcpkg-ninja-release
+$ cmake --build .
