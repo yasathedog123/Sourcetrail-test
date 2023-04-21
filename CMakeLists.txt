@@ -870,6 +870,8 @@ endif ()
 
 # Test ----------------------------------------------------------------------
 
+find_package(Catch2 CONFIG REQUIRED)
+
 if (UNIX)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/")
 else ()
@@ -894,6 +896,8 @@ target_link_libraries(
 	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
 	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
 	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
+	Catch2::Catch2
+	Catch2::Catch2WithMain
 )
 
 set_property(
@@ -920,6 +924,9 @@ if (WIN32)
 			"${CMAKE_SOURCE_DIR}/bin/test")
 endif ()
 
+include(CTest)
+include(Catch)
+catch_discover_tests(${TEST_PROJECT_NAME})
 
 # symlinks for data
 message(STATUS "create symlink: "

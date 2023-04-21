@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN	 // This tells Catch to provide a main() function
 
-#include "catch.hpp"
+#include <catch.hpp>
 // IMPORTANT NOTE: removed signal listener for "EXCEPTION_ACCESS_VIOLATION" from catch source code
 // because it interferes with the jni interface that emits such a signal on purpose
 
@@ -8,9 +8,9 @@
 #include "language_packages.h"
 #include "utilityPathDetection.h"
 
-struct EventListener: Catch::TestEventListenerBase
+struct EventListener : Catch::EventListenerBase
 {
-	using TestEventListenerBase::TestEventListenerBase;	   // inherit constructor
+	using EventListenerBase::EventListenerBase;	   // inherit constructor
 
 	void testRunStarting(const Catch::TestRunInfo& testRunInfo) override
 	{

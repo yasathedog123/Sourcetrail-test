@@ -3,6 +3,8 @@
 #include "ConfigManager.h"
 #include "TextAccess.h"
 
+using namespace Catch;
+
 namespace
 {
 std::shared_ptr<TextAccess> getConfigTextAccess()

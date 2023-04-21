@@ -2,6 +2,8 @@
 
 #include "Vector2.h"
 
+using namespace Catch;
+
 TEST_CASE("vec2i constructors")
 {
 	Vec2i vec0;
