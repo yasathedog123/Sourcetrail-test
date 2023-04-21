@@ -897,7 +897,6 @@ target_link_libraries(
 	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
 	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 	Catch2::Catch2
-	Catch2::Catch2WithMain
 )
 
 set_property(

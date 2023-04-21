@@ -13,8 +13,28 @@ git clone https://github.com/petermost/Sourcetrail.git --recurse-submodules
 
 # Building
 There are 2 ways to build the project:
-1. With the **system** provided packages ([System build](#system-build))
-2. With **vcpkg** provided packages ([Vcpkg build](#vcpkg-build-linuxwindows))
+1. With **vcpkg** provided packages ([Vcpkg build](#vcpkg-build-linuxwindows))
+2. With the **system** provided packages ([System build](#system-build))
+
+
+
+## Vcpkg Build (Linux/Windows)
+Because **vcpkg** builds everything from source, additional packages are needed for building Qt5 on Linux. Install the additional packages with `script/install.ubuntu.qt5.dependencies.sh`.
+
+Prepare the build:
+```
+$ cd Sourcetrail
+$ cmake --preset=vcpkg-ninja-release
+```
+Note that the preparation (compilation of the packages) will take a **long** time! On my machine (AMD Ryzen 7 3700X) the Linux compilation takes about 2 hours and the Windows compilation about 3 hours!
+
+Build:
+```
+$ cd ../build/vcpkg-ninja-release
+$ cmake --build .
+```
+
+
 
 ## System build
 ### Linux
@@ -55,18 +75,3 @@ $ cmake --build .
 ```
 ### Windows
 It's probably also possible to build with installed libraries, like the original build instructions describe, but I didn't/don't test it.
-
-## Vcpkg Build (Linux/Windows)
-Because **vcpkg** builds everything from source, additional packages are needed for building Qt5 on Linux. Install the additional packages with `script/install.ubuntu.qt5.dependencies.sh`.
-
-Prepare the build:
-```
-$ cd Sourcetrail
-$ cmake --preset=vcpkg-ninja-release
-```
-Note that the preparation (compilation of the packages) will take a **long** time! On my machine (AMD Ryzen 7 3700X) the Linux compilation takes about 2 hours and the Windows compilation about 3 hours!
-
-Build:
-```
-$ cd ../build/vcpkg-ninja-release
-$ cmake --build .

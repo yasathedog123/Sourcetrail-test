@@ -1,12 +1,18 @@
 #define CATCH_CONFIG_MAIN	 // This tells Catch to provide a main() function
 
 #include <catch.hpp>
+#include <iostream>
+#include <boost/filesystem.hpp>
+
 // IMPORTANT NOTE: removed signal listener for "EXCEPTION_ACCESS_VIOLATION" from catch source code
 // because it interferes with the jni interface that emits such a signal on purpose
 
 #include "ApplicationSettings.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
+
+using namespace std;
+using namespace boost::filesystem;
 
 struct EventListener : Catch::EventListenerBase
 {
@@ -61,3 +67,17 @@ struct EventListener : Catch::EventListenerBase
 };
 
 CATCH_REGISTER_LISTENER(EventListener)
+
+int main( int argc, char* argv[] ) 
+{
+	// Workaround for "Unable to configure working directory in CMake/Catch"
+	// https://github.com/catchorg/Catch2/issues/2249
+	// Set the 'working directory' manually:
+
+	path workingDirectory = absolute(path(argv[0])).parent_path();
+	cout << "Set working directory to '" << workingDirectory << "'" << endl;
+	current_path(workingDirectory);
+
+	return Catch::Session().run( argc, argv );
+}
+
