@@ -73,18 +73,6 @@ endif()
 
 # Variables --------------------------------------------------------------------
 
-set(PROJECT_NAME Sourcetrail)
-
-set(APP_PROJECT_NAME "${PROJECT_NAME}")
-set(APP_INDEXER_NAME "${PROJECT_NAME}_indexer")
-set(LIB_UTILITY_PROJECT_NAME "${PROJECT_NAME}_lib_utility")
-set(LIB_GUI_PROJECT_NAME "${PROJECT_NAME}_lib_gui")
-set(LIB_CXX_PROJECT_NAME "${PROJECT_NAME}_lib_cxx")
-set(LIB_JAVA_PROJECT_NAME "${PROJECT_NAME}_lib_java")
-set(LIB_PYTHON_PROJECT_NAME "${PROJECT_NAME}_lib_python")
-set(LIB_PROJECT_NAME "${PROJECT_NAME}_lib")
-set(TEST_PROJECT_NAME "${PROJECT_NAME}_test")
-
 if (WIN32)
 	set(PLATFORM_INCLUDE "includesWindows.h")
 elseif (APPLE)
@@ -104,7 +92,7 @@ message ("bash: '${BASH}'")
 
 # Project ----------------------------------------------------------------------
 
-project(${PROJECT_NAME})
+project(Sourcetrail)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
@@ -358,29 +346,29 @@ add_subdirectory(src/test)
 
 # Lib Utility ------------------------------------------------------------------
 
-add_library(${LIB_UTILITY_PROJECT_NAME} ${LIB_UTILITY_FILES})
+add_library(Sourcetrail_lib_utility ${LIB_UTILITY_FILES})
 
 create_source_groups(${LIB_UTILITY_FILES})
 
 set_property(
-	TARGET ${LIB_UTILITY_PROJECT_NAME}
+	TARGET Sourcetrail_lib_utility
 	PROPERTY INCLUDE_DIRECTORIES
 		"${LIB_UTILITY_INCLUDE_PATHS}"
 )
 
-target_include_directories(${LIB_UTILITY_PROJECT_NAME} SYSTEM
+target_include_directories(Sourcetrail_lib_utility SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${Boost_LIBRARIES} Qt5::Widgets Qt5::Network)
+target_link_libraries(Sourcetrail_lib_utility ${Boost_LIBRARIES} Qt5::Widgets Qt5::Network)
 
 if (UNIX AND NOT APPLE)
 	find_package(Threads REQUIRED)
-	target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
+	target_link_libraries(Sourcetrail_lib_utility ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if (WIN32)
-	target_link_libraries(${LIB_UTILITY_PROJECT_NAME} Qt5::WinExtras)
+	target_link_libraries(Sourcetrail_lib_utility Qt5::WinExtras)
 endif()
 
 
@@ -389,14 +377,14 @@ endif()
 set_source_files_properties(${EXTERNAL_FILES} PROPERTIES COMPILE_FLAGS "-w")
 set_source_files_properties(${EXTERNAL_C_FILES} PROPERTIES COMPILE_FLAGS "-std=gnu89 -w")
 
-add_library(${LIB_PROJECT_NAME} ${LIB_FILES} ${EXTERNAL_FILES} ${EXTERNAL_C_FILES})
+add_library(Sourcetrail_lib ${LIB_FILES} ${EXTERNAL_FILES} ${EXTERNAL_C_FILES})
 
 create_source_groups(${LIB_FILES})
 create_source_groups(${EXTERNAL_FILES})
 create_source_groups(${EXTERNAL_C_FILES})
 
 set_property(
-	TARGET ${LIB_PROJECT_NAME}
+	TARGET Sourcetrail_lib
 	PROPERTY INCLUDE_DIRECTORIES
 		"${LIB_INCLUDE_PATHS}"
 		"${LIB_GUI_INCLUDE_PATHS}"
@@ -406,13 +394,13 @@ set_property(
 		"${CMAKE_BINARY_DIR}/src/lib"
 )
 
-target_include_directories(${LIB_PROJECT_NAME} SYSTEM
+target_include_directories(Sourcetrail_lib SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIR}
 	"${EXTERNAL_INCLUDE_PATHS}"
 	"${EXTERNAL_C_INCLUDE_PATHS}"
 )
 
-target_link_libraries(${LIB_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_GUI_PROJECT_NAME} ${Boost_LIBRARIES})
+target_link_libraries(Sourcetrail_lib Sourcetrail_lib_utility Sourcetrail_lib_gui ${Boost_LIBRARIES})
 
 #configure language package defines
 configure_file(
@@ -428,12 +416,12 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	set(CAPTURED_CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD})
 	set(CMAKE_CXX_STANDARD 14)
 
-	add_library(${LIB_CXX_PROJECT_NAME} ${LIB_CXX_FILES})
+	add_library(Sourcetrail_lib_cxx ${LIB_CXX_FILES})
 
 	create_source_groups(${LIB_CXX_FILES})
 
 	set_property(
-		TARGET ${LIB_CXX_PROJECT_NAME}
+		TARGET Sourcetrail_lib_cxx
 		PROPERTY INCLUDE_DIRECTORIES
 			"${LIB_CXX_INCLUDE_PATHS}"
 			"${LIB_UTILITY_INCLUDE_PATHS}"
@@ -441,7 +429,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 			"${CMAKE_BINARY_DIR}/src/lib"
 	)
 
-	target_include_directories(${LIB_CXX_PROJECT_NAME} SYSTEM
+	target_include_directories(Sourcetrail_lib_cxx SYSTEM
 		PUBLIC ${LLVM_INCLUDE_DIRS}
 		${CLANG_INCLUDE_DIRS}
 		${Boost_INCLUDE_DIRS}
@@ -492,11 +480,11 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		)
 	endif()
 
-	target_link_libraries(${LIB_CXX_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${CLANG_LIBRARIES} ${REQ_LLVM_LIBS})
+	target_link_libraries(Sourcetrail_lib_cxx Sourcetrail_lib_utility ${CLANG_LIBRARIES} ${REQ_LLVM_LIBS})
 
 	if (WIN32)
-		target_compile_definitions(${LIB_CXX_PROJECT_NAME} PRIVATE _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS) # Due to Clang
-		target_link_libraries(${LIB_CXX_PROJECT_NAME} version)
+		target_compile_definitions(Sourcetrail_lib_cxx PRIVATE _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS) # Due to Clang
+		target_link_libraries(Sourcetrail_lib_cxx version)
 	endif()
 
 	set(CMAKE_CXX_STANDARD ${CAPTURED_CMAKE_CXX_STANDARD})
@@ -513,12 +501,12 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 	find_package(JNI)
 
-	add_library(${LIB_JAVA_PROJECT_NAME} ${LIB_JAVA_FILES})
+	add_library(Sourcetrail_lib_java ${LIB_JAVA_FILES})
 
 	create_source_groups(${LIB_JAVA_FILES})
 
 	set_property(
-		TARGET ${LIB_JAVA_PROJECT_NAME}
+		TARGET Sourcetrail_lib_java
 		PROPERTY INCLUDE_DIRECTORIES
 			"${LIB_JAVA_INCLUDE_PATHS}"
 			"${LIB_UTILITY_INCLUDE_PATHS}"
@@ -527,17 +515,17 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 			"${CMAKE_BINARY_DIR}/src/lib"
 	)
 
-	target_include_directories(${LIB_JAVA_PROJECT_NAME} SYSTEM
+	target_include_directories(Sourcetrail_lib_java SYSTEM
 		PUBLIC ${JNI_INCLUDE_DIRS}
 		${Boost_INCLUDE_DIRS}
 	)
 
 	link_directories(${Boost_LIBRARY_DIRS})
 
-	target_link_libraries(${LIB_JAVA_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME})
+	target_link_libraries(Sourcetrail_lib_java Sourcetrail_lib_utility Sourcetrail_lib)
 
 	add_custom_command(
-		TARGET ${LIB_JAVA_PROJECT_NAME}
+		TARGET Sourcetrail_lib_java
 		PRE_BUILD
 		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/update_java_indexer.sh
 		COMMENT "updating java indexer jars"
@@ -554,12 +542,12 @@ endif()
 
 if (BUILD_PYTHON_LANGUAGE_PACKAGE)
 
-	add_library(${LIB_PYTHON_PROJECT_NAME} ${LIB_PYTHON_FILES})
+	add_library(Sourcetrail_lib_python ${LIB_PYTHON_FILES})
 
 	create_source_groups(${LIB_PYTHON_FILES})
 
 	set_property(
-		TARGET ${LIB_PYTHON_PROJECT_NAME}
+		TARGET Sourcetrail_lib_python
 		PROPERTY INCLUDE_DIRECTORIES
 			"${LIB_PYTHON_INCLUDE_PATHS}"
 			"${LIB_UTILITY_INCLUDE_PATHS}"
@@ -569,10 +557,10 @@ if (BUILD_PYTHON_LANGUAGE_PACKAGE)
 
 	#link_directories(${Boost_LIBRARY_DIRS})
 
-	target_link_libraries(${LIB_PYTHON_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME})
+	target_link_libraries(Sourcetrail_lib_python Sourcetrail_lib_utility Sourcetrail_lib)
 
 	add_custom_command(
-		TARGET ${LIB_PYTHON_PROJECT_NAME}
+		TARGET Sourcetrail_lib_python
 		PRE_BUILD
 		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/download_python_indexer.sh
 		COMMENT "download python indexer"
@@ -598,12 +586,12 @@ add_custom_target(
 	versionnumber ALL
 )
 
-add_library(${LIB_GUI_PROJECT_NAME} ${LIB_GUI_FILES} ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
+add_library(Sourcetrail_lib_gui ${LIB_GUI_FILES} ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
 
-target_link_libraries(${LIB_GUI_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_PROJECT_NAME} Qt5::Widgets Qt5::Network Qt5::Svg)
+target_link_libraries(Sourcetrail_lib_gui Sourcetrail_lib_utility Sourcetrail_lib Qt5::Widgets Qt5::Network Qt5::Svg)
 
 if (WIN32)
-	target_link_libraries(${LIB_GUI_PROJECT_NAME} Qt5::WinExtras)
+	target_link_libraries(Sourcetrail_lib_gui Qt5::WinExtras)
 endif()
 
 # command for versioning script
@@ -612,16 +600,16 @@ add_custom_command(
 	PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
 	BYPRODUCTS ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-	DEPENDS ${LIB_GUI_PROJECT_NAME}
+	DEPENDS Sourcetrail_lib_gui
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	COMMENT "check/update version number"
 )
-add_dependencies(${LIB_GUI_PROJECT_NAME} versionnumber)
+add_dependencies(Sourcetrail_lib_gui versionnumber)
 
 create_source_groups(${LIB_GUI_FILES})
 
 set_property(
-	TARGET ${LIB_GUI_PROJECT_NAME}
+	TARGET Sourcetrail_lib_gui
 	PROPERTY INCLUDE_DIRECTORIES
 		"${LIB_GUI_INCLUDE_PATHS}"
 		"${LIB_UTILITY_INCLUDE_PATHS}"
@@ -634,7 +622,7 @@ set_property(
 )
 
 # include external header without warnings
-target_include_directories(${LIB_GUI_PROJECT_NAME} SYSTEM
+target_include_directories(Sourcetrail_lib_gui SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIRS}
 	"${EXTERNAL_INCLUDE_PATHS}"
 	"${EXTERNAL_C_INCLUDE_PATHS}"
@@ -676,19 +664,19 @@ endif ()
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_executable(${APP_INDEXER_NAME} ${INDEXER_FILES})
+add_executable(Sourcetrail_indexer ${INDEXER_FILES})
 
 
-set_target_properties(${APP_INDEXER_NAME} PROPERTIES OUTPUT_NAME sourcetrail_indexer)
+set_target_properties(Sourcetrail_indexer PROPERTIES OUTPUT_NAME sourcetrail_indexer)
 
 if (WIN32)
 	# hide the console when running a release build.
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE /DEBUG:FASTLINK")
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:WINDOWS /DEBUG")
-	set_target_properties(${APP_INDEXER_NAME} PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
+	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE /DEBUG:FASTLINK")
+	set_target_properties(Sourcetrail_indexer PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+	set_target_properties(Sourcetrail_indexer PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
+	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:WINDOWS /DEBUG")
+	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
 
 	# generate pdb for release build
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
@@ -697,21 +685,21 @@ endif ()
 create_source_groups(${INDEXER_FILES})
 
 target_link_libraries(
-	${APP_INDEXER_NAME}
-	${LIB_GUI_PROJECT_NAME}
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
-	${LIB_PROJECT_NAME}
+	Sourcetrail_indexer
+	Sourcetrail_lib_gui
+	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
+	Sourcetrail_lib
 )
 
 if (APPLE)
 	find_library(CORE_FOUNDATION CoreFoundation)
-	target_link_libraries(${APP_INDEXER_NAME} ${CORE_FOUNDATION})
+	target_link_libraries(Sourcetrail_indexer ${CORE_FOUNDATION})
 endif ()
 
 set_property(
-	TARGET ${APP_INDEXER_NAME}
+	TARGET Sourcetrail_indexer
 	PROPERTY INCLUDE_DIRECTORIES
 		"${APP_INCLUDE_PATHS}"
 		"${LIB_INCLUDE_PATHS}"
@@ -746,43 +734,43 @@ if (WIN32)
 		"IDI_ICON1               ICON                    \"${CMAKE_BINARY_DIR}/Sourcetrail.ico\"\n"
 	)
 
-	add_executable(${APP_PROJECT_NAME} ${APP_FILES} ${CMAKE_BINARY_DIR}/Sourcetrail.rc)
+	add_executable(Sourcetrail ${APP_FILES} ${CMAKE_BINARY_DIR}/Sourcetrail.rc)
 
 	# also show the console when running a release build.
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE /DEBUG:FASTLINK")
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:CONSOLE /DEBUG")
-	set_target_properties(${APP_PROJECT_NAME} PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:CONSOLE")
+	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE /DEBUG:FASTLINK")
+	set_target_properties(Sourcetrail PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
+	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+	set_target_properties(Sourcetrail PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
+	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:CONSOLE /DEBUG")
+	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:CONSOLE")
 
 	# generate pdb for release build
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 
 	set_property(
-		TARGET ${APP_PROJECT_NAME}
+		TARGET Sourcetrail
 			PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
 			"${CMAKE_SOURCE_DIR}/bin/app")
 
 	string(REGEX REPLACE "/" "\\\\" BACKSLASHED_CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR})
 	string(REGEX REPLACE "/" "\\\\" BACKSLASHED_CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 else ()
-	add_executable(${APP_PROJECT_NAME} ${APP_FILES})
+	add_executable(Sourcetrail ${APP_FILES})
 endif ()
 
 create_source_groups(${APP_FILES})
 
 target_link_libraries(
-	${APP_PROJECT_NAME}
-	${LIB_GUI_PROJECT_NAME}
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
-	${LIB_PROJECT_NAME}
+	Sourcetrail
+	Sourcetrail_lib_gui
+	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
+	Sourcetrail_lib
 )
 
 set_property(
-	TARGET ${APP_PROJECT_NAME}
+	TARGET Sourcetrail
 	PROPERTY INCLUDE_DIRECTORIES
 		"${APP_INCLUDE_PATHS}"
 		"${LIB_INCLUDE_PATHS}"
@@ -795,33 +783,33 @@ set_property(
 		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
 )
 
-target_include_directories(${APP_PROJECT_NAME} SYSTEM
+target_include_directories(Sourcetrail SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIRS}
 	"${EXTERNAL_INCLUDE_PATHS}"
 	"${EXTERNAL_C_INCLUDE_PATHS}"
 )
 
 # Use the Widgets module from Qt 5.
-qt5_use_modules(${APP_PROJECT_NAME} Widgets)
-qt5_use_modules(${APP_PROJECT_NAME} Network)
+qt5_use_modules(Sourcetrail Widgets)
+qt5_use_modules(Sourcetrail Network)
 
 # add platform specific libraries
 if (APPLE)
 	find_library(CORE_FOUNDATION CoreFoundation)
-	target_link_libraries(${APP_PROJECT_NAME} ${CORE_FOUNDATION})
+	target_link_libraries(Sourcetrail ${CORE_FOUNDATION})
 endif ()
 
-add_dependencies(${APP_PROJECT_NAME} ${APP_INDEXER_NAME})
+add_dependencies(Sourcetrail Sourcetrail_indexer)
 
 
 # macOS Bundle ----------------------------------------------------------------
 
 if (APPLE)
 
-	set(MACOS_BUNDLE_NAME ${PROJECT_NAME})
+	set(MACOS_BUNDLE_NAME Sourcetrail)
 	set(MACOS_BUNDLE_VERSION ${VERSION_STRING})
-	set(MACOS_BINARY_NAME ${APP_PROJECT_NAME})
-	set(MACOS_INDEXER_BINARY_NAME ${APP_INDEXER_NAME})
+	set(MACOS_BINARY_NAME Sourcetrail)
+	set(MACOS_INDEXER_BINARY_NAME Sourcetrail_indexer)
 
 	get_property(QT_CORE_PATH TARGET ${Qt5Core_LIBRARIES} PROPERTY LOCATION)
 	get_filename_component(QT_CORE_PATH ${QT_CORE_PATH} REALPATH)
@@ -886,26 +874,26 @@ else ()
 	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 endif ()
 
-add_executable (${TEST_PROJECT_NAME} ${TEST_FILES})
+add_executable (Sourcetrail_test ${TEST_FILES})
 
 create_source_groups(${TEST_FILES})
 
 target_link_libraries(
-	${TEST_PROJECT_NAME}
-	${LIB_GUI_PROJECT_NAME}
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
-	${LIB_PROJECT_NAME}
-	${LIB_GUI_PROJECT_NAME}
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
+	Sourcetrail_test
+	Sourcetrail_lib_gui
+	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
+	Sourcetrail_lib
+	Sourcetrail_lib_gui
+	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
 	Catch2::Catch2
 )
 
 set_property(
-	TARGET ${TEST_PROJECT_NAME}
+	TARGET Sourcetrail_test
 	PROPERTY INCLUDE_DIRECTORIES
 		"${TEST_INCLUDE_PATHS}"
 		"${LIB_INCLUDE_PATHS}"
@@ -921,16 +909,16 @@ set_property(
 )
 
 if (WIN32)
-	set_target_properties(${TEST_PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/bigobj")
+	set_target_properties(Sourcetrail_test PROPERTIES COMPILE_FLAGS "/bigobj")
 	set_property(
-		TARGET ${TEST_PROJECT_NAME}
+		TARGET Sourcetrail_test
 			PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
 			"${CMAKE_SOURCE_DIR}/bin/test")
 endif ()
 
 include(CTest)
 include(Catch)
-catch_discover_tests(${TEST_PROJECT_NAME})
+catch_discover_tests(Sourcetrail_test)
 
 # symlinks for data
 message(STATUS "create symlink: "
