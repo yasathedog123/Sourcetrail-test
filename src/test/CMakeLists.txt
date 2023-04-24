@@ -5,6 +5,7 @@ add_files(
 	helper/TestFileRegister.h
 	helper/TestStorage.h
 
+	Catch2.hpp
 	test_main.cpp
 
 	CommandlineTestSuite.cpp

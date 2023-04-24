@@ -3,19 +3,14 @@ include(CMakePrintHelpers)
 
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message("Vcpkg Build")
-	set(IsVcpkgBuild TRUE)
-else()
-	message("System Build")
-	set(IsVcpkgBuild FALSE)
-endif()
-
-if (IsVcpkgBuild)
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
 		set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Target triplet for Linux")
 	elseif(WIN32)
 		set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Target triplet for Windows")
 	endif()
+else()
+	message("System Build")
 endif()
 
 #[[ To integrate the vcpkg build libraries manually:
@@ -870,7 +865,17 @@ endif ()
 
 # Test ----------------------------------------------------------------------
 
-find_package(Catch2 CONFIG REQUIRED)
+find_package(Catch2 3 CONFIG)
+if (Catch2_FOUND)
+	message("-- Found Catch2 V3 (${Catch2_VERSION})")
+else()
+	find_package(Catch2 2 CONFIG)
+	if (Catch2_FOUND)
+		message("-- Found Catch2 V2 (${Catch2_VERSION})")
+	else()
+		message(FATAL_ERROR "Missing Catch2!")
+	endif()
+endif()
 
 if (UNIX)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/")

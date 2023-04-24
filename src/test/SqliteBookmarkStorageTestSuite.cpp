@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "Catch2.hpp"
 
 #include "FileSystem.h"
 #include "SqliteBookmarkStorage.h"

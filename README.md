@@ -62,6 +62,9 @@ To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install
 * clang
 * libclang-dev
 
+**Catch2 (2.13.9)**
+* catch2
+
 Prepare the build:
 ```
 $ cd Sourcetrail

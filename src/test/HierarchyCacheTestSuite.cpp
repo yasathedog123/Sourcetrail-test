@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "Catch2.hpp"
 
 #include "HierarchyCache.h"
 #include "utility.h"
