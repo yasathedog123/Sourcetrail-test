@@ -9,6 +9,8 @@
 #elif __has_include(<catch2/catch.hpp>) // V2?
 	#define CATCH_CONFIG_EXTERNAL_INTERFACES
 	#include <catch2/catch.hpp>
+#else
+	#error "Unknown Catch2 version!"
 #endif
 
 #if CATCH_VERSION_MAJOR == 2

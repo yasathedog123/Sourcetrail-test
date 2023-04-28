@@ -1,58 +1,30 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.13)
+
 include(CMakePrintHelpers)
+
+include(cmake/version.cmake)
+include(cmake/version_setup.cmake)
+include(cmake/licenses.cmake)
 
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message("Vcpkg Build")
+	set(isVcpkgBuild TRUE)
+else()
+	message("System Build")
+	set(isVcpkgBuild FALSE)
+endif()
+
+if (isVcpkgBuild)
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
 		set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Target triplet for Linux")
 	elseif(WIN32)
 		set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Target triplet for Windows")
 	endif()
-else()
-	message("System Build")
-endif()
-
-#[[ To integrate the vcpkg build libraries manually:
-See also: https://learn.microsoft.com/en-us/vcpkg/users/buildsystems/manual-integration
-
-set(Boost_DEBUG ON)
-set(Boost_NO_SYSTEM_PATHS ON)
-set(BOOST_ROOT "vcpkg_installed/x64-windows")
-set(BOOST_INCLUDEDIR "vcpkg_installed/x64-windows/include")
-set(BOOST_LIBRARYDIR "vcpkg_installed/x64-windows/lib")
-
-# Extracted fom 'vcpkg/scripts/buildsystems/vcpkg.cmake':
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_NO_BOOST_CMAKE ON)
-set(Boost_USE_STATIC_RUNTIME)
-unset(Boost_USE_STATIC_RUNTIME CACHE)
-
-set(Clang_DIR "vcpkg_installed/x64-windows/share/clang")
-set(Qt5_DIR "vcpkg_installed/x64-windows/share/cmake/Qt5")
-]]
-
-# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
-if (CMAKE_VERBOSE_MAKEFILE)
-	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
-endif()
-
-if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
-	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
 endif()
 
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
-set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
-set(DOCKER_BUILD OFF CACHE BOOL "Build runs in Docker")
-set(TREAT_WARNINGS_AS_ERRORS ON CACHE BOOL "Treat compiler warnings as errors")
-
-include(cmake/add_files.cmake)
-include(cmake/create_source_groups.cmake)
-include(cmake/version.cmake)
-include(cmake/version_setup.cmake)
-include(cmake/licenses.cmake)
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
@@ -61,33 +33,21 @@ if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
 	message(FATAL_ERROR "Please create a separate build directory and call CMake again")
 endif()
 
-if(NOT DEFINED CMAKE_CXX_COMPILER_LAUNCHER)
-	# speed up recompiling on unix with ccache
-	find_program(CCACHE_PROGRAM ccache)
-	if (CCACHE_PROGRAM)
-		message(STATUS "ccache found")
-		# Support Unix Makefiles and Ninja
-		set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}" CACHE STRING "Compiler launcher for CXX")
-	endif()
+# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
+if (CMAKE_VERBOSE_MAKEFILE)
+	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
 endif()
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Variables --------------------------------------------------------------------
 
 if (WIN32)
 	set(PLATFORM_INCLUDE "includesWindows.h")
-elseif (APPLE)
-	set(PLATFORM_INCLUDE "includesMac.h")
-else ()
+elseif (UNIX)
 	set(PLATFORM_INCLUDE "includesLinux.h")
 endif ()
-
-set (BASH "")
-if (WIN32)
-	execute_process(COMMAND CMD /c where bash OUTPUT_VARIABLE BASH)
-	string(REGEX REPLACE "\n$" "" BASH "${BASH}")
-endif ()
-
-message ("bash: '${BASH}'")
 
 
 # Project ----------------------------------------------------------------------
@@ -97,55 +57,25 @@ project(Sourcetrail)
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
 
+#[[
 #RPATH
-if(UNIX AND NOT APPLE)
+if(UNIX)
 	set(CMAKE_SKIP_BUILD_RPATH FALSE)
 	set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 	set(CMAKE_INSTALL_RPATH "$ORIGIN/lib/:$$ORIGIN/lib/")
 endif()
+]]
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 
-
 # Settings ---------------------------------------------------------------------
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-warning-option -fcolor-diagnostics -fvisibility-inlines-hidden")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	add_compile_options(-Wno-unknown-warning-option)
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	ADD_COMPILE_OPTIONS(/MP)
-endif()
-
-# FIXME: necessary to fix build in Docker
-if (DOCKER_BUILD)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++")
-endif()
-
-if (TREAT_WARNINGS_AS_ERRORS)
-	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-		# Visual Studio 2017 version 15.9 <= Version <= Visual Studio 2019 Version 16.4
-		if ((MSVC_VERSION GREATER_EQUAL 1916) AND (MSVC_VERSION LESS_EQUAL 1924))
-			# Warning 4003: not enough actual parameters for macro 'identifier'
-			# Warning 4250: 'class1' inherits 'class2::member' via dominance
-			set(WARNINGS_LIST "/wd4003 /wd4250")
-			set(CMAKE_CXX_WARNINGS_FLAGS "/experimental:external /external:anglebrackets /external:W0 /WX")
-			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_WARNINGS_FLAGS} ${WARNINGS_LIST}")
-
-			# Treat linker warnings as errors
-			set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /WX")
-			set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} /WX")
-			set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /WX")
-			set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /WX")
-
-			message(STATUS "'Treat warnings as errors' policy is enabled")
-		else()
-			message(STATUS "'Treat warnings as errors' policy is disabled")
-		endif()
-	else()
-		message(STATUS "'Treat warnings as errors' policy is disabled")
-	endif()
+	add_compile_options(/MP)
 endif()
 
 # For debugging the release build on linux
@@ -204,203 +134,91 @@ endif()
 
 # Boost ------------------------------------------------------------------------
 
+set(Boost_NO_WARN_NEW_VERSIONS ON)
+
+if (isVcpkgBuild)
+	set(Boost_NO_SYSTEM_PATHS ON)
+endif()
+
 find_package(Boost 1.74 REQUIRED COMPONENTS
 	# compiled libraries:
 	system program_options filesystem date_time locale
 
-	# 'header-only' libraries (which can't be found):
+	# 'header-only' libraries which can't be found with find_package:
 	# interprocess uuid asio process
 
 	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 	# for a list of compiled libraries.
 )
-
-if (WIN32)
-	# Fix "Boost-uuid should link against bcrypt on windows" (https://github.com/microsoft/vcpkg/issues/4481)
-	add_compile_definitions(BOOST_UUID_FORCE_AUTO_LINK)
-
-	# Trying to add the definition to the boost target like this:
-	# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
-	# leads to the error:
-	# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
-	# So we have to define it globally.
-endif()
+message("-- Found Boost ${Boost_VERSION_STRING}")
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION "5.12.0")
-set (QT_MIN_VERSION_HEX 0x051200)
+set (QT_MIN_VERSION "5.15.6")
+set (QT_MIN_VERSION_HEX 0x051506)
 find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Widgets PrintSupport Network Svg REQUIRED)
 
 if (WIN32)
 	find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS WinExtras REQUIRED)
 endif()
 
-if(Qt5Widgets_FOUND)
-	message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
+message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
 
-	# FIX: Qt was built with -reduce-relocations
-	if (Qt5_POSITION_INDEPENDENT_CODE)
-		SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	endif()
-
-	# The following define makes your compiler emit warnings if you use
-	# any feature of Qt which as been marked as deprecated (the exact warnings
-	# depend on your compiler). Please consult the documentation of the
-	# deprecated API in order to know how to port your code away from it.
-	add_definitions (-DQT_DEPRECATED_WARNINGS)
-
-	# You can also make your code fail to compile if you use deprecated APIs.
-	# In order to do so, uncomment the following line.
-	# You can also select to disable deprecated APIs only up to a certain version of Qt.
-	#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX}    # disables all the APIs deprecated at or before the specified Qt version
-	add_definitions (-DQT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
+# FIX: Qt was built with -reduce-relocations
+if (Qt5_POSITION_INDEPENDENT_CODE)
+	SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
+# The following define makes your compiler emit warnings if you use
+# any feature of Qt which as been marked as deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+add_definitions (-DQT_DEPRECATED_WARNINGS)
 
-# Setup ---------------------------------------------------------------------------
+# You can also make your code fail to compile if you use deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX}    # disables all the APIs deprecated at or before the specified Qt version
+add_definitions (-DQT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
 
-if (WIN32)
-	cmake_path(GET QT_MOC_EXECUTABLE PARENT_PATH QT_BASE_DIR)
-	cmake_path(SET QT_BASE_DIR NORMALIZE "${QT_BASE_DIR}/../../../")
-	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-		cmake_path(APPEND QT_BASE_DIR "debug")
-	endif()
-	cmake_path(APPEND QT_BINARY_DIR ${QT_BASE_DIR} "bin/")
-	cmake_path(APPEND QT_PLUGINS_DIR ${QT_BASE_DIR} "plugins/")
+# External Libs  ------------------------------------------------------------------
 
-	function(COPY_QT_BINARIES IS_DEBUG IS_APP)
-		set(SUFFIX "")
-		if (IS_DEBUG)
-			set(SUFFIX "d")
-		endif()
-
-		set(CONFIGURATION "Release")
-		if (IS_DEBUG)
-			set(CONFIGURATION "Debug")
-		endif()
-
-		if(CMAKE_CL_64)
-			set(BITS "64")
-		else()
-			set(BITS "32")
-		endif()
-
-		set(TARGET "test")
-		if (IS_APP)
-			set(TARGET "app")
-			#[[
-			file(GLOB MY_PUBLIC_HEADERS
-				"${CMAKE_SOURCE_DIR}/setup/dynamic_libraries/win${BITS}/app/${CONFIGURATION}/*"
-			)
-			file(COPY ${MY_PUBLIC_HEADERS} DESTINATION "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/")
-			]]
-		endif()
-
-		#[[
-		configure_file("${QT_BINARY_DIR}/Qt5Core${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Core${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_BINARY_DIR}/Qt5Gui${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Gui${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_BINARY_DIR}/Qt5Network${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Network${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_BINARY_DIR}/Qt5Svg${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Svg${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_BINARY_DIR}/Qt5Widgets${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5Widgets${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_BINARY_DIR}/Qt5WinExtras${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/Qt5WinExtras${SUFFIX}.dll" COPYONLY)
-
-		configure_file("${QT_PLUGINS_DIR}/platforms/qwindows${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/platforms/qwindows${SUFFIX}.dll" COPYONLY)
-
-		configure_file("${QT_PLUGINS_DIR}/styles/qwindowsvistastyle${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/styles/qwindowsvistastyle${SUFFIX}.dll" COPYONLY)
-
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qgif${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qgif${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qicns${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qicns${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qico${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qico${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qjpeg${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qjpeg${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qsvg${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qsvg${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qtga${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qtga${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qtiff${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qtiff${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qwbmp${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qwbmp${SUFFIX}.dll" COPYONLY)
-		configure_file("${QT_PLUGINS_DIR}/imageformats/qwebp${SUFFIX}.dll" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/${TARGET}/imageformats/qwebp${SUFFIX}.dll" COPYONLY)
-		]]
-	endfunction(COPY_QT_BINARIES)
-
-	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-		COPY_QT_BINARIES(True True)
-		COPY_QT_BINARIES(True False)
-	else()
-		COPY_QT_BINARIES(False True)
-		COPY_QT_BINARIES(False False)
-	endif()
-	configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/${CONFIGURATION}/sourcetrail.ico" COPYONLY)
-endif()
-
-
-add_subdirectory(src/app)
+add_library(External_lib_c)
+add_library(External_lib_cxx)
 add_subdirectory(src/external)
-add_subdirectory(src/indexer)
-add_subdirectory(src/lib)
-add_subdirectory(src/lib_cxx)
-add_subdirectory(src/lib_gui)
-add_subdirectory(src/lib_java)
-add_subdirectory(src/lib_python)
-add_subdirectory(src/lib_utility)
-add_subdirectory(src/test)
 
+target_compile_options(External_lib_cxx
+	PRIVATE
+		-w
+)
+target_compile_options(External_lib_c
+	PRIVATE
+		-std=gnu89 -w
+)
+target_link_libraries(External_lib_cxx
+	PUBLIC
+		External_lib_c
+)
 
 # Lib Utility ------------------------------------------------------------------
 
-add_library(Sourcetrail_lib_utility ${LIB_UTILITY_FILES})
+add_library(Sourcetrail_lib_utility)
+add_subdirectory(src/lib_utility)
 
-create_source_groups(${LIB_UTILITY_FILES})
-
-set_property(
-	TARGET Sourcetrail_lib_utility
-	PROPERTY INCLUDE_DIRECTORIES
-		"${LIB_UTILITY_INCLUDE_PATHS}"
+target_link_libraries(Sourcetrail_lib_utility
+	PUBLIC
+		Boost::locale
+		Qt5::Core
 )
-
-target_include_directories(Sourcetrail_lib_utility SYSTEM
-	PUBLIC ${Boost_INCLUDE_DIR}
-)
-
-target_link_libraries(Sourcetrail_lib_utility ${Boost_LIBRARIES} Qt5::Widgets Qt5::Network)
-
-if (UNIX AND NOT APPLE)
-	find_package(Threads REQUIRED)
-	target_link_libraries(Sourcetrail_lib_utility ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
-endif()
-
-if (WIN32)
-	target_link_libraries(Sourcetrail_lib_utility Qt5::WinExtras)
-endif()
-
 
 # Lib --------------------------------------------------------------------------
 
-set_source_files_properties(${EXTERNAL_FILES} PROPERTIES COMPILE_FLAGS "-w")
-set_source_files_properties(${EXTERNAL_C_FILES} PROPERTIES COMPILE_FLAGS "-std=gnu89 -w")
+add_library(Sourcetrail_lib)
+add_subdirectory(src/lib)
 
-add_library(Sourcetrail_lib ${LIB_FILES} ${EXTERNAL_FILES} ${EXTERNAL_C_FILES})
-
-create_source_groups(${LIB_FILES})
-create_source_groups(${EXTERNAL_FILES})
-create_source_groups(${EXTERNAL_C_FILES})
-
-set_property(
-	TARGET Sourcetrail_lib
-	PROPERTY INCLUDE_DIRECTORIES
-		"${LIB_INCLUDE_PATHS}"
-		"${LIB_GUI_INCLUDE_PATHS}"
-		"${LIB_UTILITY_INCLUDE_PATHS}"
-		"${LIB_CXX_INCLUDE_PATHS}"
-		"${LIB_JAVA_INCLUDE_PATHS}"
-		"${CMAKE_BINARY_DIR}/src/lib"
-)
-
-target_include_directories(Sourcetrail_lib SYSTEM
-	PUBLIC ${Boost_INCLUDE_DIR}
-	"${EXTERNAL_INCLUDE_PATHS}"
-	"${EXTERNAL_C_INCLUDE_PATHS}"
-)
-
-target_link_libraries(Sourcetrail_lib Sourcetrail_lib_utility Sourcetrail_lib_gui ${Boost_LIBRARIES})
+if (UNIX)
+	find_package(Threads REQUIRED)
+endif()
 
 #configure language package defines
 configure_file(
@@ -408,6 +226,41 @@ configure_file(
 	"${CMAKE_BINARY_DIR}/src/lib/language_packages.h"
 )
 
+target_include_directories(Sourcetrail_lib
+	PUBLIC
+		"${CMAKE_BINARY_DIR}/src/lib"
+)
+
+target_compile_definitions(Sourcetrail_lib
+	PUBLIC
+		# Fix "Boost-uuid should link against bcrypt on windows"
+		# (https://github.com/microsoft/vcpkg/issues/4481)
+		BOOST_UUID_FORCE_AUTO_LINK
+
+		# Trying to add the definition to the boost target like this:
+		# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
+		# leads to the error:
+		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
+)
+
+target_link_libraries(Sourcetrail_lib
+	PUBLIC
+		Sourcetrail_lib_utility
+		Sourcetrail_lib_gui
+		External_lib_cxx
+		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+
+		Boost::headers
+		Boost::system
+		Boost::program_options
+		Boost::filesystem
+		Boost::date_time
+
+		$<$<BOOL:${UNIX}>:${CMAKE_DL_LIBS}>
+		$<$<BOOL:${UNIX}>:rt>
+		$<$<BOOL:${UNIX}>:${CMAKE_THREAD_LIBS_INIT}>
+)
 
 # Lib Cxx ----------------------------------------------------------------------
 
@@ -416,28 +269,25 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	set(CAPTURED_CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD})
 	set(CMAKE_CXX_STANDARD 14)
 
-	add_library(Sourcetrail_lib_cxx ${LIB_CXX_FILES})
-
-	create_source_groups(${LIB_CXX_FILES})
-
-	set_property(
-		TARGET Sourcetrail_lib_cxx
-		PROPERTY INCLUDE_DIRECTORIES
-			"${LIB_CXX_INCLUDE_PATHS}"
-			"${LIB_UTILITY_INCLUDE_PATHS}"
-			"${LIB_INCLUDE_PATHS}"
-			"${CMAKE_BINARY_DIR}/src/lib"
-	)
+	add_library(Sourcetrail_lib_cxx)
+	add_subdirectory(src/lib_cxx)
 
 	target_include_directories(Sourcetrail_lib_cxx SYSTEM
-		PUBLIC ${LLVM_INCLUDE_DIRS}
-		${CLANG_INCLUDE_DIRS}
-		${Boost_INCLUDE_DIRS}
-		"${EXTERNAL_INCLUDE_PATHS}"
-		"${EXTERNAL_C_INCLUDE_PATHS}"
+		PUBLIC
+			${LLVM_INCLUDE_DIRS}
+			${CLANG_INCLUDE_DIRS}
 	)
 
-	link_directories(${LLVM_LIBRARY_DIRS} ${CLANG_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
+	if (WIN32)
+		target_compile_definitions(Sourcetrail_lib_cxx
+			PRIVATE
+				_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS # Due to Clang
+		)
+		target_link_libraries(Sourcetrail_lib_cxx
+			PUBLIC
+				version
+		)
+	endif()
 
 	if(LLVM_LINK_LLVM_DYLIB)
 		set(REQ_LLVM_LIBS LLVM)
@@ -480,18 +330,18 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		)
 	endif()
 
-	target_link_libraries(Sourcetrail_lib_cxx Sourcetrail_lib_utility ${CLANG_LIBRARIES} ${REQ_LLVM_LIBS})
-
-	if (WIN32)
-		target_compile_definitions(Sourcetrail_lib_cxx PRIVATE _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS) # Due to Clang
-		target_link_libraries(Sourcetrail_lib_cxx version)
-	endif()
+	target_link_libraries(Sourcetrail_lib_cxx
+		PUBLIC
+			Sourcetrail_lib_utility
+			Sourcetrail_lib
+			External_lib_cxx
+			${CLANG_LIBRARIES}
+			${REQ_LLVM_LIBS}
+	)
 
 	set(CMAKE_CXX_STANDARD ${CAPTURED_CMAKE_CXX_STANDARD})
 else()
-
 	message(STATUS "Building the Cxx indexer will be skipped. You can enable building this target by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
-
 endif()
 
 
@@ -501,28 +351,22 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 	find_package(JNI)
 
-	add_library(Sourcetrail_lib_java ${LIB_JAVA_FILES})
+	add_library(Sourcetrail_lib_java)
+	add_subdirectory(src/lib_java)
 
-	create_source_groups(${LIB_JAVA_FILES})
-
-	set_property(
-		TARGET Sourcetrail_lib_java
-		PROPERTY INCLUDE_DIRECTORIES
-			"${LIB_JAVA_INCLUDE_PATHS}"
-			"${LIB_UTILITY_INCLUDE_PATHS}"
-			"${LIB_INCLUDE_PATHS}"
-			"${LIB_GUI_INCLUDE_PATHS}"
-			"${CMAKE_BINARY_DIR}/src/lib"
+	target_link_libraries(Sourcetrail_lib_java
+		PUBLIC
+			Sourcetrail_lib_utility
+			Sourcetrail_lib
+			JNI::JNI
 	)
 
-	target_include_directories(Sourcetrail_lib_java SYSTEM
-		PUBLIC ${JNI_INCLUDE_DIRS}
-		${Boost_INCLUDE_DIRS}
-	)
-
-	link_directories(${Boost_LIBRARY_DIRS})
-
-	target_link_libraries(Sourcetrail_lib_java Sourcetrail_lib_utility Sourcetrail_lib)
+	set(BASH "")
+	if (WIN32)
+		execute_process(COMMAND CMD /c where bash OUTPUT_VARIABLE BASH)
+		string(REGEX REPLACE "\n$" "" BASH "${BASH}")
+		message ("bash: '${BASH}'")
+	endif ()
 
 	add_custom_command(
 		TARGET Sourcetrail_lib_java
@@ -532,51 +376,11 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 	)
 
 else()
-
 	message(STATUS "Building the Java indexer will be skipped. You can enable building this target by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
-
 endif()
-
-
-# Lib Python ---------------------------------------------------------------------
-
-if (BUILD_PYTHON_LANGUAGE_PACKAGE)
-
-	add_library(Sourcetrail_lib_python ${LIB_PYTHON_FILES})
-
-	create_source_groups(${LIB_PYTHON_FILES})
-
-	set_property(
-		TARGET Sourcetrail_lib_python
-		PROPERTY INCLUDE_DIRECTORIES
-			"${LIB_PYTHON_INCLUDE_PATHS}"
-			"${LIB_UTILITY_INCLUDE_PATHS}"
-			"${LIB_INCLUDE_PATHS}"
-			"${CMAKE_BINARY_DIR}/src/lib"
-	)
-
-	#link_directories(${Boost_LIBRARY_DIRS})
-
-	target_link_libraries(Sourcetrail_lib_python Sourcetrail_lib_utility Sourcetrail_lib)
-
-	add_custom_command(
-		TARGET Sourcetrail_lib_python
-		PRE_BUILD
-		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/download_python_indexer.sh
-		COMMENT "download python indexer"
-	)
-
-else()
-
-	message(STATUS "Building the Python indexer will be skipped. You can enable building this target by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")
-
-endif()
-
 
 # Lib Gui ----------------------------------------------------------------------
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
@@ -586,47 +390,8 @@ add_custom_target(
 	versionnumber ALL
 )
 
-add_library(Sourcetrail_lib_gui ${LIB_GUI_FILES} ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
-
-target_link_libraries(Sourcetrail_lib_gui Sourcetrail_lib_utility Sourcetrail_lib Qt5::Widgets Qt5::Network Qt5::Svg)
-
-if (WIN32)
-	target_link_libraries(Sourcetrail_lib_gui Qt5::WinExtras)
-endif()
-
-# command for versioning script
-add_custom_command(
-	TARGET versionnumber
-	PRE_BUILD
-	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
-	BYPRODUCTS ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-	DEPENDS Sourcetrail_lib_gui
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	COMMENT "check/update version number"
-)
-add_dependencies(Sourcetrail_lib_gui versionnumber)
-
-create_source_groups(${LIB_GUI_FILES})
-
-set_property(
-	TARGET Sourcetrail_lib_gui
-	PROPERTY INCLUDE_DIRECTORIES
-		"${LIB_GUI_INCLUDE_PATHS}"
-		"${LIB_UTILITY_INCLUDE_PATHS}"
-		"${LIB_INCLUDE_PATHS}"
-		"${CMAKE_BINARY_DIR}/src/lib_gui"
-		"${CMAKE_BINARY_DIR}/src/lib"
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
-)
-
-# include external header without warnings
-target_include_directories(Sourcetrail_lib_gui SYSTEM
-	PUBLIC ${Boost_INCLUDE_DIRS}
-	"${EXTERNAL_INCLUDE_PATHS}"
-	"${EXTERNAL_C_INCLUDE_PATHS}"
-)
+add_library(Sourcetrail_lib_gui ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
+add_subdirectory(src/lib_gui)
 
 # configure platform specific include file
 configure_file(
@@ -645,29 +410,51 @@ configure_file(
 	${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
 )
 
-set_property(SOURCE ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h PROPERTY SKIP_AUTOMOC ON)
+set_property(SOURCE ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
+	PROPERTY
+		SKIP_AUTOMOC ON
+)
+
+target_include_directories(Sourcetrail_lib_gui
+	PUBLIC
+		"${CMAKE_BINARY_DIR}/src/lib_gui"
+)
+
+target_link_libraries(Sourcetrail_lib_gui
+	PUBLIC
+		Sourcetrail_lib_utility
+		Sourcetrail_lib
+
+		Qt5::Widgets
+		Qt5::Network
+		Qt5::Svg
+		$<$<BOOL:${WIN32}>:Qt5::WinExtras>
+)
+
+# command for versioning script
+add_custom_command(
+	TARGET versionnumber
+	PRE_BUILD
+	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
+	BYPRODUCTS ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
+	DEPENDS Sourcetrail_lib_gui
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	COMMENT "check/update version number"
+)
+add_dependencies(Sourcetrail_lib_gui versionnumber)
 
 set(CMAKE_AUTOMOC OFF)
 
-
 # Indexer App ------------------------------------------------------------------
 
-if (UNIX)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/")
-else ()
-	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-		set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/")
-	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-endif ()
+add_executable(Sourcetrail_indexer)
+add_subdirectory(src/indexer)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-add_executable(Sourcetrail_indexer ${INDEXER_FILES})
-
-
-set_target_properties(Sourcetrail_indexer PROPERTIES OUTPUT_NAME sourcetrail_indexer)
+set_target_properties(Sourcetrail_indexer
+	PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/"
+		OUTPUT_NAME              sourcetrail_indexer
+)
 
 if (WIN32)
 	# hide the console when running a release build.
@@ -682,60 +469,37 @@ if (WIN32)
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 endif ()
 
-create_source_groups(${INDEXER_FILES})
-
-target_link_libraries(
-	Sourcetrail_indexer
-	Sourcetrail_lib_gui
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
-	Sourcetrail_lib
+target_link_libraries(Sourcetrail_indexer
+	PRIVATE
+		Sourcetrail_lib_gui
+		Sourcetrail_lib
+		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 )
-
-if (APPLE)
-	find_library(CORE_FOUNDATION CoreFoundation)
-	target_link_libraries(Sourcetrail_indexer ${CORE_FOUNDATION})
-endif ()
-
-set_property(
-	TARGET Sourcetrail_indexer
-	PROPERTY INCLUDE_DIRECTORIES
-		"${APP_INCLUDE_PATHS}"
-		"${LIB_INCLUDE_PATHS}"
-		"${LIB_UTILITY_INCLUDE_PATHS}"
-		"${LIB_GUI_INCLUDE_PATHS}"
-		"${CMAKE_BINARY_DIR}/src/lib_gui"
-		"${CMAKE_BINARY_DIR}/src/lib"
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
-)
-
 
 # App --------------------------------------------------------------------------
 
-if (UNIX)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/")
-else ()
-	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-		set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/")
-	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-endif ()
+add_executable(Sourcetrail)
+add_subdirectory(src/app)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set_target_properties(Sourcetrail
+	PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/"
+)
+configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/sourcetrail.ico" COPYONLY)
+
+file(WRITE ${CMAKE_BINARY_DIR}/Sourcetrail.rc
+	"// Icon with lowest ID value placed first to ensure application icon\n"
+	"// remains consistent on all systems.\n"
+	"IDI_ICON1               ICON                    \"${CMAKE_BINARY_DIR}/Sourcetrail.ico\"\n"
+)
+
+target_sources(Sourcetrail
+	PRIVATE
+		${CMAKE_BINARY_DIR}/Sourcetrail.rc
+)
 
 if (WIN32)
-	file(WRITE ${CMAKE_BINARY_DIR}/Sourcetrail.rc
-		"// Icon with lowest ID value placed first to ensure application icon\n"
-		"// remains consistent on all systems.\n"
-		"IDI_ICON1               ICON                    \"${CMAKE_BINARY_DIR}/Sourcetrail.ico\"\n"
-	)
-
-	add_executable(Sourcetrail ${APP_FILES} ${CMAKE_BINARY_DIR}/Sourcetrail.rc)
-
 	# also show the console when running a release build.
 	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE /DEBUG:FASTLINK")
 	set_target_properties(Sourcetrail PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
@@ -747,193 +511,66 @@ if (WIN32)
 	# generate pdb for release build
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 
-	set_property(
-		TARGET Sourcetrail
-			PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
-			"${CMAKE_SOURCE_DIR}/bin/app")
-
-	string(REGEX REPLACE "/" "\\\\" BACKSLASHED_CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR})
-	string(REGEX REPLACE "/" "\\\\" BACKSLASHED_CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-else ()
-	add_executable(Sourcetrail ${APP_FILES})
+	set_target_properties(Sourcetrail
+		PROPERTIES
+			VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/app"
+	)
 endif ()
 
-create_source_groups(${APP_FILES})
-
-target_link_libraries(
-	Sourcetrail
-	Sourcetrail_lib_gui
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
-	Sourcetrail_lib
+target_link_libraries(Sourcetrail
+	PRIVATE
+		Sourcetrail_lib_gui
+		Sourcetrail_lib
+		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 )
-
-set_property(
-	TARGET Sourcetrail
-	PROPERTY INCLUDE_DIRECTORIES
-		"${APP_INCLUDE_PATHS}"
-		"${LIB_INCLUDE_PATHS}"
-		"${LIB_UTILITY_INCLUDE_PATHS}"
-		"${LIB_GUI_INCLUDE_PATHS}"
-		"${CMAKE_BINARY_DIR}/src/lib_gui"
-		"${CMAKE_BINARY_DIR}/src/lib"
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
-)
-
-target_include_directories(Sourcetrail SYSTEM
-	PUBLIC ${Boost_INCLUDE_DIRS}
-	"${EXTERNAL_INCLUDE_PATHS}"
-	"${EXTERNAL_C_INCLUDE_PATHS}"
-)
-
-# Use the Widgets module from Qt 5.
-qt5_use_modules(Sourcetrail Widgets)
-qt5_use_modules(Sourcetrail Network)
-
-# add platform specific libraries
-if (APPLE)
-	find_library(CORE_FOUNDATION CoreFoundation)
-	target_link_libraries(Sourcetrail ${CORE_FOUNDATION})
-endif ()
 
 add_dependencies(Sourcetrail Sourcetrail_indexer)
 
 
-# macOS Bundle ----------------------------------------------------------------
-
-if (APPLE)
-
-	set(MACOS_BUNDLE_NAME Sourcetrail)
-	set(MACOS_BUNDLE_VERSION ${VERSION_STRING})
-	set(MACOS_BINARY_NAME Sourcetrail)
-	set(MACOS_INDEXER_BINARY_NAME Sourcetrail_indexer)
-
-	get_property(QT_CORE_PATH TARGET ${Qt5Core_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_CORE_PATH ${QT_CORE_PATH} REALPATH)
-
-	get_property(QT_GUI_PATH TARGET ${Qt5Gui_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_GUI_PATH ${QT_GUI_PATH} REALPATH)
-
-	get_property(QT_WIDGETS_PATH TARGET ${Qt5Widgets_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_WIDGETS_PATH ${QT_WIDGETS_PATH} REALPATH)
-
-	get_property(QT_PRINT_PATH TARGET ${Qt5PrintSupport_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_PRINT_PATH ${QT_PRINT_PATH} REALPATH)
-
-	get_property(QT_NETWORK_PATH TARGET ${Qt5Network_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_NETWORK_PATH ${QT_NETWORK_PATH} REALPATH)
-
-	get_property(QT_SVG_PATH TARGET ${Qt5Svg_LIBRARIES} PROPERTY LOCATION)
-	get_filename_component(QT_SVG_PATH ${QT_SVG_PATH} REALPATH)
-
-	list(APPEND MACOS_QT_FRAMEWORKS ${QT_CORE_PATH} ${QT_GUI_PATH} ${QT_WIDGETS_PATH} ${QT_PRINT_PATH} ${QT_NETWORK_PATH} ${QT_SVG_PATH})
-	string(REPLACE ";" " " MACOS_QT_FRAMEWORKS "${MACOS_QT_FRAMEWORKS}")
-
-	set(MACOS_BOOST_DIR "${Boost_INCLUDE_DIR}")
-	STRING(REGEX REPLACE "/lib/cmake/clang" "" MACOS_CLANG_DIR "${Clang_DIR}")
-	STRING(REGEX REPLACE "/lib/cmake/Qt5" "" MACOS_QT_DIR "${Qt5_DIR}")
-
-	configure_file(
-		${PROJECT_SOURCE_DIR}/setup/macOS/bundle_install.sh.in
-		${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bundle_install.sh
-		@ONLY
-	)
-
-	configure_file(
-		${PROJECT_SOURCE_DIR}/setup/macOS/bundle_info.plist.in
-		${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bundle_info.plist
-		@ONLY
-	)
-
-endif ()
-
-
 # Test ----------------------------------------------------------------------
 
-find_package(Catch2 3 CONFIG)
-if (Catch2_FOUND)
-	message("-- Found Catch2 V3 (${Catch2_VERSION})")
-else()
-	find_package(Catch2 2 CONFIG)
-	if (Catch2_FOUND)
-		message("-- Found Catch2 V2 (${Catch2_VERSION})")
-	else()
-		message(FATAL_ERROR "Missing Catch2!")
-	endif()
-endif()
-
-if (UNIX)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/")
-else ()
-	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-		set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test/")
-	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-endif ()
-
-add_executable (Sourcetrail_test ${TEST_FILES})
-
-create_source_groups(${TEST_FILES})
-
-target_link_libraries(
-	Sourcetrail_test
-	Sourcetrail_lib_gui
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
-	Sourcetrail_lib
-	Sourcetrail_lib_gui
-	$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-	$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
-	$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:Sourcetrail_lib_python>
-	Catch2::Catch2
-)
-
-set_property(
-	TARGET Sourcetrail_test
-	PROPERTY INCLUDE_DIRECTORIES
-		"${TEST_INCLUDE_PATHS}"
-		"${LIB_INCLUDE_PATHS}"
-		"${LIB_UTILITY_INCLUDE_PATHS}"
-		"${LIB_GUI_INCLUDE_PATHS}"
-		"${EXTERNAL_INCLUDE_PATHS}"
-		"${EXTERNAL_C_INCLUDE_PATHS}"
-		"${Boost_INCLUDE_DIRS}"
-		"${CMAKE_BINARY_DIR}/src/lib"
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_INCLUDE_PATHS}>
-		$<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_INCLUDE_PATHS}>
-)
-
-if (WIN32)
-	set_target_properties(Sourcetrail_test PROPERTIES COMPILE_FLAGS "/bigobj")
-	set_property(
-		TARGET Sourcetrail_test
-			PROPERTY VS_DEBUGGER_WORKING_DIRECTORY
-			"${CMAKE_SOURCE_DIR}/bin/test")
-endif ()
+find_package(Catch2 CONFIG REQUIRED)
+message("-- Found Catch2 ${Catch2_VERSION}")
 
 include(CTest)
 include(Catch)
+
+add_executable(Sourcetrail_test)
+add_subdirectory(src/test)
+
+set_target_properties(Sourcetrail_test
+	PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/"
+)
+
+target_link_libraries(Sourcetrail_test
+	PRIVATE
+		Sourcetrail_lib
+		Sourcetrail_lib_gui
+		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
+		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+		Catch2::Catch2
+)
+
+if (WIN32)
+	target_compile_options(Sourcetrail_test
+		PRIVATE
+			/bigobj
+	)
+	set_target_properties(Sourcetrail_test
+		PROPERTIES
+			VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/test"
+	)
+endif ()
+
 catch_discover_tests(Sourcetrail_test)
 
 # symlinks for data
-message(STATUS "create symlink: "
-	"${CMAKE_SOURCE_DIR}/bin/app/data -> "
-	"${CMAKE_BINARY_DIR}/app/data"
-)
+message(STATUS "create symlink: ${CMAKE_SOURCE_DIR}/bin/app/data -> ${CMAKE_BINARY_DIR}/app/data")
 
-if (UNIX)
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/app")
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
-
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/app/data" SYMBOLIC)
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/app/user" SYMBOLIC)
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
-elseif(WIN32)
+get_property(isMultiConfigGenerator GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(isMultiConfigGenerator)
 	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
 		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app")
 		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test")
@@ -942,4 +579,11 @@ elseif(WIN32)
 		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/user" SYMBOLIC)
 		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test/data" SYMBOLIC)
 	endforeach()
-endif ()
+else()
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/app")
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
+
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/app/data" SYMBOLIC)
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/app/user" SYMBOLIC)
+	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
+endif()

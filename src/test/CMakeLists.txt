@@ -1,48 +1,51 @@
-add_files(
-	TEST
+target_sources(Sourcetrail_test
+	PRIVATE
+		helper/TestFileRegister.cpp
+		helper/TestFileRegister.h
+		helper/TestStorage.h
 
-	helper/TestFileRegister.cpp
-	helper/TestFileRegister.h
-	helper/TestStorage.h
+		Catch2.hpp
+		test_main.cpp
 
-	Catch2.hpp
-	test_main.cpp
-
-	CommandlineTestSuite.cpp
-	ConfigManagerTestSuite.cpp
-	CxxIncludeProcessingTestSuite.cpp
-	CxxParserTestSuite.cpp
-	CxxTypeNameTestSuite.cpp
-	FileManagerTestSuite.cpp
-	FilePathFilterTestSuite.cpp
-	FilePathTestSuite.cpp
-	FileSystemTestSuite.cpp
-	GraphTestSuite.cpp
-	HierarchyCacheTestSuite.cpp
-	JavaIndexSampleProjectsTestSuite.cpp
-	JavaParserTestSuite.cpp
-	LogManagerTestSuite.cpp
-	LowMemoryStringMapTestSuite.cpp
-	MatrixBaseTestSuite.cpp
-	MatrixDynamicBaseTestSuite.cpp
-	MessageQueueTestSuite.cpp
-	NetworkProtocolHelperTestSuite.cpp
-	PythonIndexerTestSuite.cpp
-	RefreshInfoGeneratorTestSuite.cpp
-	SearchIndexTestSuite.cpp
-	SettingsMigratorTestSuite.cpp
-	SettingsTestSuite.cpp
-	SharedMemoryTestSuite.cpp
-	SourceGroupTestSuite.cpp
-	SourceLocationCollectionTestSuite.cpp
-	SqliteBookmarkStorageTestSuite.cpp
-	SqliteIndexStorageTestSuite.cpp
-	StorageTestSuite.cpp
-	TaskSchedulerTestSuite.cpp
-	TextAccessTestSuite.cpp
-	UtilityGradleTestSuite.cpp
-	UtilityMavenTestSuite.cpp
-	UtilityStringTestSuite.cpp
-	UtilityTestSuite.cpp
-	Vector2TestSuite.cpp
+		CommandlineTestSuite.cpp
+		ConfigManagerTestSuite.cpp
+		CxxIncludeProcessingTestSuite.cpp
+		CxxParserTestSuite.cpp
+		CxxTypeNameTestSuite.cpp
+		FileManagerTestSuite.cpp
+		FilePathFilterTestSuite.cpp
+		FilePathTestSuite.cpp
+		FileSystemTestSuite.cpp
+		GraphTestSuite.cpp
+		HierarchyCacheTestSuite.cpp
+		JavaIndexSampleProjectsTestSuite.cpp
+		JavaParserTestSuite.cpp
+		LogManagerTestSuite.cpp
+		LowMemoryStringMapTestSuite.cpp
+		MatrixBaseTestSuite.cpp
+		MatrixDynamicBaseTestSuite.cpp
+		MessageQueueTestSuite.cpp
+		NetworkProtocolHelperTestSuite.cpp
+		PythonIndexerTestSuite.cpp
+		RefreshInfoGeneratorTestSuite.cpp
+		SearchIndexTestSuite.cpp
+		SettingsMigratorTestSuite.cpp
+		SettingsTestSuite.cpp
+		SharedMemoryTestSuite.cpp
+		SourceGroupTestSuite.cpp
+		SourceLocationCollectionTestSuite.cpp
+		SqliteBookmarkStorageTestSuite.cpp
+		SqliteIndexStorageTestSuite.cpp
+		StorageTestSuite.cpp
+		TaskSchedulerTestSuite.cpp
+		TextAccessTestSuite.cpp
+		UtilityGradleTestSuite.cpp
+		UtilityMavenTestSuite.cpp
+		UtilityStringTestSuite.cpp
+		UtilityTestSuite.cpp
+		Vector2TestSuite.cpp
+)
+target_include_directories(Sourcetrail_test
+	PRIVATE
+		helper
 )

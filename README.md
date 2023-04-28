@@ -10,6 +10,10 @@ It is important to clone the repository with the **submodules**:
 ```
 git clone https://github.com/petermost/Sourcetrail.git --recurse-submodules
 ```
+and get the updates with:
+```
+git pull --recurse-submodules
+```
 
 # Building
 There are 2 ways to build the project:
@@ -41,29 +45,41 @@ $ cmake --build .
 
 To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install the following packages:
 
-**CMake (3.24.2):**
+**General packages:**
+
+*CMake (3.24.2):*
 * cmake
 
-**Ninja (1.11.0):**
+*Ninja (1.11.0):*
 * ninja-build
 
-**Boost (1.74.0):**
+*Boost (1.74.0):*
 * libboost-dev
 * libboost-all-dev
 
-**Qt (5.15.6):**
+*Qt (5.15.6):*
 * qt5-qmake
 * qtbase5-dev
 * qtbase5-dev-tools
 * qttools5-dev-tools
 * libqt5svg5-dev
 
-**Clang (15.0.6):**
+**C++ packages:**
+
+*Clang (15.0.6):*
 * clang
 * libclang-dev
 
-**Catch2 (2.13.9)**
+*Catch2 (2.13.9)*
 * catch2
+
+**Java packages:**
+
+*OpenJDK (19.0.2)*
+* openjdk-19-jdk
+
+*Maven (3.6.3)
+* maven
 
 Prepare the build:
 ```

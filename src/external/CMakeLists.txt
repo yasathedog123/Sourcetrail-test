@@ -1,20 +1,27 @@
-add_files(
-	EXTERNAL
+target_sources(External_lib_cxx
+	PRIVATE
+		sqlite/CppSQLite3.cpp
+		sqlite/CppSQLite3.h
 
-	sqlite/CppSQLite3.cpp
-	sqlite/CppSQLite3.h
-
-	tinyxml/tinystr.cpp
-	tinyxml/tinystr.h
-	tinyxml/tinyxml.cpp
-	tinyxml/tinyxml.h
-	tinyxml/tinyxmlerror.cpp
-	tinyxml/tinyxmlparser.cpp
+		tinyxml/tinystr.cpp
+		tinyxml/tinystr.h
+		tinyxml/tinyxml.cpp
+		tinyxml/tinyxml.h
+		tinyxml/tinyxmlerror.cpp
+		tinyxml/tinyxmlparser.cpp
+)
+target_include_directories(External_lib_cxx SYSTEM
+	PUBLIC
+		sqlite
+		tinyxml
 )
 
-add_files(
-	EXTERNAL_C
-
-	sqlite/sqlite3.c
-	sqlite/sqlite3.h
+target_sources(External_lib_c
+	PRIVATE
+		sqlite/sqlite3.c
+		sqlite/sqlite3.h
+)
+target_include_directories(External_lib_c SYSTEM
+	PUBLIC
+		sqlite
 )

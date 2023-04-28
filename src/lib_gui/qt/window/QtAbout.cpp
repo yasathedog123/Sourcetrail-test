@@ -72,20 +72,22 @@ void QtAbout::setupAbout()
 		layoutHorz1->addStretch();
 
 		QLabel* developerLabel = new QLabel(
-			QString::fromStdString("<br /><br />"
-								   "<b>Team:</b><br />"
+			QString::fromStdString("<b>Team:</b><br />"
 								   "Manuel Dobusch<br />"
 								   "Eberhard Gräther<br />"
 								   "Malte Langkabel<br />"
 								   "Viktoria Pfausler<br />"
-								   "Andreas Stallinger<br />"));
+								   "Andreas Stallinger<br />"
+								   "<br />"
+								   "<b>Maintainer:</b><br />"
+								   "Peter Most<br />"));
 		developerLabel->setObjectName(QStringLiteral("small"));
 		layoutHorz1->addWidget(developerLabel);
 
 		layoutHorz1->addStretch();
 	}
 
-	windowLayout->addStretch();
+	 windowLayout->addStretch();
 
 	{
 		QLabel* acknowledgementsLabel = new QLabel(QString::fromStdString(
@@ -109,9 +111,9 @@ void QtAbout::setupAbout()
 
 	{
 		QLabel* webLabel = new QLabel(
-			"<b>Repository: <a href=\"https://github.com/CoatiSoftware/Sourcetrail\" "
+			"<b>Repository: <a href=\"https://github.com/petermost/Sourcetrail\" "
 			"style=\"color: "
-			"white;\">github.com/CoatiSoftware/Sourcetrail</a></b>",
+			"white;\">github.com/petermost/Sourcetrail</a></b>",
 			this);
 		webLabel->setObjectName(QStringLiteral("small"));
 		webLabel->setOpenExternalLinks(true);

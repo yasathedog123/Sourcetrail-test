@@ -1,5 +1,4 @@
-add_files(
-	APP
-
-	main.cpp
+target_sources(Sourcetrail
+	PRIVATE
+		main.cpp
 )

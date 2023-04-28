@@ -5,15 +5,13 @@
 			"hidden": true,
 			"name": "defaults",
 			"warnings": {
-				"dev": false
+				"dev": false,
+				"uninitialized": false
 			},
 			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
 				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
-				"BUILD_JAVA_LANGUAGE_PACKAGE": "OFF",
-				"BUILD_PYTHON_LANGUAGE_PACKAGE": "OFF",
-
-				"Boost_NO_WARN_NEW_VERSIONS": "ON",
+				"BUILD_JAVA_LANGUAGE_PACKAGE": "ON",
 
 				"CMAKE_VERBOSE_MAKEFILE": "TRUE",
 				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
@@ -25,8 +23,7 @@
 			"inherits": "defaults",
 			"generator": "Ninja",
 			"cacheVariables": {
-				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
-				"Boost_NO_SYSTEM_PATHS": "ON"
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 			}
 		},
 		{

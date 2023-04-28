@@ -1,5 +1,4 @@
-add_files(
-	INDEXER
-
-	main.cpp
+target_sources(Sourcetrail_indexer
+	PRIVATE
+		main.cpp
 )
