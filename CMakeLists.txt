@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
 
-include(CMakePrintHelpers)
-
-include(cmake/version.cmake)
-include(cmake/version_setup.cmake)
-include(cmake/licenses.cmake)
-
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message("Vcpkg Build")
 	set(isVcpkgBuild TRUE)
@@ -22,6 +16,14 @@ if (isVcpkgBuild)
 		set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Target triplet for Windows")
 	endif()
 endif()
+
+include(CMakePrintHelpers)
+
+include(cmake/version.cmake)
+include(cmake/version_setup.cmake)
+include(cmake/licenses.cmake)
+
+find_package(PkgConfig REQUIRED)
 
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
@@ -186,21 +188,44 @@ add_definitions (-DQT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
 add_library(External_lib_cxx)
 add_subdirectory(src/external)
 
-if (isVcpkgBuild)
-	find_package(unofficial-sqlite3 CONFIG REQUIRED)
-else()
-	find_package(SQLite3 REQUIRED)
-endif()
-message("-- Found SQLite3 ${SQLite3_VERSION}")
-
 target_compile_options(External_lib_cxx
 	PRIVATE
 		-w
 )
-target_link_libraries(External_lib_cxx
-	PUBLIC
-		$<IF:$<BOOL:${isVcpkgBuild}>,unofficial::sqlite3::sqlite3,SQLite::SQLite3>
-)
+
+# SQLite3
+
+if (isVcpkgBuild)
+	find_package(unofficial-sqlite3 CONFIG REQUIRED)
+	target_link_libraries(External_lib_cxx
+		PUBLIC
+			unofficial::sqlite3::sqlite3
+	)
+else()
+	find_package(SQLite3 REQUIRED)
+	message("-- Found SQLite3 ${SQLite3_VERSION}")
+	target_link_libraries(External_lib_cxx
+		PUBLIC
+			SQLite::SQLite3
+	)
+endif()
+
+# TinyXML
+
+if (isVcpkgBuild)
+	find_package(tinyxml CONFIG REQUIRED)
+	target_link_libraries(External_lib_cxx
+		PUBLIC
+			unofficial-tinyxml::unofficial-tinyxml
+	)
+else()
+	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
+	message("-- Found tinyxml ${tinyxml_VERSION}")
+	target_link_libraries(External_lib_cxx
+		PUBLIC
+			PkgConfig::tinyxml
+	)
+endif()
 
 # Lib Utility ------------------------------------------------------------------
 
@@ -217,10 +242,6 @@ target_link_libraries(Sourcetrail_lib_utility
 
 add_library(Sourcetrail_lib)
 add_subdirectory(src/lib)
-
-if (UNIX)
-	find_package(Threads REQUIRED)
-endif()
 
 #configure language package defines
 configure_file(
@@ -258,10 +279,16 @@ target_link_libraries(Sourcetrail_lib
 		Boost::program_options
 		Boost::filesystem
 		Boost::date_time
-
-		$<$<BOOL:${UNIX}>:${CMAKE_DL_LIBS}>
-		$<$<BOOL:${UNIX}>:Threads::Threads>
 )
+
+if (UNIX)
+	find_package(Threads REQUIRED)
+	target_link_libraries(Sourcetrail_lib
+		PUBLIC
+			${CMAKE_DL_LIBS}
+			Threads::Threads
+	)
+endif()
 
 # Lib Cxx ----------------------------------------------------------------------
 
@@ -429,8 +456,13 @@ target_link_libraries(Sourcetrail_lib_gui
 		Qt5::Widgets
 		Qt5::Network
 		Qt5::Svg
-		$<$<BOOL:${WIN32}>:Qt5::WinExtras>
 )
+if (WIN32)
+	target_link_libraries(Sourcetrail_lib_gui
+		PUBLIC
+			Qt5::WinExtras
+	)
+endif()
 
 # command for versioning script
 add_custom_command(
