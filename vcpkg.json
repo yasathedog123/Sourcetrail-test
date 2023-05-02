@@ -14,6 +14,8 @@
 		"boost-asio",
 		"boost-process",
 
+		"sqlite3",
+
 		"qt5-base",
 		"qt5-svg",
 		"qt5-imageformats",

@@ -15,13 +15,3 @@ target_include_directories(External_lib_cxx SYSTEM
 		sqlite
 		tinyxml
 )
-
-target_sources(External_lib_c
-	PRIVATE
-		sqlite/sqlite3.c
-		sqlite/sqlite3.h
-)
-target_include_directories(External_lib_c SYSTEM
-	PUBLIC
-		sqlite
-)

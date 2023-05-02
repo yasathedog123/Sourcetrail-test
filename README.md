@@ -64,6 +64,9 @@ To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install
 * qttools5-dev-tools
 * libqt5svg5-dev
 
+*SQLite3 (3.39.3):*
+* libsqlite3-dev
+
 **C++ packages:**
 
 *Clang (15.0.6):*

@@ -183,21 +183,23 @@ add_definitions (-DQT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
 
 # External Libs  ------------------------------------------------------------------
 
-add_library(External_lib_c)
 add_library(External_lib_cxx)
 add_subdirectory(src/external)
+
+if (isVcpkgBuild)
+	find_package(unofficial-sqlite3 CONFIG REQUIRED)
+else()
+	find_package(SQLite3 REQUIRED)
+endif()
+message("-- Found SQLite3 ${SQLite3_VERSION}")
 
 target_compile_options(External_lib_cxx
 	PRIVATE
 		-w
 )
-target_compile_options(External_lib_c
-	PRIVATE
-		-std=gnu89 -w
-)
 target_link_libraries(External_lib_cxx
 	PUBLIC
-		External_lib_c
+		$<IF:$<BOOL:${isVcpkgBuild}>,unofficial::sqlite3::sqlite3,SQLite::SQLite3>
 )
 
 # Lib Utility ------------------------------------------------------------------
@@ -258,8 +260,7 @@ target_link_libraries(Sourcetrail_lib
 		Boost::date_time
 
 		$<$<BOOL:${UNIX}>:${CMAKE_DL_LIBS}>
-		$<$<BOOL:${UNIX}>:rt>
-		$<$<BOOL:${UNIX}>:${CMAKE_THREAD_LIBS_INIT}>
+		$<$<BOOL:${UNIX}>:Threads::Threads>
 )
 
 # Lib Cxx ----------------------------------------------------------------------
