@@ -23,8 +23,6 @@ include(cmake/version.cmake)
 include(cmake/version_setup.cmake)
 include(cmake/licenses.cmake)
 
-find_package(PkgConfig REQUIRED)
-
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
 
@@ -49,6 +47,8 @@ if (WIN32)
 	set(PLATFORM_INCLUDE "includesWindows.h")
 elseif (UNIX)
 	set(PLATFORM_INCLUDE "includesLinux.h")
+else()
+	message(FATAL_ERROR "Unsupported platform!")
 endif ()
 
 
@@ -91,10 +91,7 @@ endif()
 if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	find_package(Clang REQUIRED)
-
-	if (LLVM_FOUND)
-		message(STATUS "Found LLVM ${LLVM_VERSION}")
-	endif()
+	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
 	if (UNIX)
 		set(LLVM_CONFIGURATION_TYPES ".")
@@ -152,7 +149,7 @@ find_package(Boost 1.74 REQUIRED COMPONENTS
 	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 	# for a list of compiled libraries.
 )
-message("-- Found Boost ${Boost_VERSION_STRING}")
+message(STATUS "Found Boost ${Boost_VERSION_STRING}")
 
 # Qt ---------------------------------------------------------------------------
 
@@ -203,7 +200,7 @@ if (isVcpkgBuild)
 	)
 else()
 	find_package(SQLite3 REQUIRED)
-	message("-- Found SQLite3 ${SQLite3_VERSION}")
+	message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
 	target_link_libraries(External_lib_cxx
 		PUBLIC
 			SQLite::SQLite3
@@ -211,6 +208,10 @@ else()
 endif()
 
 # TinyXML
+
+if (UNIX)
+	find_package(PkgConfig REQUIRED)
+endif()
 
 if (isVcpkgBuild)
 	find_package(tinyxml CONFIG REQUIRED)
@@ -220,7 +221,7 @@ if (isVcpkgBuild)
 	)
 else()
 	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
-	message("-- Found tinyxml ${tinyxml_VERSION}")
+	message(STATUS "Found tinyxml ${tinyxml_VERSION}")
 	target_link_libraries(External_lib_cxx
 		PUBLIC
 			PkgConfig::tinyxml
@@ -377,7 +378,14 @@ endif()
 
 if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
-	find_package(JNI)
+	find_package(Java 1.8 REQUIRED)
+	message(STATUS "Found Java ${Java_VERSION}")
+	
+	find_package(JNI REQUIRED)
+	message(STATUS "Found JNI ${JNI_VERSION}")
+
+	find_program(MVN_COMMAND NAMES "mvn" REQUIRED)
+	message(STATUS "Found Maven ${MVN_COMMAND}")
 
 	add_library(Sourcetrail_lib_java)
 	add_subdirectory(src/lib_java)
@@ -389,18 +397,31 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 			JNI::JNI
 	)
 
-	set(BASH "")
-	if (WIN32)
-		execute_process(COMMAND CMD /c where bash OUTPUT_VARIABLE BASH)
-		string(REGEX REPLACE "\n$" "" BASH "${BASH}")
-		message ("bash: '${BASH}'")
-	endif ()
+	# Maven build (java-indexer.jar)
 
 	add_custom_command(
 		TARGET Sourcetrail_lib_java
 		PRE_BUILD
-		COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/update_java_indexer.sh
-		COMMENT "updating java indexer jars"
+		WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/java_indexer/"
+		COMMAND ${MVN_COMMAND} package
+		BYPRODUCTS "./target/java-indexer.jar"
+		COMMENT "Building java indexer jars"
+	)
+	# TODO: This also copies unneeded maven directories (classes, generated-sources, ...)
+	add_custom_command(
+		TARGET Sourcetrail_lib_java
+		POST_BUILD
+		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory "java_indexer/target/"  "bin/app/data/java/lib/"
+		COMMENT "Copying java indexer jars"
+	)
+	# Workaround for above copy problem
+	add_custom_command(
+		TARGET Sourcetrail_lib_java
+		POST_BUILD
+		WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/bin/app/data/java/lib/"
+		COMMAND ${CMAKE_COMMAND} -E rm -r "classes" "generated-sources" "maven-archiver" "maven-status" "test-classes"
+		COMMENT "Deleting unneeded maven directories"
 	)
 
 else()
@@ -564,7 +585,7 @@ add_dependencies(Sourcetrail Sourcetrail_indexer)
 # Test ----------------------------------------------------------------------
 
 find_package(Catch2 CONFIG REQUIRED)
-message("-- Found Catch2 ${Catch2_VERSION}")
+message(STATUS "Found Catch2 ${Catch2_VERSION}")
 
 include(CTest)
 include(Catch)
