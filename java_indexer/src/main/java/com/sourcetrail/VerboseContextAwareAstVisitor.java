@@ -14,7 +14,7 @@ public class VerboseContextAwareAstVisitor extends ContextAwareAstVisitor
 		super(client, filePath, fileContent, compilationUnit);
 	}
 
-	public void preVisit(ASTNode node)
+	@Override public void preVisit(ASTNode node)
 	{
 		Range range = getRange(node);
 		m_client.logInfo(
@@ -23,7 +23,7 @@ public class VerboseContextAwareAstVisitor extends ContextAwareAstVisitor
 		indentation += "| ";
 	}
 
-	public void postVisit(ASTNode node)
+	@Override public void postVisit(ASTNode node)
 	{
 		indentation = indentation.substring(0, indentation.length() - 2);
 	}

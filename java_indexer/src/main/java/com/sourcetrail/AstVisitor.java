@@ -260,7 +260,7 @@ public abstract class AstVisitor extends ASTVisitor
 	}
 
 
-	public boolean visit(EnumConstantDeclaration node)
+	@Override public boolean visit(EnumConstantDeclaration node)
 	{
 		DeclName symbolName = DeclNameResolver.getQualifiedDeclName(
 			node, m_filePath, m_compilationUnit);
