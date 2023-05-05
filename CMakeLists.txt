@@ -420,7 +420,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 		TARGET Sourcetrail_lib_java
 		POST_BUILD
 		WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/bin/app/data/java/lib/"
-		COMMAND ${CMAKE_COMMAND} -E rm -r "classes" "generated-sources" "maven-archiver" "maven-status" "test-classes"
+		COMMAND ${CMAKE_COMMAND} -E rm -rf "classes" "generated-sources" "maven-archiver" "maven-status" "test-classes"
 		COMMENT "Deleting unneeded maven directories"
 	)
 
