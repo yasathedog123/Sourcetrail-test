@@ -23,12 +23,16 @@ There are 2 ways to build the project:
 
 
 ## Vcpkg Build (Linux/Windows)
-Because **vcpkg** builds everything from source, additional packages are needed for building Qt5 on Linux. Install the additional packages with `script/install.ubuntu.qt5.dependencies.sh`.
+* Linux: Because **vcpkg** builds everything from source, additional packages are needed for building Qt5 on Linux. Install these packages with `script/install.ubuntu.qt5.dependencies.sh`.
+* Linux/Windows: In order to build the **java_indexer** additional software must be installed (they are not provided by vcpkg):
+    * [OpenJDK](https://jdk.java.net/)
+    * [Maven](https://maven.apache.org/)
+
 
 Prepare the build:
 ```
 $ cd Sourcetrail
-$ cmake --preset=vcpkg-ninja-release
+$ cmake --preset vcpkg-ninja-release
 ```
 Note that the preparation (compilation of the packages) will take a **long** time! On my machine (AMD Ryzen 7 3700X) the Linux compilation takes about 2 hours and the Windows compilation about 3 hours!
 
@@ -90,7 +94,7 @@ To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install
 Prepare the build:
 ```
 $ cd Sourcetrail
-$ cmake --preset=system-ninja-release
+$ cmake --preset system-ninja-release
 ```
 
 Build:
