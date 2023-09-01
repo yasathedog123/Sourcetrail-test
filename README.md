@@ -47,28 +47,28 @@ $ cmake --build .
 ## System build
 ### Linux
 
-To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install the following packages:
+To compile it under the current (K)ubuntu platform 23.04,"Lunar Lobster", install the following packages:
 
 **General packages:**
 
-*CMake (3.24.2):*
+*CMake (3.25.1):*
 * cmake
 
-*Ninja (1.11.0):*
+*Ninja (1.11.1):*
 * ninja-build
 
 *Boost (1.74.0):*
 * libboost-dev
 * libboost-all-dev
 
-*Qt (5.15.6):*
+*Qt (5.15.8):*
 * qt5-qmake
 * qtbase5-dev
 * qtbase5-dev-tools
 * qttools5-dev-tools
 * libqt5svg5-dev
 
-*SQLite3 (3.39.3):*
+*SQLite3 (3.40.1):*
 * libsqlite3-dev
 
 *TinyXml (2.6.2):*
@@ -76,19 +76,19 @@ To compile it under the current (K)ubuntu platform 22.10,"Kinetic Kudu", install
 
 **C++ packages:**
 
-*Clang (15.0.6):*
+*Clang (15.0.7):*
 * clang
 * libclang-dev
 
-*Catch2 (2.13.9)*
+*Catch2 (2.13.10)*
 * catch2
 
 **Java packages:**
 
-*OpenJDK (19.0.2)*
-* openjdk-19-jdk
+*OpenJDK (20.0.2)*
+* openjdk-20-jdk
 
-*Maven (3.6.3)
+*Maven (3.8.7)
 * maven
 
 Prepare the build:
