@@ -591,7 +591,6 @@ target_sources(Sourcetrail_lib
 		utility/ConfigManager.cpp
 		utility/ConfigManager.h
 		utility/LowMemoryStringMap.h
-		utility/Optional.h
 		utility/OrderedCache.h
 		utility/OsType.h
 		utility/Property.h
