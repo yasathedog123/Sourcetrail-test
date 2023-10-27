@@ -89,45 +89,18 @@ endif()
 # Clang ------------------------------------------------------------------------
 
 if (BUILD_CXX_LANGUAGE_PACKAGE)
-
 	find_package(Clang REQUIRED)
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
-	if (UNIX)
-		set(LLVM_CONFIGURATION_TYPES ".")
+	if (isVcpkgBuild)
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION}/include")
+	else()
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION}/include")
 	endif()
-
-	set (CLANG_COMPILER_HEADER_SEARCH_PATH "")
-	foreach(LLVM_CONFIGURATION_TYPE ${LLVM_CONFIGURATION_TYPES})
-		if (CLANG_COMPILER_HEADER_SEARCH_PATH STREQUAL "")
-			set (_CLANG_HEADERS_SEARCH_LIST
-				"${LLVM_BINARY_DIR}/${LLVM_CONFIGURATION_TYPE}/lib/clang/${LLVM_VERSION}/include"
-				"${LLVM_BINARY_DIR}/${LLVM_CONFIGURATION_TYPE}/lib64/clang/${LLVM_VERSION}/include"
-			)
-			foreach (_CLANG_HEADER_PATH ${_CLANG_HEADERS_SEARCH_LIST})
-				if (EXISTS ${_CLANG_HEADER_PATH})
-					set (CLANG_COMPILER_HEADER_SEARCH_PATH ${_CLANG_HEADER_PATH})
-					break ()
-				endif ()
-			endforeach ()
-
-			message (STATUS "Trying to find Clang compiler headers in '${LLVM_CONFIGURATION_TYPE}' build config in directory '${CLANG_COMPILER_HEADER_SEARCH_PATH}'.")
-			if (EXISTS ${CLANG_COMPILER_HEADER_SEARCH_PATH})
-				message (STATUS "Found headers for '${LLVM_CONFIGURATION_TYPE}' build config.")
-				file(GLOB_RECURSE CLANG_COMPILER_HEADER_PATHS RELATIVE "${CLANG_COMPILER_HEADER_SEARCH_PATH}" "${CLANG_COMPILER_HEADER_SEARCH_PATH}/*")
-				foreach(CLANG_COMPILER_HEADER_PATH ${CLANG_COMPILER_HEADER_PATHS})
-					configure_file("${CLANG_COMPILER_HEADER_SEARCH_PATH}/${CLANG_COMPILER_HEADER_PATH}" "${CMAKE_SOURCE_DIR}/bin/app/data/cxx/include/${CLANG_COMPILER_HEADER_PATH}" COPYONLY)
-				endforeach()
-			else ()
-				set (CLANG_COMPILER_HEADER_SEARCH_PATH "")
-			endif ()
-		endif ()
-	endforeach()
-
-	if (CLANG_COMPILER_HEADER_SEARCH_PATH STREQUAL "")
-		message(WARNING "Unable to copy Clang compiler headers from clang build dir.")
-	endif()
-
+	set(headerTargetDir "${CMAKE_SOURCE_DIR}/bin/app/data/cxx/")
+	
+	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
+	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
 endif()
 
 
@@ -624,7 +597,7 @@ endif ()
 catch_discover_tests(Sourcetrail_test)
 
 # symlinks for data
-message(STATUS "create symlink: ${CMAKE_SOURCE_DIR}/bin/app/data -> ${CMAKE_BINARY_DIR}/app/data")
+message(STATUS "Creating symlink: ${CMAKE_SOURCE_DIR}/bin/app/data -> ${CMAKE_BINARY_DIR}/app/data")
 
 get_property(isMultiConfigGenerator GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(isMultiConfigGenerator)
