@@ -507,6 +507,7 @@ add_subdirectory(src/indexer)
 set_target_properties(Sourcetrail_indexer
 	PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/"
+		PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/app/"
 		OUTPUT_NAME              sourcetrail_indexer
 )
 
@@ -539,6 +540,7 @@ add_subdirectory(src/app)
 set_target_properties(Sourcetrail
 	PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/"
+		PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/app/"
 )
 configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/sourcetrail.ico" COPYONLY)
 
@@ -596,6 +598,7 @@ add_subdirectory(src/test)
 set_target_properties(Sourcetrail_test
 	PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/"
+		PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/test/"
 )
 
 target_link_libraries(Sourcetrail_test

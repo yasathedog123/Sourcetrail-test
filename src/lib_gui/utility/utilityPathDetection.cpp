@@ -9,7 +9,7 @@
 #	include "CxxFrameworkPathDetector.h"
 #	include "CxxHeaderPathDetector.h"
 #	include "CxxVs10To14HeaderPathDetector.h"
-#	include "CxxVs15HeaderPathDetector.h"
+#	include "CxxVs15ToLatestHeaderPathDetector.h"
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
@@ -108,7 +108,12 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxVsHeaderPathDetector()
 	}
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	combinedDetector->addDetector(std::make_shared<CxxVs15HeaderPathDetector>());
+	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
+		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2022));
+	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
+		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2019));
+	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
+		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2017));
 
 	combinedDetector->addDetector(std::make_shared<CxxVs10To14HeaderPathDetector>(
 		CxxVs10To14HeaderPathDetector::VISUAL_STUDIO_2015, false, APPLICATION_ARCHITECTURE_X86_32));
