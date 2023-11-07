@@ -23,7 +23,13 @@ void SourceGroupSettingsWithJavaStandard::setJavaStandard(const std::wstring& st
 
 std::vector<std::wstring> SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards() const
 {
+	// Must be in sync with 'JavaIndexer.convertLanguageStandard'.
 	return {
+		L"20",
+		L"19",
+		L"18",
+		L"17",
+		L"16",
 		L"15",
 		L"14",
 		L"13",
@@ -38,7 +44,8 @@ std::vector<std::wstring> SourceGroupSettingsWithJavaStandard::getAvailableJavaS
 		L"4",
 		L"3",
 		L"2",
-		L"1"};
+		L"1"
+	};
 }
 
 bool SourceGroupSettingsWithJavaStandard::equals(const SourceGroupSettingsBase* other) const

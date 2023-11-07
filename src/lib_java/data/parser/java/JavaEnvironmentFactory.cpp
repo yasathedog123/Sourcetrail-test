@@ -47,33 +47,31 @@ void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& 
 
 	s_classPath = classPath;
 
-	const int optionCount = 2;
-
 	JavaVM* jvm = nullptr;	  // Pointer to the JVM (Java Virtual Machine)
 	JNIEnv* env = nullptr;	  // Pointer to native interface
 
 	JavaVMInitArgs vm_args;									  // Initialization arguments
-	JavaVMOption* options = new JavaVMOption[optionCount];	  // JVM invocation options
+	std::vector<JavaVMOption> options;						  // JVM invocation options
 	std::string classPathOption = "-Djava.class.path=" + classPath;
-	options[0].optionString = const_cast<char*>(classPathOption.c_str());
-	options[1].optionString = const_cast<char*>("-Xms64m");
+	options.push_back({ const_cast<char*>(classPathOption.c_str()) });
+	options.push_back({ const_cast<char*>("-Xms64m") });
 
+	// Use this option to allow attaching a debugger:
+	//options.push_back({ const_cast<char*>("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000") });
+	// 
 	// use these options to enable profiling in VisualVM
-	// options[2].optionString = const_cast<char*>("-Dcom.sun.management.jmxremote");
-	// options[3].optionString = const_cast<char*>("-Dcom.sun.management.jmxremote.port=9010");
-	// options[4].optionString =
-	// const_cast<char*>("-Dcom.sun.management.jmxremote.local.only=false"); options[5].optionString
-	// = const_cast<char*>("-Dcom.sun.management.jmxremote.authenticate=false");
-	// options[6].optionString = const_cast<char*>("-Dcom.sun.management.jmxremote.ssl=false");
+	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote") });
+	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.port=9010") });
+	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.local.only=false") });
+	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.authenticate=false") });
+	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.ssl=false") });
 
 	vm_args.version = JNI_VERSION_1_8;
-	vm_args.nOptions = optionCount;
-	vm_args.options = options;
+	vm_args.nOptions = static_cast<jint>(options.size());
+	vm_args.options = options.data();
 	vm_args.ignoreUnrecognized = false;	   // invalid options make the JVM init fail
 
 	jint rc = createInstanceFunction(&jvm, (void**)&env, &vm_args);
-
-	delete[] options;
 
 	if (rc != JNI_OK)
 	{

@@ -184,6 +184,7 @@ public class JavaIndexer
 
 	private static String convertLanguageStandard(String s)
 	{
+		// Must be in sync with 'SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards'
 		switch (s)
 		{
 		case "1":
@@ -215,8 +216,18 @@ public class JavaIndexer
 		case "14":
 			return JavaCore.VERSION_14;
 		case "15":
-		default:
 			return JavaCore.VERSION_15;
+		case "16":
+			return JavaCore.VERSION_16;
+		case "17":
+			return JavaCore.VERSION_17;
+		case "18":
+			return JavaCore.VERSION_18;
+		case "19":
+			return JavaCore.VERSION_19;
+		case "20":
+		default:
+			return JavaCore.VERSION_20;
 		}
 	}
 
