@@ -29,6 +29,19 @@
             <status>enabled</status>
             <type>C/C++ from Compilation Database</type>
         </source_group_01d98a69-0204-4cfc-a6b7-894adb4b5de4>
+        <source_group_509e6bce-8122-43b9-8db0-e38ecf6ece65>
+            <java_standard>20</java_standard>
+            <maven>
+                <project_file_path>../java_indexer/pom.xml</project_file_path>
+                <should_index_tests>0</should_index_tests>
+            </maven>
+            <name>Java Source Group from Maven</name>
+            <source_extensions>
+                <source_extension>.java</source_extension>
+            </source_extensions>
+            <status>enabled</status>
+            <type>Java Source Group from Maven</type>
+        </source_group_509e6bce-8122-43b9-8db0-e38ecf6ece65>
     </source_groups>
     <version>8</version>
 </config>
