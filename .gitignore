@@ -22,8 +22,5 @@
 .idea
 .vscode
 .vs
-.settings
-.project
-.classpath
 
 vcpkg_installed/

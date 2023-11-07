@@ -58,7 +58,7 @@ public class JavaIndexer
 
 			Path path = Paths.get(filePath);
 
-			ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
+			ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 
 			parser.setResolveBindings(
 				true);	  // solve "bindings" like the declaration of the type used in a var decl
@@ -164,7 +164,7 @@ public class JavaIndexer
 	{
 		String packageName = "";
 
-		ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
+		ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 		parser.setKind(
 			ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
 		parser.setSource(fileContent.toCharArray());
@@ -234,54 +234,45 @@ public class JavaIndexer
 	private static File extractClassesJarFileFromAarFile(
 		Path aarFilePath, AstVisitorClient astVisitorClient) throws IOException
 	{
-		JarFile jarFile = new JarFile(aarFilePath.toString());
-		ZipEntry classesJarEntry = jarFile.getEntry("classes.jar");
-		if (classesJarEntry != null)
+		try (JarFile jarFile = new JarFile(aarFilePath.toString()))
 		{
-			InputStream inputStream = jarFile.getInputStream(classesJarEntry);
-			File tempFile = File.createTempFile(
-				"jar_file_from_" + Utility.getFilenameWithoutExtension(aarFilePath) + "_", ".jar");
-			tempFile.deleteOnExit();
-
-			byte[] buffer = new byte[8 * 1024];
-
-			try
+			ZipEntry classesJarEntry = jarFile.getEntry("classes.jar");
+			if (classesJarEntry != null)
 			{
-				OutputStream output = new FileOutputStream(tempFile);
-				try
+				try (InputStream inputStream = jarFile.getInputStream(classesJarEntry))
 				{
-					int bytesRead;
-					while ((bytesRead = inputStream.read(buffer)) != -1)
+					File tempFile = File.createTempFile(
+						"jar_file_from_" + Utility.getFilenameWithoutExtension(aarFilePath) + "_", ".jar");
+					tempFile.deleteOnExit();
+
+					byte[] buffer = new byte[8 * 1024];
+
+					try (OutputStream output = new FileOutputStream(tempFile))
 					{
-						output.write(buffer, 0, bytesRead);
+						int bytesRead;
+						while ((bytesRead = inputStream.read(buffer)) != -1)
+						{
+							output.write(buffer, 0, bytesRead);
+						}
 					}
-				}
-				finally
-				{
-					output.close();
+					astVisitorClient.logInfo(
+						"Extracted classes.jar file from \"" + aarFilePath.toString() + "\" to \"" +
+						tempFile.getAbsolutePath() + "\". "
+						+ "This file will be automatically deleted when the session ends.");
+
+					return tempFile;
 				}
 			}
-			finally
+			else
 			{
-				inputStream.close();
+				astVisitorClient.logError(
+					"Classpath entry \"" + aarFilePath +
+					"\" is malformed. No internal \"classes.jar\" entry could be found.");
 			}
+			jarFile.close();
 
-			astVisitorClient.logInfo(
-				"Extracted classes.jar file from \"" + aarFilePath.toString() + "\" to \"" +
-				tempFile.getAbsolutePath() + "\". "
-				+ "This file will be automatically deleted when the session ends.");
-
-			return tempFile;
+			return null;
 		}
-		else
-		{
-			astVisitorClient.logError(
-				"Classpath entry \"" + aarFilePath +
-				"\" is malformed. No internal \"classes.jar\" entry could be found.");
-		}
-		jarFile.close();
-
-		return null;
 	}
 
 	// the following methods are defined in the native c++ code

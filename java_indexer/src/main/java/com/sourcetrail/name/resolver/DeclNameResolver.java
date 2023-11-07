@@ -83,6 +83,7 @@ public class DeclNameResolver extends NameResolver
 		return declName;
 	}
 
+	@SuppressWarnings("cast")
 	public DeclName getDeclName(VariableDeclarationFragment decl)
 	{
 		TypeName typeName = TypeName.unsolved();

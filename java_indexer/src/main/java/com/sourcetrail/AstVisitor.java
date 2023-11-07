@@ -981,7 +981,7 @@ public abstract class AstVisitor extends ASTVisitor
 	// --- utility methods ---
 
 	private void recordReferenceToMethodDeclaration(
-		IMethodBinding methodBinding, Range range, ReferenceKind referenceKind, List<SymbolName> contexts)
+		IMethodBinding methodBinding, Range range, ReferenceKind referenceKind, @SuppressWarnings("unused") List<SymbolName> contexts)
 	{
 		if (methodBinding != null)
 		{
@@ -1008,7 +1008,7 @@ public abstract class AstVisitor extends ASTVisitor
 		}
 	}
 
-	private void recordReferenceToTypeArguments(IMethodBinding methodBinding, List typeArguments)
+	private void recordReferenceToTypeArguments(IMethodBinding methodBinding, List<Object> typeArguments)
 	{
 		if (!typeArguments.isEmpty())
 		{
@@ -1053,6 +1053,7 @@ public abstract class AstVisitor extends ASTVisitor
 		return Utility.getRange(node, m_compilationUnit);
 	}
 
+	@SuppressWarnings("unused")
 	private IPackageBinding getDeclaringPackage(IBinding binding)
 	{
 		if (binding != null)
@@ -1102,7 +1103,7 @@ public abstract class AstVisitor extends ASTVisitor
 		return allAncestorTypes;
 	}
 
-	private List<ITypeBinding> getDirectAncestorTypes(ITypeBinding type)
+	private static List<ITypeBinding> getDirectAncestorTypes(ITypeBinding type)
 	{
 		List<ITypeBinding> ancestorTypes = new ArrayList<>();
 
