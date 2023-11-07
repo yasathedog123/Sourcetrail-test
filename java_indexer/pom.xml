@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-    <build>
+	<build>
 		<!-- The Java indexer expects the name 'java-indexer.jar' (no underscore) in the 'lib' directory! -->
 		<finalName>java-indexer</finalName>
 		<plugins>
@@ -45,6 +45,17 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
 				<!-- Update/Check dependencies/plugins with:
 				Update dependencies: "mvn versions:use-latest-releases"
 				Check plugins: "mvn versions:display-plugin-updates"
@@ -54,7 +65,7 @@
 				<version>2.15.0</version>
 			</plugin>
 		</plugins>
-    </build>
+	</build>
 
 	<repositories>
 		<repository>
@@ -68,7 +79,7 @@
 			<url>https://repo.gradle.org/gradle/libs-releases-local</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.gradle</groupId>
@@ -76,59 +87,59 @@
 			<version>6.7.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.commands</artifactId>
-		    <version>3.9.800</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.commands</artifactId>
+			<version>3.9.800</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.contenttype</artifactId>
-		    <version>3.7.800</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.contenttype</artifactId>
+			<version>3.7.800</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.expressions</artifactId>
-		    <version>3.7.0</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.expressions</artifactId>
+			<version>3.7.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.filesystem</artifactId>
-		    <version>1.7.700</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.filesystem</artifactId>
+			<version>1.7.700</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.jobs</artifactId>
-		    <version>3.10.1000</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.jobs</artifactId>
+			<version>3.10.1000</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.resources</artifactId>
-		    <version>3.13.900</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.resources</artifactId>
+			<version>3.13.900</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.core.runtime</artifactId>
-		    <version>3.20.0</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.20.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.equinox.app</artifactId>
-		    <version>1.5.0</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.app</artifactId>
+			<version>1.5.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.equinox.common</artifactId>
-		    <version>3.14.0</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.14.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.equinox.preferences</artifactId>
-		    <version>3.8.100</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.preferences</artifactId>
+			<version>3.8.100</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.equinox.registry</artifactId>
-		    <version>3.10.0</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.equinox.registry</artifactId>
+			<version>3.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
@@ -136,14 +147,14 @@
 			<version>3.24.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.osgi</artifactId>
-		    <version>3.16.100</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.16.100</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.text</artifactId>
-		    <version>3.10.400</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>org.eclipse.text</artifactId>
+			<version>3.10.400</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
