@@ -11,9 +11,9 @@ endif()
 if (isVcpkgBuild)
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
-		set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "Target triplet for Linux")
+		set(VCPKG_TARGET_TRIPLET "custom-x64-linux-static-md" CACHE STRING "Target triplet for Linux")
 	elseif(WIN32)
-		set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "Target triplet for Windows")
+		set(VCPKG_TARGET_TRIPLET "custom-x64-windows-static-md" CACHE STRING "Target triplet for Windows")
 	endif()
 endif()
 
