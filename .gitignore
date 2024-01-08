@@ -17,10 +17,11 @@
 /bin/test/data/UtilityMavenTestSuite/effective-pom.xml
 /bin/test/data/SourceGroupTestSuite/java_maven/input/sourcetrail_dependencies
 
-# Maven, IntelliJ, Eclipse:
+# Maven, IntelliJ, Eclipse, Qt Creator:
 /java_indexer/target/
 .idea
 .vscode
 .vs
+CMakeLists.txt.user
 
 vcpkg_installed/
