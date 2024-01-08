@@ -56,6 +56,8 @@ void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& 
 	options.push_back({ const_cast<char*>(classPathOption.c_str()) });
 	options.push_back({ const_cast<char*>("-Xms64m") });
 
+	// options.push_back({ const_cast<char*>("-verbose:jni") });
+
 	// Use this option to allow attaching a debugger:
 	//options.push_back({ const_cast<char*>("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000") });
 	// 

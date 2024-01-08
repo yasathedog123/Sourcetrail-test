@@ -47,28 +47,24 @@ $ cmake --build .
 ## System build
 ### Linux
 
-To compile it under the current (K)ubuntu platform 23.04,"Lunar Lobster", install the following packages:
+To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", install the following packages:
 
 **General packages:**
 
-*CMake (3.25.1):*
+*CMake (3.27.4):*
 * cmake
 
 *Ninja (1.11.1):*
 * ninja-build
 
 *Boost (1.74.0):*
-* libboost-dev
 * libboost-all-dev
 
-*Qt (5.15.8):*
-* qt5-qmake
+*Qt (5.15.10):*
 * qtbase5-dev
-* qtbase5-dev-tools
-* qttools5-dev-tools
 * libqt5svg5-dev
 
-*SQLite3 (3.40.1):*
+*SQLite3 (3.42.0):*
 * libsqlite3-dev
 
 *TinyXml (2.6.2):*
@@ -76,7 +72,7 @@ To compile it under the current (K)ubuntu platform 23.04,"Lunar Lobster", instal
 
 **C++ packages:**
 
-*Clang (15.0.7):*
+*Clang (16.0.6):*
 * clang
 * libclang-dev
 
@@ -85,11 +81,11 @@ To compile it under the current (K)ubuntu platform 23.04,"Lunar Lobster", instal
 
 **Java packages:**
 
-*OpenJDK (20.0.2)*
-* openjdk-20-jdk
-
 *Maven (3.8.7)
 * maven
+
+*OpenJDK (21.0.1)*
+* openjdk-21-jdk
 
 Prepare the build:
 ```

@@ -59,7 +59,7 @@ struct EventListener : Catch2::EventListenerBase
 		}
 		else
 		{
-			std::cout << "Java path read form settings: "
+			std::cout << "Java path read from settings: "
 					  << ApplicationSettings::getInstance()->getJavaPath().str() << std::endl;
 		}
 #endif

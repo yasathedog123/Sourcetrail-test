@@ -11,7 +11,6 @@
 #	include <windows.h>
 #else
 #	include <dlfcn.h>
-#	define __stdcall
 #endif
 
 #include "FilePath.h"
@@ -75,7 +74,7 @@ std::function<Ret(Args...)> loadFunctionFromLibrary(
 		return std::function<Ret(Args...)>();
 	}
 
-	void* functionId = (void*)dlsym(handle, functionName.c_str());
+	void* functionId = dlsym(handle, functionName.c_str());
 
 	const char* dlsym_error = dlerror();
 	if (dlsym_error || !functionId)
@@ -88,8 +87,7 @@ std::function<Ret(Args...)> loadFunctionFromLibrary(
 		return std::function<Ret(Args...)>();
 	}
 #endif
-
-	return std::function<Ret(Args...)>(reinterpret_cast<Ret(__stdcall*)(Args...)>(functionId));
+    return reinterpret_cast<Ret (*)(Args...)>(functionId);
 }
 }	 // namespace utility
 

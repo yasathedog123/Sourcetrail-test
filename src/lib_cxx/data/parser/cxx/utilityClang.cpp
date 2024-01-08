@@ -93,7 +93,7 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 	}
 }
 
-bool utility::isLocalVariable(const clang::VarDecl* d)
+bool utility::isLocalVariable(const clang::ValueDecl *d)
 {
 	if (!llvm::isa<clang::ParmVarDecl>(d) && !(d->getParentFunctionOrMethod() == nullptr))
 	{
@@ -102,7 +102,7 @@ bool utility::isLocalVariable(const clang::VarDecl* d)
 	return false;
 }
 
-bool utility::isParameter(const clang::VarDecl* d)
+bool utility::isParameter(const clang::ValueDecl *d)
 {
 	return llvm::isa<clang::ParmVarDecl>(d);
 }
