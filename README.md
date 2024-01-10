@@ -81,7 +81,7 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 
 **Java packages:**
 
-*Maven (3.8.7)
+*Maven (3.8.7)*
 * maven
 
 *OpenJDK (21.0.1)*

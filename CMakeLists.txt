@@ -23,7 +23,7 @@ include(cmake/version.cmake)
 include(cmake/version_setup.cmake)
 include(cmake/licenses.cmake)
 
-set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
+set(BUILD_CXX_LANGUAGE_PACKAGE ON CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
 
 # prohibit in-source-builds
@@ -99,7 +99,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include")
 	endif()
 	set(headerTargetDir "${CMAKE_SOURCE_DIR}/bin/app/data/cxx/")
-	
+
 	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
 	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
 endif()
@@ -330,7 +330,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 	find_package(Java 1.8 REQUIRED)
 	message(STATUS "Found Java ${Java_VERSION}")
-	
+
 	find_package(JNI REQUIRED)
 	message(STATUS "Found JNI ${JNI_VERSION}")
 
