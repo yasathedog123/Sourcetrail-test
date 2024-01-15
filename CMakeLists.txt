@@ -54,14 +54,14 @@ endif ()
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail)
+project(Sourcetrail VERSION ${VERSION_STRING})
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
 
 #[[
 #RPATH
-if(UNIX)
+if (UNIX)
 	set(CMAKE_SKIP_BUILD_RPATH FALSE)
 	set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 	set(CMAKE_INSTALL_RPATH "$ORIGIN/lib/:$$ORIGIN/lib/")
@@ -93,10 +93,10 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
 	if (isVcpkgBuild)
-		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include")
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	else()
 		# V15: set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION}/include")
-		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include")
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	endif()
 	set(headerTargetDir "${CMAKE_SOURCE_DIR}/bin/app/data/cxx/")
 
@@ -492,12 +492,13 @@ set_target_properties(Sourcetrail
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/"
 		PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/app/"
 )
-configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/sourcetrail.ico" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/setup/Linux/data/package/Sourcetrail.sh" "${CMAKE_BINARY_DIR}/app/Sourcetrail.sh" COPYONLY)
 
 file(WRITE ${CMAKE_BINARY_DIR}/Sourcetrail.rc
 	"// Icon with lowest ID value placed first to ensure application icon\n"
 	"// remains consistent on all systems.\n"
-	"IDI_ICON1               ICON                    \"${CMAKE_BINARY_DIR}/Sourcetrail.ico\"\n"
+	"IDI_ICON1               ICON                    \"${CMAKE_BINARY_DIR}/app/Sourcetrail.ico\"\n"
 )
 
 target_sources(Sourcetrail
@@ -573,24 +574,54 @@ endif ()
 
 catch_discover_tests(Sourcetrail_test)
 
-# symlinks for data
-message(STATUS "Creating symlink: ${CMAKE_SOURCE_DIR}/bin/app/data -> ${CMAKE_BINARY_DIR}/app/data")
-
+# Copy data:
+message(STATUS "Copying: ${CMAKE_SOURCE_DIR}/bin/app/data -> ${CMAKE_BINARY_DIR}/app/data")
 get_property(isMultiConfigGenerator GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(isMultiConfigGenerator)
-	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app")
-		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test")
-
-		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/data" SYMBOLIC)
-		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/app/user" SYMBOLIC)
-		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/${OUTPUTCONFIG}/test/data" SYMBOLIC)
+if (isMultiConfigGenerator)
+	foreach(CONFIGURATION_TYPE ${CMAKE_CONFIGURATION_TYPES})
+		file(COPY "bin/app/data/"  DESTINATION "${CONFIGURATION_TYPE}/app/data/")
+		file(COPY "bin/app/user/"  DESTINATION "${CONFIGURATION_TYPE}/app/user/")
+		file(COPY "bin/test/data/" DESTINATION "${CONFIGURATION_TYPE}/test/data/")
 	endforeach()
 else()
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/app")
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
-
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/data" "${CMAKE_BINARY_DIR}/app/data" SYMBOLIC)
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/app/user" "${CMAKE_BINARY_DIR}/app/user" SYMBOLIC)
-	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
+	file(COPY "bin/app/data/"  DESTINATION "app/data/")
+	file(COPY "bin/app/user/"  DESTINATION "app/user/")
+	file(COPY "bin/test/data/" DESTINATION "test/data/")
 endif()
+
+# Installing/Packaging ---------------------------------------------------------
+
+install(DIRECTORY "${CMAKE_BINARY_DIR}/app/" DESTINATION "app/")
+set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
+
+#set(CMAKE_PROJECT_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}-alpha")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Source code explorer")
+set(CPACK_PACKAGE_DESCRIPTION "Free and open-source cross-platform source explorer that helps you get productive on unfamiliar source code.")
+
+set(CPACK_PACKAGE_CONTACT "P. Most <pmost@pera-software.com>")
+set(CPACK_PACKAGE_VENDOR "PERA Software Solutions GmbH")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/petermost/Sourcetrail")
+set(CPACK_PACKAGE_ICON "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico")
+
+# https://www.debian.org/doc/debian-policy/ch-relationships.html
+set(CPACK_DEBIAN_PACKAGE_DEPENDS
+	"libclang-cpp16, libllvm16,
+	 libqt5gui5, libqt5widgets5, libqt5svg5,
+	 libboost-system1.74.0, libboost-program-options1.74.0, libboost-filesystem1.74.0, libboost-date-time1.74.0, libboost-locale1.74.0,
+	 libsqlite3-0,
+	 libtinyxml2.6.2v5"
+)
+
+if (isVcpkgBuild)
+	set(CPACK_GENERATOR ZIP)
+else()
+	if (UNIX)
+		set(CPACK_GENERATOR DEB)
+		#set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+		set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/${PROJECT_NAME}/")
+	else()
+		set(CPACK_GENERATOR ZIP)
+	endif()
+endif()
+
+include(CPack)
