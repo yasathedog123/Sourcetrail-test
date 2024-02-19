@@ -322,7 +322,7 @@ void QtGraphView::rebuildGraph(
 	const std::vector<std::shared_ptr<DummyEdge>>& edges,
 	const GraphParams params)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		if (isTransitioning())
 		{
 			m_transition->stop();
@@ -475,7 +475,7 @@ void QtGraphView::clear()
 
 void QtGraphView::coFocusTokenIds(const std::vector<Id>& focusedTokenIds)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		for (const Id& tokenId: focusedTokenIds)
 		{
 			QtGraphNode* node = QtGraphNode::findNodeRecursive(m_oldNodes, tokenId);
@@ -499,7 +499,7 @@ void QtGraphView::coFocusTokenIds(const std::vector<Id>& focusedTokenIds)
 
 void QtGraphView::deCoFocusTokenIds(const std::vector<Id>& defocusedTokenIds)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		for (const Id& tokenId: defocusedTokenIds)
 		{
 			QtGraphNode* node = QtGraphNode::findNodeRecursive(m_oldNodes, tokenId);
@@ -558,7 +558,7 @@ void QtGraphView::scrollToValues(int xValue, int yValue)
 
 void QtGraphView::activateEdge(Id edgeId)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		if (isTransitioning())
 		{
 			m_transition->stop();

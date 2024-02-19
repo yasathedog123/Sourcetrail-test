@@ -52,7 +52,7 @@ void QtCompositeView::createWidgetWrapper()
 
 void QtCompositeView::refreshView()
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		utility::setWidgetBackgroundColor(
 			m_widget, ColorScheme::getInstance()->getColor("search/background"));
 	});
@@ -67,7 +67,7 @@ void QtCompositeView::addViewWidget(View* view)
 
 void QtCompositeView::showFocusIndicator(bool focus)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		const std::string& colorName = focus ? "window/focus" : "search/background";
 		utility::setWidgetBackgroundColor(
 			m_focusIndicator, ColorScheme::getInstance()->getColor(colorName));

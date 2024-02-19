@@ -59,7 +59,7 @@ void QtBookmarkButtonsView::createWidgetWrapper()
 
 void QtBookmarkButtonsView::refreshView()
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
 														   L"bookmark_view/bookmark_view.css"))
 									.c_str());
@@ -68,7 +68,7 @@ void QtBookmarkButtonsView::refreshView()
 
 void QtBookmarkButtonsView::setCreateButtonState(const MessageBookmarkButtonState::ButtonState& state)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		m_createButtonState = state;
 
 		m_createBookmarkButton->setIconPath(ResourcePaths::getGuiDirectoryPath().concatenate(

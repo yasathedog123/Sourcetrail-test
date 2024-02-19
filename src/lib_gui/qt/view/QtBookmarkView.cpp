@@ -18,7 +18,7 @@ void QtBookmarkView::refreshView() {}
 void QtBookmarkView::displayBookmarkCreator(
 	const std::vector<std::wstring>& names, const std::vector<BookmarkCategory>& categories, Id nodeId)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(
 			&m_controllerProxy,
 			dynamic_cast<QtMainView*>(dynamic_cast<View*>(getViewLayout())->getViewLayout())
@@ -49,7 +49,7 @@ void QtBookmarkView::displayBookmarkCreator(
 void QtBookmarkView::displayBookmarkEditor(
 	std::shared_ptr<Bookmark> bookmark, const std::vector<BookmarkCategory>& categories)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(
 			&m_controllerProxy,
 			dynamic_cast<QtMainView*>(dynamic_cast<View*>(getViewLayout())->getViewLayout())
@@ -69,7 +69,7 @@ void QtBookmarkView::displayBookmarkEditor(
 
 void QtBookmarkView::displayBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		if (m_bookmarkBrowser == nullptr)
 		{
 			m_bookmarkBrowser = new QtBookmarkBrowser(

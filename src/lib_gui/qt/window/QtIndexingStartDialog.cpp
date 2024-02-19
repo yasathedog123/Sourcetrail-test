@@ -74,7 +74,7 @@ QtIndexingStartDialog::QtIndexingStartDialog(
 		new QRadioButton(QStringLiteral("Incomplete && updated files")));
 	m_refreshModeButtons.emplace(REFRESH_ALL_FILES, new QRadioButton(QStringLiteral("All files")));
 
-	std::function<void(bool)> func = [=](bool checked) {
+	std::function<void(bool)> func = [=, this](bool checked) {
 		if (!checked)
 		{
 			return;
@@ -112,7 +112,7 @@ QtIndexingStartDialog::QtIndexingStartDialog(
 	{
 		QCheckBox* shallowIndexingCheckBox = new QCheckBox(
 			QStringLiteral("Shallow Python Indexing"));
-		connect(shallowIndexingCheckBox, &QCheckBox::toggled, [=]() {
+		connect(shallowIndexingCheckBox, &QCheckBox::toggled, [=, this]() {
 			emit setShallowIndexing(shallowIndexingCheckBox->isChecked());
 		});
 		shallowIndexingCheckBox->setChecked(initialShallowState);

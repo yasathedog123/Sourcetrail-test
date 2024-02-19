@@ -31,7 +31,7 @@ std::wstring QtSearchView::getQuery() const
 
 void QtSearchView::setMatches(const std::vector<SearchMatch>& matches)
 {
-	m_onQtThread([=]() { m_widget->setMatches(matches); });
+	m_onQtThread([=, this]() { m_widget->setMatches(matches); });
 }
 
 void QtSearchView::setFocus()
@@ -52,7 +52,7 @@ void QtSearchView::findFulltext()
 
 void QtSearchView::setAutocompletionList(const std::vector<SearchMatch>& autocompletionList)
 {
-	m_onQtThread([=]() { m_widget->setAutocompletionList(autocompletionList); });
+	m_onQtThread([=, this]() { m_widget->setAutocompletionList(autocompletionList); });
 }
 
 void QtSearchView::setStyleSheet()

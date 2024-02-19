@@ -231,7 +231,7 @@ void QtProjectWizardContentPathsHeaderSearch::finishedSelectDetectIncludesRootPa
 		m_pathsDialog->getPaths());
 	closedPathsDialog();
 
-	std::thread([=]() {
+	std::thread([=, this]() {
 		std::shared_ptr<SourceGroupSettingsWithSourceExtensions> extensionSettings =
 			std::dynamic_pointer_cast<SourceGroupSettingsWithSourceExtensions>(m_settings);
 		std::shared_ptr<SourceGroupSettingsWithSourcePaths> pathSettings =

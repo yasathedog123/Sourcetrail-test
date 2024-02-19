@@ -66,12 +66,12 @@ void QtTabsView::createWidgetWrapper()
 
 void QtTabsView::refreshView()
 {
-	m_onQtThread([=]() { setStyleSheet(); });
+	m_onQtThread([=, this]() { setStyleSheet(); });
 }
 
 void QtTabsView::clear()
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		getController<TabsController>()->onClearTabs();
 
 		m_tabBar->blockSignals(true);
@@ -88,22 +88,22 @@ void QtTabsView::clear()
 
 void QtTabsView::openTab(bool showTab, const SearchMatch& match)
 {
-	m_onQtThread([=]() { insertTab(showTab, match); });
+	m_onQtThread([=, this]() { insertTab(showTab, match); });
 }
 
 void QtTabsView::closeTab()
 {
-	m_onQtThread([=]() { removeTab(m_tabBar->currentIndex()); });
+	m_onQtThread([=, this]() { removeTab(m_tabBar->currentIndex()); });
 }
 
 void QtTabsView::destroyTab(Id tabId)
 {
-	m_onQtThread([=]() { getController<TabsController>()->destroyTab(tabId); });
+	m_onQtThread([=, this]() { getController<TabsController>()->destroyTab(tabId); });
 }
 
 void QtTabsView::selectTab(bool next)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		int idx = m_tabBar->currentIndex();
 		if (idx != -1)
 		{
@@ -115,7 +115,7 @@ void QtTabsView::selectTab(bool next)
 
 void QtTabsView::updateTab(Id tabId, const std::vector<SearchMatch>& matches)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
 			if (m_tabBar->tabData(i).toInt() == int(tabId))

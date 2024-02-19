@@ -614,7 +614,7 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 	switch (params.type)
 	{
 	case CodeScrollParams::Type::TO_REFERENCE:
-		func = [=]() {
+		func = [=, this]() {
 			m_current->scrollTo(
 				params.filePath,
 				0,
@@ -626,12 +626,12 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 		};
 		break;
 	case CodeScrollParams::Type::TO_FILE:
-		func = [=]() {
+		func = [=, this]() {
 			m_current->scrollTo(params.filePath, 0, 0, 0, animated, params.target, focusTarget);
 		};
 		break;
 	case CodeScrollParams::Type::TO_LINE:
-		func = [=]() {
+		func = [=, this]() {
 			m_current->scrollTo(
 				params.filePath, params.line, 0, 0, animated, params.target, focusTarget);
 		};
@@ -639,7 +639,7 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 	case CodeScrollParams::Type::TO_VALUE:
 		if ((m_mode == MODE_LIST) == params.inListMode)
 		{
-			func = [=]() {
+			func = [=, this]() {
 				QAbstractScrollArea* area = m_current->getScrollArea();
 				if (area)
 				{
@@ -720,7 +720,7 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		currentFilePath = currentFocus.area->getFilePath();
 	}
 
-	auto moveFocus = [=](CodeFocusHandler::Direction direction) {
+	auto moveFocus = [=, this](CodeFocusHandler::Direction direction) {
 		if (!alt && !ctrl)
 		{
 			if (shift)
@@ -741,7 +741,7 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		}
 	};
 
-	auto moveView = [=](CodeFocusHandler::Direction direction) {
+	auto moveView = [=, this](CodeFocusHandler::Direction direction) {
 		if (!alt && !shift && ctrl)
 		{
 			QAbstractScrollArea* scrollArea = currentFocus.area;
@@ -948,6 +948,6 @@ void QtCodeNavigator::handleMessage(MessageWindowFocus* message)
 {
 	if (message->focusIn)
 	{
-		m_onQtThread([=]() { m_current->onWindowFocus(); });
+		m_onQtThread([=, this]() { m_current->onWindowFocus(); });
 	}
 }

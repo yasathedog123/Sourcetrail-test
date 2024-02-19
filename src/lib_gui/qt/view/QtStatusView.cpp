@@ -99,7 +99,7 @@ void QtStatusView::clear()
 
 void QtStatusView::addStatus(const std::vector<Status>& status)
 {
-	m_onQtThread([=]() {
+	m_onQtThread([=, this]() {
 		for (const Status& s: status)
 		{
 			const int rowNumber = m_table->getFilledRowCount();
@@ -137,7 +137,7 @@ QCheckBox* QtStatusView::createFilterCheckbox(const QString& name, QBoxLayout* l
 	QCheckBox* checkbox = new QCheckBox(name);
 	checkbox->setChecked(checked);
 
-	connect(checkbox, &QCheckBox::stateChanged, [=](int) {
+	connect(checkbox, &QCheckBox::stateChanged, [=, this](int) {
 		m_table->selectionModel()->clearSelection();
 
 		const StatusFilter statusMask = (m_showInfo->isChecked() ? StatusType::STATUS_INFO : 0) +

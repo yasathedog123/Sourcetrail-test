@@ -43,7 +43,7 @@ void QtTabbedView::createWidgetWrapper() {}
 
 void QtTabbedView::refreshView()
 {
-	m_onQtThread([=]() { setStyleSheet(); });
+	m_onQtThread([=, this]() { setStyleSheet(); });
 }
 
 void QtTabbedView::addViewWidget(View* view)
