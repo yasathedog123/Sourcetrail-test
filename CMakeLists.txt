@@ -68,23 +68,12 @@ if (UNIX)
 endif()
 ]]
 
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_STANDARD 11)
 
 # Settings ---------------------------------------------------------------------
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	add_compile_options(-Wno-unknown-warning-option)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	add_compile_options(/MP)
-endif()
-
-# For debugging the release build on linux
-#if (UNIX AND "${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-	#add_definitions(-fno-omit-frame-pointer)
-#endif ()
-
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 # Clang ------------------------------------------------------------------------
 
@@ -98,7 +87,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		# V15: set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION}/include")
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	endif()
-	set(headerTargetDir "${CMAKE_SOURCE_DIR}/bin/app/data/cxx/")
+	set(headerTargetDir "app/data/cxx/include/")
 
 	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
 	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
@@ -137,10 +126,14 @@ endif()
 
 message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
 
+# According to this bug-entry (https://bugreports.qt.io/browse/QTBUG-87248)
+# the code below isn't necessary anymore:
+#[[
 # FIX: Qt was built with -reduce-relocations
 if (Qt5_POSITION_INDEPENDENT_CODE)
 	SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
+]]
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -347,8 +340,10 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 			JNI::JNI
 	)
 
+	#
 	# Maven build (java-indexer.jar)
-
+	#
+	# TODO: Try to build the jar also in the CMAKE_BINARY_DIR
 	add_custom_command(
 		TARGET Sourcetrail_lib_java
 		PRE_BUILD
@@ -362,14 +357,14 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 		TARGET Sourcetrail_lib_java
 		POST_BUILD
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-		COMMAND ${CMAKE_COMMAND} -E copy_directory "java_indexer/target/"  "bin/app/data/java/lib/"
+		COMMAND ${CMAKE_COMMAND} -E copy_directory "java_indexer/target/"  "${CMAKE_BINARY_DIR}/app/data/java/lib/"
 		COMMENT "Copying java indexer jars"
 	)
 	# Workaround for above copy problem
 	add_custom_command(
 		TARGET Sourcetrail_lib_java
 		POST_BUILD
-		WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/bin/app/data/java/lib/"
+		WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/app/data/java/lib/"
 		COMMAND ${CMAKE_COMMAND} -E rm -rf "classes" "generated-sources" "maven-archiver" "maven-status" "test-classes"
 		COMMENT "Deleting unneeded maven directories"
 	)

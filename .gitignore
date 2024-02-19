@@ -1,27 +1,8 @@
-
-/bin/app/data/cxx
-/bin/app/data/java/lib/
-/bin/app/data/projects/ignored/
-/bin/app/user/projects/tutorial
-/bin/app/data/python/
-/bin/app/user/log/
-/bin/app/user/ApplicationSettings.xml
-/bin/app/user/window_settings.ini
-/bin/app/*.log
-
-/bin/test/data/
-/bin/test/data/log/
-/bin/test/data/TestSettings.xml
-/bin/test/data/CommandlineTestSuite/settings.xml
-/bin/test/data/ConfigManagerTestSuite/temp.xml
-/bin/test/data/UtilityMavenTestSuite/effective-pom.xml
-/bin/test/data/SourceGroupTestSuite/java_maven/input/sourcetrail_dependencies
-
-# Maven, IntelliJ, Eclipse, Qt Creator:
+# Maven, Vcpkg:
 /java_indexer/target/
-.idea
-.vscode
-.vs
-CMakeLists.txt.user
-
 vcpkg_installed/
+
+# IntelliJ, Eclipse, Qt Creator:
+.vs
+.vscode
+CMakeLists.txt.user
