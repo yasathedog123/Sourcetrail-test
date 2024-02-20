@@ -57,8 +57,8 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 *Ninja (1.11.1):*
 * ninja-build
 
-*Boost (1.74.0):*
-* libboost-all-dev
+*Boost (1.81.0):*
+* libboost1.81-all-dev
 
 *Qt (5.15.10):*
 * qtbase5-dev

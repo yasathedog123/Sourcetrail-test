@@ -102,7 +102,7 @@ if (isVcpkgBuild)
 	set(Boost_NO_SYSTEM_PATHS ON)
 endif()
 
-find_package(Boost 1.74 REQUIRED COMPONENTS
+find_package(Boost 1.81 REQUIRED COMPONENTS
 	# compiled libraries:
 	system program_options filesystem date_time locale
 
@@ -602,7 +602,7 @@ set(CPACK_PACKAGE_ICON "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS
 	"libclang-cpp16, libllvm16,
 	 libqt5gui5, libqt5widgets5, libqt5svg5,
-	 libboost-system1.74.0, libboost-program-options1.74.0, libboost-filesystem1.74.0, libboost-date-time1.74.0, libboost-locale1.74.0,
+	 libboost-system1.81.0, libboost-program-options1.81.0, libboost-filesystem1.81.0, libboost-date-time1.81.0, libboost-locale1.81.0,
 	 libsqlite3-0,
 	 libtinyxml2.6.2v5"
 )

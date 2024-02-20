@@ -32,7 +32,6 @@ public:
 	static bool rename(const FilePath& from, const FilePath& to);
 
 	static bool copyFile(const FilePath& from, const FilePath& to);
-	static bool copy_directory(const FilePath& from, const FilePath& to);
 
 	static void createDirectory(const FilePath& path);
 	static std::vector<FilePath> getDirectSubDirectories(const FilePath& path);
