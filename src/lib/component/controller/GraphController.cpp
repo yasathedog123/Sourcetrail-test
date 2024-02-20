@@ -492,7 +492,7 @@ void GraphController::handleMessage(MessageGraphNodeExpand* message)
 					if (edge && edge->data && edge->data->isType(Edge::EDGE_BUNDLED_EDGES) &&
 						(edge->targetId == dummyNode->tokenId || edge->ownerId == dummyNode->tokenId))
 					{
-						std::vector<Id> bundledEdgesIds = utility::toVector<Id>(
+						std::vector<Id> bundledEdgesIds = utility::toVector(
 							edge->data->getComponent<TokenComponentBundledEdges>()->getBundledEdgesIds());
 
 						if (m_graph->getEdgeById(bundledEdgesIds[0]) != nullptr)

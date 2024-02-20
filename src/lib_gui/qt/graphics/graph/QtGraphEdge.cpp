@@ -365,7 +365,7 @@ void QtGraphEdge::onClick()
 
 		if (getData()->getType() == Edge::EDGE_BUNDLED_EDGES)
 		{
-			msg.bundledEdgesIds = utility::toVector<Id>(
+			msg.bundledEdgesIds = utility::toVector(
 				getData()->getComponent<TokenComponentBundledEdges>()->getBundledEdgesIds());
 		}
 		else if (componentInheritance)

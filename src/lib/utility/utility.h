@@ -2,10 +2,7 @@
 #define UTILITY_H
 
 #include <algorithm>
-#include <cstdarg>
-#include <deque>
 #include <functional>
-#include <list>
 #include <map>
 #include <set>
 #include <unordered_set>
@@ -44,14 +41,15 @@ void append(std::unordered_set<T>& a, const std::unordered_set<T>& b);
 template <typename T>
 std::vector<T> unique(const std::vector<T>& a);
 
-template <typename T>
-std::vector<T> toVector(const std::deque<T>& d);
-
-template <typename T>
-std::vector<T> toVector(const std::set<T>& d);
-
-template <typename T>
-std::vector<T> toVector(const std::list<T>& d);
+template <typename Container, typename T = typename Container::value_type>
+std::vector<T> toVector(const Container& d)
+{
+	std::vector<T> v;
+	v.reserve(d.size());
+	for (const T &e : d)
+		v.push_back(e);
+	return v;
+}
 
 template <typename T>
 std::set<T> toSet(const std::vector<T>& d);
@@ -226,33 +224,6 @@ std::vector<T> utility::unique(const std::vector<T>& a)
 	}
 
 	return r;
-}
-
-template <typename T>
-std::vector<T> utility::toVector(const std::deque<T>& d)
-{
-	std::vector<T> v;
-	v.reserve(d.size());
-	v.insert(v.begin(), d.begin(), d.end());
-	return v;
-}
-
-template <typename T>
-std::vector<T> utility::toVector(const std::set<T>& d)
-{
-	std::vector<T> v;
-	v.reserve(d.size());
-	v.insert(v.begin(), d.begin(), d.end());
-	return v;
-}
-
-template <typename T>
-std::vector<T> utility::toVector(const std::list<T>& d)
-{
-	std::vector<T> v;
-	v.reserve(d.size());
-	v.insert(v.begin(), d.begin(), d.end());
-	return v;
 }
 
 template <typename T>
