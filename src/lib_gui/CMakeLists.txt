@@ -418,10 +418,8 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorWindows.cpp
 			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorWindows.h
 
-			utility/path_detector/maven_executable/MavenPathDetectorUnix.cpp
-			utility/path_detector/maven_executable/MavenPathDetectorUnix.h
-			utility/path_detector/maven_executable/MavenPathDetectorWindows.cpp
-			utility/path_detector/maven_executable/MavenPathDetectorWindows.h
+			utility/path_detector/maven_executable/MavenPathDetector.cpp
+			utility/path_detector/maven_executable/MavenPathDetector.h
 	)
 	target_include_directories(Sourcetrail_lib_gui
 		PUBLIC

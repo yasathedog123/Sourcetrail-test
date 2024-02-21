@@ -102,7 +102,7 @@ TEST_CASE("maven wrapper detects source directories of nested modules")
 TEST_CASE("maven wrapper detects source and test directories of nested modules")
 {
 	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE(!mavenPathDetector->getPaths().empty());
+	REQUIRE_MESSAGE("Maven executable not found", !mavenPathDetector->getPaths().empty());
 
 	if (!mavenPathDetector->getPaths().empty())
 	{

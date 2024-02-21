@@ -348,7 +348,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 		TARGET Sourcetrail_lib_java
 		PRE_BUILD
 		WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/java_indexer/"
-		COMMAND ${MVN_COMMAND} package
+		COMMAND ${MVN_COMMAND} --quiet package
 		BYPRODUCTS "./target/java-indexer.jar"
 		COMMENT "Building java indexer jars"
 	)
