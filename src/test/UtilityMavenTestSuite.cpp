@@ -9,16 +9,22 @@
 #	include "utilityMaven.h"
 #	include "utilityPathDetection.h"
 
-TEST_CASE("maven path detector is working")
+static std::shared_ptr<PathDetector> getMavenPathDetector()
 {
 	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE(mavenPathDetector->isWorking());
+	REQUIRE_MESSAGE("Maven command not found", mavenPathDetector->isWorking());
+
+	return mavenPathDetector;
+}
+
+TEST_CASE("maven path detector is working")
+{
+	getMavenPathDetector();
 }
 
 TEST_CASE("maven wrapper detects source directories of simple projects")
 {
-	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE(!mavenPathDetector->getPaths().empty());
+	std::shared_ptr<PathDetector> mavenPathDetector = getMavenPathDetector();
 
 	if (!mavenPathDetector->getPaths().empty())
 	{
@@ -41,8 +47,7 @@ TEST_CASE("maven wrapper detects source directories of simple projects")
 
 TEST_CASE("maven wrapper detects source and test directories of simple projects")
 {
-	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE(!mavenPathDetector->getPaths().empty());
+	std::shared_ptr<PathDetector> mavenPathDetector = getMavenPathDetector();
 
 	if (!mavenPathDetector->getPaths().empty())
 	{
@@ -65,8 +70,7 @@ TEST_CASE("maven wrapper detects source and test directories of simple projects"
 
 TEST_CASE("maven wrapper detects source directories of nested modules")
 {
-	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE(!mavenPathDetector->getPaths().empty());
+	std::shared_ptr<PathDetector> mavenPathDetector = getMavenPathDetector();
 
 	if (!mavenPathDetector->getPaths().empty())
 	{
@@ -101,8 +105,7 @@ TEST_CASE("maven wrapper detects source directories of nested modules")
 
 TEST_CASE("maven wrapper detects source and test directories of nested modules")
 {
-	std::shared_ptr<PathDetector> mavenPathDetector = utility::getMavenExecutablePathDetector();
-	REQUIRE_MESSAGE("Maven executable not found", !mavenPathDetector->getPaths().empty());
+	std::shared_ptr<PathDetector> mavenPathDetector = getMavenPathDetector();
 
 	if (!mavenPathDetector->getPaths().empty())
 	{
