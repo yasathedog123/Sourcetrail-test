@@ -40,14 +40,6 @@
 #	include "utilityJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
-
-#define REQUIRE_MESSAGE(msg, cond)                                                                 \
-	do                                                                                             \
-	{                                                                                              \
-		INFO(msg);                                                                                 \
-		REQUIRE(cond);                                                                             \
-	} while ((void)0, 0)
-
 namespace
 {
 const bool updateExpectedOutput = false;

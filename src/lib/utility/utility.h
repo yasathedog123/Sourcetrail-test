@@ -132,7 +132,7 @@ template <typename T>
 std::vector<std::vector<T>> utility::splitToEquallySizedParts(
 	const std::vector<T>& values, const size_t desiredPartCount)
 {
-	const size_t partCount = std::max<size_t>(1, std::min(desiredPartCount, values.size()));
+	const size_t partCount = std::max<size_t>(1, (std::min)(desiredPartCount, values.size()));
 
 	std::vector<std::vector<T>> parts;
 	for (size_t i = 0; i < partCount; i++)

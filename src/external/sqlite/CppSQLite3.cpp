@@ -53,7 +53,7 @@ int sqlite3_decode_binary(const unsigned char *in, unsigned char *out);
 ////////////////////////////////////////////////////////////////////////////////
 
 CppSQLite3Exception::CppSQLite3Exception(const int nErrCode,
-									char* szErrMess,
+									const char* szErrMess,
 									bool bDeleteMsg/*=true*/) :
 									mnErrCode(nErrCode)
 {
@@ -64,7 +64,7 @@ CppSQLite3Exception::CppSQLite3Exception(const int nErrCode,
 
 	if (bDeleteMsg && szErrMess)
 	{
-		sqlite3_free(szErrMess);
+		sqlite3_free(const_cast<char *>(szErrMess));
 	}
 }
 
@@ -597,7 +597,7 @@ void CppSQLite3Query::nextRow()
 		mpVM = 0;
 		const char* szError = sqlite3_errmsg(mpDB);
 		throw CppSQLite3Exception(nRet,
-								(char*)szError,
+								szError,
 								DONT_DELETE_MSG);
 	}
 }
@@ -612,7 +612,7 @@ void CppSQLite3Query::finalize()
 		if (nRet != SQLITE_OK)
 		{
 			const char* szError = sqlite3_errmsg(mpDB);
-			throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+			throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 		}
 	}
 }
@@ -951,7 +951,7 @@ int CppSQLite3Statement::execDML()
 		if (nRet != SQLITE_OK)
 		{
 			szError = sqlite3_errmsg(mpDB);
-			throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+			throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 		}
 
 		return nRowsChanged;
@@ -960,7 +960,7 @@ int CppSQLite3Statement::execDML()
 	{
 		nRet = sqlite3_reset(mpVM);
 		szError = sqlite3_errmsg(mpDB);
-		throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+		throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 	}
 }
 
@@ -986,7 +986,7 @@ CppSQLite3Query CppSQLite3Statement::execQuery()
 	{
 		nRet = sqlite3_reset(mpVM);
 		const char* szError = sqlite3_errmsg(mpDB);
-		throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+		throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 	}
 }
 
@@ -1125,7 +1125,7 @@ void CppSQLite3Statement::reset()
 		if (nRet != SQLITE_OK)
 		{
 			const char* szError = sqlite3_errmsg(mpDB);
-			throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+			throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 		}
 	}
 }
@@ -1141,7 +1141,7 @@ void CppSQLite3Statement::finalize()
 		if (nRet != SQLITE_OK)
 		{
 			const char* szError = sqlite3_errmsg(mpDB);
-			throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+			throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 		}
 	}
 }
@@ -1212,7 +1212,7 @@ void CppSQLite3DB::open(const char* szFile)
 	if (nRet != SQLITE_OK)
 	{
 		const char* szError = sqlite3_errmsg(mpDB);
-		throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+		throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 	}
 
 	setBusyTimeout(mnBusyTimeoutMs);
@@ -1298,7 +1298,7 @@ CppSQLite3Query CppSQLite3DB::execQuery(const char* szSQL)
 	{
 		nRet = sqlite3_finalize(pVM);
 		const char* szError= sqlite3_errmsg(mpDB);
-		throw CppSQLite3Exception(nRet, (char*)szError, DONT_DELETE_MSG);
+		throw CppSQLite3Exception(nRet, szError, DONT_DELETE_MSG);
 	}
 }
 
@@ -1378,7 +1378,7 @@ sqlite3_stmt* CppSQLite3DB::compile(const char* szSQL)
 	{
 		const char* szError = sqlite3_errmsg(mpDB);
 		throw CppSQLite3Exception(nRet,
-								(char*)szError,
+								szError,
 								DONT_DELETE_MSG);
 	}
 
