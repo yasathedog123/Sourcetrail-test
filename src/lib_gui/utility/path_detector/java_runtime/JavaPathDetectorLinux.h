@@ -15,7 +15,7 @@ private:
 	FilePath getJavaInJavaHome() const;
 	bool checkVersion(const FilePath& path) const;
 
-	FilePath getFilePathRelativeToJavaExecutable(FilePath& javaExecutablePath) const;
+	FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath) const;
 };
 
 #endif	  // JAVA_PATH_DETECTOR_LINUX_H

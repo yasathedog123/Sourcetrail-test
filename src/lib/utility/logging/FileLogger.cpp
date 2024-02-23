@@ -14,8 +14,6 @@ std::wstring FileLogger::generateDatedFileName(
 	time_t time;
 	std::time(&time);
 
-#pragma warning(push)
-#pragma warning(disable : 4996)
 	tm t = *std::localtime(&time);
 
 	if (offsetDays != 0)
@@ -23,7 +21,6 @@ std::wstring FileLogger::generateDatedFileName(
 		time = mktime(&t) + offsetDays * 24 * 60 * 60;
 		t = *std::localtime(&time);
 	}
-#pragma warning(pop)
 
 	std::wstringstream filename;
 	if (!prefix.empty())

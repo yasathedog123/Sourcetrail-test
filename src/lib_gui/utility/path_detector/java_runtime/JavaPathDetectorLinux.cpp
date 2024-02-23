@@ -80,7 +80,7 @@ FilePath JavaPathDetectorLinux::readLink(const FilePath& path) const
 	return FilePath();
 }
 
-FilePath JavaPathDetectorLinux::getFilePathRelativeToJavaExecutable(FilePath& javaExecutablePath) const
+FilePath JavaPathDetectorLinux::getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath) const
 {
 	FilePath p = javaExecutablePath.getParentDirectory().concatenate(
 		jvmLibPathRelativeToJavaExecutable);
@@ -94,10 +94,7 @@ FilePath JavaPathDetectorLinux::getFilePathRelativeToJavaExecutable(FilePath& ja
 FilePath JavaPathDetectorLinux::getJavaInJavaHome() const
 {
 	std::string command = "";
-#pragma warning(push)
-#pragma warning(disable : 4996)
 	char* p = getenv("JAVA_HOME");
-#pragma warning(pop)
 	if (p == nullptr)
 	{
 		return FilePath();

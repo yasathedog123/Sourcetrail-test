@@ -33,10 +33,7 @@ public:
 
 	static CharT* CopyFn(CharT* destination, const CharT* source, size_t num)
 	{
-#pragma warning(push)
-#pragma warning(disable : 4996)
 		return strncpy(destination, source, num);
-#pragma warning(pop)
 	}
 };
 
@@ -54,10 +51,7 @@ public:
 
 	static CharT* CopyFn(CharT* destination, const CharT* source, size_t num)
 	{
-#pragma warning(push)
-#pragma warning(disable : 4996)
 		return wcsncpy(destination, source, num);
-#pragma warning(pop)
 	}
 };
 

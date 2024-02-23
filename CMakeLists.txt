@@ -266,10 +266,6 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	)
 
 	if (WIN32)
-		target_compile_definitions(Sourcetrail_lib_cxx
-			PRIVATE
-				_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS # Due to Clang
-		)
 		target_link_libraries(Sourcetrail_lib_cxx
 			PUBLIC
 				version

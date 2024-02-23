@@ -173,10 +173,7 @@ std::vector<FilePath> getClassPath(
 
 void setJavaHomeVariableIfNotExists()
 {
-#pragma warning(push)
-#pragma warning(disable : 4996)
 	if (getenv("JAVA_HOME") == nullptr)
-#pragma warning(pop)
 	{
 		const FilePath javaPath = ApplicationSettings::getInstance()->getJavaPath();
 		const FilePath javaHomePath =
@@ -185,10 +182,7 @@ void setJavaHomeVariableIfNotExists()
 		LOG_WARNING(
 			"Environment variable \"JAVA_HOME\" not found on system. Setting value to \"" +
 			javaHomePath.str() + "\" for this process.");
-#pragma warning(push)
-#pragma warning(disable : 4996)
 		putenv(const_cast<char*>(("JAVA_HOME=" + javaHomePath.str()).c_str()));
-#pragma warning(pop)
 	}
 }
 }	 // namespace utility
