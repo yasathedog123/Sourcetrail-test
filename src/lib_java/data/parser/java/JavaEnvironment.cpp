@@ -1,7 +1,5 @@
 #include "JavaEnvironment.h"
 
-#include <jni.h>
-
 #include "JavaEnvironmentFactory.h"
 #include "logging.h"
 

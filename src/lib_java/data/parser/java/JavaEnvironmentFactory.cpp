@@ -1,14 +1,12 @@
 #include "JavaEnvironmentFactory.h"
 
-#include <cstdlib>
-
-#include <jni.h>
-
 #include "ApplicationSettings.h"
 #include "JavaEnvironment.h"
 #include "logging.h"
 #include "utilityLibrary.h"
 #include "utilityWindows.h"
+
+#include <cstdlib>
 
 void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& errorString)
 {

@@ -6,12 +6,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
-
-struct JavaVM_;
-typedef JavaVM_ JavaVM;
-
-struct JNIEnv_;
-typedef JNIEnv_ JNIEnv;
+#include <jni.h>
 
 class JavaEnvironment;
 

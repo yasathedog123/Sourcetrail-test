@@ -1,7 +1,5 @@
 #include "JavaParser.h"
 
-#include <jni.h>
-
 #include "ApplicationSettings.h"
 #include "IndexerStateInfo.h"
 #include "JavaEnvironmentFactory.h"

@@ -4,6 +4,7 @@
 #include <map>
 #include <mutex>
 #include <string>
+#include <jni.h>
 
 #include "FilePath.h"
 #include "IndexerCommandJava.h"
@@ -12,21 +13,6 @@
 #include "Parser.h"
 #include "logging.h"
 #include "types.h"
-
-struct JNIEnv_;
-typedef JNIEnv_ JNIEnv;
-
-class _jobject;
-typedef _jobject* jobject;
-
-#ifdef _WIN32
-typedef long jint;
-#else
-typedef int jint;
-#endif
-
-class _jstring;
-typedef _jstring* jstring;
 
 class FilePath;
 class TextAccess;
