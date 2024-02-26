@@ -3,7 +3,7 @@
 	"configurePresets": [
 		{
 			"hidden": true,
-			"name": "defaults",
+			"name": "default-presets",
 			"warnings": {
 				"dev": false,
 				"uninitialized": false
@@ -19,8 +19,8 @@
 		},
 		{
 			"hidden": true,
-			"name": "vcpkg-defaults",
-			"inherits": "defaults",
+			"name": "vcpkg-default-presets",
+			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
 				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
@@ -29,7 +29,7 @@
 		{
 			"name": "vcpkg-ninja-debug",
 			"displayName": "Vcpkg Ninja Debug Build",
-			"inherits": "vcpkg-defaults",
+			"inherits": "vcpkg-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			}
@@ -37,7 +37,7 @@
 		{
 			"name": "vcpkg-ninja-release",
 			"displayName": "Vcpkg Ninja Release Build",
-			"inherits": "vcpkg-defaults",
+			"inherits": "vcpkg-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
 			}
@@ -45,7 +45,7 @@
 		{
 			"name": "vcpkg-ninja-relwithdebinfo",
 			"displayName": "Vcpkg Ninja RelWithDebInfo Build",
-			"inherits": "vcpkg-defaults",
+			"inherits": "vcpkg-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
@@ -56,16 +56,21 @@
 
 		{
 			"hidden": true,
-			"name": "system-defaults",
-			"inherits": "defaults",
+			"name": "system-default-presets",
+			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
 			}
 		},
 		{
 			"name": "system-ninja-debug",
 			"displayName": "System Ninja Debug Build",
-			"inherits": "system-defaults",
+			"inherits": "system-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			}
@@ -73,7 +78,7 @@
 		{
 			"name": "system-ninja-release",
 			"displayName": "System Ninja Release Build",
-			"inherits": "system-defaults",
+			"inherits": "system-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
 			}
@@ -81,7 +86,7 @@
 		{
 			"name": "system-ninja-relwithdebinfo",
 			"displayName": "System Ninja RelWithDebInfo Build",
-			"inherits": "system-defaults",
+			"inherits": "system-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
