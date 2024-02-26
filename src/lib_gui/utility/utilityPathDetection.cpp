@@ -19,7 +19,7 @@
 #	include "JreSystemLibraryPathDetectorLinux.h"
 #	include "JreSystemLibraryPathDetectorMac.h"
 #	include "JreSystemLibraryPathDetectorWindows.h"
-#	include "MavenPathDetector.h"
+#	include "MavenPathDetectorUnixWindows.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
 std::shared_ptr<CombinedPathDetector> utility::getJavaRuntimePathDetector()
@@ -82,11 +82,11 @@ std::shared_ptr<CombinedPathDetector> utility::getMavenExecutablePathDetector()
 	switch (utility::getOsType())
 	{
 	case OS_WINDOWS:
-		combinedDetector->addDetector(std::make_shared<MavenPathDetector>("Maven for Windows"));
+		combinedDetector->addDetector(std::make_shared<MavenPathDetectorUnixWindows>("Maven for Windows"));
 		break;
 	case OS_MAC:
 	case OS_LINUX:
-		combinedDetector->addDetector(std::make_shared<MavenPathDetector>("Maven for Unix"));
+		combinedDetector->addDetector(std::make_shared<MavenPathDetectorUnixWindows>("Maven for Unix"));
 		break;
 	default:
 		LOG_WARNING("No suitable Maven path detector found");
