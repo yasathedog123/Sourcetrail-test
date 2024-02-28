@@ -23,7 +23,8 @@
 			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
-				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+				"isVcpkgBuild":  "TRUE"
 			}
 		},
 		{
@@ -60,6 +61,7 @@
 			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
+				"isVcpkgBuild": "FALSE"
 			},
 			"condition": {
 				"type": "equals",

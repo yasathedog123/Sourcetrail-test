@@ -6,9 +6,9 @@
 This is a fork of the Sourcetrail project and I want to keep this project at least buildable. 
 
 # Cloning
-It is important to clone the repository with the **submodules**:
+It is important to clone the repository with the **submodules** and the **symlinks**:
 ```
-git clone https://github.com/petermost/Sourcetrail.git --recurse-submodules
+git clone https://github.com/petermost/Sourcetrail.git --recurse-submodules --config core.symlinks=true
 ```
 and get the updates with:
 ```
