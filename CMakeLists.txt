@@ -28,9 +28,7 @@ set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetr
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
-	message(STATUS "In-source-builds are not allowed")
-	message(STATUS "Clean your source directory (e.g. delete the CMakeCache.txt file)")
-	message(FATAL_ERROR "Please create a separate build directory and call CMake again")
+	message(FATAL_ERROR "In-source-builds are strongly discouraged and not supported!")
 endif()
 
 # Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
@@ -91,8 +89,41 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
 	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
-endif()
 
+	add_library(Sourcetrail_lib_clang INTERFACE)
+	target_compile_definitions(Sourcetrail_lib_clang
+		INTERFACE
+			${LLVM_DEFINITIONS}
+	)
+	target_include_directories(Sourcetrail_lib_clang SYSTEM
+		INTERFACE
+			${LLVM_INCLUDE_DIRS}
+	)
+	llvm_map_components_to_libnames(REQ_LLVM_LIBS
+		${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
+	)
+	target_link_libraries(Sourcetrail_lib_clang
+		INTERFACE
+			clangASTMatchers
+			clangFrontend
+			clangSerialization
+			clangDriver
+			clangTooling
+			clangParse
+			clangSema
+			clangStaticAnalyzerFrontend
+			clangStaticAnalyzerCheckers
+			clangStaticAnalyzerCore
+			clangAnalysis
+			clangRewriteFrontend
+			clangEdit
+			clangAST
+			clangLex
+			clangBasic
+
+			${REQ_LLVM_LIBS}
+	)
+endif()
 
 # Boost ------------------------------------------------------------------------
 
@@ -118,10 +149,14 @@ message(STATUS "Found Boost ${Boost_VERSION_STRING}")
 
 set (QT_MIN_VERSION "5.15.10")
 set (QT_MIN_VERSION_HEX 0x050F0A)
-find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Widgets PrintSupport Network Svg REQUIRED)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS 
+	Widgets PrintSupport Network Svg
+)
 
 if (WIN32)
-	find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS WinExtras REQUIRED)
+	find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+		WinExtras
+	)
 endif()
 
 message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
@@ -141,10 +176,10 @@ add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
 
 # External Libs  ------------------------------------------------------------------
 
-add_library(External_lib_cxx)
+add_library(Sourcetrail_lib_external)
 add_subdirectory(src/external)
 
-target_compile_options(External_lib_cxx
+target_compile_options(Sourcetrail_lib_external
 	PRIVATE
 		-w
 )
@@ -153,14 +188,14 @@ target_compile_options(External_lib_cxx
 
 if (isVcpkgBuild)
 	find_package(unofficial-sqlite3 CONFIG REQUIRED)
-	target_link_libraries(External_lib_cxx
+	target_link_libraries(Sourcetrail_lib_external
 		PUBLIC
 			unofficial::sqlite3::sqlite3
 	)
 else()
 	find_package(SQLite3 REQUIRED)
 	message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
-	target_link_libraries(External_lib_cxx
+	target_link_libraries(Sourcetrail_lib_external
 		PUBLIC
 			SQLite::SQLite3
 	)
@@ -174,14 +209,14 @@ endif()
 
 if (isVcpkgBuild)
 	find_package(tinyxml CONFIG REQUIRED)
-	target_link_libraries(External_lib_cxx
+	target_link_libraries(Sourcetrail_lib_external
 		PUBLIC
 			unofficial-tinyxml::unofficial-tinyxml
 	)
 else()
 	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
 	message(STATUS "Found tinyxml ${tinyxml_VERSION}")
-	target_link_libraries(External_lib_cxx
+	target_link_libraries(Sourcetrail_lib_external
 		PUBLIC
 			PkgConfig::tinyxml
 	)
@@ -228,9 +263,8 @@ target_compile_definitions(Sourcetrail_lib
 
 target_link_libraries(Sourcetrail_lib
 	PUBLIC
-		Sourcetrail_lib_utility
+		Sourcetrail_lib_external
 		Sourcetrail_lib_gui
-		External_lib_cxx
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
 		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 
@@ -256,49 +290,11 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	add_library(Sourcetrail_lib_cxx)
 	add_subdirectory(src/lib_cxx)
 
-	target_compile_definitions(Sourcetrail_lib_cxx
-		PUBLIC
-			${LLVM_DEFINITIONS}
-	)
-	target_include_directories(Sourcetrail_lib_cxx SYSTEM
-		PUBLIC
-			${LLVM_INCLUDE_DIRS}
-	)
-
-	if (WIN32)
-		target_link_libraries(Sourcetrail_lib_cxx
-			PUBLIC
-				version
-		)
-	endif()
-
-	llvm_map_components_to_libnames(REQ_LLVM_LIBS
-		${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
-	)
 	target_link_libraries(Sourcetrail_lib_cxx
 		PUBLIC
 			Sourcetrail_lib_utility
 			Sourcetrail_lib
-			External_lib_cxx
-
-			clangASTMatchers
-			clangFrontend
-			clangSerialization
-			clangDriver
-			clangTooling
-			clangParse
-			clangSema
-			clangStaticAnalyzerFrontend
-			clangStaticAnalyzerCheckers
-			clangStaticAnalyzerCore
-			clangAnalysis
-			clangRewriteFrontend
-			clangEdit
-			clangAST
-			clangLex
-			clangBasic
-
-			${REQ_LLVM_LIBS}
+			Sourcetrail_lib_clang
 	)
 else()
 	message(STATUS "Building the Cxx indexer will be skipped. You can enable building this target by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
@@ -366,13 +362,9 @@ endif()
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-# target for running versionnumber script
-# workaround for running customcommand (ninja dependency cycle)
-add_custom_target(
-	versionnumber ALL
+add_library(Sourcetrail_lib_gui 
+	${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
 )
-
-add_library(Sourcetrail_lib_gui ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h)
 add_subdirectory(src/lib_gui)
 
 # configure platform specific include file
@@ -404,7 +396,6 @@ target_include_directories(Sourcetrail_lib_gui
 
 target_link_libraries(Sourcetrail_lib_gui
 	PUBLIC
-		Sourcetrail_lib_utility
 		Sourcetrail_lib
 
 		Qt5::Widgets
@@ -420,15 +411,14 @@ endif()
 
 # command for versioning script
 add_custom_command(
-	TARGET versionnumber
+	TARGET Sourcetrail_lib_gui
 	PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
 	BYPRODUCTS ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-	DEPENDS Sourcetrail_lib_gui
+	DEPENDS ${CMAKE_SOURCE_DIR}/cmake/version.cmake
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	COMMENT "check/update version number"
 )
-add_dependencies(Sourcetrail_lib_gui versionnumber)
 
 set(CMAKE_AUTOMOC OFF)
 
@@ -452,17 +442,11 @@ if (WIN32)
 	set_target_properties(Sourcetrail_indexer PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
 	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:WINDOWS /DEBUG")
 	set_target_properties(Sourcetrail_indexer PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
-
-	# generate pdb for release build
-	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 endif ()
 
 target_link_libraries(Sourcetrail_indexer
 	PRIVATE
-		Sourcetrail_lib_gui
 		Sourcetrail_lib
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 )
 
 # App --------------------------------------------------------------------------
@@ -498,9 +482,6 @@ if (WIN32)
 	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_RELEASE "/ENTRY:\"mainCRTStartup\" /SUBSYSTEM:CONSOLE /DEBUG")
 	set_target_properties(Sourcetrail PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:CONSOLE")
 
-	# generate pdb for release build
-	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
-
 	set_target_properties(Sourcetrail
 		PROPERTIES
 			VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/app"
@@ -509,14 +490,8 @@ endif ()
 
 target_link_libraries(Sourcetrail
 	PRIVATE
-		Sourcetrail_lib_gui
 		Sourcetrail_lib
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 )
-
-add_dependencies(Sourcetrail Sourcetrail_indexer)
-
 
 # Test ----------------------------------------------------------------------
 
@@ -538,9 +513,6 @@ set_target_properties(Sourcetrail_test
 target_link_libraries(Sourcetrail_test
 	PRIVATE
 		Sourcetrail_lib
-		Sourcetrail_lib_gui
-		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
-		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
 		Catch2::Catch2
 )
 
