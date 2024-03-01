@@ -9,7 +9,7 @@ SqliteStorage::SqliteStorage(const FilePath& dbFilePath): m_dbFilePath(dbFilePat
 {
 	if (!m_dbFilePath.getParentDirectory().empty() && !m_dbFilePath.getParentDirectory().exists())
 	{
-		FileSystem::createDirectory(m_dbFilePath.getParentDirectory());
+		FileSystem::createDirectories(m_dbFilePath.getParentDirectory());
 	}
 
 	try

@@ -242,7 +242,7 @@ bool FileSystem::copyFile(const FilePath& from, const FilePath& to)
 	return true;
 }
 
-void FileSystem::createDirectory(const FilePath& path)
+void FileSystem::createDirectories(const FilePath& path)
 {
 	boost::filesystem::create_directories(path.str());
 	path.recheckExists();

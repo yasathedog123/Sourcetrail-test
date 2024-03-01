@@ -69,7 +69,7 @@ void FileLogger::setLogFilePath(const FilePath& filePath)
 void FileLogger::setLogDirectory(const FilePath& filePath)
 {
 	m_logDirectory = filePath;
-	FileSystem::createDirectory(m_logDirectory);
+	FileSystem::createDirectories(m_logDirectory);
 }
 
 void FileLogger::setFileName(const std::wstring& fileName)

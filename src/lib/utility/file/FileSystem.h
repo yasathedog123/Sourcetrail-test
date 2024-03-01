@@ -33,7 +33,7 @@ public:
 
 	static bool copyFile(const FilePath& from, const FilePath& to);
 
-	static void createDirectory(const FilePath& path);
+	static void createDirectories(const FilePath& path);
 	static std::vector<FilePath> getDirectSubDirectories(const FilePath& path);
 	static std::vector<FilePath> getRecursiveSubDirectories(const FilePath& path);
 };

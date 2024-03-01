@@ -119,7 +119,7 @@ void cleanup()
 
 void addFileToFileSystem(const FilePath& filePath)
 {
-	FileSystem::createDirectory(filePath.getParentDirectory());
+	FileSystem::createDirectories(filePath.getParentDirectory());
 	std::ofstream file;
 	file.open(filePath.str());
 	file << "This is some file content.\n";

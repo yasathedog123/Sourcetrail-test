@@ -139,7 +139,7 @@ bool QtProjectWizardContentProjectData::check()
 		int ret = msgBox.exec();
 		if (ret == 1)	 // QMessageBox::Yes
 		{
-			FileSystem::createDirectory(paths[0]);
+			FileSystem::createDirectories(paths[0]);
 		}
 		else
 		{

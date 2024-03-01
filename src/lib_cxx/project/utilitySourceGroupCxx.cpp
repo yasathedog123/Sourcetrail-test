@@ -64,7 +64,7 @@ std::shared_ptr<Task> createBuildPchTask(
 
 			if (!pchOutputFilePath.getParentDirectory().exists())
 			{
-				FileSystem::createDirectory(pchOutputFilePath.getParentDirectory());
+				FileSystem::createDirectories(pchOutputFilePath.getParentDirectory());
 			}
 
 			std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
