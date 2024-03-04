@@ -66,7 +66,7 @@ void setupApp(int argc, char* argv[])
 				LOG_ERROR(
 					L"The \"%LOCALAPPDATA%\" path could not be found. Falling back to \"" +
 					userDataPath.wstr() + L"\" to store settings data.");
-				FileSystem::createDirectory(userDataPath);
+				FileSystem::createDirectories(userDataPath);
 			}
 		}
 

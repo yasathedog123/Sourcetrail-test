@@ -1,33 +1,30 @@
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-# configure platform specific include file
-configure_file(
-	"${PROJECT_SOURCE_DIR}/src/lib_gui/platform_includes/includes.h.in"
-	"${PROJECT_BINARY_DIR}/src/lib_gui/includes.h"
-)
-
+#[[ Seems only be used by 'setup\Linux\createPackages.sh'
 #configure the versioning file
 configure_file(
 	${CMAKE_SOURCE_DIR}/cmake/version.txt.in
 	${CMAKE_BINARY_DIR}/version.txt
 )
+]]
 
 configure_file(
 	${CMAKE_SOURCE_DIR}/cmake/productVersion.h.in
-	${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-)
-
-set_property(SOURCE ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-	PROPERTY
-		SKIP_AUTOMOC ON
+	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
 )
 
 add_library(Sourcetrail_lib_gui 
-	${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
-	platform_includes/includesLinux.h
-	platform_includes/includesMac.h
-	platform_includes/includesWindows.h
+	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
+
+	platform/setupPlatform.h
+	platform/setupPlatform.cpp
+
+	#[[
+	platform/includesLinux.h
+	platform/includesWindows.h
+	platform/includesMac.h
+	]]
 
 	qt/element/bookmark/QtBookmark.cpp
 	qt/element/bookmark/QtBookmark.h
@@ -332,7 +329,7 @@ add_library(Sourcetrail_lib_gui
 
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
-		platform_includes
+		platform
 		qt/element/bookmark
 		qt/element/button
 		qt/element/code
@@ -463,7 +460,7 @@ endif()
 
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
-		"${CMAKE_BINARY_DIR}/src/lib_gui"
+		"${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 target_link_libraries(Sourcetrail_lib_gui
@@ -487,9 +484,9 @@ add_custom_command(
 	TARGET Sourcetrail_lib_gui
 	PRE_BUILD
 	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
-	BYPRODUCTS ${CMAKE_BINARY_DIR}/src/lib_gui/productVersion.h
+	BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/productVersion.h.in
 	DEPENDS ${CMAKE_SOURCE_DIR}/cmake/version.cmake
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	#WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	COMMENT "check/update version number"
 )
 

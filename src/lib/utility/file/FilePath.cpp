@@ -180,45 +180,6 @@ FilePath& FilePath::makeCanonical()
 
 	boost::filesystem::path canonicalPath;
 
-#if defined(_WIN32)
-	boost::filesystem::path abs_p = boost::filesystem::absolute(getPath());
-
-	boost::filesystem::path::iterator it = abs_p.begin();
-
-	// add first element before loop because this won't be recognized as absolute path yet
-	canonicalPath /= *it;
-	it++;
-
-	for (; it != abs_p.end(); ++it)
-	{
-		if (*it == "..")
-		{
-			canonicalPath = canonicalPath.parent_path();
-		}
-		else if (*it == ".")
-		{
-			continue;
-		}
-		else
-		{
-			canonicalPath /= *it;
-
-			if (boost::filesystem::is_symlink(boost::filesystem::symlink_status(canonicalPath)))
-			{
-				boost::filesystem::path symlink = boost::filesystem::read_symlink(canonicalPath);
-				if (!symlink.empty())
-				{
-					// on Windows the read_symlink function discards the drive letter (this is a
-					// boost bug). Therefore we need to make the path absolute again. We also have
-					// to discard the trailing \0 characters so that we can continue appending to
-					// the path.
-					canonicalPath = utility::substrBeforeFirst(
-						boost::filesystem::absolute(symlink).string(), '\0');
-				}
-			}
-		}
-	}
-#else
 	try
 	{
 		canonicalPath = boost::filesystem::canonical(getPath());
@@ -228,7 +189,6 @@ FilePath& FilePath::makeCanonical()
 		LOG_ERROR_STREAM(<< e.what());
 		return *this;
 	}
-#endif
 	m_path = std::make_unique<boost::filesystem::path>(canonicalPath);
 	m_canonicalized = true;
 	return *this;
@@ -260,10 +220,11 @@ std::vector<FilePath> FilePath::expandEnvironmentVariables() const
 		text.replace(match.position(0), match.length(0), s);
 	}
 
-	char environmentVariablePathSeparator = ':';
 
 #if defined(_WIN32) || defined(_WIN64)
-	environmentVariablePathSeparator = ';';
+	const char environmentVariablePathSeparator = ';';
+#else
+	const char environmentVariablePathSeparator = ':';
 #endif
 
 	for (const std::string& str: utility::splitToVector(text, environmentVariablePathSeparator))

@@ -34,16 +34,6 @@ endif()
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Variables --------------------------------------------------------------------
-
-if (WIN32)
-	set(PLATFORM_INCLUDE "includesWindows.h")
-elseif (UNIX)
-	set(PLATFORM_INCLUDE "includesLinux.h")
-else()
-	message(FATAL_ERROR "Unsupported platform!")
-endif ()
-
 # Project ----------------------------------------------------------------------
 
 project(Sourcetrail VERSION ${VERSION_STRING})

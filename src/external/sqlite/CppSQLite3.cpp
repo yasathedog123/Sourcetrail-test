@@ -193,7 +193,7 @@ void CppSQLite3Binary::setEncoded(const unsigned char* pBuf)
 {
 	clear();
 
-	mnEncodedLen = strlen((const char*)pBuf);
+	mnEncodedLen = static_cast<int>(strlen((const char*)pBuf));
 	mnBufferLen = mnEncodedLen + 1; // Allow for NULL terminator
 
 	mpBuf = (unsigned char*)malloc(mnBufferLen);
@@ -1075,7 +1075,7 @@ const char* sz2 = sqlite3_bind_parameter_name(mpVM, 2);
 	if (!nParam)
 	{
 		char buf[128];
-		sprintf(buf, "Parameter '%s' is not valid for this statement", szParam);
+		snprintf(buf, 128, "Parameter '%s' is not valid for this statement", szParam);
 		throw CppSQLite3Exception(CPPSQLITE_ERROR, buf, DONT_DELETE_MSG);
 	}
 
@@ -1249,7 +1249,7 @@ CppSQLite3Statement CppSQLite3DB::compileStatement(const char* szSQL)
 bool CppSQLite3DB::tableExists(const char* szTable)
 {
 	char szSQL[256];
-	sprintf(szSQL,
+	snprintf(szSQL, 256,
 			"select count(*) from sqlite_master where type='table' and name='%s'",
 			szTable);
 	int nRet = execScalar(szSQL);

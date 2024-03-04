@@ -1,8 +1,9 @@
-#include "includes.h"
+#include "setupPlatform.h"
 
 #include "language_packages.h"
 
 #include "AppPath.h"
+#include "UserPaths.h"
 #include "ApplicationSettings.h"
 #include "ConsoleLogger.h"
 #include "FileLogger.h"
@@ -18,6 +19,10 @@
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 #	include "LanguagePackageJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+
+#ifdef _WIN32
+	#include <Windows.h>
+#endif
 
 void setupLogging(const FilePath& logFilePath)
 {

@@ -1,4 +1,4 @@
-#include "includes.h"
+#include "setupPlatform.h"
 
 #include <csignal>
 #include <iostream>
@@ -25,9 +25,7 @@
 #include "SourceGroupFactory.h"
 #include "SourceGroupFactoryModuleCustom.h"
 #include "UserPaths.h"
-#include "Version.h"
 #include "logging.h"
-#include "productVersion.h"
 #include "utility.h"
 #include "utilityApp.h"
 #include "utilityQt.h"
@@ -45,6 +43,10 @@
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
 #	include "SourceGroupFactoryModulePython.h"
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
+
+#ifdef _WIN32
+	#include <windows.h>
+#endif
 
 void signalHandler(int signum)
 {
@@ -93,12 +95,7 @@ void addLanguagePackages()
 
 int main(int argc, char* argv[])
 {
-	// auto p = utility::executeProcessBoost(utility::searchPath(L"mvn") + L" --version", FilePath("/Users/ebsi/Documents/boost_1_67_0"), 3000);
-	// std::wcout << p.first << " " << p.second << std::endl;
-	// return 0;
-
-
-	QCoreApplication::addLibraryPath(QStringLiteral("."));
+	Version version = setupApp(argc, argv);
 
 	if (utility::getOsType() == OS_LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr &&
 		!FilePath(QCoreApplication::applicationDirPath().toStdWString() + L"/../share").exists())
@@ -106,15 +103,10 @@ int main(int argc, char* argv[])
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
 
-	QApplication::setApplicationName(QStringLiteral("Sourcetrail"));
-
 	if (utility::getOsType() != OS_LINUX)
 	{
 		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 	}
-
-	Version version(VERSION_YEAR, VERSION_MINOR, VERSION_COMMIT, GIT_COMMIT_HASH);
-	QApplication::setApplicationVersion(version.toDisplayString().c_str());
 
 	MessageStatus(
 		std::wstring(L"Starting Sourcetrail ") +
@@ -135,8 +127,6 @@ int main(int argc, char* argv[])
 	{
 		// headless Sourcetrail
 		QtCoreApplication qtApp(argc, argv);
-
-		setupApp(argc, argv);
 
 		setupLogging();
 
@@ -188,8 +178,6 @@ int main(int argc, char* argv[])
 		}
 #endif
 		QtApplication qtApp(argc, argv);
-
-		setupApp(argc, argv);
 
 		setupLogging();
 

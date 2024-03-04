@@ -10,6 +10,8 @@
 #include "ApplicationSettings.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
+#include <setupPlatform.h>
+#include <UserPaths.h>
 
 using namespace std;
 using namespace boost::filesystem;
@@ -20,47 +22,30 @@ struct EventListener : Catch2::EventListenerBase
 
 	void testRunStarting(const Catch::TestRunInfo& ) override
 	{
-#ifdef __linux__
-		const std::string homedir = getenv("HOME");
-
-		if (!homedir.empty())
-		{
-			if (!ApplicationSettings::getInstance()->load(
-					FilePath(homedir + "/.config/sourcetrail/ApplicationSettings.xml")))
-			{
-				std::cout << "no settings" << std::endl;
-				return;
-			}
-		}
-		else
-		{
-			std::cout << "no homedir" << std::endl;
-			return;
-		}
-#else
-		ApplicationSettings::getInstance()->load(FilePath(L"data/TestSettings.xml"));
-#endif
+		FilePath settingsFilePath = UserPaths::getAppSettingsFilePath();
+		cout << "Loading settings from " << settingsFilePath.str() << endl;
+		ApplicationSettings::getInstance()->load(settingsFilePath, true);
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 		if (ApplicationSettings::getInstance()->getJavaPath().empty())
 		{
-			std::shared_ptr<PathDetector> pathDetector = utility::getJavaRuntimePathDetector();
-			const std::vector<FilePath> paths = pathDetector->getPaths();
+			shared_ptr<PathDetector> pathDetector = utility::getJavaRuntimePathDetector();
+			const vector<FilePath> paths = pathDetector->getPaths();
 			if (!paths.empty())
 			{
 				ApplicationSettings::getInstance()->setJavaPath(paths.front());
-				std::cout << "Java path written to settings: "
-						  << ApplicationSettings::getInstance()->getJavaPath().str() << std::endl;
+				cout << "Java path written to settings: "
+						  << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
 			}
 			else
 			{
-				std::cout << "no Java" << std::endl;
+				cout << "no Java" << endl;
 			}
 		}
 		else
 		{
-			std::cout << "Java path read from settings: "
-					  << ApplicationSettings::getInstance()->getJavaPath().str() << std::endl;
+			cout << "Java path read from settings: "
+					  << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
 		}
 #endif
 	}
@@ -70,6 +55,8 @@ CATCH_REGISTER_LISTENER(EventListener)
 
 int main( int argc, char* argv[] )
 {
+	setupApp(argc, argv);
+
 	// Workaround for "Unable to configure working directory in CMake/Catch"
 	// https://github.com/catchorg/Catch2/issues/2249
 	// Set the 'working directory' manually:

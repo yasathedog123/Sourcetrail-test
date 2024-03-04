@@ -4,14 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-namespace boost
-{
-namespace filesystem
-{
-class path;
-}
-}	 // namespace boost
+#include <boost/filesystem.hpp>
 
 class FilePath
 {
