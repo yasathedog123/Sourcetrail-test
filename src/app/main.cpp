@@ -97,8 +97,7 @@ int main(int argc, char* argv[])
 {
 	Version version = setupApp(argc, argv);
 
-	if (utility::getOsType() == OS_LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr &&
-		!FilePath(QCoreApplication::applicationDirPath().toStdWString() + L"/../share").exists())
+	if (utility::getOsType() == OS_LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
