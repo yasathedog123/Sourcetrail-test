@@ -38,8 +38,6 @@ Version setupApp(int argc, char* argv[])
 	UserPaths::setUserDataDirectoryPath(userDataPath);
 
 	// Create missing user directory and copy default configurations.
-	// The GUI is a mess without a default 'window_settings.ini'!
-	// TODO(PMost): Get rid of the need for a default 'window_settings.ini'
 	if (!userDataPath.exists()) {
 		FileSystem::createDirectories(userDataPath);
 
@@ -47,6 +45,8 @@ Version setupApp(int argc, char* argv[])
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"ApplicationSettings.xml"),
 			UserPaths::getAppSettingsFilePath());
 
+		// The GUI is a mess without a default 'window_settings.ini'!
+		// TODO(PMost): Get rid of the need for a default 'window_settings.ini'
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"window_settings.ini"),
 			UserPaths::getWindowSettingsFilePath());
 	}
@@ -55,13 +55,14 @@ Version setupApp(int argc, char* argv[])
 		// Add u+w permissions because the source files may be marked read-only in some distros
 		recursive_directory_iterator end;
 		for (recursive_directory_iterator it(userDataPath.getPath()); it != end; ++it) {
-			permissions(*it, perms::owner_write);
+			perms currentPermissions = status(*it).permissions();
+			permissions(*it, currentPermissions | perms::owner_write);
 		}
 	}
 	return version;
 }
 
-void setupPlatform(int argc, char* argv[]) 
+void setupPlatform(int argc, char* argv[])
 {
 	// setupPlatform will be called after setupApp, so UserPaths::setUserDataDirectoryPath has been
 	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.
