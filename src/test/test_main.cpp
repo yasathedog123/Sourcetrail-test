@@ -16,12 +16,17 @@
 using namespace std;
 using namespace boost::filesystem;
 
+static int g_argc;
+static char **g_argv;
+
 struct EventListener : Catch2::EventListenerBase
 {
 	using Catch2::EventListenerBase::EventListenerBase;	   // inherit constructor
 
 	void testRunStarting(const Catch::TestRunInfo& ) override
 	{
+		setupApp(g_argc, g_argv);
+
 		FilePath settingsFilePath = UserPaths::getAppSettingsFilePath();
 		cout << "Loading settings from " << settingsFilePath.str() << endl;
 		ApplicationSettings::getInstance()->load(settingsFilePath, true);
@@ -53,9 +58,10 @@ struct EventListener : Catch2::EventListenerBase
 
 CATCH_REGISTER_LISTENER(EventListener)
 
-int main( int argc, char* argv[] )
+int main(int argc, char* argv[])
 {
-	setupApp(argc, argv);
+	g_argc = argc;
+	g_argv = argv;
 
 	// Workaround for "Unable to configure working directory in CMake/Catch"
 	// https://github.com/catchorg/Catch2/issues/2249
