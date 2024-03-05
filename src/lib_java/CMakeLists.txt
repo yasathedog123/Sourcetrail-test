@@ -44,7 +44,6 @@ target_include_directories(Sourcetrail_lib_java
 
 target_link_libraries(Sourcetrail_lib_java
 	PUBLIC
-		Sourcetrail_lib_utility
 		Sourcetrail_lib
 		JNI::JNI
 )

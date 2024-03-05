@@ -57,9 +57,125 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
-# Clang ------------------------------------------------------------------------
+# Boost ------------------------------------------------------------------------
+
+set(Boost_NO_WARN_NEW_VERSIONS ON)
+
+if (isVcpkgBuild)
+	set(Boost_NO_SYSTEM_PATHS ON)
+endif()
+
+find_package(Boost 1.81 REQUIRED COMPONENTS
+	# compiled libraries:
+	system program_options filesystem date_time locale
+
+	# 'header-only' libraries which can't be found with find_package:
+	# interprocess uuid asio process
+
+	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
+	# for a list of compiled libraries.
+)
+message(STATUS "Found Boost ${Boost_VERSION_STRING}")
+
+# Qt ---------------------------------------------------------------------------
+
+set (QT_MIN_VERSION "5.15.10")
+set (QT_MIN_VERSION_HEX 0x050F0A)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+	Widgets PrintSupport Network Svg
+)
+
+if (WIN32)
+	find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+		WinExtras
+	)
+endif()
+
+message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
+
+# According to this bug-entry (https://bugreports.qt.io/browse/QTBUG-87248)
+# the code below isn't necessary anymore:
+#[[
+# FIX: Qt was built with -reduce-relocations
+if (Qt5_POSITION_INDEPENDENT_CODE)
+	SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+]]
+
+# Since Qt 5.13, the macro 'QT_DEPRECATED_WARNINGS' has no effect.
+# Disable all the APIs deprecated at or before the specified Qt version:
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
+
+# SQLite3 ----------------------------------------------------------------------
+
+if (isVcpkgBuild)
+	find_package(unofficial-sqlite3 CONFIG REQUIRED)
+
+	add_library(External_lib_sqlite3 ALIAS unofficial::sqlite3::sqlite3)
+else()
+	find_package(SQLite3 REQUIRED)
+	message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
+
+	add_library(External_lib_sqlite3 ALIAS SQLite::SQLite3)
+endif()
+
+# TinyXML ----------------------------------------------------------------------
+
+if (isVcpkgBuild)
+	find_package(tinyxml CONFIG REQUIRED)
+
+	add_library(External_lib_tinyxml ALIAS unofficial-tinyxml::unofficial-tinyxml)
+else()
+	if (UNIX)
+		find_package(PkgConfig REQUIRED)
+	endif()
+
+	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
+	message(STATUS "Found tinyxml ${tinyxml_VERSION}")
+
+	add_library(External_lib_tinyxml ALIAS PkgConfig::tinyxml)
+endif()
+
+# External Lib CppSQlite3  ------------------------------------------------------------------
+
+add_subdirectory(src/external)
+
+# Lib Utility ------------------------------------------------------------------
+
+add_subdirectory(src/lib_utility)
+
+# Lib Gui ----------------------------------------------------------------------
+
+add_subdirectory(src/lib_gui)
+
+# Lib --------------------------------------------------------------------------
+
+if (UNIX)
+	find_package(Threads REQUIRED)
+endif()
+
+add_subdirectory(src/lib)
+
+#
+# Resolve cyclic dependencies between Sourcetrail_lib and Sourcetrail_lib_gui:
+#
+
+set_target_properties(Sourcetrail_lib
+	PROPERTIES
+		LINK_INTERFACE_MULTIPLICITY 3
+)
+
+set_target_properties(Sourcetrail_lib_gui
+	PROPERTIES
+		LINK_INTERFACE_MULTIPLICITY 3
+)
+
+# Lib Cxx ----------------------------------------------------------------------
 
 if (BUILD_CXX_LANGUAGE_PACKAGE)
+
+	# Clang:
+
 	find_package(Clang REQUIRED)
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
@@ -107,106 +223,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 			${REQ_LLVM_LIBS}
 	)
-endif()
 
-# Boost ------------------------------------------------------------------------
-
-set(Boost_NO_WARN_NEW_VERSIONS ON)
-
-if (isVcpkgBuild)
-	set(Boost_NO_SYSTEM_PATHS ON)
-endif()
-
-find_package(Boost 1.81 REQUIRED COMPONENTS
-	# compiled libraries:
-	system program_options filesystem date_time locale
-
-	# 'header-only' libraries which can't be found with find_package:
-	# interprocess uuid asio process
-
-	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
-	# for a list of compiled libraries.
-)
-message(STATUS "Found Boost ${Boost_VERSION_STRING}")
-
-# Qt ---------------------------------------------------------------------------
-
-set (QT_MIN_VERSION "5.15.10")
-set (QT_MIN_VERSION_HEX 0x050F0A)
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS 
-	Widgets PrintSupport Network Svg
-)
-
-if (WIN32)
-	find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-		WinExtras
-	)
-endif()
-
-message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
-
-# According to this bug-entry (https://bugreports.qt.io/browse/QTBUG-87248)
-# the code below isn't necessary anymore:
-#[[
-# FIX: Qt was built with -reduce-relocations
-if (Qt5_POSITION_INDEPENDENT_CODE)
-	SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
-]]
-
-# Since Qt 5.13, the macro 'QT_DEPRECATED_WARNINGS' has no effect.
-# Disable all the APIs deprecated at or before the specified Qt version:
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
-
-# SQLite3 ----------------------------------------------------------------------
-
-if (isVcpkgBuild)
-	find_package(unofficial-sqlite3 CONFIG REQUIRED)
-
-	add_library(External_lib_sqlite3 ALIAS unofficial::sqlite3::sqlite3)
-else()
-	find_package(SQLite3 REQUIRED)
-	message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
-
-	add_library(External_lib_sqlite3 ALIAS SQLite::SQLite3)
-endif()
-
-# TinyXML ----------------------------------------------------------------------
-
-if (isVcpkgBuild)
-	find_package(tinyxml CONFIG REQUIRED)
-	
-	add_library(External_lib_tinyxml ALIAS unofficial-tinyxml::unofficial-tinyxml)
-else()
-	if (UNIX)
-		find_package(PkgConfig REQUIRED)
-	endif()
-
-	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
-	message(STATUS "Found tinyxml ${tinyxml_VERSION}")
-
-	add_library(External_lib_tinyxml ALIAS PkgConfig::tinyxml)
-endif()
-
-# External Lib CppSQlite3  ------------------------------------------------------------------
-
-add_subdirectory(src/external)
-
-# Lib Utility ------------------------------------------------------------------
-
-add_subdirectory(src/lib_utility)
-
-# Lib --------------------------------------------------------------------------
-
-if (UNIX)
-	find_package(Threads REQUIRED)
-endif()
-
-add_subdirectory(src/lib)
-
-# Lib Cxx ----------------------------------------------------------------------
-
-if (BUILD_CXX_LANGUAGE_PACKAGE)
 	add_subdirectory(src/lib_cxx)
 else()
 	message(STATUS "Building the Cxx indexer will be skipped. You can enable building this target by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
@@ -215,12 +232,15 @@ endif()
 # Lib Java ---------------------------------------------------------------------
 
 if (BUILD_JAVA_LANGUAGE_PACKAGE)
+	# Java:
 	find_package(Java 1.8 REQUIRED)
 	message(STATUS "Found Java ${Java_VERSION}")
 
+	# JNI:
 	find_package(JNI REQUIRED)
 	message(STATUS "Found JNI ${JNI_VERSION}")
 
+	# Maven:
 	find_program(MVN_COMMAND NAMES "mvn" REQUIRED)
 	message(STATUS "Found Maven ${MVN_COMMAND}")
 
@@ -228,10 +248,6 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 else()
 	message(STATUS "Building the Java indexer will be skipped. You can enable building this target by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
 endif()
-
-# Lib Gui ----------------------------------------------------------------------
-
-add_subdirectory(src/lib_gui)
 
 # Indexer App ------------------------------------------------------------------
 

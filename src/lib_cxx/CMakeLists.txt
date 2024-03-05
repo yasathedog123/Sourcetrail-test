@@ -128,7 +128,6 @@ target_include_directories(Sourcetrail_lib_cxx
 
 target_link_libraries(Sourcetrail_lib_cxx
 	PUBLIC
-		Sourcetrail_lib_utility
 		Sourcetrail_lib
 		External_lib_clang
 )

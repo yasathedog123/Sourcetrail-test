@@ -767,17 +767,19 @@ target_include_directories(Sourcetrail_lib
 
 target_link_libraries(Sourcetrail_lib
 	PUBLIC
-		External_lib_tinyxml
-		External_lib_cppsqlite3
 		Sourcetrail_lib_gui
+		Sourcetrail_lib_utility
+
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
 		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
+
+		External_lib_tinyxml
+		External_lib_cppsqlite3
 
 		Boost::headers
 		Boost::system
 		Boost::program_options
 		Boost::filesystem
-		Boost::date_time
 )
 
 if (UNIX)
