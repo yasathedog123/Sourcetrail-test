@@ -71,6 +71,22 @@ target_include_directories(Sourcetrail_test
 		helper
 )
 
+# Determine which Catch2 version is available:
+
+if (${Catch2_VERSION} VERSION_LESS 3)
+	message(STATUS "Using Catch2 V2")
+	target_compile_definitions(Sourcetrail_test
+		PRIVATE
+			HAVE_CATCH2_V2
+	)
+elseif (${Catch2_VERSION} VERSION_GREATER_EQUAL 3)
+	message(STATUS "Using Catch2 V3")
+	target_compile_definitions(Sourcetrail_test
+		PRIVATE
+			HAVE_CATCH2_V3
+	)
+endif()
+
 set_target_properties(Sourcetrail_test
 	PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/"
