@@ -37,11 +37,11 @@ Version setupApp(int argc, char* argv[])
 	FilePath userDataPath = FilePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).toStdWString() + L"/").getAbsolute();
 	UserPaths::setUserDataDirectoryPath(userDataPath);
 
-	// Create missing user directory and copy default configurations.
+	// Create missing user directory and copy default configurations:
 	if (!userDataPath.exists()) {
 		FileSystem::createDirectories(userDataPath);
 
-		// This "copyFile" method does nothing if the copy destination already exist
+		// This "copyFile" method does nothing if the copy destination already exist.
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"ApplicationSettings.xml"),
 			UserPaths::getAppSettingsFilePath());
 
@@ -49,12 +49,9 @@ Version setupApp(int argc, char* argv[])
 		// TODO(PMost): Get rid of the need for a default 'window_settings.ini'
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"window_settings.ini"),
 			UserPaths::getWindowSettingsFilePath());
-	}
 
-	if constexpr(getOsType() == OsType::OS_LINUX) {
-		// Add u+w permissions because the source files may be marked read-only in some distros
-		recursive_directory_iterator end;
-		for (recursive_directory_iterator it(userDataPath.getPath()); it != end; ++it) {
+		// Add u+w permissions because the source files may be marked read-only in some Linux distros:
+		for (recursive_directory_iterator it(userDataPath.getPath()); it != recursive_directory_iterator(); ++it) {
 			perms currentPermissions = status(*it).permissions();
 			permissions(*it, currentPermissions | perms::owner_write);
 		}

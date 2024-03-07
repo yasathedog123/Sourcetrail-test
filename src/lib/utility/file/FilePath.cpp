@@ -177,21 +177,18 @@ FilePath& FilePath::makeCanonical()
 	{
 		return *this;
 	}
-
-	boost::filesystem::path canonicalPath;
-
 	try
 	{
-		canonicalPath = boost::filesystem::canonical(getPath());
+		boost::filesystem::path canonicalPath = boost::filesystem::canonical(getPath());
+		m_path = std::make_unique<boost::filesystem::path>(canonicalPath);
+		m_canonicalized = true;
+		return *this;
 	}
-	catch (boost::filesystem::filesystem_error e)
+	catch (const boost::filesystem::filesystem_error &e)
 	{
 		LOG_ERROR_STREAM(<< e.what());
 		return *this;
 	}
-	m_path = std::make_unique<boost::filesystem::path>(canonicalPath);
-	m_canonicalized = true;
-	return *this;
 }
 
 FilePath FilePath::getCanonical() const
