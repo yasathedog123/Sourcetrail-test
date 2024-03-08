@@ -10,14 +10,9 @@ FilePath AppPath::getSharedDataDirectoryPath()
 	return s_sharedDataDirectoryPath;
 }
 
-bool AppPath::setSharedDataDirectoryPath(const FilePath& path)
+void AppPath::setSharedDataDirectoryPath(const FilePath& path)
 {
-	if (!path.empty())
-	{
-		s_sharedDataDirectoryPath = path;
-		return true;
-	}
-	return false;
+	s_sharedDataDirectoryPath = path;
 }
 
 FilePath AppPath::getCxxIndexerFilePath()
@@ -35,12 +30,7 @@ FilePath AppPath::getCxxIndexerFilePath()
 	return s_sharedDataDirectoryPath.getConcatenated(cxxIndexerName);
 }
 
-bool AppPath::setCxxIndexerDirectoryPath(const FilePath& path)
+void AppPath::setCxxIndexerDirectoryPath(const FilePath& path)
 {
-	if (!path.empty())
-	{
-		s_cxxIndexerDirectoryPath = path;
-		return true;
-	}
-	return false;
+	s_cxxIndexerDirectoryPath = path;
 }

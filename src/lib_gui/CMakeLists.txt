@@ -14,11 +14,11 @@ configure_file(
 	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
 )
 
-add_library(Sourcetrail_lib_gui 
+add_library(Sourcetrail_lib_gui
 	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
 
-	platform/setupPlatform.h
-	platform/setupPlatform.cpp
+	platform/setupApp.h
+	platform/setupApp.cpp
 
 	#[[
 	platform/includesLinux.h

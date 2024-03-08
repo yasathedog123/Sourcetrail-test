@@ -7,10 +7,11 @@
 // IMPORTANT NOTE: removed signal listener for "EXCEPTION_ACCESS_VIOLATION" from catch source code
 // because it interferes with the jni interface that emits such a signal on purpose
 
+#include <AppPath.h>
 #include "ApplicationSettings.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
-#include <setupPlatform.h>
+#include <setupApp.h>
 #include <UserPaths.h>
 
 using namespace std;
@@ -25,7 +26,10 @@ struct EventListener : Catch2::EventListenerBase
 
 	void testRunStarting(const Catch::TestRunInfo& ) override
 	{
-		setupApp(g_argc, g_argv);
+		setupAppDirectories(g_argc, g_argv);
+
+		// The tests assume an empty shared data directory, so unset it:
+		AppPath::setSharedDataDirectoryPath(FilePath());
 
 		FilePath settingsFilePath = UserPaths::getAppSettingsFilePath();
 		cout << "Loading settings from " << settingsFilePath.str() << endl;

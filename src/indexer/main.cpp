@@ -1,4 +1,4 @@
-#include "setupPlatform.h"
+#include "setupApp.h"
 
 #include "language_packages.h"
 

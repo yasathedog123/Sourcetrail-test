@@ -1,4 +1,4 @@
-#include "setupPlatform.h"
+#include "setupApp.h"
 
 #include <csignal>
 #include <iostream>
@@ -95,7 +95,7 @@ void addLanguagePackages()
 
 int main(int argc, char* argv[])
 {
-	Version version = setupApp(argc, argv);
+	Version version = setupAppDirectories(argc, argv);
 
 	if (utility::getOsType() == OS_LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{
@@ -119,8 +119,8 @@ int main(int argc, char* argv[])
 	{
 		return 0;
 	}
-
-	setupPlatform(argc, argv);
+	
+	setupAppEnvironment(argc, argv);
 
 	if (commandLineParser.runWithoutGUI())
 	{
