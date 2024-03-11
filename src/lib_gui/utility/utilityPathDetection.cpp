@@ -10,17 +10,13 @@
 #	include "CxxHeaderPathDetector.h"
 #	include "CxxVs10To14HeaderPathDetector.h"
 #	include "CxxVs15ToLatestHeaderPathDetector.h"
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+#endif
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-#	include "JavaPathDetectorLinux.h"
-#	include "JavaPathDetectorMac.h"
-#	include "JavaPathDetectorWindows.h"
-#	include "JreSystemLibraryPathDetectorLinux.h"
-#	include "JreSystemLibraryPathDetectorMac.h"
-#	include "JreSystemLibraryPathDetectorWindows.h"
+#	include "JavaPathDetectorLinuxWindowsMac.h"
+#	include "JreSystemLibraryPathDetector.h"
 #	include "MavenPathDetectorUnixWindows.h"
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+#endif
 
 std::shared_ptr<CombinedPathDetector> utility::getJavaRuntimePathDetector()
 {
@@ -30,20 +26,19 @@ std::shared_ptr<CombinedPathDetector> utility::getJavaRuntimePathDetector()
 	switch (utility::getOsType())
 	{
 	case OS_WINDOWS:
-		combinedDetector->addDetector(std::make_shared<JavaPathDetectorWindows>("1.8", true));
-		combinedDetector->addDetector(std::make_shared<JavaPathDetectorWindows>("9", true));
+		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Windows"));
 		break;
 	case OS_MAC:
-		combinedDetector->addDetector(std::make_shared<JavaPathDetectorMac>("1.8"));
+		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Mac"));
 		break;
 	case OS_LINUX:
-		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinux>("1.8"));
+		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Linux"));
 		break;
 	default:
 		LOG_WARNING("No suitable Java Runtime path detector found");
 		break;
 	}
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+#endif
 
 	return combinedDetector;
 }
@@ -56,20 +51,22 @@ std::shared_ptr<CombinedPathDetector> utility::getJreSystemLibraryPathsDetector(
 	switch (utility::getOsType())
 	{
 	case OS_WINDOWS:
-		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetectorWindows>("1.8"));
-		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetectorWindows>("9"));
+		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
+			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Windows")));
 		break;
 	case OS_MAC:
-		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetectorMac>("1.8"));
+		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
+			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Mac")));
 		break;
 	case OS_LINUX:
-		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetectorLinux>("1.8"));
+		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
+			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Linux")));
 		break;
 	default:
 		LOG_WARNING("No suitable JRE system library path detector found");
 		break;
 	}
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+#endif
 
 	return combinedDetector;
 }
@@ -92,7 +89,7 @@ std::shared_ptr<CombinedPathDetector> utility::getMavenExecutablePathDetector()
 		LOG_WARNING("No suitable Maven path detector found");
 		break;
 	}
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+#endif
 
 	return combinedDetector;
 }
@@ -146,7 +143,7 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxVsHeaderPathDetector()
 		CxxVs10To14HeaderPathDetector::VISUAL_STUDIO_2010, true, APPLICATION_ARCHITECTURE_X86_32));
 	combinedDetector->addDetector(std::make_shared<CxxVs10To14HeaderPathDetector>(
 		CxxVs10To14HeaderPathDetector::VISUAL_STUDIO_2010, true, APPLICATION_ARCHITECTURE_X86_64));
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+#endif
 
 	return combinedDetector;
 }
@@ -157,7 +154,7 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxHeaderPathDetector()
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	combinedDetector->addDetector(std::make_shared<CxxHeaderPathDetector>("clang"));
 	combinedDetector->addDetector(std::make_shared<CxxHeaderPathDetector>("gcc"));
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+#endif
 	return combinedDetector;
 }
 
@@ -167,6 +164,6 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxFrameworkPathDetector()
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	combinedDetector->addDetector(std::make_shared<CxxFrameworkPathDetector>("clang"));
 	combinedDetector->addDetector(std::make_shared<CxxFrameworkPathDetector>("gcc"));
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+#endif
 	return combinedDetector;
 }

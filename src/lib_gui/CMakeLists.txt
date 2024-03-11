@@ -20,12 +20,6 @@ add_library(Sourcetrail_lib_gui
 	platform/setupApp.h
 	platform/setupApp.cpp
 
-	#[[
-	platform/includesLinux.h
-	platform/includesWindows.h
-	platform/includesMac.h
-	]]
-
 	qt/element/bookmark/QtBookmark.cpp
 	qt/element/bookmark/QtBookmark.h
 	qt/element/bookmark/QtBookmarkCategory.cpp
@@ -427,21 +421,11 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 			utility/path_detector/java_runtime/JavaPathDetector.cpp
 			utility/path_detector/java_runtime/JavaPathDetector.h
-			utility/path_detector/java_runtime/JavaPathDetectorLinux.cpp
-			utility/path_detector/java_runtime/JavaPathDetectorLinux.h
-			utility/path_detector/java_runtime/JavaPathDetectorMac.cpp
-			utility/path_detector/java_runtime/JavaPathDetectorMac.h
-			utility/path_detector/java_runtime/JavaPathDetectorWindows.cpp
-			utility/path_detector/java_runtime/JavaPathDetectorWindows.h
+			utility/path_detector/java_runtime/JavaPathDetectorLinuxWindowsMac.h
+			utility/path_detector/java_runtime/JavaPathDetectorLinuxWindowsMac.cpp
 
 			utility/path_detector/jre_system_library/JreSystemLibraryPathDetector.cpp
 			utility/path_detector/jre_system_library/JreSystemLibraryPathDetector.h
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorLinux.cpp
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorLinux.h
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorMac.cpp
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorMac.h
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorWindows.cpp
-			utility/path_detector/jre_system_library/JreSystemLibraryPathDetectorWindows.h
 
 			utility/path_detector/maven_executable/MavenPathDetectorUnixWindows.cpp
 			utility/path_detector/maven_executable/MavenPathDetectorUnixWindows.h

@@ -340,18 +340,15 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		{
 		case OS_WINDOWS:
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (jvm.dll)"));
-			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/bin/client/jvm.dll"));
+			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/bin/server/jvm.dll"));
 			break;
 		case OS_MAC:
-			m_javaPath->setFileFilter(
-				QStringLiteral("JLI or JVM Library (libjli.dylib libjvm.dylib)"));
-			m_javaPath->setPlaceholderText(QStringLiteral(
-				"/Library/Java/JavaVirtualMachines/<jdk_version>/Contents/MacOS/libjli.dylib"));
+			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.dylib)"));
+			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.dylib"));
 			break;
 		case OS_LINUX:
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.so)"));
-			m_javaPath->setPlaceholderText(
-				QStringLiteral("<jre_path>/bin/<arch>/server/libjvm.so"));
+			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.so"));
 			break;
 		default:
 			LOG_WARNING("No placeholders and filters set for Java path selection");
@@ -359,14 +356,12 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		}
 
 		const std::string javaArchitectureString = utility::getApplicationArchitectureType() ==
-				APPLICATION_ARCHITECTURE_X86_32
-			? "32 Bit"
-			: "64 Bit";
+				APPLICATION_ARCHITECTURE_X86_32 ? "32 Bit" : "64 Bit";
 
 		addLabelAndWidget(
 			("Java Path (" + javaArchitectureString + ")").c_str(), m_javaPath, layout, row);
 
-		const std::string javaVersionString = javaArchitectureString + " Java 8";
+		const std::string javaVersionString = javaArchitectureString + " Java";
 
 		addHelpButton(
 			QStringLiteral("Java Path"),
@@ -415,14 +410,21 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		// maven path
 		m_mavenPath = new QtLocationPicker(this);
 
-#ifdef WIN32
-		m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn.cmd)"));
-		m_mavenPath->setPlaceholderText(QStringLiteral("<maven_path>/bin/mvn.cmd"));
-#else
-		m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn)"));
-		m_mavenPath->setPlaceholderText(QStringLiteral("<binarypath>/mvn"));
-#endif
-
+		switch (utility::getOsType())
+		{
+		case OS_WINDOWS:
+			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn.cmd)"));
+			m_mavenPath->setPlaceholderText(QStringLiteral("<maven_path>/bin/mvn.cmd"));
+			break;
+		case OS_LINUX:
+		case OS_MAC:
+			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn)"));
+			m_mavenPath->setPlaceholderText(QStringLiteral("<binarypath>/mvn"));
+			break;
+		default:
+			LOG_WARNING("No placeholders and filters set for Maven path selection");
+			break;
+		}
 		addLabelAndWidget(QStringLiteral("Maven Path"), m_mavenPath, layout, row);
 
 		addHelpButton(
