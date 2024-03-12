@@ -48,7 +48,7 @@ std::string prepareJavaEnvironment()
 			}
 		}
 
-		JavaEnvironmentFactory::createInstance(classPath, errorString);
+		JavaEnvironmentFactory::createInstance(classPath, &errorString);
 	}
 
 	return errorString;

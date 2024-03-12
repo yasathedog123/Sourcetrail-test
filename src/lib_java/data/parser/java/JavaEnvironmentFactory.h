@@ -7,13 +7,14 @@
 #include <string>
 #include <thread>
 #include <jni.h>
+#include <boost/dll.hpp>
 
 class JavaEnvironment;
 
 class JavaEnvironmentFactory
 {
 public:
-	static void createInstance(std::string classPath, std::string& errorString);
+	static void createInstance(const std::string &classPath, std::string *errorString);
 	static std::shared_ptr<JavaEnvironmentFactory> getInstance();
 
 	~JavaEnvironmentFactory();
@@ -23,6 +24,7 @@ public:
 private:
 	friend class JavaEnvironment;
 
+	static boost::dll::shared_library s_jvmLibrary;
 	static std::shared_ptr<JavaEnvironmentFactory> s_instance;
 	static std::string s_classPath;
 

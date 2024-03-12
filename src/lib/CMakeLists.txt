@@ -753,6 +753,9 @@ target_compile_definitions(Sourcetrail_lib
 		# (https://github.com/microsoft/vcpkg/issues/4481)
 		BOOST_UUID_FORCE_AUTO_LINK
 
+		# If boost::filesystem gets replaced with std::filesystem, then this symbol must be defined:
+		#BOOST_DLL_USE_STD_FS
+
 		# Trying to add the definition to the boost target like this:
 		# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
 		# leads to the error:

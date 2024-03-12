@@ -4,11 +4,14 @@
 #include "JavaEnvironment.h"
 #include "logging.h"
 #include "utilityLibrary.h"
-#include "utilityWindows.h"
 
 #include <cstdlib>
 
-void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& errorString)
+boost::dll::shared_library JavaEnvironmentFactory::s_jvmLibrary;
+std::shared_ptr<JavaEnvironmentFactory> JavaEnvironmentFactory::s_instance;
+std::string JavaEnvironmentFactory::s_classPath;
+
+void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::string *errorString)
 {
 	if (s_instance)
 	{
@@ -31,14 +34,14 @@ void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& 
 
 	if (javaPath.empty())
 	{
-		errorString = "No Java Path provided in preferences.";
+		*errorString = "No Java Path provided in preferences.";
 		return;
 	}
 
 	createInstanceFunction = utility::loadFunctionFromLibrary<jint, JavaVM**, void**, void*>(
-		javaPath, "JNI_CreateJavaVM", errorString);
+		&s_jvmLibrary, javaPath, "JNI_CreateJavaVM", errorString);
 
-	if (!createInstanceFunction && !errorString.empty())
+	if (!createInstanceFunction && !errorString->empty())
 	{
 		return;
 	}
@@ -58,7 +61,7 @@ void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& 
 
 	// Use this option to allow attaching a debugger:
 	//options.push_back({ const_cast<char*>("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000") });
-	// 
+	//
 	// use these options to enable profiling in VisualVM
 	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote") });
 	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.port=9010") });
@@ -77,24 +80,23 @@ void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& 
 	{
 		if (rc == JNI_EVERSION)
 		{
-			errorString = "JVM is outdated and doesn't meet requirements";
+			*errorString = "JVM is outdated and doesn't meet requirements";
 		}
 		else if (rc == JNI_ENOMEM)
 		{
-			errorString = "not enough memory for JVM";
+			*errorString = "not enough memory for JVM";
 		}
 		else if (rc == JNI_EINVAL)
 		{
-			errorString = "invalid argument for launching JVM";
+			*errorString = "invalid argument for launching JVM";
 		}
 		else if (rc == JNI_EEXIST)
 		{
-			errorString = "the process can only launch one JVM an not more";
+			*errorString = "the process can only launch one JVM an not more";
 		}
 		else
 		{
-			errorString = "could not create the JVM instance (error code " + std::to_string(rc) +
-				")";
+			*errorString = "could not create the JVM instance (error code " + std::to_string(rc) + ")";
 		}
 	}
 	else
@@ -141,11 +143,11 @@ std::shared_ptr<JavaEnvironment> JavaEnvironmentFactory::createEnvironment()
 	return std::shared_ptr<JavaEnvironment>(new JavaEnvironment(m_jvm, env));
 }
 
-std::shared_ptr<JavaEnvironmentFactory> JavaEnvironmentFactory::s_instance;
 
-std::string JavaEnvironmentFactory::s_classPath;
-
-JavaEnvironmentFactory::JavaEnvironmentFactory(JavaVM* jvm): m_jvm(jvm) {}
+JavaEnvironmentFactory::JavaEnvironmentFactory(JavaVM* jvm)
+	: m_jvm(jvm)
+{
+}
 
 void JavaEnvironmentFactory::registerEnvironment()
 {

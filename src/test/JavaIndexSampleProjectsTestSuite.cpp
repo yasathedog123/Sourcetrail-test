@@ -49,7 +49,7 @@ void setupJavaEnvironmentFactory()
 			}
 		}
 
-		JavaEnvironmentFactory::createInstance(classPath, errorString);
+		JavaEnvironmentFactory::createInstance(classPath, &errorString);
 	}
 }
 

@@ -70,7 +70,7 @@ find_package(Boost 1.81 REQUIRED COMPONENTS
 	system program_options filesystem date_time locale
 
 	# 'header-only' libraries which can't be found with find_package:
-	# interprocess uuid asio process
+	# interprocess uuid asio process predef dll
 
 	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 	# for a list of compiled libraries.
