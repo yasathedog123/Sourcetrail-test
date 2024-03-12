@@ -60,14 +60,16 @@ std::string getOsTypeString();
 
 constexpr ApplicationArchitectureType getApplicationArchitectureType()
 {
-#if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(_M_X64) ||             \
-	defined(WIN64)
-	return APPLICATION_ARCHITECTURE_X86_64;
-#else
-	return APPLICATION_ARCHITECTURE_X86_32;
-#endif
-	return APPLICATION_ARCHITECTURE_UNKNOWN;
+	static_assert(BOOST_ARCH_X86_32 || BOOST_ARCH_X86_64, "Unknown architecture!");
+
+	if constexpr (BOOST_ARCH_X86_64)
+		return ApplicationArchitectureType::X86_64;
+	else if constexpr (BOOST_ARCH_X86_32)
+		return ApplicationArchitectureType::X86_32;
+	else
+		return ApplicationArchitectureType::UNKNOWN;
 }
-}	 // namespace utility
+
+}
 
 #endif	  // UTILITY_APP_H

@@ -34,7 +34,7 @@ void LogManager::setLoggingEnabled(bool enabled)
 		{
 			LOG_INFO(
 				std::string("Enabled logging for Sourcetrail ") +
-				(utility::getApplicationArchitectureType() == APPLICATION_ARCHITECTURE_X86_32
+				(utility::getApplicationArchitectureType() == ApplicationArchitectureType::X86_32
 					 ? "32"
 					 : "64") +
 				" bit, " + "version " + Version::getApplicationVersion().toDisplayString());

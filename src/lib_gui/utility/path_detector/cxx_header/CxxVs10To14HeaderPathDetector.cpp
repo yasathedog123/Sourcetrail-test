@@ -14,7 +14,7 @@ CxxVs10To14HeaderPathDetector::CxxVs10To14HeaderPathDetector(
 	VisualStudioType type, bool isExpress, ApplicationArchitectureType architecture)
 	: PathDetector(
 		  visualStudioTypeToString(type) + (isExpress ? " Express" : "") +
-		  (architecture == APPLICATION_ARCHITECTURE_X86_64 ? " 64 Bit" : ""))
+		  (architecture == ApplicationArchitectureType::X86_64 ? " 64 Bit" : ""))
 	, m_version(visualStudioTypeToVersion(type))
 	, m_isExpress(isExpress)
 	, m_architecture(architecture)
@@ -83,7 +83,7 @@ std::vector<FilePath> CxxVs10To14HeaderPathDetector::doGetPaths() const
 FilePath CxxVs10To14HeaderPathDetector::getVsInstallPathUsingRegistry() const
 {
 	QString key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\";
-	if (m_architecture == APPLICATION_ARCHITECTURE_X86_32)
+	if (m_architecture == ApplicationArchitectureType::X86_32)
 	{
 		key += "Wow6432Node\\";
 	}

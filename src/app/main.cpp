@@ -96,12 +96,12 @@ void addLanguagePackages()
 int main(int argc, char* argv[])
 {
 	Version version = setupAppDirectories(argc, argv);
-	
+
 	if (utility::getOsType() == OsType::LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
-	
+
 	if (utility::getOsType() != OsType::LINUX)
 	{
 		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 
 	MessageStatus(
 		std::wstring(L"Starting Sourcetrail ") +
-		(utility::getApplicationArchitectureType() == APPLICATION_ARCHITECTURE_X86_32 ? L"32" : L"64") +
+		(utility::getApplicationArchitectureType() == ApplicationArchitectureType::X86_32 ? L"32" : L"64") +
 		L" bit, " + L"version " + version.toDisplayWString())
 		.dispatch();
 

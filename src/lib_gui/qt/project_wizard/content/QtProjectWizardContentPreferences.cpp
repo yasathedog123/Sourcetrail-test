@@ -356,7 +356,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		}
 
 		const std::string javaArchitectureString = utility::getApplicationArchitectureType() ==
-				APPLICATION_ARCHITECTURE_X86_32 ? "32 Bit" : "64 Bit";
+				ApplicationArchitectureType::X86_32 ? "32 Bit" : "64 Bit";
 
 		addLabelAndWidget(
 			("Java Path (" + javaArchitectureString + ")").c_str(), m_javaPath, layout, row);
