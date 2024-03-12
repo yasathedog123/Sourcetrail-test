@@ -53,7 +53,7 @@ void QtProjectWizardContentPathsHeaderSearchGlobal::save()
 
 bool QtProjectWizardContentPathsHeaderSearchGlobal::check()
 {
-	if (utility::getOsType() == OS_WINDOWS)
+	if (utility::getOsType() == OsType::WINDOWS)
 	{
 		return QtProjectWizardContentPaths::check();
 	}

@@ -25,13 +25,13 @@ std::shared_ptr<CombinedPathDetector> utility::getJavaRuntimePathDetector()
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 	switch (utility::getOsType())
 	{
-	case OS_WINDOWS:
+	case OsType::WINDOWS:
 		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Windows"));
 		break;
-	case OS_MAC:
+	case OsType::MAC:
 		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Mac"));
 		break;
-	case OS_LINUX:
+	case OsType::LINUX:
 		combinedDetector->addDetector(std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Linux"));
 		break;
 	default:
@@ -50,15 +50,15 @@ std::shared_ptr<CombinedPathDetector> utility::getJreSystemLibraryPathsDetector(
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 	switch (utility::getOsType())
 	{
-	case OS_WINDOWS:
+	case OsType::WINDOWS:
 		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
 			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Windows")));
 		break;
-	case OS_MAC:
+	case OsType::MAC:
 		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
 			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Mac")));
 		break;
-	case OS_LINUX:
+	case OsType::LINUX:
 		combinedDetector->addDetector(std::make_shared<JreSystemLibraryPathDetector>(
 			std::make_shared<JavaPathDetectorLinuxWindowsMac>("Java for Linux")));
 		break;
@@ -78,11 +78,11 @@ std::shared_ptr<CombinedPathDetector> utility::getMavenExecutablePathDetector()
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 	switch (utility::getOsType())
 	{
-	case OS_WINDOWS:
+	case OsType::WINDOWS:
 		combinedDetector->addDetector(std::make_shared<MavenPathDetectorUnixWindows>("Maven for Windows"));
 		break;
-	case OS_MAC:
-	case OS_LINUX:
+	case OsType::MAC:
+	case OsType::LINUX:
 		combinedDetector->addDetector(std::make_shared<MavenPathDetectorUnixWindows>("Maven for Unix"));
 		break;
 	default:
@@ -98,7 +98,7 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxVsHeaderPathDetector()
 {
 	std::shared_ptr<CombinedPathDetector> combinedDetector = std::make_shared<CombinedPathDetector>();
 
-	if (utility::getOsType() != OS_WINDOWS)
+	if (utility::getOsType() != OsType::WINDOWS)
 	{
 		return combinedDetector;
 	}

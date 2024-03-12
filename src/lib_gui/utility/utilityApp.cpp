@@ -242,7 +242,7 @@ void utility::killRunningProcesses()
 int utility::getIdealThreadCount()
 {
 	int threadCount = QThread::idealThreadCount();
-	if (getOsType() == OS_WINDOWS)
+	if (getOsType() == OsType::WINDOWS)
 	{
 		threadCount -= 1;
 	}
@@ -254,11 +254,11 @@ std::string utility::getOsTypeString()
 	// WARNING: Don't change these string. The server API relies on them.
 	switch (utility::getOsType())
 	{
-	case OS_WINDOWS:
+	case OsType::WINDOWS:
 		return "windows";
-	case OS_MAC:
+	case OsType::MAC:
 		return "macOS";
-	case OS_LINUX:
+	case OsType::LINUX:
 		return "linux";
 	default:
 		break;

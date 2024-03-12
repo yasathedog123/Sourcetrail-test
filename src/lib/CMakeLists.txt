@@ -597,7 +597,7 @@ add_library(Sourcetrail_lib
 	utility/ConfigManager.h
 	utility/LowMemoryStringMap.h
 	utility/OrderedCache.h
-	utility/OsType.h
+
 	utility/Property.h
 	utility/ScopedFunctor.cpp
 	utility/ScopedFunctor.h

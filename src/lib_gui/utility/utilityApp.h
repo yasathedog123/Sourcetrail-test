@@ -2,10 +2,18 @@
 #define UTILITY_APP_H
 
 #include <string>
+#include <boost/predef.h>
 
 #include "ApplicationArchitectureType.h"
 #include "FilePath.h"
-#include "OsType.h"
+
+enum class OsType
+{
+	UNKNOWN,
+	LINUX,
+	MAC,
+	WINDOWS
+};
 
 namespace utility
 {
@@ -36,15 +44,16 @@ int getIdealThreadCount();
 
 constexpr OsType getOsType()
 {
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-	return OS_WINDOWS;
-#elif defined(__APPLE__)
-	return OS_MAC;
-#elif defined(__linux) || defined(__linux__) || defined(linux)
-	return OS_LINUX;
-#else
-	return OS_UNKNOWN;
-#endif
+	static_assert(BOOST_OS_WINDOWS || BOOST_OS_MACOS || BOOST_OS_LINUX, "Unknown operating system!");
+
+	if constexpr (BOOST_OS_WINDOWS)
+		return OsType::WINDOWS;
+	else if constexpr (BOOST_OS_MACOS)
+		return OsType::MAC;
+	else if constexpr (BOOST_OS_LINUX)
+		return OsType::LINUX;
+	else
+		return OsType::UNKNOWN;
 }
 
 std::string getOsTypeString();

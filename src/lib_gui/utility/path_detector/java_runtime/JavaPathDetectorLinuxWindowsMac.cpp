@@ -8,7 +8,9 @@ using namespace utility;
 
 namespace
 {
-// If those paths change then adjust the place holder hints in QtProjectWizardContentPreferences.cpp!
+// If those paths change then adjust:
+// - The place holder hints in QtProjectWizardContentPreferences.cpp
+// - The documentation in DOCUMENTATION.md
 const wchar_t jvmLibPathRelativeToJavaExecutableLinux[]   = L"/../lib/server/libjvm.so";
 const wchar_t jvmLibPathRelativeToJavaExecutableWindows[] = L"/./server/jvm.dll";
 const wchar_t jvmLibPathRelativeToJavaExecutableMac[]	  = L"/../lib/server/libjvm.dylib";
@@ -18,13 +20,13 @@ FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath)
 	wstring relativeJvmLibPath;
 	switch (getOsType())
 	{
-		case OsType::OS_LINUX:
+		case OsType::LINUX:
 			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableLinux;
 			break;
-		case OsType::OS_WINDOWS:
+		case OsType::WINDOWS:
 			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableWindows;
 			break;
-		case OsType::OS_MAC:
+		case OsType::MAC:
 			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableMac;
 			break;
 	}

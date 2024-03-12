@@ -15,7 +15,7 @@ QStringList QtFileDialog::getFileNamesAndDirectories(QWidget* parent, const File
 		QString::fromStdWString((path.isDirectory() ? path : path.getParentDirectory()).wstr()));
 
 	QFileDialog* dialog =
-		(utility::getOsType() == OS_MAC ? new QFileDialog(parent)
+		(utility::getOsType() == OsType::MAC ? new QFileDialog(parent)
 										: new QtFilesAndDirectoriesDialog(parent));
 
 	if (!dir.isEmpty())

@@ -42,7 +42,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	, m_zoomInButtonSpeed(20.0f)
 	, m_zoomOutButtonSpeed(-20.0f)
 {
-	QString modifierName = utility::getOsType() == OS_MAC ? QStringLiteral("Cmd")
+	QString modifierName = utility::getOsType() == OsType::MAC ? QStringLiteral("Cmd")
 														  : QStringLiteral("Ctrl");
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);

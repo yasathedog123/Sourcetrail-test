@@ -34,7 +34,7 @@ QtPreferencesWindow::QtPreferencesWindow(QWidget* parent): QtProjectWizardWindow
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	summary->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(this));
-	if (utility::getOsType() == OS_MAC)
+	if (utility::getOsType() == OsType::MAC)
 	{
 		summary->addContent(new QtProjectWizardContentPathsFrameworkSearchGlobal(this));
 	}

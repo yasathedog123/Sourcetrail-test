@@ -63,8 +63,8 @@ void setupAppEnvironment(int argc, char* argv[])
 {
 	// setupPlatform will be called after setupApp, so UserPaths::setUserDataDirectoryPath has been
 	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.
-
-	if constexpr(getOsType() == OsType::OS_LINUX) {
+	
+	if constexpr(getOsType() == OsType::LINUX) {
 		// Set QT screen scaling factor
 		ApplicationSettings appSettings;
 		appSettings.load(UserPaths::getAppSettingsFilePath(), true);

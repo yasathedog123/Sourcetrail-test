@@ -144,8 +144,8 @@ void addSourceGroupContents<SourceGroupSettingsCEmpty>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-
-	if (utility::getOsType() == OS_MAC)
+	
+	if (utility::getOsType() == OsType::MAC)
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window));
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearchGlobal(window));
@@ -175,8 +175,8 @@ void addSourceGroupContents<SourceGroupSettingsCppEmpty>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-
-	if (utility::getOsType() == OS_MAC)
+	
+	if (utility::getOsType() == OsType::MAC)
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window));
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearchGlobal(window));
@@ -203,8 +203,8 @@ void addSourceGroupContents<SourceGroupSettingsCxxCdb>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window, true));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-
-	if (utility::getOsType() == OS_MAC)
+	
+	if (utility::getOsType() == OsType::MAC)
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window, true));
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearchGlobal(window));
@@ -236,8 +236,8 @@ void addSourceGroupContents<SourceGroupSettingsCxxCodeblocks>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window, true));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-
-	if (utility::getOsType() == OS_MAC)
+	
+	if (utility::getOsType() == OsType::MAC)
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window, true));
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearchGlobal(window));

@@ -136,8 +136,8 @@ QtMainWindow::QtMainWindow()
 	app->installEventFilter(new MouseReleaseFilter(this));
 
 	refreshStyle();
-
-	if (utility::getOsType() != OS_MAC)
+	
+	if (utility::getOsType() != OsType::MAC)
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
 		app->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
@@ -462,7 +462,7 @@ void QtMainWindow::keyPressEvent(QKeyEvent* event)
 		break;
 
 	case Qt::Key_F4:
-		if (utility::getOsType() == OS_WINDOWS && event->modifiers() & Qt::ControlModifier)
+		if (utility::getOsType() == OsType::WINDOWS && event->modifiers() & Qt::ControlModifier)
 		{
 			closeTab();
 		}
@@ -878,7 +878,7 @@ void QtMainWindow::setupEditMenu()
 	menuBar()->addMenu(menu);
 
 	menu->addAction(tr("&Refresh"), this, &QtMainWindow::refresh, QKeySequence::Refresh);
-	if (utility::getOsType() == OS_WINDOWS)
+	if (utility::getOsType() == OsType::WINDOWS)
 	{
 		menu->addAction(
 			tr("&Full Refresh"),
@@ -965,8 +965,8 @@ void QtMainWindow::setupViewMenu()
 	menu->addAction(tr("New Tab"), this, &QtMainWindow::openTab, QKeySequence::AddTab);
 	menu->addAction(
 		tr("Close Tab"), this, &QtMainWindow::closeTab, QKeySequence(Qt::CTRL | Qt::Key_W));
-
-	if (utility::getOsType() == OS_MAC)
+	
+	if (utility::getOsType() == OsType::MAC)
 	{
 		menu->addAction(
 			tr("Select Next Tab"), this, &QtMainWindow::nextTab, QKeySequence(Qt::META | Qt::Key_Tab));

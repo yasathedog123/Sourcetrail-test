@@ -187,13 +187,13 @@ std::string getStyleSheet(const FilePath& path)
 
 			switch (utility::getOsType())
 			{
-			case OS_WINDOWS:
+			case OsType::WINDOWS:
 				val = values[0];
 				break;
-			case OS_MAC:
+			case OsType::MAC:
 				val = values[1];
 				break;
-			case OS_LINUX:
+			case OsType::LINUX:
 				val = values[2];
 				break;
 			default:

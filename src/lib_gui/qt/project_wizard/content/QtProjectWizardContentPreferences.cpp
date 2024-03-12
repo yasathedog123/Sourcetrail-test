@@ -134,7 +134,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 
 	// Linux UI scale
-	if (utility::getOsType() == OS_LINUX)
+	if (utility::getOsType() == OsType::LINUX)
 	{
 		// screen
 		addTitle(QStringLiteral("SCREEN"), layout, row);
@@ -221,7 +221,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		row);
 
 	// graph zooming
-	QString modifierName = utility::getOsType() == OS_MAC ? QStringLiteral("Cmd")
+	QString modifierName = utility::getOsType() == OsType::MAC ? QStringLiteral("Cmd")
 														  : QStringLiteral("Ctrl");
 	m_graphZooming = addCheckBox(
 		QStringLiteral("Graph Zoom"),
@@ -338,15 +338,15 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 		switch (utility::getOsType())
 		{
-		case OS_WINDOWS:
+		case OsType::WINDOWS:
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (jvm.dll)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/bin/server/jvm.dll"));
 			break;
-		case OS_MAC:
+		case OsType::MAC:
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.dylib)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.dylib"));
 			break;
-		case OS_LINUX:
+		case OsType::LINUX:
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.so)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.so"));
 			break;
@@ -412,12 +412,12 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 		switch (utility::getOsType())
 		{
-		case OS_WINDOWS:
+		case OsType::WINDOWS:
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn.cmd)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<maven_path>/bin/mvn.cmd"));
 			break;
-		case OS_LINUX:
-		case OS_MAC:
+		case OsType::LINUX:
+		case OsType::MAC:
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<binarypath>/mvn"));
 			break;
