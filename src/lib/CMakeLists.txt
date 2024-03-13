@@ -621,14 +621,6 @@ add_library(Sourcetrail_lib
 	utility/Version.h
 )
 
-if (WIN32)
-	target_sources(Sourcetrail_lib
-		PRIVATE
-			utility/utilityWindows.cpp
-			utility/utilityWindows.h
-	)
-endif()
-
 target_include_directories(Sourcetrail_lib
 	PUBLIC
 		app/paths
