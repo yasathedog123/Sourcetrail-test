@@ -7,7 +7,7 @@
 #include <string>
 #include <thread>
 #include <jni.h>
-#include <boost/dll.hpp>
+#include <boost/dll/shared_library.hpp>
 
 class JavaEnvironment;
 

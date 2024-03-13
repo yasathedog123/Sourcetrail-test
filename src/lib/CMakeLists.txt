@@ -612,7 +612,7 @@ add_library(Sourcetrail_lib
 	utility/UnorderedCache.h
 	utility/utility.cpp
 	utility/utility.h
-	utility/utilityLibrary.h
+
 	utility/utilityUuid.cpp
 	utility/utilityUuid.h
 	utility/utilityXml.cpp

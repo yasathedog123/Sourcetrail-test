@@ -3,9 +3,34 @@
 #include "ApplicationSettings.h"
 #include "JavaEnvironment.h"
 #include "logging.h"
-#include "utilityLibrary.h"
 
 #include <cstdlib>
+
+namespace
+{
+
+template <typename Ret, typename... Args>
+std::function<Ret(Args...)> loadFunctionFromLibrary(boost::dll::shared_library *sharedLibrary,
+	const FilePath& libraryPath, const std::string& functionName, std::string *errorString)
+{
+	try {
+		sharedLibrary->load(libraryPath.getPath());
+	}
+	catch (const boost::dll::fs::system_error &systemError) {
+		*errorString = "Cannot load library '" + libraryPath.str() + "': " + systemError.what();
+		return nullptr;
+	}
+	try {
+		std::function<Ret(Args...)> functionId = sharedLibrary->get<Ret(Args...)>(functionName);
+		return functionId;
+	}
+	catch (const boost::dll::fs::system_error &systemError) {
+		*errorString = "Cannot get symbol '" + functionName + "' from library '" + libraryPath.str() + "': " + systemError.what();
+		return nullptr;
+	}
+}
+
+}
 
 boost::dll::shared_library JavaEnvironmentFactory::s_jvmLibrary;
 std::shared_ptr<JavaEnvironmentFactory> JavaEnvironmentFactory::s_instance;
@@ -38,7 +63,7 @@ void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::s
 		return;
 	}
 
-	createInstanceFunction = utility::loadFunctionFromLibrary<jint, JavaVM**, void**, void*>(
+	createInstanceFunction = loadFunctionFromLibrary<jint, JavaVM**, void**, void*>(
 		&s_jvmLibrary, javaPath, "JNI_CreateJavaVM", errorString);
 
 	if (!createInstanceFunction && !errorString->empty())
