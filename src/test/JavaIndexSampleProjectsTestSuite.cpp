@@ -28,29 +28,7 @@ size_t duration;
 
 void setupJavaEnvironmentFactory()
 {
-	if (!JavaEnvironmentFactory::getInstance())
-	{
-		std::string errorString;
-#	ifdef _WIN32
-		const std::string separator = ";";
-#	else
-		const std::string separator = ":";
-#	endif
-		std::string classPath = "";
-		{
-			const std::vector<std::wstring> jarNames = utility::getRequiredJarNames();
-			for (size_t i = 0; i < jarNames.size(); i++)
-			{
-				if (i != 0)
-				{
-					classPath += separator;
-				}
-				classPath += FilePath(L"../app/data/java/lib/").concatenate(jarNames[i]).str();
-			}
-		}
-
-		JavaEnvironmentFactory::createInstance(classPath, &errorString);
-	}
+	utility::prepareJavaEnvironment(FilePath(L"../app/data/java/"));
 }
 
 std::shared_ptr<TextAccess> parseCode(

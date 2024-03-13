@@ -19,33 +19,7 @@ namespace
 {
 std::string setupJavaEnvironmentFactory()
 {
-	if (!JavaEnvironmentFactory::getInstance())
-	{
-		std::string errorString;
-#	ifdef _WIN32
-		const std::string separator = ";";
-#	else
-		const std::string separator = ":";
-#	endif
-		std::string classPath = "";
-		{
-			const std::vector<std::wstring> jarNames = utility::getRequiredJarNames();
-			for (size_t i = 0; i < jarNames.size(); i++)
-			{
-				if (i != 0)
-				{
-					classPath += separator;
-				}
-				classPath += FilePath(L"../app/data/java/lib/").concatenate(jarNames[i]).str();
-			}
-		}
-
-		JavaEnvironmentFactory::createInstance(classPath, &errorString);
-
-		return errorString;
-	}
-
-	return "";
+	return utility::prepareJavaEnvironment(FilePath(L"../app/data/java/"));
 }
 
 std::shared_ptr<TestStorage> parseCode(std::string code, bool logErrors = true)

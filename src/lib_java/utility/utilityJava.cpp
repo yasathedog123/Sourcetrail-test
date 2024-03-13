@@ -1,3 +1,5 @@
+#include "utilityJava.h"
+#include "utilityApp.h"
 #include "utilityGradle.h"
 
 #include "Application.h"
@@ -8,10 +10,22 @@
 #include "MessageStatus.h"
 #include "ResourcePaths.h"
 #include "ScopedFunctor.h"
-#include "SourceGroupSettingsWithClasspath.h"
 #include "TextAccess.h"
 #include "logging.h"
 #include "utilityString.h"
+
+namespace
+{
+
+constexpr const char *getClassPathSeparator()
+{
+	if constexpr (utility::getOsType() == OsType::WINDOWS)
+		return ";";
+	else
+		return ":";
+}
+
+}
 
 namespace utility
 {
@@ -24,16 +38,15 @@ std::vector<std::wstring> getRequiredJarNames()
 
 std::string prepareJavaEnvironment()
 {
+	return prepareJavaEnvironment(ResourcePaths::getJavaDirectoryPath());
+}
+
+std::string prepareJavaEnvironment(const FilePath &javaDirectoryPath)
+{
 	std::string errorString;
 
 	if (!JavaEnvironmentFactory::getInstance())
 	{
-#ifdef _WIN32
-		const std::string separator = ";";
-#else
-		const std::string separator = ":";
-#endif
-
 		std::string classPath = "";
 		{
 			const std::vector<std::wstring> jarNames = getRequiredJarNames();
@@ -41,16 +54,13 @@ std::string prepareJavaEnvironment()
 			{
 				if (i != 0)
 				{
-					classPath += separator;
+					classPath += getClassPathSeparator();
 				}
-				classPath +=
-					ResourcePaths::getJavaDirectoryPath().concatenate(L"lib/" + jarNames[i]).str();
+				classPath += javaDirectoryPath.getConcatenated(L"lib/" + jarNames[i]).str();
 			}
 		}
-
 		JavaEnvironmentFactory::createInstance(classPath, &errorString);
 	}
-
 	return errorString;
 }
 
@@ -185,4 +195,5 @@ void setJavaHomeVariableIfNotExists()
 		putenv(const_cast<char*>(("JAVA_HOME=" + javaHomePath.str()).c_str()));
 	}
 }
-}	 // namespace utility
+
+}
