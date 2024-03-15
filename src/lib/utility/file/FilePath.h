@@ -17,7 +17,7 @@ public:
 	FilePath(const std::wstring& filePath, const std::wstring& base);
 	~FilePath();
 
-	boost::filesystem::path getPath() const;
+	const boost::filesystem::path &getPath() const;
 
 	bool empty() const;
 	bool exists() const noexcept;

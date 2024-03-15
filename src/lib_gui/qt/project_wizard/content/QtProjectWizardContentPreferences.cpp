@@ -19,6 +19,8 @@
 #include "utilityPathDetection.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtProjectWizardContentPreferences::QtProjectWizardContentPreferences(QtProjectWizardWindow* window)
 	: QtProjectWizardContent(window)
 	, m_oldColorSchemeIndex(-1)
@@ -134,7 +136,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 
 	// Linux UI scale
-	if (utility::getOsType() == OsType::LINUX)
+	if constexpr (utility::Os::isLinux())
 	{
 		// screen
 		addTitle(QStringLiteral("SCREEN"), layout, row);
@@ -221,8 +223,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		row);
 
 	// graph zooming
-	QString modifierName = utility::getOsType() == OsType::MAC ? QStringLiteral("Cmd")
-														  : QStringLiteral("Ctrl");
+	QString modifierName = utility::Os::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 	m_graphZooming = addCheckBox(
 		QStringLiteral("Graph Zoom"),
 		QStringLiteral("Zoom graph on mouse wheel"),
@@ -336,24 +337,17 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		// jvm library path
 		m_javaPath = new QtLocationPicker(this);
 
-		switch (utility::getOsType())
-		{
-		case OsType::WINDOWS:
+		if constexpr (Os::isWindows()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (jvm.dll)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/bin/server/jvm.dll"));
-			break;
-		case OsType::MAC:
+		} else if constexpr (Os::isMac()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.dylib)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.dylib"));
-			break;
-		case OsType::LINUX:
+		} else if constexpr (Os::isLinux()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.so)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.so"));
-			break;
-		default:
+		} else
 			LOG_WARNING("No placeholders and filters set for Java path selection");
-			break;
-		}
 
 		const std::string javaArchitectureString = utility::getApplicationArchitectureType() ==
 				ApplicationArchitectureType::X86_32 ? "32 Bit" : "64 Bit";
@@ -410,21 +404,15 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		// maven path
 		m_mavenPath = new QtLocationPicker(this);
 
-		switch (utility::getOsType())
-		{
-		case OsType::WINDOWS:
+		if constexpr (Os::isWindows()) {
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn.cmd)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<maven_path>/bin/mvn.cmd"));
-			break;
-		case OsType::LINUX:
-		case OsType::MAC:
+		} else if constexpr (Os::isLinux() || Os::isMac()) {
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<binarypath>/mvn"));
-			break;
-		default:
+		} else
 			LOG_WARNING("No placeholders and filters set for Maven path selection");
-			break;
-		}
+
 		addLabelAndWidget(QStringLiteral("Maven Path"), m_mavenPath, layout, row);
 
 		addHelpButton(

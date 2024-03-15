@@ -20,6 +20,7 @@
 #include "TextCodec.h"
 #include "tracing.h"
 #include "utility.h"
+#include "utilityApp.h"
 
 std::vector<QtCodeField::AnnotationColor> QtCodeField::s_annotationColors;
 std::string QtCodeField::s_focusColor;
@@ -101,9 +102,9 @@ QtCodeField::QtCodeField(
 
 	m_openInTabAction = new QAction(
 		QStringLiteral("Open in New Tab (Ctrl + Shift + Left Click)"), this);
-#if defined(Q_OS_MAC)
-	m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
-#endif
+	if constexpr (utility::Os::isMac()) {
+		m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
+	}
 	m_openInTabAction->setStatusTip(QStringLiteral("Opens the node in a new tab"));
 	m_openInTabAction->setToolTip(QStringLiteral("Opens the node in a new tab"));
 	m_openInTabAction->setEnabled(false);

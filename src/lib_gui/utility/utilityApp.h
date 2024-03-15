@@ -7,14 +7,6 @@
 #include "ApplicationArchitectureType.h"
 #include "FilePath.h"
 
-enum class OsType
-{
-	UNKNOWN,
-	LINUX,
-	MAC,
-	WINDOWS
-};
-
 namespace utility
 {
 struct ProcessOutput
@@ -42,21 +34,26 @@ void killRunningProcesses();
 
 int getIdealThreadCount();
 
-constexpr OsType getOsType()
+class Os final
 {
 	static_assert(BOOST_OS_WINDOWS || BOOST_OS_MACOS || BOOST_OS_LINUX, "Unknown operating system!");
+	public:
 
-	if constexpr (BOOST_OS_WINDOWS)
-		return OsType::WINDOWS;
-	else if constexpr (BOOST_OS_MACOS)
-		return OsType::MAC;
-	else if constexpr (BOOST_OS_LINUX)
-		return OsType::LINUX;
-	else
-		return OsType::UNKNOWN;
-}
+		static constexpr bool isLinux()
+		{
+			return BOOST_OS_LINUX;
+		}
 
-std::string getOsTypeString();
+		static constexpr bool isWindows()
+		{
+			return BOOST_OS_WINDOWS;
+		}
+
+		static constexpr bool isMac()
+		{
+			return BOOST_OS_MACOS;
+		}
+};
 
 constexpr ApplicationArchitectureType getApplicationArchitectureType()
 {

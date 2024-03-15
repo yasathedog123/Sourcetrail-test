@@ -14,6 +14,7 @@
 #include "SourceGroupSettingsCustomCommand.h"
 #include "TextAccess.h"
 #include "Version.h"
+#include "utilityApp.h"
 #include "utilityPathDetection.h"
 #include "utilityString.h"
 
@@ -39,6 +40,8 @@
 #	include "SourceGroupSettingsJavaMaven.h"
 #	include "utilityJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+
+using namespace utility;
 
 namespace
 {
@@ -183,15 +186,20 @@ std::shared_ptr<TextAccess> generateExpectedOutput(
 	return TextAccess::createFromString(utility::encodeToUtf8(outputString));
 }
 
+std::wstring getOutputFilename()
+{
+	if constexpr (Os::isWindows())
+		return L"output_windows.txt";
+	else
+		return L"output_unix.txt";
+
+}
 void generateAndCompareExpectedOutput(
 	std::wstring projectName, std::shared_ptr<const SourceGroup> sourceGroup)
 {
 	const std::shared_ptr<const TextAccess> output = generateExpectedOutput(projectName, sourceGroup);
-#ifdef WIN32
-	const std::wstring expectedOutputFileName = L"output_windows.txt";
-#else
-	const std::wstring expectedOutputFileName = L"output_unix.txt";
-#endif
+	const std::wstring expectedOutputFileName = getOutputFilename();
+
 	const FilePath expectedOutputFilePath =
 		getOutputDirectoryPath(projectName).concatenate(expectedOutputFileName);
 	if (updateExpectedOutput || !expectedOutputFilePath.exists())
@@ -460,36 +468,37 @@ TEST_CASE("sourcegroup java empty generates expected output")
 
 TEST_CASE("sourcegroup java gradle generates expected output")
 {
-#	ifndef __linux__
-	const std::wstring projectName = L"java_gradle";
+	if constexpr (utility::Os::isWindows()) {
+		const std::wstring projectName = L"java_gradle";
 
-	ProjectSettings projectSettings;
-	projectSettings.setProjectFilePath(L"non_existent_project", getInputDirectoryPath(projectName));
+		ProjectSettings projectSettings;
+		projectSettings.setProjectFilePath(L"non_existent_project", getInputDirectoryPath(projectName));
 
-	std::shared_ptr<SourceGroupSettingsJavaGradle> sourceGroupSettings =
-		std::make_shared<SourceGroupSettingsJavaGradle>("fake_id", &projectSettings);
-	sourceGroupSettings->setSourceExtensions({L".java"});
-	sourceGroupSettings->setExcludeFilterStrings({L"**/HelloWorld.java"});
-	sourceGroupSettings->setJavaStandard({L"10"});
-	sourceGroupSettings->setGradleProjectFilePath(
-		{getInputDirectoryPath(projectName).concatenate(L"build.gradle")});
-	sourceGroupSettings->setShouldIndexGradleTests(true);
+		std::shared_ptr<SourceGroupSettingsJavaGradle> sourceGroupSettings =
+			std::make_shared<SourceGroupSettingsJavaGradle>("fake_id", &projectSettings);
+		sourceGroupSettings->setSourceExtensions({L".java"});
+		sourceGroupSettings->setExcludeFilterStrings({L"**/HelloWorld.java"});
+		sourceGroupSettings->setJavaStandard({L"10"});
+		sourceGroupSettings->setGradleProjectFilePath(
+			{getInputDirectoryPath(projectName).concatenate(L"build.gradle")});
+		sourceGroupSettings->setShouldIndexGradleTests(true);
 
-	std::shared_ptr<ApplicationSettings> applicationSettings = ApplicationSettings::getInstance();
+		std::shared_ptr<ApplicationSettings> applicationSettings = ApplicationSettings::getInstance();
 
-	const FilePath storedAppPath = AppPath::getSharedDataDirectoryPath();
-	AppPath::setSharedDataDirectoryPath(storedAppPath.getConcatenated(L"../app").makeAbsolute());
+		const FilePath storedAppPath = AppPath::getSharedDataDirectoryPath();
+		AppPath::setSharedDataDirectoryPath(storedAppPath.getConcatenated(L"../app").makeAbsolute());
 
-	std::vector<FilePath> storedJreSystemLibraryPaths =
-		applicationSettings->getJreSystemLibraryPaths();
-	applicationSettings->setJreSystemLibraryPaths({FilePath(L"test/jre/system/library/path.jar")});
+		std::vector<FilePath> storedJreSystemLibraryPaths =
+			applicationSettings->getJreSystemLibraryPaths();
+		applicationSettings->setJreSystemLibraryPaths({FilePath(L"test/jre/system/library/path.jar")});
 
-	generateAndCompareExpectedOutput(
-		projectName, std::make_shared<SourceGroupJavaGradle>(sourceGroupSettings));
+		generateAndCompareExpectedOutput(
+			projectName, std::make_shared<SourceGroupJavaGradle>(sourceGroupSettings));
 
-	applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
-	AppPath::setSharedDataDirectoryPath(storedAppPath);
-#	endif
+		applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
+		AppPath::setSharedDataDirectoryPath(storedAppPath);
+	} else
+		FAIL("TODO: Why does it fail under Linux?");
 }
 
 TEST_CASE("sourcegroup java maven generates expected output")

@@ -18,23 +18,18 @@ const wchar_t jvmLibPathRelativeToJavaExecutableMac[]	  = L"/../lib/server/libjv
 FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath)
 {
 	wstring relativeJvmLibPath;
-	switch (getOsType())
-	{
-		case OsType::LINUX:
-			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableLinux;
-			break;
-		case OsType::WINDOWS:
-			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableWindows;
-			break;
-		case OsType::MAC:
-			relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableMac;
-			break;
-	}
+
+	if constexpr (Os::isLinux())
+		relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableLinux;
+	else if constexpr (Os::isWindows())
+		relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableWindows;
+	else if constexpr (Os::isMac())
+		relativeJvmLibPath = jvmLibPathRelativeToJavaExecutableMac;
+
 	FilePath jvmLibPath = javaExecutablePath.getParentDirectory().concatenate(relativeJvmLibPath);
 	if (jvmLibPath.exists())
-	{
 		return jvmLibPath.makeCanonical();
-	}
+
 	return FilePath();
 }
 

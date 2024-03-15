@@ -1,12 +1,11 @@
 #include "Catch2.hpp"
 
-#include <algorithm>
-#include <fstream>
 #include <string>
 #include <vector>
 
 #include "FileSystem.h"
 #include "utility.h"
+#include "utilityApp.h"
 
 namespace
 {
@@ -42,7 +41,8 @@ bool isInFileInfos(
 
 	return false;
 }
-}	 // namespace
+
+}
 
 TEST_CASE("find cpp files")
 {
@@ -85,62 +85,65 @@ TEST_CASE("find all source files")
 	REQUIRE(sourceFiles.size() == 8);
 }
 
-TEST_CASE("find file infos")
+TEST_CASE("find file infos ignore symlinks")
 {
-#ifndef _WIN32
-	std::vector<FilePath> directoryPaths;
-	directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
+	if constexpr (!utility::Os::isWindows()) {
+		std::vector<FilePath> directoryPaths;
+		directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
 
-	std::vector<FileInfo> files = FileSystem::getFileInfosFromPaths(
-		directoryPaths, {L".h", L".hpp", L".cpp"}, false);
+		std::vector<FileInfo> files = FileSystem::getFileInfosFromPaths(
+			directoryPaths, {L".h", L".hpp", L".cpp"}, false);
 
-	REQUIRE(files.size() == 2);
-	REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.cpp"));
-	REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.h"));
-#endif
+		REQUIRE(files.size() == 2);
+		REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.cpp"));
+		REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.h"));
+	} else
+		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
 }
 
-TEST_CASE("find file infos with symlinks")
+TEST_CASE("find file infos follow symlinks")
 {
-#ifndef _WIN32
-	std::vector<FilePath> directoryPaths;
-	directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
+	if constexpr (!utility::Os::isWindows()) {
+		std::vector<FilePath> directoryPaths;
+		directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
 
-	std::vector<FileInfo> files = FileSystem::getFileInfosFromPaths(
-		directoryPaths, {L".h", L".hpp", L".cpp"}, true);
+		std::vector<FileInfo> files = FileSystem::getFileInfosFromPaths(
+			directoryPaths, {L".h", L".hpp", L".cpp"}, true);
 
-	REQUIRE(files.size() == 5);
-	REQUIRE(isInFileInfos(
-		files,
-		L"./data/FileSystemTestSuite/src/Settings/player.h",
-		L"./data/FileSystemTestSuite/player.h"));
-	REQUIRE(isInFileInfos(
-		files,
-		L"./data/FileSystemTestSuite/src/Settings/sample.cpp",
-		L"./data/FileSystemTestSuite/sample.cpp"));
-	REQUIRE(isInFileInfos(
-		files,
-		L"./data/FileSystemTestSuite/src/main.cpp",
-		L"./data/FileSystemTestSuite/src/Settings/src/main.cpp"));
-	REQUIRE(isInFileInfos(
-		files,
-		L"./data/FileSystemTestSuite/src/test.cpp",
-		L"./data/FileSystemTestSuite/src/Settings/src/test.cpp"));
-	REQUIRE(isInFileInfos(
-		files,
-		L"./data/FileSystemTestSuite/src/test.h",
-		L"./data/FileSystemTestSuite/src/Settings/src/test.h"));
-#endif
+		REQUIRE(files.size() == 5);
+		REQUIRE(isInFileInfos(
+			files,
+			L"./data/FileSystemTestSuite/src/Settings/player.h",
+			L"./data/FileSystemTestSuite/player.h"));
+		REQUIRE(isInFileInfos(
+			files,
+			L"./data/FileSystemTestSuite/src/Settings/sample.cpp",
+			L"./data/FileSystemTestSuite/sample.cpp"));
+		REQUIRE(isInFileInfos(
+			files,
+			L"./data/FileSystemTestSuite/src/main.cpp",
+			L"./data/FileSystemTestSuite/src/Settings/src/main.cpp"));
+		REQUIRE(isInFileInfos(
+			files,
+			L"./data/FileSystemTestSuite/src/test.cpp",
+			L"./data/FileSystemTestSuite/src/Settings/src/test.cpp"));
+		REQUIRE(isInFileInfos(
+			files,
+			L"./data/FileSystemTestSuite/src/test.h",
+			L"./data/FileSystemTestSuite/src/Settings/src/test.h"));
+	} else
+		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
 }
 
 TEST_CASE("find symlinked directories")
 {
-#ifndef _WIN32
-	std::vector<FilePath> directoryPaths;
-	directoryPaths.push_back(FilePath("./data/FileSystemTestSuite/src"));
+	if constexpr (!utility::Os::isWindows()) {
+		std::vector<FilePath> directoryPaths;
+		directoryPaths.push_back(FilePath("./data/FileSystemTestSuite/src"));
 
-	std::set<FilePath> dirs = FileSystem::getSymLinkedDirectories(directoryPaths);
+		std::set<FilePath> dirs = FileSystem::getSymLinkedDirectories(directoryPaths);
 
-	REQUIRE(dirs.size() == 2);
-#endif
+		REQUIRE(dirs.size() == 2);
+	} else
+		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
 }

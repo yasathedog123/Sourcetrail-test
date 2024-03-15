@@ -6,7 +6,21 @@
 #include <boost/filesystem/path.hpp>
 
 #include "logging.h"
+#include "utilityApp.h"
 #include "utilityString.h"
+
+namespace
+{
+
+constexpr char getEnvironmentVariablePathSeparator()
+{
+	if constexpr (utility::Os::isWindows())
+		return ';';
+	else
+		return ':';
+}
+
+}
 
 FilePath::FilePath()
 	: m_path(std::make_unique<boost::filesystem::path>(""))
@@ -70,9 +84,9 @@ FilePath::FilePath(const std::wstring& filePath, const std::wstring& base)
 
 FilePath::~FilePath() {}
 
-boost::filesystem::path FilePath::getPath() const
+const boost::filesystem::path &FilePath::getPath() const
 {
-	return *(m_path.get());
+	return *m_path;
 }
 
 bool FilePath::empty() const
@@ -218,13 +232,8 @@ std::vector<FilePath> FilePath::expandEnvironmentVariables() const
 	}
 
 
-#if defined(_WIN32) || defined(_WIN64)
-	const char environmentVariablePathSeparator = ';';
-#else
-	const char environmentVariablePathSeparator = ':';
-#endif
 
-	for (const std::string& str: utility::splitToVector(text, environmentVariablePathSeparator))
+	for (const std::string& str: utility::splitToVector(text, getEnvironmentVariablePathSeparator()))
 	{
 		if (str.size())
 		{
@@ -393,12 +402,14 @@ std::wstring FilePath::extension() const
 
 FilePath FilePath::withoutExtension() const
 {
-	return FilePath(getPath().replace_extension().wstring());
+	boost::filesystem::path tmpPath(getPath());
+	return FilePath(tmpPath.replace_extension().wstring());
 }
 
 FilePath FilePath::replaceExtension(const std::wstring& extension) const
 {
-	return FilePath(getPath().replace_extension(extension).wstring());
+	boost::filesystem::path tmpPath(getPath());
+	return FilePath(tmpPath.replace_extension(extension).wstring());
 }
 
 bool FilePath::hasExtension(const std::vector<std::wstring>& extensions) const

@@ -1,11 +1,10 @@
-#include "setupApp.h"
 
 #include "language_packages.h"
 
 #include "AppPath.h"
 #include "UserPaths.h"
 #include "ApplicationSettings.h"
-#include "ConsoleLogger.h"
+// #include "ConsoleLogger.h"
 #include "FileLogger.h"
 #include "InterprocessIndexer.h"
 #include "LanguagePackageManager.h"
@@ -20,7 +19,7 @@
 #	include "LanguagePackageJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	#include <Windows.h>
 #endif
 
@@ -41,9 +40,9 @@ void setupLogging(const FilePath& logFilePath)
 
 void suppressCrashMessage()
 {
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
-#endif	  // _WIN32
+#endif
 }
 
 int main(int argc, char* argv[])

@@ -14,9 +14,7 @@ QStringList QtFileDialog::getFileNamesAndDirectories(QWidget* parent, const File
 	const QString dir = getDir(
 		QString::fromStdWString((path.isDirectory() ? path : path.getParentDirectory()).wstr()));
 
-	QFileDialog* dialog =
-		(utility::getOsType() == OsType::MAC ? new QFileDialog(parent)
-										: new QtFilesAndDirectoriesDialog(parent));
+	QFileDialog* dialog = (utility::Os::isMac() ? new QFileDialog(parent) : new QtFilesAndDirectoriesDialog(parent));
 
 	if (!dir.isEmpty())
 	{
@@ -67,49 +65,48 @@ QString QtFileDialog::getOpenFileName(
 QString QtFileDialog::showSaveFileDialog(
 	QWidget* parent, const QString& title, const FilePath& directory, const QString& filter)
 {
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+	if constexpr (utility::Os::isWindows() || utility::Os::isMac()) {
+		return QFileDialog::getSaveFileName(
+			parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
 
-	return QFileDialog::getSaveFileName(
-		parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
+	} else {
+		QFileDialog dialog(parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
 
-#else
-	QFileDialog dialog(parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
-
-	if (parent)
-	{
-		dialog.setWindowModality(Qt::WindowModal);
-	}
-
-	QRegExp filter_regex(QStringLiteral("(?:^\\*\\.(?!.*\\()|\\(\\*\\.)(\\w+)"));
-	QStringList filters = filter.split(QStringLiteral(";;"));
-
-	if (!filters.isEmpty())
-	{
-		dialog.setNameFilters(filters);
-	}
-
-	dialog.setAcceptMode(QFileDialog::AcceptSave);
-
-	if (dialog.exec() == QDialog::Accepted)
-	{
-		QString file_name = dialog.selectedFiles().constFirst();
-		QFileInfo info(file_name);
-
-		if (info.suffix().isEmpty() && !dialog.selectedNameFilter().isEmpty())
+		if (parent)
 		{
-			if (filter_regex.indexIn(dialog.selectedNameFilter()) != -1)
-			{
-				QString extension = filter_regex.cap(1);
-				file_name += QStringLiteral(".") + extension;
-			}
+			dialog.setWindowModality(Qt::WindowModal);
 		}
-		return file_name;
+
+		QRegExp filter_regex(QStringLiteral("(?:^\\*\\.(?!.*\\()|\\(\\*\\.)(\\w+)"));
+		QStringList filters = filter.split(QStringLiteral(";;"));
+
+		if (!filters.isEmpty())
+		{
+			dialog.setNameFilters(filters);
+		}
+
+		dialog.setAcceptMode(QFileDialog::AcceptSave);
+
+		if (dialog.exec() == QDialog::Accepted)
+		{
+			QString file_name = dialog.selectedFiles().constFirst();
+			QFileInfo info(file_name);
+
+			if (info.suffix().isEmpty() && !dialog.selectedNameFilter().isEmpty())
+			{
+				if (filter_regex.indexIn(dialog.selectedNameFilter()) != -1)
+				{
+					QString extension = filter_regex.cap(1);
+					file_name += QStringLiteral(".") + extension;
+				}
+			}
+			return file_name;
+		}
+		else
+		{
+			return QString();
+		}
 	}
-	else
-	{
-		return QString();
-	}
-#endif	  // Q_OS_MAC || Q_OS_WIN
 }
 
 QString QtFileDialog::getDir(QString dir)

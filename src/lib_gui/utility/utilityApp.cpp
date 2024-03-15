@@ -242,26 +242,32 @@ void utility::killRunningProcesses()
 int utility::getIdealThreadCount()
 {
 	int threadCount = QThread::idealThreadCount();
-	if (getOsType() == OsType::WINDOWS)
+	if constexpr (Os::isWindows())
 	{
 		threadCount -= 1;
 	}
 	return std::max(1, threadCount);
 }
 
+/* Not referenced anywhere!
+enum class OsType
+{
+	UNKNOWN,
+	LINUX,
+	MAC,
+	WINDOWS
+};
+
 std::string utility::getOsTypeString()
 {
 	// WARNING: Don't change these string. The server API relies on them.
-	switch (utility::getOsType())
-	{
-	case OsType::WINDOWS:
+	if constexpr (Os::isWindows())
 		return "windows";
-	case OsType::MAC:
+	else if constexpr (Os::isMac())
 		return "macOS";
-	case OsType::LINUX:
+	else if constexpr (Os::isLinux())
 		return "linux";
-	default:
-		break;
-	}
-	return "unknown";
+	else
+		return "unknown";
 }
+*/

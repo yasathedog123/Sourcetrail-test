@@ -18,6 +18,9 @@
 		using EventListenerBase = Catch::TestEventListenerBase;
 	}
 #elif defined(HAVE_CATCH2_V3)
+	// To prevent Catch2 V3 from intercepting JVM signals;
+	// (https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#catch_config_-customization-options-in-cmake)
+	// See the vcpkg tripplet files in 'vcpkg-custom-tripplets/'
 	#include <catch2/catch_all.hpp>
 
 	namespace Catch2 {
@@ -28,6 +31,11 @@
 #else
 	#error Unknown Catch2 version!
 #endif
+
+// Note: Catch2 V3 supports a SKIP() command, but V2 doesn't. So as a workaround we just write
+// a message:
+#define TEST_DISABLED(reason) \
+	WARN("Test disabled: " reason)
 
 #define REQUIRE_MESSAGE(msg, cond) \
 		do \

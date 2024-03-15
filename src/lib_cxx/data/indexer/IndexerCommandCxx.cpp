@@ -7,7 +7,7 @@
 #include "OrderedCache.h"
 #include "ResourcePaths.h"
 #include "logging.h"
-#include "utility.h"
+#include "utilityApp.h"
 #include "utilitySourceGroupCxx.h"
 #include "utilityString.h"
 #include <clang/Tooling/CompilationDatabase.h>
@@ -74,22 +74,23 @@ std::vector<std::wstring> IndexerCommandCxx::getCompilerFlagsForSystemHeaderSear
 	std::vector<std::wstring> compilerFlags;
 	compilerFlags.reserve(systemHeaderSearchPaths.size() * 2);
 
+	// Prepend clang system includes on windows:
+	if constexpr (utility::Os::isWindows()) {
+		compilerFlags.push_back(L"-isystem");
+		compilerFlags.push_back(ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr());
+	}
+
 	for (const FilePath& path: systemHeaderSearchPaths)
 	{
 		compilerFlags.push_back(L"-isystem");
 		compilerFlags.push_back(path.wstr());
 	}
 
-#ifdef _WIN32
-	// prepend clang system includes on windows
-	compilerFlags = utility::concat(
-		{L"-isystem", ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr()}, compilerFlags);
-#else
-	// append otherwise
-	compilerFlags.push_back(L"-isystem");
-	compilerFlags.push_back(ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr());
-#endif
-
+	// Append clang system includes on non-windows:
+	if constexpr (!utility::Os::isWindows()) {
+		compilerFlags.push_back(L"-isystem");
+		compilerFlags.push_back(ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr());
+	}
 	return compilerFlags;
 }
 

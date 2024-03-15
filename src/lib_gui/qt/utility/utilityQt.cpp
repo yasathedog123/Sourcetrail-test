@@ -184,21 +184,12 @@ std::string getStyleSheet(const FilePath& path)
 				LOG_ERROR(L"Syntax error in file: " + path.wstr());
 				return "";
 			}
-
-			switch (utility::getOsType())
-			{
-			case OsType::WINDOWS:
+			if constexpr (utility::Os::isWindows())
 				val = values[0];
-				break;
-			case OsType::MAC:
+			else if constexpr(utility::Os::isMac())
 				val = values[1];
-				break;
-			case OsType::LINUX:
+			else if constexpr(utility::Os::isLinux())
 				val = values[2];
-				break;
-			default:
-				break;
-			}
 		}
 		else
 		{

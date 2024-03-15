@@ -42,8 +42,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	, m_zoomInButtonSpeed(20.0f)
 	, m_zoomOutButtonSpeed(-20.0f)
 {
-	QString modifierName = utility::getOsType() == OsType::MAC ? QStringLiteral("Cmd")
-														  : QStringLiteral("Ctrl");
+	QString modifierName = utility::Os::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
@@ -59,9 +58,9 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_openInTabAction = new QAction(
 		QStringLiteral("Open in New Tab (Ctrl + Shift + Left Click)"), this);
-#if defined(Q_OS_MAC)
-	m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
-#endif
+	if constexpr (utility::Os::isMac()) {
+		m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
+	}
 	m_openInTabAction->setStatusTip(QStringLiteral("Open this node in a new tab"));
 	m_openInTabAction->setToolTip(QStringLiteral("Open this node in a new tab"));
 	connect(m_openInTabAction, &QAction::triggered, this, &QtGraphicsView::openInTab);
@@ -85,9 +84,9 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_showInIDEAction = new QAction(
 		QStringLiteral("Show Definition in IDE (Ctrl + Left Click)"), this);
-#if defined(Q_OS_MAC)
-	m_showInIDEAction->setText("Show Definition in IDE (Cmd + Left Click)");
-#endif
+	if constexpr (utility::Os::isMac()) {
+		m_showInIDEAction->setText("Show Definition in IDE (Cmd + Left Click)");
+	}
 	m_showInIDEAction->setStatusTip(
 		QStringLiteral("Show definition of this symbol in the IDE (via plug-in)"));
 	m_showInIDEAction->setToolTip(
@@ -96,9 +95,9 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_showDefinitionAction = new QAction(
 		QStringLiteral("Show Definition (Ctrl + Alt + Left Click)"), this);
-#if defined(Q_OS_MAC)
-	m_showDefinitionAction->setText("Show Definition (Cmd + Alt + Left Click)");
-#endif
+	if constexpr (utility::Os::isMac()) {
+		m_showDefinitionAction->setText("Show Definition (Cmd + Alt + Left Click)");
+	}
 	m_showDefinitionAction->setStatusTip(
 		QStringLiteral("Show definition of this symbol in the code"));
 	m_showDefinitionAction->setToolTip(

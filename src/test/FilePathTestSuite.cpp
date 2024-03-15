@@ -1,6 +1,7 @@
 #include "Catch2.hpp"
 
 #include "FilePath.h"
+#include "utilityApp.h"
 
 TEST_CASE("file_path_gets_created_empty")
 {
@@ -169,22 +170,24 @@ TEST_CASE("file_path_equals_absolute_and_canonical_paths")
 
 TEST_CASE("file_path_canonical_removes_symlinks")
 {
-#ifndef _WIN32
-	const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
-	const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
+	if constexpr (!utility::Os::isWindows()) {
+		const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
+		const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
 
-	REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
-#endif
+		REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
+	} else
+		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
 }
 
 TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
 {
-#ifdef _WIN32
-	const FilePath pathB(L"data/FilePathTestSuite/b.cc");
-	const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
+	if constexpr (utility::Os::isWindows()) {
+		const FilePath pathB(L"data/FilePathTestSuite/b.cc");
+		const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
 
-	REQUIRE(pathB == pathB2);
-#endif
+		REQUIRE(pathB == pathB2);
+	} else
+		TEST_DISABLED("Comparing '/' and '\\' on Non-Windows doesn't work.");
 }
 
 TEST_CASE("file_path_differs_for_different_existing_files")

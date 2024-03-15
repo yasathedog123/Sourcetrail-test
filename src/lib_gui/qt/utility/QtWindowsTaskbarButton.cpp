@@ -1,22 +1,19 @@
 #include "QtWindowsTaskbarButton.h"
 
-#ifdef _WIN32
-#	include <QWinTaskbarButton>
-#	include <QWinTaskbarProgress>
+#if BOOST_OS_WINDOWS
+	#include <QWinTaskbarButton>
+	#include <QWinTaskbarProgress>
 #endif
 
 #include "QtMainWindow.h"
 
 QtWindowsTaskbarButton::QtWindowsTaskbarButton()
-#ifdef _WIN32
-	: m_taskbarProgress(nullptr)
-#endif
 {
 }
 
 void QtWindowsTaskbarButton::setWindow(QtMainWindow* mainWindow)
 {
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	QWinTaskbarButton* taskbarButton = new QWinTaskbarButton(mainWindow);
 	taskbarButton->setWindow(mainWindow->windowHandle());
 	m_taskbarProgress = taskbarButton->progress();
@@ -25,7 +22,7 @@ void QtWindowsTaskbarButton::setWindow(QtMainWindow* mainWindow)
 
 void QtWindowsTaskbarButton::setProgress(float progress)
 {
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	if (m_taskbarProgress != nullptr)
 	{
 		m_taskbarProgress->show();
@@ -37,7 +34,7 @@ void QtWindowsTaskbarButton::setProgress(float progress)
 
 void QtWindowsTaskbarButton::hideProgress()
 {
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	if (m_taskbarProgress != nullptr)
 	{
 		m_taskbarProgress->hide();

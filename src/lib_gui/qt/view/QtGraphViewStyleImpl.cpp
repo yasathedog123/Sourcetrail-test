@@ -20,7 +20,7 @@ float QtGraphViewStyleImpl::getCharHeight(const std::string& fontName, size_t fo
 
 float QtGraphViewStyleImpl::getGraphViewZoomDifferenceForPlatform()
 {
-	if (utility::getOsType() == OsType::MAC)
+	if constexpr (utility::Os::isMac())
 	{
 		return 1;
 	}

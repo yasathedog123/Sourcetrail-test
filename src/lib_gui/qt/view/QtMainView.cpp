@@ -176,7 +176,7 @@ void QtMainView::handleMessage(MessageProjectNew* message)
 void QtMainView::handleMessage(MessageWindowChanged* message)
 {
 	// Fixes an issue where newly added QtWidgets don't fully respond to focus events on macOS
-	if (utility::getOsType() == OsType::MAC)
+	if constexpr (utility::Os::isMac())
 	{
 		m_onQtThread([=, this]() {
 			m_window->hide();

@@ -50,7 +50,7 @@ FilePath ResourcePaths::getCxxCompilerHeaderDirectoryPath()
 
 FilePath ResourcePaths::getPythonIndexerFilePath()
 {
-	if (utility::getOsType() == OsType::WINDOWS)
+	if constexpr (utility::Os::isWindows())
 	{
 		return getPythonDirectoryPath().concatenate(L"SourcetrailPythonIndexer.exe");
 	}

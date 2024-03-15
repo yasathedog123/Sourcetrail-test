@@ -1,14 +1,14 @@
 #include "SourceGroupSettingsWithCStandard.h"
 
 #include "ProjectSettings.h"
+#include "utilityApp.h"
 
 std::wstring SourceGroupSettingsWithCStandard::getDefaultCStandardStatic()
 {
-#ifdef __linux__
-	return L"gnu17";
-#else
-	return L"c17";
-#endif
+	if constexpr (utility::Os::isLinux())
+		return L"gnu17";
+	else
+		return L"c17";
 }
 
 std::wstring SourceGroupSettingsWithCStandard::getCStandard() const

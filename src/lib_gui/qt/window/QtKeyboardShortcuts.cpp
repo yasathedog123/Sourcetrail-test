@@ -4,6 +4,7 @@
 #include <QLabel>
 
 #include "ResourcePaths.h"
+#include "utilityApp.h"
 #include "utilityQt.h"
 
 QtShortcutTable::QtShortcutTable(QWidget* parent): QTableWidget(parent) {}
@@ -86,11 +87,11 @@ QtKeyboardShortcuts::Shortcut::Shortcut(const QString& name, const QString& shor
 QtKeyboardShortcuts::Shortcut QtKeyboardShortcuts::Shortcut::defaultOrMac(
 	const QString& name, const QString& defaultShortcut, const QString& macShortcut)
 {
-#if defined(Q_OS_MAC)
-	return {name, macShortcut};
-#else
-	return {name, defaultShortcut};
-#endif
+	if constexpr (utility::Os::isMac()) {
+		return {name, macShortcut};
+	} else {
+		return {name, defaultShortcut};
+	}
 }
 
 QtKeyboardShortcuts::Shortcut QtKeyboardShortcuts::Shortcut::winMacOrLinux(
@@ -99,13 +100,13 @@ QtKeyboardShortcuts::Shortcut QtKeyboardShortcuts::Shortcut::winMacOrLinux(
 	const QString& macShortcut,
 	const QString& linuxShortcut)
 {
-#if defined(Q_OS_WIN32)
-	return {name, winShortcut};
-#elif defined(Q_OS_MAC)
-	return {name, macShortcut};
-#else
-	return {name, linuxShortcut};
-#endif
+	if constexpr (utility::Os::isWindows()) {
+		return {name, winShortcut};
+	} else if constexpr (utility::Os::isMac()) {
+		return {name, macShortcut};
+	} else {
+		return {name, linuxShortcut};
+	}
 }
 
 QtShortcutTable* QtKeyboardShortcuts::createTableWidget(const std::string& objectName)

@@ -44,7 +44,7 @@
 #	include "SourceGroupFactoryModulePython.h"
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
 
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 	#include <windows.h>
 #endif
 
@@ -97,12 +97,12 @@ int main(int argc, char* argv[])
 {
 	Version version = setupAppDirectories(argc, argv);
 
-	if (utility::getOsType() == OsType::LINUX && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
+	if (utility::Os::isLinux() && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
 
-	if (utility::getOsType() != OsType::LINUX)
+	if constexpr (!utility::Os::isLinux())
 	{
 		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 	}
@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-#ifdef _WIN32
+#if BOOST_OS_WINDOWS
 		{
 			HWND consoleWnd = GetConsoleWindow();
 			DWORD dwProcessId;

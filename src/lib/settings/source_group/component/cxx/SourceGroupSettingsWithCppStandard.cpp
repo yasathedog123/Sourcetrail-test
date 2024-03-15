@@ -1,14 +1,14 @@
 #include "SourceGroupSettingsWithCppStandard.h"
 
 #include "ProjectSettings.h"
+#include "utilityApp.h"
 
 std::wstring SourceGroupSettingsWithCppStandard::getDefaultCppStandardStatic()
 {
-#ifdef __linux__
-	return L"gnu++17";
-#else
-	return L"c++17";
-#endif
+	if constexpr (utility::Os::isLinux())
+		return L"gnu++17";
+	else
+		return L"c++17";
 }
 
 std::wstring SourceGroupSettingsWithCppStandard::getCppStandard() const
@@ -28,7 +28,7 @@ void SourceGroupSettingsWithCppStandard::setCppStandard(const std::wstring& stan
 std::vector<std::wstring> SourceGroupSettingsWithCppStandard::getAvailableCppStandards() const
 {
 	// as defined in clang/include/clang/Frontend/LangStandards.def
-
+	
 	return {
 		L"c++2a",
 		L"gnu++2a",

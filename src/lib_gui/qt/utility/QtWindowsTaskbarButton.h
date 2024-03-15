@@ -14,9 +14,7 @@ public:
 	void hideProgress();
 
 private:
-#ifdef _WIN32
-	QWinTaskbarProgress* m_taskbarProgress;
-#endif
+	QWinTaskbarProgress* m_taskbarProgress = nullptr;
 };
 
 #endif	  // QT_WINDOWS_TASKBAR_BUTTON_H
