@@ -37,8 +37,8 @@ int getIdealThreadCount();
 class Os final
 {
 	static_assert(BOOST_OS_WINDOWS || BOOST_OS_MACOS || BOOST_OS_LINUX, "Unknown operating system!");
-	public:
 
+	public:
 		static constexpr bool isLinux()
 		{
 			return BOOST_OS_LINUX;
@@ -52,6 +52,18 @@ class Os final
 		static constexpr bool isMac()
 		{
 			return BOOST_OS_MACOS;
+		}
+
+		static constexpr std::string name()
+		{
+			using namespace std::string_literals;
+
+			if constexpr (isLinux())
+				return "Linux"s;
+			else if constexpr (isWindows())
+				return "Windows"s;
+			else if constexpr (isMac())
+				return "Mac"s;
 		}
 };
 
