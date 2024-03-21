@@ -19,7 +19,7 @@ struct BlackboardItem: public BlackboardItemBase
 {
 	BlackboardItem(const T& v): value(v) {}
 
-	virtual ~BlackboardItem() {}
+	~BlackboardItem() override {}
 
 	T value;
 };

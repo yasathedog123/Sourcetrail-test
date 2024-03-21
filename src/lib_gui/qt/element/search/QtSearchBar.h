@@ -17,9 +17,9 @@ class QtSearchBar: public QFrame
 
 public:
 	QtSearchBar();
-	virtual ~QtSearchBar();
+	~QtSearchBar() override;
 
-	virtual QSize sizeHint() const;
+	QSize sizeHint() const override;
 
 	QString query() const;
 

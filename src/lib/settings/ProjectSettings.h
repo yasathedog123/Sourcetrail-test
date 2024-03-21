@@ -23,7 +23,7 @@ public:
 
 	ProjectSettings();
 	ProjectSettings(const FilePath& projectFilePath);
-	virtual ~ProjectSettings();
+	~ProjectSettings() override;
 
 	bool equalsExceptNameAndLocation(const ProjectSettings& other) const;
 

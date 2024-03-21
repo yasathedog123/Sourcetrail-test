@@ -22,7 +22,7 @@ signals:
 	void opened();
 
 public:
-	virtual void showPopup()
+	void showPopup() override
 	{
 		emit opened();
 	}
@@ -35,14 +35,14 @@ class QtProjectWizardContentPreferences: public QtProjectWizardContent
 
 public:
 	QtProjectWizardContentPreferences(QtProjectWizardWindow* window);
-	~QtProjectWizardContentPreferences();
+	~QtProjectWizardContentPreferences() override;
 
 	// QtProjectWizardContent implementation
-	virtual void populate(QGridLayout* layout, int& row) override;
+	void populate(QGridLayout* layout, int& row) override;
 
-	virtual void load() override;
-	virtual void save() override;
-	virtual bool check() override;
+	void load() override;
+	void save() override;
+	bool check() override;
 
 private slots:
 	void colorSchemeChanged(int index);

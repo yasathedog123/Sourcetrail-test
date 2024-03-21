@@ -19,7 +19,7 @@ public:
 		return "MessageGraphNodeMove";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << tokenId << L" " << delta.toWString();
 	}

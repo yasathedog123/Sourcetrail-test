@@ -9,7 +9,7 @@
 class SourceGroupSettingsWithCxxPathsAndFlags: public SourceGroupSettingsComponent
 {
 public:
-	virtual ~SourceGroupSettingsWithCxxPathsAndFlags() = default;
+	~SourceGroupSettingsWithCxxPathsAndFlags() override = default;
 
 	std::vector<FilePath> getHeaderSearchPaths() const;
 	std::vector<FilePath> getHeaderSearchPathsExpandedAndAbsolute() const;

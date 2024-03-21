@@ -20,7 +20,7 @@ public:
 
 	SourceGroupSettings(
 		SourceGroupType type, const std::string& id, const ProjectSettings* projectSettings);
-	virtual ~SourceGroupSettings() = default;
+	~SourceGroupSettings() override = default;
 
 	virtual std::shared_ptr<SourceGroupSettings> createCopy() const = 0;
 

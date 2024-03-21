@@ -10,7 +10,7 @@ class SourceGroupSettingsWithJavaStandard: public SourceGroupSettingsComponent
 public:
 	static std::wstring getDefaultJavaStandardStatic();
 
-	virtual ~SourceGroupSettingsWithJavaStandard() = default;
+	~SourceGroupSettingsWithJavaStandard() override = default;
 
 	std::wstring getJavaStandard() const;
 	void setJavaStandard(const std::wstring& standard);

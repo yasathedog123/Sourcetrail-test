@@ -41,7 +41,7 @@ public:
 	MouseReleaseFilter(QObject* parent);
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event);
+	bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
 	size_t m_backButton;
@@ -55,7 +55,7 @@ class QtMainWindow: public QMainWindow
 
 public:
 	QtMainWindow();
-	~QtMainWindow();
+	~QtMainWindow() override;
 
 	void addView(View* view);
 	void overrideView(View* view);
@@ -89,13 +89,13 @@ signals:
 	void hideIndexingDialog();
 
 protected:
-	virtual void showEvent(QShowEvent* event) override;
-	virtual void keyPressEvent(QKeyEvent* event) override;
-	virtual void contextMenuEvent(QContextMenuEvent* event) override;
-	virtual void closeEvent(QCloseEvent* event) override;
-	virtual void resizeEvent(QResizeEvent* event) override;
+	void showEvent(QShowEvent* event) override;
+	void keyPressEvent(QKeyEvent* event) override;
+	void contextMenuEvent(QContextMenuEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 
-	virtual bool focusNextPrevChild(bool next) override;
+	bool focusNextPrevChild(bool next) override;
 
 public slots:
 	void about();

@@ -22,7 +22,7 @@ class QtProjectWizard: public QtProjectWizardWindow
 
 public:
 	QtProjectWizard(QWidget* parent = nullptr);
-	virtual QSize sizeHint() const override;
+	QSize sizeHint() const override;
 
 public slots:
 	void newProject();
@@ -33,10 +33,10 @@ public slots:
 	void editProject(std::shared_ptr<ProjectSettings> settings);
 
 protected:
-	virtual void populateWindow(QWidget* widget) override;
-	virtual void windowReady() override;
+	void populateWindow(QWidget* widget) override;
+	void windowReady() override;
 
-	virtual void handlePrevious() override;
+	void handlePrevious() override;
 
 private:
 	QtProjectWizardWindow* createWindowWithContent(

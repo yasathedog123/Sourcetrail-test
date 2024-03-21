@@ -25,7 +25,7 @@ class QtCodeFileSingle
 
 public:
 	QtCodeFileSingle(QtCodeNavigator* navigator, QWidget* parent = nullptr);
-	virtual ~QtCodeFileSingle() = default;
+	~QtCodeFileSingle() override = default;
 
 	void clearFile();
 	void clearCache();

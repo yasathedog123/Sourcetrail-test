@@ -31,7 +31,7 @@ class ScreenSearchController
 	, public MessageListener<MessageGraphNodeHide>
 {
 public:
-	virtual ~ScreenSearchController() = default;
+	~ScreenSearchController() override = default;
 
 	// Controller implementation
 	void clear() override;

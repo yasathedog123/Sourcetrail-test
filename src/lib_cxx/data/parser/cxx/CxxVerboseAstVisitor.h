@@ -22,9 +22,9 @@ public:
 private:
 	typedef CxxAstVisitor base;
 
-	virtual bool TraverseDecl(clang::Decl* d);
-	virtual bool TraverseStmt(clang::Stmt* stmt);
-	virtual bool TraverseTypeLoc(clang::TypeLoc tl);
+	bool TraverseDecl(clang::Decl* d) override;
+	bool TraverseStmt(clang::Stmt* stmt) override;
+	bool TraverseTypeLoc(clang::TypeLoc tl) override;
 
 	std::string getIndentString() const;
 	std::string obfuscateName(const std::string& name) const;

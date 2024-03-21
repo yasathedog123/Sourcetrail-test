@@ -18,7 +18,7 @@ public:
 		return "MessageToNextCodeReference";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << filePath.wstr() << L' ' << lineNumber << L':' << columnNumber << L' ';
 

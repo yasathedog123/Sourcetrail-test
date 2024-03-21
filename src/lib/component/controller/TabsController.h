@@ -38,7 +38,7 @@ public:
 		ScreenSearchSender* screenSearchSender);
 
 	// Controller implementation
-	virtual void clear();
+	void clear() override;
 
 	void addTab(Id tabId, SearchMatch match);
 	void showTab(Id tabId);
@@ -47,13 +47,13 @@ public:
 	void onClearTabs();
 
 private:
-	virtual void handleMessage(MessageActivateErrors* message);
-	virtual void handleMessage(MessageIndexingFinished* message);
-	virtual void handleMessage(MessageTabClose* message);
-	virtual void handleMessage(MessageTabOpen* message);
-	virtual void handleMessage(MessageTabOpenWith* message);
-	virtual void handleMessage(MessageTabSelect* message);
-	virtual void handleMessage(MessageTabState* message);
+	void handleMessage(MessageActivateErrors* message) override;
+	void handleMessage(MessageIndexingFinished* message) override;
+	void handleMessage(MessageTabClose* message) override;
+	void handleMessage(MessageTabOpen* message) override;
+	void handleMessage(MessageTabOpenWith* message) override;
+	void handleMessage(MessageTabSelect* message) override;
+	void handleMessage(MessageTabState* message) override;
 
 	TabsView* getView() const;
 

@@ -18,7 +18,7 @@ class MainView: public ViewLayout
 {
 public:
 	MainView(const ViewFactory* viewFactory, StorageAccess* storageAccess);
-	virtual ~MainView() = default;
+	~MainView() override = default;
 
 	void setup();
 	void clear();

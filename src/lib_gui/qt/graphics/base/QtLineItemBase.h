@@ -18,7 +18,7 @@ public:
 	};
 
 	QtLineItemBase(QGraphicsItem* parent);
-	virtual ~QtLineItemBase();
+	~QtLineItemBase() override;
 
 	void updateLine(
 		const Vec4i& ownerRect,

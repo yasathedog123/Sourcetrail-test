@@ -41,7 +41,7 @@ public slots:
 
 public:
 	QtSmartSearchBox(const QString& placeholder, bool supportsFullTextSearch, QWidget* parent = nullptr);
-	virtual ~QtSmartSearchBox();
+	~QtSmartSearchBox() override;
 
 	QCompleter* getCompleter() const;
 	std::vector<SearchMatch> getMatches() const;
@@ -54,18 +54,18 @@ public:
 	void refreshStyle();
 
 protected:
-	virtual bool event(QEvent* event);
-	virtual void resizeEvent(QResizeEvent* event);
+	bool event(QEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 
-	virtual void focusInEvent(QFocusEvent* event);
-	virtual void focusOutEvent(QFocusEvent* event);
+	void focusInEvent(QFocusEvent* event) override;
+	void focusOutEvent(QFocusEvent* event) override;
 
-	virtual void keyPressEvent(QKeyEvent* event);
-	virtual void keyReleaseEvent(QKeyEvent* event);
+	void keyPressEvent(QKeyEvent* event) override;
+	void keyReleaseEvent(QKeyEvent* event) override;
 
-	virtual void mouseMoveEvent(QMouseEvent* event);
-	virtual void mousePressEvent(QMouseEvent* event);
-	virtual void mouseReleaseEvent(QMouseEvent* event);
+	void mouseMoveEvent(QMouseEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
 
 private slots:
 	void onTextEdited(const QString& text);

@@ -11,7 +11,7 @@ class QtTooltip: public QFrame
 
 public:
 	QtTooltip(QWidget* parent = nullptr);
-	virtual ~QtTooltip();
+	~QtTooltip() override;
 
 	void setTooltipInfo(const TooltipInfo& info);
 
@@ -24,8 +24,8 @@ public slots:
 	virtual void hide(bool force = false);
 
 protected:
-	virtual void leaveEvent(QEvent* event);
-	virtual void enterEvent(QEvent* event);
+	void leaveEvent(QEvent* event) override;
+	void enterEvent(QEvent* event) override;
 
 private:
 	void addTitle(const QString& title, int count, const QString& countText);

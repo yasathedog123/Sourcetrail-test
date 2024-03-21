@@ -43,7 +43,7 @@ public:
 
 	SqliteIndexStorage(const FilePath& dbFilePath);
 
-	virtual size_t getStaticVersion() const;
+	size_t getStaticVersion() const override;
 
 	void setMode(const StorageModeType mode);
 
@@ -237,9 +237,9 @@ private:
 
 	std::vector<std::pair<int, SqliteDatabaseIndex>> getIndices() const;
 
-	virtual void clearTables();
-	virtual void setupTables();
-	virtual void setupPrecompiledStatements();
+	void clearTables() override;
+	void setupTables() override;
+	void setupPrecompiledStatements() override;
 
 	template <typename ResultType>
 	std::vector<ResultType> doGetAll(const std::string& query) const

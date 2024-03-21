@@ -9,8 +9,8 @@ class SettingsMigrationLambda: public SettingsMigration
 {
 public:
 	SettingsMigrationLambda(std::function<void(const SettingsMigration*, Settings*)> m_lambda);
-	virtual ~SettingsMigrationLambda();
-	virtual void apply(Settings* migratable) const;
+	~SettingsMigrationLambda() override;
+	void apply(Settings* migratable) const override;
 
 private:
 	std::function<void(const SettingsMigration*, Settings*)> m_lambda;

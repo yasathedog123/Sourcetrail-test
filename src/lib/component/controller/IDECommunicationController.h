@@ -23,9 +23,9 @@ class IDECommunicationController
 {
 public:
 	IDECommunicationController(StorageAccess* storageAccess);
-	virtual ~IDECommunicationController();
+	~IDECommunicationController() override;
 
-	virtual void clear();
+	void clear() override;
 
 	virtual void startListening() = 0;
 	virtual void stopListening() = 0;
@@ -45,10 +45,10 @@ private:
 	void handleCreateCDBProjectMessage(const NetworkProtocolHelper::CreateCDBProjectMessage& message);
 	void handlePing(const NetworkProtocolHelper::PingMessage& message);
 
-	virtual void handleMessage(MessageWindowFocus* message);
-	virtual void handleMessage(MessageIDECreateCDB* message);
-	virtual void handleMessage(MessageMoveIDECursor* message);
-	virtual void handleMessage(MessagePluginPortChange* message);
+	void handleMessage(MessageWindowFocus* message) override;
+	void handleMessage(MessageIDECreateCDB* message) override;
+	void handleMessage(MessageMoveIDECursor* message) override;
+	void handleMessage(MessagePluginPortChange* message) override;
 	virtual void sendMessage(const std::wstring& message) const = 0;
 
 	StorageAccess* m_storageAccess;

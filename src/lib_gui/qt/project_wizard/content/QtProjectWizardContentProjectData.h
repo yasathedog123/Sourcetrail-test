@@ -17,11 +17,11 @@ public:
 		bool disableNameEditing = false);
 
 	// QtProjectWizardContent implementation
-	virtual void populate(QGridLayout* layout, int& row) override;
+	void populate(QGridLayout* layout, int& row) override;
 
-	virtual void load() override;
-	virtual void save() override;
-	virtual bool check() override;
+	void load() override;
+	void save() override;
+	bool check() override;
 
 public slots:
 	void onProjectNameEdited(QString text);

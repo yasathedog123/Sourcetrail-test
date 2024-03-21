@@ -19,7 +19,7 @@ public:
 		return "MessageGraphNodeBundleSplit";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << bundleId;
 	}

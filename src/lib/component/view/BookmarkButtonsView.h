@@ -11,7 +11,7 @@ class BookmarkButtonsView
 {
 public:
 	BookmarkButtonsView(ViewLayout* viewLayout);
-	virtual ~BookmarkButtonsView() = default;
+	~BookmarkButtonsView() override = default;
 
 	std::string getName() const override;
 

@@ -10,9 +10,9 @@ class SearchView: public View
 {
 public:
 	SearchView(ViewLayout* viewLayout);
-	virtual ~SearchView();
+	~SearchView() override;
 
-	virtual std::string getName() const;
+	std::string getName() const override;
 
 	virtual std::wstring getQuery() const = 0;
 

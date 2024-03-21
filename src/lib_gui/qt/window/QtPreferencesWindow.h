@@ -11,11 +11,11 @@ class QtPreferencesWindow: public QtProjectWizardWindow
 
 public:
 	QtPreferencesWindow(QWidget* parent = 0);
-	virtual ~QtPreferencesWindow();
+	~QtPreferencesWindow() override;
 
 protected:
-	virtual void windowReady() override;
-	virtual void handleNext() override;
+	void windowReady() override;
+	void handleNext() override;
 
 private:
 	ApplicationSettings m_appSettings;

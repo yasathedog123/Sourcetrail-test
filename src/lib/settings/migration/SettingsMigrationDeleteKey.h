@@ -9,8 +9,8 @@ class SettingsMigrationDeleteKey: public SettingsMigration
 {
 public:
 	SettingsMigrationDeleteKey(const std::string& key);
-	virtual ~SettingsMigrationDeleteKey();
-	virtual void apply(Settings* migratable) const;
+	~SettingsMigrationDeleteKey() override;
+	void apply(Settings* migratable) const override;
 
 private:
 	const std::string m_key;

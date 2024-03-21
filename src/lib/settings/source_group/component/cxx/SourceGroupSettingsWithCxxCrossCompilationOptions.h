@@ -13,7 +13,7 @@ public:
 	static std::vector<std::wstring> getAvailableOsTypes();
 	static std::vector<std::wstring> getAvailableEnvironmentTypes();
 
-	virtual ~SourceGroupSettingsWithCxxCrossCompilationOptions() = default;
+	~SourceGroupSettingsWithCxxCrossCompilationOptions() override = default;
 
 	bool getTargetOptionsEnabled() const;
 	void setTargetOptionsEnabled(bool targetOptionsEnabled);

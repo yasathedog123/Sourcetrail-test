@@ -418,7 +418,7 @@ private:
 			return s;
 		}
 
-		virtual ValueT find(const StringT& str, size_t idx) const override
+		ValueT find(const StringT& str, size_t idx) const override
 		{
 			if (idx > str.size())
 			{
@@ -529,7 +529,7 @@ private:
 		}
 
 	private:
-		virtual std::unique_ptr<Branch> createBranch(const StringT& str) const override
+		std::unique_ptr<Branch> createBranch(const StringT& str) const override
 		{
 			switch (str.size())
 			{
@@ -556,7 +556,7 @@ private:
 			}
 		}
 
-		virtual std::unique_ptr<Leaf> createLeaf(const StringT& str, const ValueT& val) const override
+		std::unique_ptr<Leaf> createLeaf(const StringT& str, const ValueT& val) const override
 		{
 			switch (str.size())
 			{

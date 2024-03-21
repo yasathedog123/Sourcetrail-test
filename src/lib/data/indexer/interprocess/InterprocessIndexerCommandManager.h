@@ -10,7 +10,7 @@ class InterprocessIndexerCommandManager: public BaseInterprocessDataManager
 {
 public:
 	InterprocessIndexerCommandManager(const std::string& instanceUuid, Id processId, bool isOwner);
-	virtual ~InterprocessIndexerCommandManager();
+	~InterprocessIndexerCommandManager() override;
 
 	void pushIndexerCommands(const std::vector<std::shared_ptr<IndexerCommand>>& indexerCommands);
 	std::shared_ptr<IndexerCommand> popIndexerCommand();

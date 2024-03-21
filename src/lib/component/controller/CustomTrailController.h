@@ -19,7 +19,7 @@ class CustomTrailController
 {
 public:
 	CustomTrailController(StorageAccess* storageAccess);
-	~CustomTrailController() = default;
+	~CustomTrailController() override = default;
 
 	// Controller implementation
 	void clear() override;

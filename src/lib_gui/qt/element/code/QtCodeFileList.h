@@ -29,7 +29,7 @@ class QtCodeFileList
 
 public:
 	QtCodeFileList(QtCodeNavigator* navigator);
-	virtual ~QtCodeFileList() = default;
+	~QtCodeFileList() override = default;
 
 	void clear();
 	void clearSnippetTitleAndScrollBar();

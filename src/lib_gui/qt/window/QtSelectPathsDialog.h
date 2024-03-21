@@ -18,8 +18,8 @@ public:
 		const std::vector<FilePath>& checkedPaths,
 		const FilePath& rootPathForRelativePaths);
 
-	virtual void populateWindow(QWidget* widget) override;
-	virtual void windowReady() override;
+	void populateWindow(QWidget* widget) override;
+	void windowReady() override;
 
 private:
 	QListWidget* m_list;

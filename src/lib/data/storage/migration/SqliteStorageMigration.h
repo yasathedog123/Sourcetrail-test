@@ -10,7 +10,7 @@
 class SqliteStorageMigration: public Migration<SqliteStorage>
 {
 public:
-	virtual ~SqliteStorageMigration();
+	~SqliteStorageMigration() override;
 
 	bool executeStatementInStorage(SqliteStorage* storage, const std::string& statement) const;
 };

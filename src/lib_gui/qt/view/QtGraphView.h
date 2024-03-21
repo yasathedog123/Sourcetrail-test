@@ -35,7 +35,7 @@ class QtGraphView
 
 public:
 	QtGraphView(ViewLayout* viewLayout);
-	~QtGraphView() = default;
+	~QtGraphView() override = default;
 
 	// View implementation
 	void createWidgetWrapper() override;

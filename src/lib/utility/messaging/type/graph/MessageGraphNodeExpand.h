@@ -19,7 +19,7 @@ public:
 		return "MessageGraphNodeExpand";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << tokenId << L" ";
 		if (expand)

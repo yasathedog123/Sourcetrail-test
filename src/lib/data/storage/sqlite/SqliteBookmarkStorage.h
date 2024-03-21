@@ -13,7 +13,7 @@ class SqliteBookmarkStorage: public SqliteStorage
 public:
 	SqliteBookmarkStorage(const FilePath& dbFilePath);
 
-	virtual size_t getStaticVersion() const;
+	size_t getStaticVersion() const override;
 
 	void migrateIfNecessary();
 
@@ -39,9 +39,9 @@ private:
 	static const size_t s_storageVersion;
 
 	virtual std::vector<std::pair<int, SqliteDatabaseIndex>> getIndices() const;
-	virtual void clearTables();
-	virtual void setupTables();
-	virtual void setupPrecompiledStatements();
+	void clearTables() override;
+	void setupTables() override;
+	void setupPrecompiledStatements() override;
 
 	// void updateBookmarkMetaData(const BookmarkMetaData& metaData);
 

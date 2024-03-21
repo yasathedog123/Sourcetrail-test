@@ -16,7 +16,7 @@ class SelectableCellDelegate: public QStyledItemDelegate
 public:
 	SelectableCellDelegate(QObject* parent = Q_NULLPTR);
 	QWidget* createEditor(
-		QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+		QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
 SelectableCellDelegate::SelectableCellDelegate(QObject* parent): QStyledItemDelegate(parent) {}

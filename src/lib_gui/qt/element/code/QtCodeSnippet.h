@@ -25,7 +25,7 @@ class QtCodeSnippet: public QFrame
 
 public:
 	QtCodeSnippet(const CodeSnippetParams& params, QtCodeNavigator* navigator, QtCodeFile* file);
-	virtual ~QtCodeSnippet();
+	~QtCodeSnippet() override;
 
 	QtCodeFile* getFile() const;
 	QtCodeArea* getArea() const;

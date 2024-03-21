@@ -31,7 +31,7 @@ class StatusBarController
 {
 public:
 	StatusBarController(StorageAccess* storageAccess);
-	virtual ~StatusBarController(void);
+	~StatusBarController(void) override;
 
 	StatusBarView* getView();
 

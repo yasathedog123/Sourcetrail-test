@@ -35,7 +35,7 @@ public:
 	static QtGraphNode* findNodeRecursive(const std::list<QtGraphNode*>& nodes, Id tokenId);
 
 	QtGraphNode(GraphFocusHandler* focusHandler = nullptr);
-	virtual ~QtGraphNode();
+	~QtGraphNode() override;
 
 	QtGraphNode* getParent() const;
 	QtGraphNode* getLastParent(bool noGroups = false) const;
@@ -115,9 +115,9 @@ public:
 	virtual void updateStyle() = 0;
 
 protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 	void forEachEdge(std::function<void(QtGraphEdge*)> func);
 

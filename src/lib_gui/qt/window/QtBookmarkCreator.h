@@ -22,7 +22,7 @@ public:
 		ControllerProxy<BookmarkController>* controllerProxy,
 		QWidget* parent = nullptr,
 		Id bookmarkId = 0);
-	~QtBookmarkCreator();
+	~QtBookmarkCreator() override;
 
 	void setupBookmarkCreator();
 
@@ -37,8 +37,8 @@ public:
 	void setNodeId(Id nodeId);
 
 protected:
-	virtual void handleNext() override;
-	virtual void handleClose() override;
+	void handleNext() override;
+	void handleClose() override;
 
 private slots:
 	void onNameChanged(const QString& text);

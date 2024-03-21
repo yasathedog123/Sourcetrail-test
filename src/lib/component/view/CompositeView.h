@@ -22,7 +22,7 @@ public:
 
 	CompositeView(
 		ViewLayout* viewLayout, CompositeDirection direction, const std::string& name, Id tabId);
-	virtual ~CompositeView();
+	~CompositeView() override;
 
 	Id getSchedulerId() const override;
 
@@ -34,7 +34,7 @@ public:
 	virtual void showFocusIndicator(bool focus) = 0;
 
 	// View implementation
-	virtual std::string getName() const override;
+	std::string getName() const override;
 
 	// ViewLayout implementation
 	void addView(View* view) override;

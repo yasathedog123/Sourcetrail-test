@@ -7,7 +7,7 @@ class QtViewFactory: public ViewFactory
 {
 public:
 	QtViewFactory() = default;
-	~QtViewFactory() = default;
+	~QtViewFactory() override = default;
 
 	std::shared_ptr<MainView> createMainView(StorageAccess* storageAccess) const override;
 	std::shared_ptr<CompositeView> createCompositeView(

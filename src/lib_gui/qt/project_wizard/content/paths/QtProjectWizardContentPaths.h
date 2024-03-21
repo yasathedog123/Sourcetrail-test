@@ -25,9 +25,9 @@ public:
 		bool checkMissingPaths);
 
 	// QtSettingsWindow implementation
-	virtual void populate(QGridLayout* layout, int& row) override;
+	void populate(QGridLayout* layout, int& row) override;
 
-	virtual bool check() override;
+	bool check() override;
 
 protected:
 	void setTitleString(const QString& title);

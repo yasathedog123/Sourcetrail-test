@@ -12,7 +12,7 @@ class QtSearchView: public SearchView
 {
 public:
 	QtSearchView(ViewLayout* viewLayout);
-	~QtSearchView() = default;
+	~QtSearchView() override = default;
 
 	// View implementation
 	void createWidgetWrapper() override;

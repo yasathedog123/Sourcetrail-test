@@ -37,12 +37,12 @@ public:
 	{
 	}
 
-	virtual void doEnter(std::shared_ptr<Blackboard> blackboard)
+	void doEnter(std::shared_ptr<Blackboard> blackboard) override
 	{
 		enterCallOrder = ++orderCount;
 	}
 
-	virtual TaskState doUpdate(std::shared_ptr<Blackboard> blackboard)
+	TaskState doUpdate(std::shared_ptr<Blackboard> blackboard) override
 	{
 		updateCallOrder = ++orderCount;
 
@@ -61,12 +61,12 @@ public:
 		return returnState;
 	}
 
-	virtual void doExit(std::shared_ptr<Blackboard> blackboard)
+	void doExit(std::shared_ptr<Blackboard> blackboard) override
 	{
 		exitCallOrder = ++orderCount;
 	}
 
-	virtual void doReset(std::shared_ptr<Blackboard> blackboard)
+	void doReset(std::shared_ptr<Blackboard> blackboard) override
 	{
 		resetCallOrder = ++orderCount;
 	}
@@ -89,7 +89,7 @@ public:
 	{
 	}
 
-	virtual TaskState doUpdate(std::shared_ptr<Blackboard> blackboard)
+	TaskState doUpdate(std::shared_ptr<Blackboard> blackboard) override
 	{
 		subTask = std::make_shared<TestTask>(&orderCount, 1);
 		scheduler->pushTask(subTask);

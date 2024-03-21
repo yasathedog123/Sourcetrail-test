@@ -26,7 +26,7 @@ public:
 		return "MessageLoadProject";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << projectSettingsFilePath.wstr();
 		os << L", settingsChanged: " << std::boolalpha << settingsChanged;

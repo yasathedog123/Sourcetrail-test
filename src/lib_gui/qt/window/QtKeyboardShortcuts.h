@@ -14,7 +14,7 @@ public:
 	void updateSize();
 
 protected:
-	virtual void wheelEvent(QWheelEvent* event) override;
+	void wheelEvent(QWheelEvent* event) override;
 };
 
 class QtKeyboardShortcuts: public QtWindow
@@ -22,12 +22,12 @@ class QtKeyboardShortcuts: public QtWindow
 	Q_OBJECT
 public:
 	QtKeyboardShortcuts(QWidget* parent = 0);
-	virtual ~QtKeyboardShortcuts();
+	~QtKeyboardShortcuts() override;
 
 	QSize sizeHint() const override;
 
-	virtual void populateWindow(QWidget* widget) override;
-	virtual void windowReady() override;
+	void populateWindow(QWidget* widget) override;
+	void windowReady() override;
 
 private:
 	struct Shortcut

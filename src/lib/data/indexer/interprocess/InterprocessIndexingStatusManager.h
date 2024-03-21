@@ -10,7 +10,7 @@ class InterprocessIndexingStatusManager: public BaseInterprocessDataManager
 {
 public:
 	InterprocessIndexingStatusManager(const std::string& instanceUuid, Id processId, bool isOwner);
-	virtual ~InterprocessIndexingStatusManager();
+	~InterprocessIndexingStatusManager() override;
 
 	void startIndexingSourceFile(const FilePath& filePath);
 	void finishIndexingSourceFile();

@@ -13,7 +13,7 @@ public:
 	void setStrings(const std::vector<std::wstring>& strings, bool readOnly = false);
 
 private:
-	virtual QtListBoxItem* createListBoxItem(QListWidgetItem* item) override;
+	QtListBoxItem* createListBoxItem(QListWidgetItem* item) override;
 };
 
 #endif	  // QT_STRING_LIST_BOX_H

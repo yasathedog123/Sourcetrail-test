@@ -12,8 +12,8 @@ public:
 
 protected:
 	// QtWindow implementation
-	virtual void populateWindow(QWidget* widget) override;
-	virtual void windowReady() override;
+	void populateWindow(QWidget* widget) override;
+	void windowReady() override;
 };
 
 #endif	  // QT_LICENSE_WINDOW_H

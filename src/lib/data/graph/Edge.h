@@ -40,7 +40,7 @@ public:
 
 	Edge(Id id, EdgeType type, Node* from, Node* to);
 	Edge(const Edge& other, Node* from, Node* to);
-	virtual ~Edge();
+	~Edge() override;
 
 	EdgeType getType() const;
 	bool isType(TypeMask mask) const;
@@ -51,15 +51,15 @@ public:
 	std::wstring getName() const;
 
 	// Token implementation
-	virtual bool isNode() const override;
-	virtual bool isEdge() const override;
+	bool isNode() const override;
+	bool isEdge() const override;
 
 	static std::wstring getUnderscoredTypeString(EdgeType type);
 	static std::wstring getReadableTypeString(EdgeType type);
 	static EdgeType getTypeForReadableTypeString(const std::wstring& str);
 
 	// Logging.
-	virtual std::wstring getReadableTypeString() const override;
+	std::wstring getReadableTypeString() const override;
 	std::wstring getAsString() const;
 
 private:

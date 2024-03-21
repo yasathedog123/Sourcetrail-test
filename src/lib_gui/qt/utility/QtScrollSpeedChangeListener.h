@@ -16,7 +16,7 @@ public:
 	void setScrollBar(QScrollBar* scrollbar);
 
 private:
-	void handleMessage(MessageScrollSpeedChange* message);
+	void handleMessage(MessageScrollSpeedChange* message) override;
 
 	void doChangeScrollSpeed(float scrollSpeed);
 

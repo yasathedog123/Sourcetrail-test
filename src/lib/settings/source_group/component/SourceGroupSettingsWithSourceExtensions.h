@@ -8,7 +8,7 @@
 class SourceGroupSettingsWithSourceExtensions: public SourceGroupSettingsComponent
 {
 public:
-	virtual ~SourceGroupSettingsWithSourceExtensions() = default;
+	~SourceGroupSettingsWithSourceExtensions() override = default;
 
 	std::vector<std::wstring> getSourceExtensions() const;
 	void setSourceExtensions(const std::vector<std::wstring>& sourceExtensions);

@@ -23,7 +23,7 @@ public:
 		return "MessageFocusIn";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		for (const Id& id: tokenIds)
 		{

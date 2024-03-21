@@ -19,7 +19,7 @@ public:
 		setSendAsTask(false);
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << errorCount.total << '/' << errorCount.fatal << L" - " << newErrors.size()
 		   << L" new errors";

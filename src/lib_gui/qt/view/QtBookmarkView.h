@@ -13,7 +13,7 @@ class QtBookmarkView: public BookmarkView
 {
 public:
 	QtBookmarkView(ViewLayout* viewLayout);
-	~QtBookmarkView() = default;
+	~QtBookmarkView() override = default;
 
 	// View implementation
 	void createWidgetWrapper() override;

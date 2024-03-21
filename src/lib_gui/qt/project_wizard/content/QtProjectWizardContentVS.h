@@ -10,7 +10,7 @@ class QtProjectWizardContentVS: public QtProjectWizardContent
 public:
 	QtProjectWizardContentVS(QtProjectWizardWindow* window);
 
-	virtual void populate(QGridLayout* layout, int& row) override;
+	void populate(QGridLayout* layout, int& row) override;
 
 private slots:
 	void handleVSCDBClicked();

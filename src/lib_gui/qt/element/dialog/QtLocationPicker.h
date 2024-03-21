@@ -13,7 +13,7 @@ class QtLocationPicker: public QWidget
 public:
 	QtLocationPicker(QWidget* parent);
 
-	virtual void paintEvent(QPaintEvent*) override;
+	void paintEvent(QPaintEvent*) override;
 
 	void setPlaceholderText(const QString& text);
 	QString getText();

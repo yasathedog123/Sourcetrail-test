@@ -7,9 +7,9 @@ class QtRoundedRectItem: public QGraphicsRectItem
 {
 public:
 	QtRoundedRectItem(QGraphicsItem* parent);
-	virtual ~QtRoundedRectItem();
+	~QtRoundedRectItem() override;
 
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget);
+	void paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) override;
 
 	void setShadow(QColor color, int blurRadius);
 	void setShadowEnabled(bool enabled);

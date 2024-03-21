@@ -10,7 +10,7 @@ class SourceGroupSettingsWithCStandard: public SourceGroupSettingsComponent
 public:
 	static std::wstring getDefaultCStandardStatic();
 
-	virtual ~SourceGroupSettingsWithCStandard() = default;
+	~SourceGroupSettingsWithCStandard() override = default;
 
 	std::wstring getCStandard() const;
 	void setCStandard(const std::wstring& standard);

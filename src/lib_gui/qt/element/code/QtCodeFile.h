@@ -26,7 +26,7 @@ class QtCodeFile: public QFrame
 
 public:
 	QtCodeFile(const FilePath& filePath, QtCodeNavigator* navigator, bool isFirst);
-	virtual ~QtCodeFile();
+	~QtCodeFile() override;
 
 	void setModificationTime(const TimeStamp modificationTime);
 

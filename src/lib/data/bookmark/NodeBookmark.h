@@ -12,7 +12,7 @@ public:
 		const std::wstring& comment,
 		const TimeStamp& timeStamp,
 		const BookmarkCategory& category);
-	virtual ~NodeBookmark();
+	~NodeBookmark() override;
 
 	void addNodeId(const Id nodeId);
 	void setNodeIds(const std::vector<Id>& nodeIds);

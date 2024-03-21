@@ -19,7 +19,7 @@ public:
 		return "MessageActivateFile";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << filePath.wstr();
 	}

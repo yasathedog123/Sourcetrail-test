@@ -44,7 +44,7 @@ public:
 		return "MessageChangeFileView";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << filePath.wstr();
 

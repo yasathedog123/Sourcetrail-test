@@ -18,16 +18,16 @@ class QtBookmarkBrowser: public QtWindow
 
 public:
 	QtBookmarkBrowser(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent = nullptr);
-	~QtBookmarkBrowser();
+	~QtBookmarkBrowser() override;
 
 	void setupBookmarkBrowser();
 	void setBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks);
 
 protected:
-	virtual void resizeEvent(QResizeEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 
-	virtual void handleClose() override;
-	virtual void handleNext() override;
+	void handleClose() override;
+	void handleNext() override;
 
 private slots:
 	void filterOrOrderChanged(int index);

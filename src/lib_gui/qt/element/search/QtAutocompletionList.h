@@ -18,14 +18,14 @@ class QtAutocompletionModel: public QAbstractTableModel
 
 public:
 	QtAutocompletionModel(QObject* parent = 0);
-	virtual ~QtAutocompletionModel();
+	~QtAutocompletionModel() override;
 
 	void setMatchList(const std::vector<SearchMatch>& matchList);
 
-	virtual int rowCount(const QModelIndex& parent) const;
-	virtual int columnCount(const QModelIndex& parent) const;
+	int rowCount(const QModelIndex& parent) const override;
+	int columnCount(const QModelIndex& parent) const override;
 
-	virtual QVariant data(const QModelIndex& index, int role) const;
+	QVariant data(const QModelIndex& index, int role) const override;
 
 	const SearchMatch* getSearchMatchAt(int idx) const;
 
@@ -43,11 +43,11 @@ class QtAutocompletionDelegate: public QStyledItemDelegate
 	Q_OBJECT
 public:
 	explicit QtAutocompletionDelegate(QtAutocompletionModel* model, QObject* parent = 0);
-	virtual ~QtAutocompletionDelegate();
+	~QtAutocompletionDelegate() override;
 
-	virtual void paint(
-		QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-	virtual QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
+	void paint(
+		QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+	QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
 	void calculateCharSizes(QFont font);
 	void resetCharSizes();
@@ -77,7 +77,7 @@ signals:
 
 public:
 	QtAutocompletionList(QWidget* parent = 0);
-	virtual ~QtAutocompletionList();
+	~QtAutocompletionList() override;
 
 	void completeAt(QPoint pos, const std::vector<SearchMatch>& autocompletionList);
 

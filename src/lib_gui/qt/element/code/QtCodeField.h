@@ -28,7 +28,7 @@ public:
 		bool convertLocationsOnDemand = true,
 		QWidget* parent = nullptr);
 
-	~QtCodeField();
+	~QtCodeField() override;
 
 	QSize sizeHint() const override;
 

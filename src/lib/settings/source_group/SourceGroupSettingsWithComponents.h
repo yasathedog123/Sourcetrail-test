@@ -15,7 +15,7 @@ public:
 	{
 	}
 
-	virtual ~SourceGroupSettingsWithComponents() = default;
+	~SourceGroupSettingsWithComponents() override = default;
 
 	void loadSettings(const ConfigManager* config) override
 	{

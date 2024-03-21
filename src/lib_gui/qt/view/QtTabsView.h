@@ -17,7 +17,7 @@ class QtTabsView
 
 public:
 	QtTabsView(ViewLayout* viewLayout);
-	virtual ~QtTabsView() = default;
+	~QtTabsView() override = default;
 
 	// View implementation
 	void createWidgetWrapper() override;

@@ -27,8 +27,8 @@ public:
 	void moveToCenter();
 
 	// QtWindowStackElement implementation
-	virtual void showWindow() override;
-	virtual void hideWindow() override;
+	void showWindow() override;
+	void hideWindow() override;
 
 protected:
 	void mouseMoveEvent(QMouseEvent* event) override;

@@ -10,7 +10,7 @@
 class SettingsMigration: public Migration<Settings>
 {
 public:
-	virtual ~SettingsMigration();
+	~SettingsMigration() override;
 
 	bool isValueDefinedInSettings(const Settings* settings, const std::string& key) const;
 

@@ -35,7 +35,7 @@ public:
 	int m_messageCount;
 
 private:
-	virtual void handleMessage(TestMessage* message)
+	void handleMessage(TestMessage* message) override
 	{
 		m_messageCount++;
 	}
@@ -49,7 +49,7 @@ public:
 	int m_messageCount;
 
 private:
-	virtual void handleMessage(Test2Message* message)
+	void handleMessage(Test2Message* message) override
 	{
 		m_messageCount++;
 		TestMessage().dispatch();
@@ -62,7 +62,7 @@ public:
 	std::shared_ptr<TestMessageListener> m_listener;
 
 private:
-	virtual void handleMessage(Test2Message* message)
+	void handleMessage(Test2Message* message) override
 	{
 		m_listener = std::make_shared<TestMessageListener>();
 	}
@@ -76,7 +76,7 @@ public:
 	std::shared_ptr<TestMessageListener> m_listener;
 
 private:
-	virtual void handleMessage(TestMessage* message)
+	void handleMessage(TestMessage* message) override
 	{
 		if (!m_listener)
 		{
@@ -84,7 +84,7 @@ private:
 		}
 	}
 
-	virtual void handleMessage(Test2Message* message)
+	void handleMessage(Test2Message* message) override
 	{
 		m_listener.reset();
 	}
@@ -96,7 +96,7 @@ public:
 	std::vector<std::shared_ptr<TestMessageListener>> m_listeners;
 
 private:
-	virtual void handleMessage(TestMessage* message)
+	void handleMessage(TestMessage* message) override
 	{
 		if (!m_listeners.size())
 		{

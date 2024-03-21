@@ -17,7 +17,7 @@ class Node: public Token
 public:
 	Node(Id id, NodeType type, NameHierarchy nameHierarchy, DefinitionKind definitionKind);
 	Node(const Node& other);
-	virtual ~Node();
+	~Node() override;
 
 	NodeType getType() const;
 	void setType(NodeType type);
@@ -55,11 +55,11 @@ public:
 	void forEachNodeRecursive(std::function<void(const Node*)> func) const;
 
 	// Token implementation.
-	virtual bool isNode() const override;
-	virtual bool isEdge() const override;
+	bool isNode() const override;
+	bool isEdge() const override;
 
 	// Logging.
-	virtual std::wstring getReadableTypeString() const override;
+	std::wstring getReadableTypeString() const override;
 	std::wstring getAsString() const;
 
 private:

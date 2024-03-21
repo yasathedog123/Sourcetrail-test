@@ -7,7 +7,7 @@
 class SourceGroupSettingsWithCxxPchOptions: public SourceGroupSettingsComponent
 {
 public:
-	virtual ~SourceGroupSettingsWithCxxPchOptions() = default;
+	~SourceGroupSettingsWithCxxPchOptions() override = default;
 
 	FilePath getPchDependenciesDirectoryPath() const;
 

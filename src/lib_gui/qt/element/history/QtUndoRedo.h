@@ -15,7 +15,7 @@ class QtUndoRedo: public QFrame
 
 public:
 	QtUndoRedo();
-	~QtUndoRedo();
+	~QtUndoRedo() override;
 
 	void setRedoButtonEnabled(bool enabled);
 	void setUndoButtonEnabled(bool enabled);

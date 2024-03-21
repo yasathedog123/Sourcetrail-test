@@ -13,7 +13,7 @@ class QtStatusBarView: public StatusBarView
 {
 public:
 	QtStatusBarView(ViewLayout* viewLayout);
-	~QtStatusBarView() = default;
+	~QtStatusBarView() override = default;
 
 	// View implementation
 	void createWidgetWrapper() override;

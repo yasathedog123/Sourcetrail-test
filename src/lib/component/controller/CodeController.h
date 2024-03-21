@@ -69,7 +69,7 @@ class CodeController
 {
 public:
 	CodeController(StorageAccess* storageAccess);
-	virtual ~CodeController() = default;
+	~CodeController() override = default;
 
 	Id getSchedulerId() const override;
 

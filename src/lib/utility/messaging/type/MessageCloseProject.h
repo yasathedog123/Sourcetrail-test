@@ -16,7 +16,7 @@ public:
 		return "MessageCloseProject";
 	}
 
-	virtual void print(std::wostream& os) const {}
+	void print(std::wostream& os) const override {}
 };
 
 #endif	  // MESSAGE_CLOSE_PROJECT_H

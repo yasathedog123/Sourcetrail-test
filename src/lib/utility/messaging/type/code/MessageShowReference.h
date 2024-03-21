@@ -19,7 +19,7 @@ public:
 		return "MessageShowReference";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << L"index: " << refIndex << L" token: " << tokenId << L" location: " << locationId;
 	}

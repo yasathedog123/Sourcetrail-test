@@ -34,7 +34,7 @@ public:
 	};
 
 	QtCodeNavigator(QWidget* parent = nullptr);
-	virtual ~QtCodeNavigator();
+	~QtCodeNavigator() override;
 
 	void addSnippetFile(const CodeFileParams& params);
 	bool addSingleFile(const CodeFileParams& params, bool useSingleFileCache);

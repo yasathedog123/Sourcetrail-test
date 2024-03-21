@@ -9,7 +9,7 @@ class QtApplication: public QApplication
 public:
 	QtApplication(int& argc, char** argv);
 
-	bool event(QEvent* event);
+	bool event(QEvent* event) override;
 	int exec();
 
 private slots:

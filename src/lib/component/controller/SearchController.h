@@ -18,7 +18,7 @@ class SearchController
 {
 public:
 	SearchController(StorageAccess* storageAccess);
-	~SearchController() = default;
+	~SearchController() override = default;
 
 	Id getSchedulerId() const override;
 

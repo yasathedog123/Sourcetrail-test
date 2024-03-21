@@ -9,7 +9,7 @@ class InterprocessIntermediateStorageManager: public BaseInterprocessDataManager
 {
 public:
 	InterprocessIntermediateStorageManager(const std::string& instanceUuid, Id processId, bool isOwner);
-	virtual ~InterprocessIntermediateStorageManager() = default;
+	~InterprocessIntermediateStorageManager() override = default;
 
 	void pushIntermediateStorage(const std::shared_ptr<IntermediateStorage>& intermediateStorage);
 	std::shared_ptr<IntermediateStorage> popIntermediateStorage();

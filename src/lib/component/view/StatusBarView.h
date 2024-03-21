@@ -10,9 +10,9 @@ class StatusBarView: public View
 {
 public:
 	StatusBarView(ViewLayout* viewLayout);
-	virtual ~StatusBarView() = default;
+	~StatusBarView() override = default;
 
-	virtual std::string getName() const;
+	std::string getName() const override;
 	virtual void showMessage(const std::wstring& message, bool isError, bool showLoader) = 0;
 	virtual void setErrorCount(ErrorCountInfo errorCount) = 0;
 

@@ -18,7 +18,7 @@ class QtBookmark: public QFrame
 
 public:
 	QtBookmark(ControllerProxy<BookmarkController>* controllerProxy);
-	virtual ~QtBookmark();
+	~QtBookmark() override;
 
 	void setBookmark(const std::shared_ptr<Bookmark> bookmark);
 	Id getBookmarkId() const;
@@ -30,11 +30,11 @@ public slots:
 	void commentToggled();
 
 protected:
-	virtual void resizeEvent(QResizeEvent* event) override;
-	virtual void showEvent(QShowEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
+	void showEvent(QShowEvent* event) override;
 
-	virtual void enterEvent(QEvent* event) override;
-	virtual void leaveEvent(QEvent* event) override;
+	void enterEvent(QEvent* event) override;
+	void leaveEvent(QEvent* event) override;
 
 private slots:
 	void activateClicked();

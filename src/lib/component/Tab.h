@@ -20,7 +20,7 @@ public:
 		const ViewFactory* viewFactory,
 		StorageAccess* storageAccess,
 		ScreenSearchSender* screenSearchSender);
-	virtual ~Tab();
+	~Tab() override;
 
 	Id getSchedulerId() const override;
 

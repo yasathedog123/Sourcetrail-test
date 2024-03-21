@@ -23,7 +23,7 @@ public:
 	static void clearCaches();
 
 	JavaParser(std::shared_ptr<ParserClient> client, std::shared_ptr<IndexerStateInfo> indexerStateInfo);
-	~JavaParser();
+	~JavaParser() override;
 
 	void buildIndex(std::shared_ptr<IndexerCommandJava> indexerCommand);
 	void buildIndex(const FilePath& filePath, std::shared_ptr<TextAccess> textAccess);

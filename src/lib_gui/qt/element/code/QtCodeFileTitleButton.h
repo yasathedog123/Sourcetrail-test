@@ -11,7 +11,7 @@ class QtCodeFileTitleButton: public QtSelfRefreshIconButton
 
 public:
 	QtCodeFileTitleButton(QWidget* parent = nullptr);
-	virtual ~QtCodeFileTitleButton() = default;
+	~QtCodeFileTitleButton() override = default;
 
 	const FilePath& getFilePath() const;
 	void setFilePath(const FilePath& filePath);
@@ -29,10 +29,10 @@ public:
 	void updateFromOther(const QtCodeFileTitleButton* other);
 
 protected:
-	void mouseReleaseEvent(QMouseEvent* event);
-	void contextMenuEvent(QContextMenuEvent* event);
+	void mouseReleaseEvent(QMouseEvent* event) override;
+	void contextMenuEvent(QContextMenuEvent* event) override;
 
-	virtual void refresh();
+	void refresh() override;
 
 private slots:
 	void clickedTitle();

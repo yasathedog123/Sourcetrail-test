@@ -28,7 +28,7 @@ class BookmarkController
 {
 public:
 	BookmarkController(StorageAccess* storageAccess);
-	virtual ~BookmarkController();
+	~BookmarkController() override;
 
 	void clear() override;
 

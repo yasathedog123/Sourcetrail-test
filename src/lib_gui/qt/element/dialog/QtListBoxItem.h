@@ -16,7 +16,7 @@ class QtListBoxItem: public QWidget
 
 public:
 	QtListBoxItem(QListWidgetItem* item, QWidget* parent = nullptr);
-	virtual ~QtListBoxItem() = default;
+	~QtListBoxItem() override = default;
 
 	virtual QString getText() const;
 	void setText(const QString& text);

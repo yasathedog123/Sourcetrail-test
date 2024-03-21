@@ -19,7 +19,7 @@ public:
 		return "MessageActivateSourceLocations";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		for (const Id& id: locationIds)
 		{

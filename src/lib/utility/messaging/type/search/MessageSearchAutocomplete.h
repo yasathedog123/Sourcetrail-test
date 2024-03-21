@@ -20,7 +20,7 @@ public:
 		return "MessageSearchAutocomplete";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		os << query << L"[";
 		std::vector<Id> nodeTypeIds = acceptedNodeTypes.getNodeTypeIds();

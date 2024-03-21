@@ -43,7 +43,7 @@ public:
 	static void loadSettings();
 	static void loadStyle(const FilePath& colorSchemePath);
 
-	~Application();
+	~Application() override;
 
 	std::shared_ptr<const Project> getCurrentProject() const;
 	FilePath getCurrentProjectPath() const;

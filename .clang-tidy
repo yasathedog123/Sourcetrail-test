@@ -1,0 +1,8 @@
+---
+Checks:            '-*,modernize-use-override'
+WarningsAsErrors:  ''
+HeaderFilterRegex: '.*'
+FormatStyle:       'file'
+CheckOptions:
+    - key: modernize-use-override.IgnoreDestructors
+      value: '0'

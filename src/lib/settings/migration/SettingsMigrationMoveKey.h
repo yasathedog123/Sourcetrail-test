@@ -7,8 +7,8 @@ class SettingsMigrationMoveKey: public SettingsMigration
 {
 public:
 	SettingsMigrationMoveKey(const std::string& oldKey, const std::string& newKey);
-	virtual ~SettingsMigrationMoveKey();
-	virtual void apply(Settings* migratable) const;
+	~SettingsMigrationMoveKey() override;
+	void apply(Settings* migratable) const override;
 
 private:
 	const std::string m_oldKey;

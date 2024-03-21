@@ -24,7 +24,7 @@ public:
 		return "MessageCodeReference";
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		if (type == REFERENCE_PREVIOUS)
 		{

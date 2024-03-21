@@ -26,7 +26,7 @@ public:
 		return m_matches;
 	}
 
-	virtual void print(std::wostream& os) const
+	void print(std::wostream& os) const override
 	{
 		for (const SearchMatch& match: m_matches)
 		{

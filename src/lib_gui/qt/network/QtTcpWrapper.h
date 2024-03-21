@@ -18,7 +18,7 @@ public:
 		const std::string& ip = "127.0.0.1",
 		const quint16 serverPort = 6667,
 		const quint16 clientPort = 6666);
-	~QtTcpWrapper();
+	~QtTcpWrapper() override;
 
 	void startListening();
 	void stopListening();

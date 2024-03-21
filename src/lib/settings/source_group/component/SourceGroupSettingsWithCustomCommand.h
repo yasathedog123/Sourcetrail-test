@@ -6,7 +6,7 @@
 class SourceGroupSettingsWithCustomCommand: public SourceGroupSettingsComponent
 {
 public:
-	virtual ~SourceGroupSettingsWithCustomCommand() = default;
+	~SourceGroupSettingsWithCustomCommand() override = default;
 
 	const std::wstring& getCustomCommand() const;
 	void setCustomCommand(const std::wstring& customCommand);

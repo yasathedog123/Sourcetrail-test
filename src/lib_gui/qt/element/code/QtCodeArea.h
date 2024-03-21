@@ -24,7 +24,7 @@ public:
 	MouseWheelOverScrollbarFilter();
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event);
+	bool eventFilter(QObject* obj, QEvent* event) override;
 };
 
 class QtLineNumberArea: public QWidget
@@ -32,12 +32,12 @@ class QtLineNumberArea: public QWidget
 	Q_OBJECT
 public:
 	QtLineNumberArea(QtCodeArea* codeArea);
-	virtual ~QtLineNumberArea();
+	~QtLineNumberArea() override;
 
 	QSize sizeHint() const override;
 
 protected:
-	virtual void paintEvent(QPaintEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
 
 private:
 	QtCodeArea* m_codeArea;
@@ -56,9 +56,9 @@ public:
 		QtCodeNavigator* navigator,
 		bool showLineNumbers,
 		QWidget* parent = nullptr);
-	virtual ~QtCodeArea();
+	~QtCodeArea() override;
 
-	virtual QSize sizeHint() const override;
+	QSize sizeHint() const override;
 
 	void lineNumberAreaPaintEvent(QPaintEvent* event);
 	int lineNumberDigits() const;
@@ -98,16 +98,16 @@ public:
 	void copySelection();
 
 protected:
-	virtual void resizeEvent(QResizeEvent* event) override;
-	virtual void mouseReleaseEvent(QMouseEvent* event) override;
-	virtual void mousePressEvent(QMouseEvent* event) override;
-	virtual void mouseMoveEvent(QMouseEvent* event) override;
-	virtual void wheelEvent(QWheelEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void mouseMoveEvent(QMouseEvent* event) override;
+	void wheelEvent(QWheelEvent* event) override;
 
-	virtual void contextMenuEvent(QContextMenuEvent* event) override;
+	void contextMenuEvent(QContextMenuEvent* event) override;
 
-	virtual void focusTokenIds(const std::vector<Id>& tokenIds) override;
-	virtual void defocusTokenIds(const std::vector<Id>& tokenIds) override;
+	void focusTokenIds(const std::vector<Id>& tokenIds) override;
+	void defocusTokenIds(const std::vector<Id>& tokenIds) override;
 
 private slots:
 	void updateLineNumberAreaWidth(int newBlockCount = 0);

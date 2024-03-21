@@ -56,7 +56,7 @@ class GraphController
 {
 public:
 	GraphController(StorageAccess* storageAccess);
-	~GraphController() = default;
+	~GraphController() override = default;
 
 	Id getSchedulerId() const override;
 

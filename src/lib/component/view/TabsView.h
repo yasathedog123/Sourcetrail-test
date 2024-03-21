@@ -11,9 +11,9 @@ class TabsView: public View
 {
 public:
 	TabsView(ViewLayout* viewLayout);
-	virtual ~TabsView() = default;
+	~TabsView() override = default;
 
-	virtual std::string getName() const;
+	std::string getName() const override;
 
 	virtual void clear() = 0;
 

@@ -11,12 +11,12 @@ public:
 
 	TestToken(const TestToken& other): Token(other) {}
 
-	virtual bool isNode() const
+	bool isNode() const override
 	{
 		return false;
 	}
 
-	virtual bool isEdge() const
+	bool isEdge() const override
 	{
 		return false;
 	}
@@ -32,7 +32,7 @@ public:
 		return Token::removeComponent<ComponentType>();
 	}
 
-	virtual std::wstring getReadableTypeString() const
+	std::wstring getReadableTypeString() const override
 	{
 		return L"";
 	}
@@ -41,7 +41,7 @@ public:
 class TestComponent: public TokenComponent
 {
 public:
-	virtual std::shared_ptr<TokenComponent> copy() const
+	std::shared_ptr<TokenComponent> copy() const override
 	{
 		return std::make_shared<TestComponent>(*this);
 	}
@@ -50,7 +50,7 @@ public:
 class Test2Component: public TokenComponent
 {
 public:
-	virtual std::shared_ptr<TokenComponent> copy() const
+	std::shared_ptr<TokenComponent> copy() const override
 	{
 		return std::make_shared<Test2Component>(*this);
 	}

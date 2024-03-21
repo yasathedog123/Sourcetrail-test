@@ -49,9 +49,9 @@ public:
 	};
 
 	CodeView(ViewLayout* viewLayout);
-	virtual ~CodeView();
+	~CodeView() override;
 
-	virtual std::string getName() const;
+	std::string getName() const override;
 
 	virtual void clear() = 0;
 

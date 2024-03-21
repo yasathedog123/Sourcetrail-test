@@ -10,9 +10,9 @@ class BookmarkView: public View
 {
 public:
 	BookmarkView(ViewLayout* viewLayout);
-	virtual ~BookmarkView() = default;
+	~BookmarkView() override = default;
 
-	virtual std::string getName() const;
+	std::string getName() const override;
 
 	virtual void displayBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks) = 0;
 	virtual void displayBookmarkEditor(

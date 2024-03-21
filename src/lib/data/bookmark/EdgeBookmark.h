@@ -12,7 +12,7 @@ public:
 		const std::wstring& comment,
 		const TimeStamp& timeStamp,
 		const BookmarkCategory& category);
-	virtual ~EdgeBookmark();
+	~EdgeBookmark() override;
 
 	void addEdgeId(const Id edgeId);
 	void setEdgeIds(const std::vector<Id>& edgesIds);
