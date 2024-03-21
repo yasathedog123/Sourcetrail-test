@@ -739,21 +739,6 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 	)
 endif()
 
-target_compile_definitions(Sourcetrail_lib
-	PUBLIC
-		# Fix "Boost-uuid should link against bcrypt on windows"
-		# (https://github.com/microsoft/vcpkg/issues/4481)
-		BOOST_UUID_FORCE_AUTO_LINK
-
-		# If boost::filesystem gets replaced with std::filesystem, then this symbol must be defined:
-		#BOOST_DLL_USE_STD_FS
-
-		# Trying to add the definition to the boost target like this:
-		# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
-		# leads to the error:
-		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
-)
-
 target_include_directories(Sourcetrail_lib
 	PUBLIC
 		.
@@ -770,6 +755,7 @@ target_link_libraries(Sourcetrail_lib
 
 		External_lib_tinyxml
 		External_lib_cppsqlite3
+		External_lib_boost
 
 		Boost::headers
 		Boost::system

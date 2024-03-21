@@ -75,6 +75,23 @@ find_package(Boost 1.81 REQUIRED COMPONENTS
 	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 	# for a list of compiled libraries.
 )
+add_library(External_lib_boost INTERFACE)
+
+target_compile_definitions(External_lib_boost
+	INTERFACE
+		# Fix "Boost-uuid should link against bcrypt on windows"
+		# (https://github.com/microsoft/vcpkg/issues/4481)
+		BOOST_UUID_FORCE_AUTO_LINK
+
+		# If boost::filesystem gets replaced with std::filesystem, then this symbol must be defined:
+		#BOOST_DLL_USE_STD_FS
+
+		# Trying to add the definition to the boost target like this:
+		# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
+		# leads to the error:
+		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
+)
+
 message(STATUS "Found Boost ${Boost_VERSION_STRING}")
 
 # Qt ---------------------------------------------------------------------------
