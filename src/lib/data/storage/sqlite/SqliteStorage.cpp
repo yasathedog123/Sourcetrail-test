@@ -115,12 +115,7 @@ bool SqliteStorage::isEmpty() const
 bool SqliteStorage::isIncompatible() const
 {
 	size_t storageVersion = getVersion();
-	if (isEmpty() || storageVersion != getStaticVersion())
-	{
-		return true;
-	}
-
-	return false;
+	return isEmpty() || storageVersion != getStaticVersion();
 }
 
 void SqliteStorage::setTime()

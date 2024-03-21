@@ -22,7 +22,7 @@ void IDECommunicationController::clear() {}
 
 void IDECommunicationController::handleIncomingMessage(const std::wstring& message)
 {
-	if (m_enabled == false)
+	if (!m_enabled)
 	{
 		return;
 	}

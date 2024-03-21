@@ -442,7 +442,7 @@ std::set<FilePath> PersistentStorage::getIncompleteFiles() const
 	std::set<FilePath> incompleteFiles;
 	for (auto p: m_fileNodeComplete)
 	{
-		if (p.second == false)
+		if (!p.second)
 		{
 			incompleteFiles.insert(getFileNodePath(p.first));
 		}
@@ -1792,11 +1792,7 @@ bool PersistentStorage::hasContentForFile(const FilePath& filePath) const
 {
 	std::shared_ptr<TextAccess> fileContent = m_sqliteIndexStorage.getFileContentByPath(
 		filePath.wstr());
-	if (fileContent->getLineCount() > 0)
-	{
-		return true;
-	}
-	return false;
+	return fileContent->getLineCount() > 0;
 }
 
 FileInfo PersistentStorage::getFileInfoForFileId(Id id) const

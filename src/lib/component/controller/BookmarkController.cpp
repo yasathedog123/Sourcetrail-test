@@ -592,7 +592,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getDateOrderedBookmar
 
 	std::sort(result.begin(), result.end(), BookmarkController::bookmarkDateCompare);
 
-	if (ascending == false)
+	if (!ascending)
 	{
 		std::reverse(result.begin(), result.end());
 	}
@@ -607,7 +607,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getNameOrderedBookmar
 
 	std::sort(result.begin(), result.end(), BookmarkController::bookmarkNameCompare);
 
-	if (ascending == false)
+	if (!ascending)
 	{
 		std::reverse(result.begin(), result.end());
 	}
@@ -634,7 +634,7 @@ void BookmarkController::cleanBookmarkCategories()
 			}
 		}
 
-		if (used == false)
+		if (!used)
 		{
 			m_storageAccess->removeBookmarkCategory(category.getId());
 		}

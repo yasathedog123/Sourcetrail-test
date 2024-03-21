@@ -80,18 +80,14 @@ bool CxxAstVisitor::shouldVisitImplicitCode() const
 
 bool CxxAstVisitor::checkIgnoresTypeLoc(const clang::TypeLoc& tl) const
 {
-	if ((!tl.getAs<clang::TagTypeLoc>().isNull()) || (!tl.getAs<clang::TypedefTypeLoc>().isNull()) ||
+	return !((!tl.getAs<clang::TagTypeLoc>().isNull()) || (!tl.getAs<clang::TypedefTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::TemplateTypeParmTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::TemplateSpecializationTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::InjectedClassNameTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::DependentNameTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::DependentTemplateSpecializationTypeLoc>().isNull()) ||
 		(!tl.getAs<clang::SubstTemplateTypeParmTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::BuiltinTypeLoc>().isNull()) || (!tl.getAs<clang::AutoTypeLoc>().isNull()))
-	{
-		return false;
-	}
-	return true;
+		(!tl.getAs<clang::BuiltinTypeLoc>().isNull()) || (!tl.getAs<clang::AutoTypeLoc>().isNull()));
 }
 
 #define FOREACH_COMPONENT(__METHOD_CALL__)                                                         \

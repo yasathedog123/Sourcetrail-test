@@ -78,11 +78,7 @@ bool QtProjectWizardContentPathCxxPch::check()
 				QPushButton* continueButton = msgBox.addButton(
 					QStringLiteral("Continue"), QMessageBox::ButtonRole::AcceptRole);
 				msgBox.exec();
-				if (msgBox.clickedButton() == cancelButton)
-				{
-					return false;
-				}
-				return true;
+				return msgBox.clickedButton() != cancelButton;
 			}
 		}
 		else
@@ -99,11 +95,7 @@ bool QtProjectWizardContentPathCxxPch::check()
 				QPushButton* continueButton = msgBox.addButton(
 					QStringLiteral("Continue"), QMessageBox::ButtonRole::AcceptRole);
 				msgBox.exec();
-				if (msgBox.clickedButton() == cancelButton)
-				{
-					return false;
-				}
-				return true;
+				return msgBox.clickedButton() != cancelButton;
 			}
 		}
 	}

@@ -41,12 +41,7 @@ std::vector<FilePath> FileManager::getSourcePaths() const
 
 bool FileManager::hasSourceFilePath(const FilePath& filePath) const
 {
-	if (m_allSourceFilePaths.find(filePath) != m_allSourceFilePaths.end())
-	{
-		return true;
-	}
-
-	return false;
+	return m_allSourceFilePaths.find(filePath) != m_allSourceFilePaths.end();
 }
 
 std::set<FilePath> FileManager::getAllSourceFilePaths() const

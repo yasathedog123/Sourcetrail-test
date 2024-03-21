@@ -95,11 +95,7 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 
 bool utility::isLocalVariable(const clang::ValueDecl *d)
 {
-	if (!llvm::isa<clang::ParmVarDecl>(d) && !(d->getParentFunctionOrMethod() == nullptr))
-	{
-		return true;
-	}
-	return false;
+	return !llvm::isa<clang::ParmVarDecl>(d) && !(d->getParentFunctionOrMethod() == nullptr);
 }
 
 bool utility::isParameter(const clang::ValueDecl *d)

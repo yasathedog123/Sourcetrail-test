@@ -55,8 +55,8 @@ void CxxAstVisitorComponentContext::beginTraverseDecl(clang::Decl* d)
 
 	if (d && clang::isa<clang::NamedDecl>(d) &&
 		!clang::isa<clang::ParmVarDecl>(d) &&	 // no parameter
-		!(clang::isa<clang::VarDecl>(d) &&
-		  d->getParentFunctionOrMethod() != nullptr) &&		 // no local variable
+		(!clang::isa<clang::VarDecl>(d) ||
+		  d->getParentFunctionOrMethod() == nullptr) &&		 // no local variable
 		!clang::isa<clang::UsingDirectiveDecl>(d) &&		 // no using directive decl
 		!clang::isa<clang::UsingDecl>(d) &&					 // no using decl
 		!clang::isa<clang::NamespaceDecl>(d) &&				 // no namespace

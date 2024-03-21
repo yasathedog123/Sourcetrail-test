@@ -99,7 +99,7 @@ void QtTcpWrapper::acceptConnection()
 void QtTcpWrapper::startRead()
 {
 	QByteArray byteArray;
-	while (m_tcpClient->atEnd() == false)
+	while (!m_tcpClient->atEnd())
 	{
 		QByteArray data = m_tcpClient->read(128);
 		byteArray += data;

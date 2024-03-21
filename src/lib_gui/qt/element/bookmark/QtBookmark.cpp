@@ -98,7 +98,7 @@ void QtBookmark::setBookmark(const std::shared_ptr<Bookmark> bookmark)
 
 		m_activateButton->setText(QString::fromStdWString(m_bookmark->getName()));
 
-		if (m_bookmark->isValid() == false)
+		if (!m_bookmark->isValid())
 		{
 			m_activateButton->setEnabled(false);
 			m_editButton->setEnabled(false);
@@ -142,7 +142,7 @@ void QtBookmark::commentToggled()
 
 	m_ignoreNextResize = true;
 
-	if (m_comment->isVisible() == false)
+	if (!m_comment->isVisible())
 	{
 		m_arrowImageName = L"arrow_line_up.png";
 		m_comment->show();

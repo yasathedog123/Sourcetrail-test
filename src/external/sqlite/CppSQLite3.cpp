@@ -1388,7 +1388,7 @@ sqlite3_stmt* CppSQLite3DB::compile(const char* szSQL)
 bool CppSQLite3DB::IsAutoCommitOn()
 {
 	checkDB();
-	return sqlite3_get_autocommit(mpDB) ? true : false;
+	return sqlite3_get_autocommit(mpDB) != 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
