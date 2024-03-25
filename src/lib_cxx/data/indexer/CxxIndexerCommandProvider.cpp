@@ -110,10 +110,7 @@ std::vector<FilePath> CxxIndexerCommandProvider::getAllSourceFilePaths() const
 	std::vector<FilePath> paths;
 	paths.reserve(m_commands.size());
 
-	for (std::map<FilePath, std::shared_ptr<CommandRepresentation>>::const_iterator it =
-			 m_commands.begin();
-		 it != m_commands.end();
-		 it++)
+	for (auto it = m_commands.begin(); it != m_commands.end(); it++)
 	{
 		paths.emplace_back(it->first);
 	}
@@ -125,8 +122,7 @@ std::shared_ptr<IndexerCommand> CxxIndexerCommandProvider::consumeCommand()
 {
 	if (!m_commands.empty())
 	{
-		std::map<FilePath, std::shared_ptr<CommandRepresentation>>::const_iterator it =
-			m_commands.begin();
+		auto it = m_commands.begin();
 		if (it->second)
 		{
 			std::shared_ptr<IndexerCommand> command = representationToCommand(it->first, it->second);
@@ -140,8 +136,7 @@ std::shared_ptr<IndexerCommand> CxxIndexerCommandProvider::consumeCommand()
 std::shared_ptr<IndexerCommand> CxxIndexerCommandProvider::consumeCommandForSourceFilePath(
 	const FilePath& filePath)
 {
-	std::map<FilePath, std::shared_ptr<CommandRepresentation>>::const_iterator it = m_commands.find(
-		filePath);
+	auto it = m_commands.find(filePath);
 	if (it != m_commands.end() && it->second)
 	{
 		std::shared_ptr<IndexerCommand> command = representationToCommand(it->first, it->second);
@@ -155,10 +150,7 @@ std::vector<std::shared_ptr<IndexerCommand>> CxxIndexerCommandProvider::consumeA
 {
 	std::vector<std::shared_ptr<IndexerCommand>> commands;
 	commands.reserve(m_commands.size());
-	for (std::map<FilePath, std::shared_ptr<CommandRepresentation>>::const_iterator it =
-			 m_commands.begin();
-		 it != m_commands.end();
-		 it++)
+	for (auto it = m_commands.begin(); it != m_commands.end(); it++)
 	{
 		commands.emplace_back(representationToCommand(it->first, it->second));
 	}

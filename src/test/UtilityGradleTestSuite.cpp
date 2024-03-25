@@ -80,7 +80,7 @@ TEST_CASE("gradle wrapper detects source dependencies of simple projects")
 
 		const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
 
-		for (const std::wstring requiredDependency: requiredDependencies)
+		for (const std::wstring &requiredDependency: requiredDependencies)
 		{
 			REQUIRE(utility::containsElement(
 				copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));
@@ -104,7 +104,7 @@ TEST_CASE("gradle wrapper detects source and test dependencies of simple project
 
 		const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
 
-		for (const std::wstring requiredDependency: requiredDependencies)
+		for (const std::wstring &requiredDependency: requiredDependencies)
 		{
 			REQUIRE(utility::containsElement(
 				copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));

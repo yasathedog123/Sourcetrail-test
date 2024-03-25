@@ -79,8 +79,8 @@ void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::s
 	JavaVMInitArgs vm_args;									  // Initialization arguments
 	std::vector<JavaVMOption> options;						  // JVM invocation options
 	std::string classPathOption = "-Djava.class.path=" + classPath;
-	options.push_back({ const_cast<char*>(classPathOption.c_str()) });
-	options.push_back({ const_cast<char*>("-Xms64m") });
+	options.push_back({ .optionString = const_cast<char*>(classPathOption.c_str()) });
+	options.push_back({ .optionString = const_cast<char*>("-Xms64m") });
 
 	// options.push_back({ const_cast<char*>("-verbose:jni") });
 

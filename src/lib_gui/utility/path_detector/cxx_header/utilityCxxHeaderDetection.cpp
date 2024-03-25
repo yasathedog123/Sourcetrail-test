@@ -7,6 +7,8 @@
 #include "utilityApp.h"
 #include "utilityString.h"
 
+using namespace std::string_literals;
+
 namespace utility
 {
 std::vector<std::wstring> getCxxHeaderPaths(const std::string& compilerName)
@@ -53,7 +55,7 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType
 			if (sdkIncludePath.exists())
 			{
 				bool usingSubdirectories = false;
-				for (const std::wstring& subDirectory: {L"shared", L"um", L"winrt"})
+				for (const std::wstring& subDirectory: {L"shared"s, L"um"s, L"winrt"s})
 				{
 					const FilePath sdkSubdirectory = sdkIncludePath.getConcatenated(subDirectory);
 					if (sdkSubdirectory.exists())

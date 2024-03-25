@@ -117,7 +117,7 @@ public:
 	void visitUnaryDeref(clang::UnaryOperator* s) {}
 	void visitDeclStmt(clang::DeclStmt* s) {}
 	void visitReturnStmt(clang::ReturnStmt* s) {}
-	void visitCompoundStmt(clang::CompoundStmt* s) {};
+	void visitCompoundStmt(clang::CompoundStmt* s) {}
 	void visitInitListExpr(clang::InitListExpr* s) {}
 	void visitDeclRefExpr(clang::DeclRefExpr* s) {}
 	void visitMemberExpr(clang::MemberExpr* s) {}

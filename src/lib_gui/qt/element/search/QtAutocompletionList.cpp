@@ -146,7 +146,7 @@ void QtAutocompletionDelegate::paint(
 
 	if (type.size() && type != QLatin1String("command") && type != QLatin1String("filter"))
 	{
-		const GraphViewStyle::NodeColor& nodeColor = GraphViewStyle::getNodeColor(
+		const GraphViewStyle::NodeColor nodeColor = GraphViewStyle::getNodeColor(
 			nodeType.getUnderscoredTypeString(), false);
 		fillColor = QColor(nodeColor.fill.c_str());
 		textColor = QColor(nodeColor.text.c_str());

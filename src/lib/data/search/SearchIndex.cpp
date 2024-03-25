@@ -227,7 +227,7 @@ std::multiset<SearchResult> SearchIndex::createScoredResults(
 
 	// score paths and subpaths
 	std::multiset<SearchResult> searchResults;
-	for (const std::pair<int, SearchPath>& p: scoredPaths)
+	for (const auto &p: scoredPaths)
 	{
 		std::vector<SearchPath> currentPaths;
 		currentPaths.push_back(p.second);

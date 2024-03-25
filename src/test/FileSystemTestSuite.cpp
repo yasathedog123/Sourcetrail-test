@@ -9,10 +9,13 @@
 
 namespace
 {
+
+/*
 bool isInFiles(const std::set<FilePath>& files, const FilePath& filename)
 {
 	return std::end(files) != files.find(filename);
 }
+*/
 
 bool isInFileInfos(const std::vector<FileInfo>& infos, const std::wstring& filename)
 {

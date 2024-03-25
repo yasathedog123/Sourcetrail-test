@@ -2,7 +2,6 @@
 #define FULLTEXTSEARCH_INDEX_H
 
 #include <mutex>
-#include <unordered_map>
 #include <vector>
 
 #include "SuffixArray.h"
@@ -19,7 +18,7 @@ struct FullTextSearchResult
 
 struct FullTextSearchFile
 {
-	FullTextSearchFile(Id fileId, SuffixArray array): fileId(fileId), array(array) {};
+	FullTextSearchFile(Id fileId, SuffixArray array): fileId(fileId), array(array) {}
 	Id fileId;
 	SuffixArray array;
 };

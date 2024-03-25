@@ -284,7 +284,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int& row)
 
 void QtProjectWizardContentSelect::save()
 {
-	SourceGroupType selectedType;
+	SourceGroupType selectedType = SOURCE_GROUP_UNKNOWN;
 
 	for (auto& it: m_buttons)
 	{

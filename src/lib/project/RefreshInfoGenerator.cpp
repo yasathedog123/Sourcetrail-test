@@ -131,7 +131,7 @@ RefreshInfo RefreshInfoGenerator::getRefreshInfoForUpdatedFiles(
 	RefreshInfo info;
 	info.mode = REFRESH_UPDATED_FILES;
 	info.filesToIndex = filesToIndex;
-	for (const FilePath fileToClear: filesToClear)
+	for (const FilePath &fileToClear: filesToClear)
 	{
 		if (storage->getFilePathIndexed(fileToClear))
 		{
@@ -185,7 +185,7 @@ RefreshInfo RefreshInfoGenerator::getRefreshInfoForIncompleteFiles(
 			}
 		}
 
-		for (const std::shared_ptr<const SourceGroup>& sourceGroup: sourceGroups)
+		for (const std::shared_ptr<SourceGroup>& sourceGroup: sourceGroups)
 		{
 			if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
 			{
@@ -213,7 +213,7 @@ std::set<FilePath> RefreshInfoGenerator::getAllSourceFilePaths(
 {
 	std::set<FilePath> allSourceFilePaths;
 
-	for (const std::shared_ptr<const SourceGroup>& sourceGroup: sourceGroups)
+	for (const std::shared_ptr<SourceGroup>& sourceGroup: sourceGroups)
 	{
 		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
 		{

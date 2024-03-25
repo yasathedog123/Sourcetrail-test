@@ -95,7 +95,7 @@ StorageBookmark SqliteBookmarkStorage::addBookmark(const StorageBookmarkData& da
 
 		return StorageBookmark(static_cast<Id>(m_database.lastRowId()), data);
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 	}

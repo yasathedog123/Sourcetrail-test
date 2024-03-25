@@ -10,6 +10,8 @@
 #include "utility.h"
 #include "utilityCxxHeaderDetection.h"
 
+using namespace std::string_literals;
+
 CxxVs10To14HeaderPathDetector::CxxVs10To14HeaderPathDetector(
 	VisualStudioType type, bool isExpress, ApplicationArchitectureType architecture)
 	: PathDetector(
@@ -62,7 +64,7 @@ std::vector<FilePath> CxxVs10To14HeaderPathDetector::doGetPaths() const
 	std::vector<FilePath> headerSearchPaths;
 	if (vsInstallPath.exists())
 	{
-		for (const std::wstring& subdirectory: {L"vc/include", L"vc/atlmfc/include"})
+		for (const std::wstring& subdirectory: {L"vc/include"s, L"vc/atlmfc/include"s})
 		{
 			FilePath headerSearchPath = vsInstallPath.getConcatenated(subdirectory);
 			if (headerSearchPath.exists())

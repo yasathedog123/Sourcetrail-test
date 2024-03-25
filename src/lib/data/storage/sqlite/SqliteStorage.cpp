@@ -33,7 +33,7 @@ SqliteStorage::~SqliteStorage()
 	{
 		m_database.close();
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(e.errorMessage());
 	}
@@ -166,7 +166,7 @@ bool SqliteStorage::executeStatement(const std::string& statement) const
 	{
 		m_database.execDML(statement.c_str());
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 		return false;
@@ -180,7 +180,7 @@ bool SqliteStorage::executeStatement(CppSQLite3Statement& statement) const
 	{
 		statement.execDML();
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 		return false;
@@ -197,7 +197,7 @@ int SqliteStorage::executeStatementScalar(const std::string& statement, const in
 	{
 		ret = m_database.execScalar(statement.c_str(), nullValue);
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 	}
@@ -219,7 +219,7 @@ int SqliteStorage::executeStatementScalar(CppSQLite3Statement& statement, const 
 
 		ret = q.getIntField(0, nullValue);
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 	}
@@ -233,7 +233,7 @@ CppSQLite3Query SqliteStorage::executeQuery(const std::string& statement) const
 	{
 		return m_database.execQuery(statement.c_str());
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 	}
@@ -246,7 +246,7 @@ CppSQLite3Query SqliteStorage::executeQuery(CppSQLite3Statement& statement) cons
 	{
 		return statement.execQuery();
 	}
-	catch (CppSQLite3Exception e)
+	catch (CppSQLite3Exception &e)
 	{
 		LOG_ERROR(std::to_string(e.errorCode()) + ": " + e.errorMessage());
 	}

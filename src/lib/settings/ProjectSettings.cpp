@@ -476,7 +476,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 		case LANGUAGE_PYTHON:
 			continue;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-		case SOURCE_GROUP_CUSTOM_COMMAND:
+		case LANGUAGE_CUSTOM:
 		default:
 			continue;
 		}
@@ -488,7 +488,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 				key + "/standard", key + "/" + languageName + "_standard"));
 	}
 
-	for (std::shared_ptr<SourceGroupSettings> sourceGroupSettings: getAllSourceGroupSettings())
+	for (std::shared_ptr<SourceGroupSettings> &sourceGroupSettings: getAllSourceGroupSettings())
 	{
 		const std::string key = SourceGroupSettings::s_keyPrefix + sourceGroupSettings->getId();
 		migrator.addMigration(

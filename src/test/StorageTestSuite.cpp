@@ -28,10 +28,12 @@ public:
 	//}
 };
 
+/*
 ParseLocation validLocation(Id locationId = 0)
 {
 	return ParseLocation(1, 1, locationId, 1, locationId);
 }
+*/
 
 NameHierarchy createNameHierarchy(std::wstring s)
 {
@@ -44,6 +46,7 @@ NameHierarchy createNameHierarchy(std::wstring s)
 	return nameHierarchy;
 }
 
+/*
 NameHierarchy createFunctionNameHierarchy(std::wstring ret, std::wstring name, std::wstring parameters)
 {
 	NameHierarchy nameHierarchy = createNameHierarchy(name);
@@ -52,6 +55,8 @@ NameHierarchy createFunctionNameHierarchy(std::wstring ret, std::wstring name, s
 	nameHierarchy.push(NameElement(lastName, ret, parameters));
 	return nameHierarchy;
 }
+*/
+
 }	 // namespace
 
 TEST_CASE("storage saves file")

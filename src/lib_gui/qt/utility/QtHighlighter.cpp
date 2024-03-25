@@ -232,6 +232,7 @@ void QtHighlighter::highlightRange(int startLine, int endLine)
 	QTextBlock start = doc->findBlockByLineNumber(startLine);
 	QTextBlock end = doc->findBlockByLineNumber(endLine + 1);
 
+	/*
 	const HighlightingRule* singleLineCommentRule = nullptr;
 	const HighlightingRule* quotationRule = nullptr;
 
@@ -246,6 +247,7 @@ void QtHighlighter::highlightRange(int startLine, int endLine)
 			quotationRule = &rule;
 		}
 	}
+	*/
 
 	int index = startLine;
 	for (QTextBlock it = start; it != end; it = it.next())

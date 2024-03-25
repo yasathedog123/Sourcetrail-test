@@ -17,7 +17,7 @@ void ListLayouter::layoutColumn(std::vector<std::shared_ptr<DummyNode>>* nodes, 
 
 void ListLayouter::layoutMultiColumn(Vec2i viewSize, std::vector<std::shared_ptr<DummyNode>>* nodes)
 {
-	size_t colsFinal;
+	size_t colsFinal = 0;
 	std::vector<int> maxWidthsFinal;
 
 	int gapX = GraphViewStyle::s_gridCellSize + 2 * GraphViewStyle::s_gridCellPadding;

@@ -580,7 +580,7 @@ void GraphController::handleMessage(MessageGraphNodeMove* message)
 		if (m_graph->getTrailMode() != Graph::TRAIL_NONE)
 		{
 			std::set<Id> childNodeIds;
-			for (const std::pair<Id, Id>& p: m_topLevelAncestorIds)
+			for (const auto &p: m_topLevelAncestorIds)
 			{
 				if (p.second == message->tokenId)
 				{
@@ -588,7 +588,7 @@ void GraphController::handleMessage(MessageGraphNodeMove* message)
 				}
 			}
 
-			for (std::shared_ptr<DummyEdge> edge: m_dummyEdges)
+			for (std::shared_ptr<DummyEdge> &edge: m_dummyEdges)
 			{
 				if (childNodeIds.find(edge->ownerId) != childNodeIds.end() ||
 					childNodeIds.find(edge->targetId) != childNodeIds.end())
@@ -817,7 +817,7 @@ void GraphController::updateDummyNodeNamesAndAddQualifiers(
 std::vector<Id> GraphController::getExpandedNodeIds() const
 {
 	std::vector<Id> nodeIds;
-	for (const std::pair<Id, std::shared_ptr<DummyNode>>& p: m_dummyGraphNodes)
+	for (const auto &p: m_dummyGraphNodes)
 	{
 		DummyNode* oldNode = p.second.get();
 		if (oldNode->expanded && !oldNode->autoExpanded && oldNode->isGraphNode() &&
@@ -1601,7 +1601,7 @@ void GraphController::groupNodesByParents(GroupType groupType)
 	}
 
 	std::set<Id> groupedNodeIds;
-	for (const std::pair<std::wstring, std::vector<std::shared_ptr<DummyNode>>>& p: nodesToGroup)
+	for (const auto &p: nodesToGroup)
 	{
 		std::shared_ptr<DummyNode> groupNode;
 

@@ -81,7 +81,7 @@ std::vector<FilePath> gradleGetAllSourceDirectories(
 				return std::vector<FilePath>();
 			}
 
-			for (const std::string mainSrcDir: utility::splitToVector(output, ";"))
+			for (const std::string &mainSrcDir: utility::splitToVector(output, ";"))
 			{
 				uncheckedDirectories.insert(utility::decodeFromUtf8(mainSrcDir));
 			}
@@ -109,7 +109,7 @@ std::vector<FilePath> gradleGetAllSourceDirectories(
 				return std::vector<FilePath>();
 			}
 
-			for (const std::string testSrcDir: utility::splitToVector(output, ";"))
+			for (const std::string &testSrcDir: utility::splitToVector(output, ";"))
 			{
 				uncheckedDirectories.insert(utility::decodeFromUtf8(testSrcDir));
 			}

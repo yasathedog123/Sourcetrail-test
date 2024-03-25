@@ -504,7 +504,7 @@ void TrailLayouter::moveNodesToAveragePosition(std::vector<TrailNode*> nodes, bo
 	}
 
 	int averagePosition = 0;
-	for (const std::pair<int, std::vector<TrailNode*>>& p: averagePositions)
+	for (const auto &p: averagePositions)
 	{
 		averagePosition += p.first;
 	}

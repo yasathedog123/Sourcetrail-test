@@ -45,12 +45,14 @@ TestLogger::TestLogger()
 {
 }
 
+/*
 void TestLogger::reset()
 {
 	m_logMessageCount = 0;
 	m_logWarningCount = 0;
 	m_logErrorCount = 0;
 }
+*/
 
 int TestLogger::getMessageCount() const
 {

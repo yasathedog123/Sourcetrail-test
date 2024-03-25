@@ -52,10 +52,68 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Settings ---------------------------------------------------------------------
 
-add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
+# We want *all* targets to build with the same settings, so we don't bother with
+# the target based commands but instead use the directory based approach:
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	add_compile_options(
+		-pipe
+
+		-Wall
+		-Wextra
+		-Wpedantic
+
+		-Wcast-align=strict
+		-Wcast-qual
+		-Wduplicated-branches
+		-Wduplicated-cond
+		-Wextra-semi
+		# -Wfloat-equal
+		# -Wformat=2
+		# -Wformat-nonliteral
+		-Wformat-overflow=2
+		-Wformat-truncation=2
+		-Wlogical-op
+		-Wnon-virtual-dtor
+		# -Wold-style-cast
+		# -Woverloaded-virtual
+		-Wsuggest-override
+		# -Wundef
+		-Wuninitialized
+		# -Wunused-macros
+		# -Wuseless-cast
+		-Wwrite-strings
+
+		-Werror=suggest-override
+
+		-Wno-comment
+		-Wno-implicit-fallthrough
+		-Wno-missing-field-initializers
+		-Wno-sign-compare
+		-Wno-stringop-truncation
+		-Wno-unused-parameter
+		-Wno-unused-variable
+	)
+	add_compile_definitions(
+		$<$<CONFIG:Debug>:_FORTIFY_SOURCE=3>
+		$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>
+
+		# We would also like to enable these switches, but then we get linker errors with prebuild
+		# libraries like boost, which have been build without them!
+		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
+		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
+		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
+	)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	add_compile_options(
+		/MP
+	)
+endif()
+
 
 # Boost ------------------------------------------------------------------------
 

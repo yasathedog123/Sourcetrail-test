@@ -137,7 +137,7 @@ void Tracer::printTraces()
 			return a.time > b.time;
 		});
 
-	for (const std::pair<std::string, AccumulatedTraceEvent>& p: accumulatedEvents)
+	for (const auto &p: accumulatedEvents)
 	{
 		sortedEvents.insert(p.second);
 	}
@@ -244,7 +244,7 @@ void AccumulatingTracer::printTraces()
 			return a.time > b.time;
 		});
 
-	for (const std::pair<std::string, AccumulatedTraceEvent>& p: m_accumulatedEvents)
+	for (const auto &p: m_accumulatedEvents)
 	{
 		sortedEvents.insert(p.second);
 	}

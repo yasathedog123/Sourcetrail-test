@@ -21,6 +21,9 @@ public:
 	VectorBase();
 	VectorBase(const T values[N]);
 	VectorBase(const VectorBase<T, N>& vector);
+
+	VectorBase &operator = (const VectorBase &) = default;
+
 	~VectorBase();
 
 	T getValue(const unsigned int index) const;

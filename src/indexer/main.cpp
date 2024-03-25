@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	suppressCrashMessage();
 
 	ApplicationSettings* appSettings = ApplicationSettings::getInstance().get();
-	appSettings->load(FilePath(UserPaths::getAppSettingsFilePath()));
+	appSettings->load(UserPaths::getAppSettingsFilePath());
 	LogManager::getInstance()->setLoggingEnabled(appSettings->getLoggingEnabled());
 
 	LOG_INFO(L"sharedDataPath: " + AppPath::getSharedDataDirectoryPath().wstr());
