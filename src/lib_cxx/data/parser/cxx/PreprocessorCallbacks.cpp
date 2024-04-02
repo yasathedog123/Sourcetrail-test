@@ -65,11 +65,7 @@ void PreprocessorCallbacks::InclusionDirective(clang::SourceLocation hashLocatio
 {
 	if (m_currentFileSymbolId && fileEntry)
 	{
-#if LLVM_VERSION_MAJOR == 14
-		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(fileEntry);
-#else
 		const FilePath includedFilePath = m_canonicalFilePathCache->getCanonicalFilePath(*fileEntry);
-#endif
 		const NameHierarchy includedFileNameHierarchy(includedFilePath.wstr(), NAME_DELIMITER_FILE);
 
 		Id includedFileSymbolId = m_client->recordSymbol(includedFileNameHierarchy);

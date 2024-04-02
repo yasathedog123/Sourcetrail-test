@@ -41,6 +41,7 @@
 #	include "utilityJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
+using namespace std;
 using namespace utility;
 
 namespace
@@ -429,6 +430,20 @@ TEST_CASE("source group cxx cdb generates expected output")
 
 	applicationSettings->setHeaderSearchPaths(storedHeaderSearchPaths);
 	applicationSettings->setFrameworkSearchPaths(storedFrameworkSearchPaths);
+}
+
+TEST_CASE("source gropup cxx c correct default standard")
+{
+	wstring defaultCStandard = SourceGroupSettingsWithCStandard::getDefaultCStandard();
+	wstring defaultCppStandard = SourceGroupSettingsWithCppStandard::getDefaultCppStandard();
+
+	if constexpr (Os::isLinux()) {
+		REQUIRE(  defaultCStandard.substr(0, 3) == L"gnu");
+		REQUIRE(defaultCppStandard.substr(0, 5) == L"gnu++");
+	} else {
+		REQUIRE(  defaultCStandard.substr(0, 1) == L"c");
+		REQUIRE(defaultCppStandard.substr(0, 3) == L"c++");
+	}
 }
 
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE

@@ -170,18 +170,15 @@ std::vector<std::wstring> SourceGroupCxxEmpty::getBaseCompilerFlags() const
 	std::shared_ptr<ApplicationSettings> appSettings = ApplicationSettings::getInstance();
 	std::set<FilePath> indexedPaths;
 	std::wstring targetFlag;
-	std::wstring languageStandard = SourceGroupSettingsWithCppStandard::getDefaultCppStandardStatic();
+	std::wstring languageStandard;
 
-	if (std::shared_ptr<SourceGroupSettingsCEmpty> settings =
-			std::dynamic_pointer_cast<SourceGroupSettingsCEmpty>(m_settings))
+	if (auto settings = std::dynamic_pointer_cast<SourceGroupSettingsCEmpty>(m_settings))
 	{
 		indexedPaths = utility::toSet(settings->getSourcePathsExpandedAndAbsolute());
 		targetFlag = settings->getTargetFlag();
 		languageStandard = settings->getCStandard();
 	}
-	else if (
-		std::shared_ptr<SourceGroupSettingsCppEmpty> settings =
-			std::dynamic_pointer_cast<SourceGroupSettingsCppEmpty>(m_settings))
+	else if (auto settings = std::dynamic_pointer_cast<SourceGroupSettingsCppEmpty>(m_settings))
 	{
 		indexedPaths = utility::toSet(settings->getSourcePathsExpandedAndAbsolute());
 		targetFlag = settings->getTargetFlag();
@@ -189,9 +186,8 @@ std::vector<std::wstring> SourceGroupCxxEmpty::getBaseCompilerFlags() const
 	}
 	else
 	{
-		LOG_ERROR(
-			L"Source group doesn't specify language standard. Falling back to \"" +
-			languageStandard + L"\".");
+		languageStandard = SourceGroupSettingsWithCppStandard::getDefaultCppStandard();
+		LOG_ERROR(L"Source group doesn't specify language standard. Falling back to \"" + languageStandard + L"\".");
 	}
 
 	if (!targetFlag.empty())
@@ -212,8 +208,7 @@ std::vector<std::wstring> SourceGroupCxxEmpty::getBaseCompilerFlags() const
 		compilerFlags.push_back(L"c++");
 	}
 
-	const SourceGroupSettingsWithCxxPathsAndFlags* settingsCxx =
-		dynamic_cast<const SourceGroupSettingsWithCxxPathsAndFlags*>(m_settings.get());
+	auto settingsCxx = std::dynamic_pointer_cast<const SourceGroupSettingsWithCxxPathsAndFlags>(m_settings);
 
 	if (!settingsCxx)
 	{

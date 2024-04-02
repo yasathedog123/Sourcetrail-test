@@ -4,17 +4,20 @@
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
 
-#	include "TextAccess.h"
-#	include "utility.h"
-#	include "utilityString.h"
+#include "TextAccess.h"
+#include "utility.h"
+#include "utilityString.h"
 
-#	include "CxxParser.h"
-#	include "IndexerCommandCxx.h"
-#	include "IndexerStateInfo.h"
-#	include "ParserClientImpl.h"
+#include "CxxParser.h"
+#include "IndexerCommandCxx.h"
+#include "IndexerStateInfo.h"
+#include "ParserClientImpl.h"
 
-#	include "TestFileRegister.h"
-#	include "TestStorage.h"
+#include "TestFileRegister.h"
+#include "TestStorage.h"
+#include "SourceGroupSettingsWithCppStandard.h"
+
+using namespace std::string_literals;
 
 namespace
 {
@@ -28,7 +31,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code, std::vector<std::wstrin
 	parser.buildIndex(
 		L"input.cc",
 		TextAccess::createFromString(code),
-		utility::concat(compilerFlags, std::vector<std::wstring>(1, L"-std=c++1z")));
+		utility::concat(compilerFlags, L"-std="s + SourceGroupSettingsWithCppStandard::getDefaultCppStandard()));
 
 	return TestStorage::create(storage);
 }
