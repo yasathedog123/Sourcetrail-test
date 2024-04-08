@@ -118,7 +118,7 @@ void QtTabsView::updateTab(Id tabId, const std::vector<SearchMatch>& matches)
 	m_onQtThread([=, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (m_tabBar->tabData(i).toInt() == int(tabId))
+			if (tabId == m_tabBar->tabData(i).toInt())
 			{
 				setTabState(i, matches);
 				return;
@@ -137,7 +137,7 @@ void QtTabsView::addTab()
 
 void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 {
-	int tabId = static_cast<int>(TabId::nextTab());
+	Id tabId = TabId::nextTab();
 
 	m_tabBar->blockSignals(true);
 
@@ -145,7 +145,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	int idx = match.isValid() ? static_cast<int>(m_tabBar->currentIndex() + m_insertedTabCount)
 							  : m_tabBar->count() + 1;
 	idx = m_tabBar->insertTab(idx, QStringLiteral(" Empty Tab "));
-	m_tabBar->setTabData(idx, QVariant(tabId));
+	m_tabBar->setTabData(idx, static_id_cast<qulonglong>(tabId));
 
 	QPushButton* typeCircle = new QPushButton();
 	typeCircle->setObjectName(QStringLiteral("type_circle"));
@@ -154,7 +154,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	connect(typeCircle, &QPushButton::clicked, [tabId, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (m_tabBar->tabData(i).toInt() == tabId)
+			if (tabId == m_tabBar->tabData(i).toInt())
 			{
 				m_tabBar->setCurrentIndex(i);
 				return;
@@ -173,7 +173,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	connect(closeButton, &QPushButton::clicked, [tabId, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (m_tabBar->tabData(i).toInt() == tabId)
+			if (tabId == m_tabBar->tabData(i).toInt())
 			{
 				removeTab(i);
 				return;

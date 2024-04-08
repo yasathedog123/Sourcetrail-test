@@ -609,6 +609,8 @@ add_library(Sourcetrail_lib
 	utility/tracing.h
 	utility/Tree.h
 	utility/types.h
+	utility/Id.h
+	utility/Id.cpp
 	utility/UnorderedCache.h
 	utility/utility.cpp
 	utility/utility.h

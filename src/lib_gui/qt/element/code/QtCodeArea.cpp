@@ -497,7 +497,7 @@ void QtCodeArea::findScreenMatches(
 		matchAnnotation.endCol = end.second;
 
 		// Set first 2 bits to 1 to avoid collisions
-		matchAnnotation.locationId = ~(~Id(0) >> 2) + screenMatches->size() + 1;
+		matchAnnotation.locationId = ~(~Id::type(0) >> 2) + screenMatches->size() + 1;
 		matchAnnotation.locationType = LOCATION_SCREEN_SEARCH;
 
 		m_annotations.push_back(matchAnnotation);

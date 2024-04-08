@@ -66,7 +66,7 @@ public:
  * - defaultVal: default value of type ValueT (cannot be stored as value)
  */
 
-template <typename StringT, typename ValueT, ValueT defaultVal>
+template <typename StringT, typename ValueT>
 class LowMemoryStringMap
 {
 public:
@@ -258,7 +258,7 @@ private:
 
 		virtual ValueT getValue() const
 		{
-			return defaultVal;
+			return ValueT();
 		}
 
 		virtual StringT getString() const = 0;
@@ -297,7 +297,7 @@ private:
 				return getValue();
 			}
 
-			return defaultVal;
+			return ValueT();
 		}
 
 		void print(StreamT& os, size_t depth) const override
@@ -422,13 +422,13 @@ private:
 		{
 			if (idx > str.size())
 			{
-				return defaultVal;
+				return ValueT();
 			}
 
 			std::pair<bool, size_t> p = this->compareString(str, idx);
 			if (!p.first)
 			{
-				return defaultVal;
+				return ValueT();
 			}
 			idx += p.second;
 
@@ -445,7 +445,7 @@ private:
 				return it->second->find(str, idx);
 			}
 
-			return defaultVal;
+			return ValueT();
 		}
 
 		void print(StreamT& os, size_t depth) const override

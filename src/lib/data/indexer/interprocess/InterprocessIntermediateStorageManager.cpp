@@ -12,7 +12,7 @@ const char* InterprocessIntermediateStorageManager::s_intermediateStoragesKeyNam
 InterprocessIntermediateStorageManager::InterprocessIntermediateStorageManager(
 	const std::string& instanceUuid, Id processId, bool isOwner)
 	: BaseInterprocessDataManager(
-		  s_sharedMemoryNamePrefix + std::to_string(processId) + "_" + instanceUuid,
+		  s_sharedMemoryNamePrefix + to_string(processId) + "_" + instanceUuid,
 		  3 * 1048576 /* 3 MB */,
 		  instanceUuid,
 		  processId,

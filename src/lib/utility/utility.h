@@ -306,7 +306,9 @@ std::set<TargetType> utility::convert(const std::set<SourceType>& sourceContaine
 template <typename T>
 std::vector<std::string> utility::toStrings(const std::vector<T>& d)
 {
-	return convert<T, std::string>(d, [](T t) { return std::to_string(t); });
+	using std::to_string;
+
+	return convert<T, std::string>(d, [](T t) { return to_string(t); });
 }
 
 template <>
@@ -319,7 +321,9 @@ inline std::vector<std::string> utility::toStrings<FilePath>(const std::vector<F
 template <typename T>
 std::vector<std::wstring> utility::toWStrings(const std::vector<T>& d)
 {
-	return convert(d, [](T t) { return std::to_wstring(t); });
+	using std::to_wstring;
+
+	return convert(d, [](T t) { return to_wstring(t); });
 }
 
 template <>

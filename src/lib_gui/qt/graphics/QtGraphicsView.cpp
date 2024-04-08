@@ -554,14 +554,14 @@ void QtGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 		}
 	}
 
-	m_openInTabAction->setEnabled(m_openInTabNodeId);
-	m_collapseAction->setEnabled(m_collapseNodeId);
-	m_expandAction->setEnabled(m_expandNodeId);
-	m_showInIDEAction->setEnabled(m_hideNodeId);
-	m_showDefinitionAction->setEnabled(m_hideNodeId);
-	m_hideNodeAction->setEnabled(m_hideNodeId);
-	m_hideEdgeAction->setEnabled(m_hideEdgeId);
-	m_bookmarkNodeAction->setEnabled(m_bookmarkNodeId);
+	m_openInTabAction->setEnabled(m_openInTabNodeId != 0);
+	m_collapseAction->setEnabled(m_collapseNodeId != 0);
+	m_expandAction->setEnabled(m_expandNodeId != 0);
+	m_showInIDEAction->setEnabled(m_hideNodeId != 0);
+	m_showDefinitionAction->setEnabled(m_hideNodeId != 0);
+	m_hideNodeAction->setEnabled(m_hideNodeId != 0);
+	m_hideEdgeAction->setEnabled(m_hideEdgeId != 0);
+	m_bookmarkNodeAction->setEnabled(m_bookmarkNodeId != 0);
 
 	m_copyNodeNameAction->setEnabled(!m_clipboardNodeName.empty());
 

@@ -842,7 +842,7 @@ void QtCodeField::checkOpenInTabActionEnabled(QPoint position)
 		m_openInTabLocationId = 0;
 	}
 
-	m_openInTabAction->setEnabled(m_openInTabLocationId);
+	m_openInTabAction->setEnabled(m_openInTabLocationId != 0);
 }
 
 void QtCodeField::openInTab()

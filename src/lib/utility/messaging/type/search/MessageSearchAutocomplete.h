@@ -30,7 +30,7 @@ public:
 			{
 				os << L", ";
 			}
-			os << std::to_wstring(nodeTypeIds[i]);
+			os << to_wstring(nodeTypeIds[i]);
 		}
 		os << L"]";
 	}

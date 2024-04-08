@@ -89,14 +89,14 @@ std::vector<Id> SqliteIndexStorage::addNodes(const std::vector<StorageNode>& nod
 			std::string name = utility::encodeToUtf8(node.serializedName);
 			if (name.size() != node.serializedName.size())
 			{
-				m_tempWNodeNameIndex.add(node.serializedName, static_cast<uint32_t>(node.id));
+				m_tempWNodeNameIndex.add(node.serializedName, node.id);
 			}
 			else
 			{
-				m_tempNodeNameIndex.add(name, static_cast<uint32_t>(node.id));
+				m_tempNodeNameIndex.add(name, node.id);
 			}
 
-			m_tempNodeTypes.emplace(static_cast<uint32_t>(node.id), node.type);
+			m_tempNodeTypes.emplace(node.id, node.type);
 		});
 	}
 
@@ -119,11 +119,11 @@ std::vector<Id> SqliteIndexStorage::addNodes(const std::vector<StorageNode>& nod
 
 			if (nodeId)
 			{
-				auto it = m_tempNodeTypes.find(static_cast<uint32_t>(nodeId));
+				auto it = m_tempNodeTypes.find(nodeId);
 				if (it != m_tempNodeTypes.end() && it->second < data.type)
 				{
 					setNodeType(data.type, nodeId);
-					m_tempNodeTypes[static_cast<uint32_t>(nodeId)] = data.type;
+					m_tempNodeTypes[nodeId] = data.type;
 				}
 
 				nodeIds[i] = nodeId;
@@ -138,13 +138,13 @@ std::vector<Id> SqliteIndexStorage::addNodes(const std::vector<StorageNode>& nod
 
 				if (name.size() != data.serializedName.size())
 				{
-					m_tempWNodeNameIndex.add(data.serializedName, static_cast<uint32_t>(id));
+					m_tempWNodeNameIndex.add(data.serializedName, id);
 				}
 				else
 				{
-					m_tempNodeNameIndex.add(name, static_cast<uint32_t>(id));
+					m_tempNodeNameIndex.add(name, id);
 				}
-				m_tempNodeTypes.emplace(static_cast<uint32_t>(id), data.type);
+				m_tempNodeTypes.emplace(id, data.type);
 			}
 		}
 	}
@@ -192,7 +192,7 @@ bool SqliteIndexStorage::addFile(const StorageFile& data)
 
 	bool success = false;
 	{
-		m_insertFileStmt.bind(1, int(data.id));
+		m_insertFileStmt.bind(1, static_id_cast<int>(data.id));
 		m_insertFileStmt.bind(2, utility::encodeToUtf8(data.filePath).c_str());
 		m_insertFileStmt.bind(3, utility::encodeToUtf8(data.languageIdentifier).c_str());
 		m_insertFileStmt.bind(4, modificationTime.c_str());
@@ -204,7 +204,7 @@ bool SqliteIndexStorage::addFile(const StorageFile& data)
 
 	if (success && content)
 	{
-		m_insertFileContentStmt.bind(1, int(data.id));
+		m_insertFileContentStmt.bind(1, static_id_cast<int>(data.id));
 		m_insertFileContentStmt.bind(2, content->getText().c_str());
 		success = executeStatement(m_insertFileContentStmt);
 	}
@@ -225,7 +225,7 @@ std::vector<Id> SqliteIndexStorage::addEdges(const std::vector<StorageEdge>& edg
 		forEach<StorageEdge>([this](StorageEdge&& edge) {
 			m_tempEdgeIndex.emplace(
 				StorageEdgeData(edge.type, edge.sourceNodeId, edge.targetNodeId),
-				static_cast<uint32_t>(edge.id));
+				edge.id);
 		});
 	}
 
@@ -234,7 +234,7 @@ std::vector<Id> SqliteIndexStorage::addEdges(const std::vector<StorageEdge>& edg
 	for (size_t i = 0; i < edges.size(); i++)
 	{
 		const StorageEdge& data = edges[i];
-		std::map<StorageEdgeData, uint32_t>::const_iterator it = m_tempEdgeIndex.find(data);
+		const auto it = m_tempEdgeIndex.find(data);
 		if (it != m_tempEdgeIndex.end())
 		{
 			edgeIds[i] = it->second;
@@ -247,7 +247,7 @@ std::vector<Id> SqliteIndexStorage::addEdges(const std::vector<StorageEdge>& edg
 			edgeIds[i] = id;
 			edgesToInsert.emplace_back(id, data);
 
-			m_tempEdgeIndex.emplace(data, static_cast<uint32_t>(id));
+			m_tempEdgeIndex.emplace(data, id);
 		}
 	}
 
@@ -274,7 +274,7 @@ std::vector<Id> SqliteIndexStorage::addLocalSymbols(const std::set<StorageLocalS
 			if (name.second.size())
 			{
 				m_tempLocalSymbolIndex[name.first].emplace(
-					name.second, static_cast<uint32_t>(localSymbol.id));
+					name.second, localSymbol.id);
 			}
 		});
 	}
@@ -308,7 +308,7 @@ std::vector<Id> SqliteIndexStorage::addLocalSymbols(const std::set<StorageLocalS
 			symbolsToInsert.emplace_back(id, data);
 			if (name.second.size())
 			{
-				m_tempLocalSymbolIndex[name.first].emplace(name.second, static_cast<uint32_t>(id));
+				m_tempLocalSymbolIndex[name.first].emplace(name.second, id);
 			}
 		}
 
@@ -334,8 +334,7 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 	if (m_tempSourceLocationIndices.empty())
 	{
 		forEach<StorageSourceLocation>([this](StorageSourceLocation&& loc) {
-			std::map<TempSourceLocation, uint32_t>& index =
-				m_tempSourceLocationIndices[static_cast<uint32_t>(loc.fileNodeId)];
+			auto &index = m_tempSourceLocationIndices[loc.fileNodeId];
 			index.emplace(
 				TempSourceLocation(
 					static_cast<uint32_t>(loc.startLine),
@@ -343,7 +342,7 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 					static_cast<uint16_t>(loc.startCol),
 					static_cast<uint16_t>(loc.endCol),
 					loc.type),
-				static_cast<uint32_t>(loc.id));
+				loc.id);
 		});
 	}
 
@@ -361,9 +360,8 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 			static_cast<uint16_t>(data.endCol),
 			data.type);
 
-		std::map<TempSourceLocation, uint32_t>& index =
-			m_tempSourceLocationIndices[static_cast<uint32_t>(data.fileNodeId)];
-		std::map<TempSourceLocation, uint32_t>::const_iterator it = index.find(tempLoc);
+		auto &index = m_tempSourceLocationIndices[data.fileNodeId];
+		const auto it = index.find(tempLoc);
 		if (it != index.end())
 		{
 			locationIds[i] = it->second;
@@ -374,7 +372,7 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 			Id id = lastRowId + 1 + locationsToInsert.size();
 
 			locationIds[i] = id;
-			index.emplace(tempLoc, static_cast<uint32_t>(id));
+			index.emplace(tempLoc, id);
 
 			locationsToInsert.emplace_back(data);
 		}
@@ -410,7 +408,7 @@ bool SqliteIndexStorage::addComponentAccesses(const std::vector<StorageComponent
 
 void SqliteIndexStorage::addElementComponent(const StorageElementComponent& component)
 {
-	m_insertElementComponentStmt.bind(1, int(component.elementId));
+	m_insertElementComponentStmt.bind(1, static_id_cast<int>(component.elementId));
 	m_insertElementComponentStmt.bind(2, component.type);
 	m_insertElementComponentStmt.bind(3, utility::encodeToUtf8(component.data).c_str());
 	executeStatement(m_insertElementComponentStmt);
@@ -447,7 +445,7 @@ StorageError SqliteIndexStorage::addError(const StorageErrorData& data)
 		executeStatement(m_insertElementStmt);
 		id = static_cast<Id>(m_database.lastRowId());
 
-		m_insertErrorStmt.bind(1, int(id));
+		m_insertErrorStmt.bind(1, static_id_cast<int>(id));
 		m_insertErrorStmt.bind(2, utility::encodeToUtf8(sanitizedMessage).c_str());
 		m_insertErrorStmt.bind(3, data.fatal);
 		m_insertErrorStmt.bind(4, data.indexed);
@@ -479,8 +477,8 @@ void SqliteIndexStorage::removeElements(const std::vector<Id>& ids)
 void SqliteIndexStorage::removeOccurrence(const StorageOccurrence& occurrence)
 {
 	executeStatement(
-		"DELETE FROM occurrence WHERE element_id = " + std::to_string(occurrence.elementId) +
-		" AND source_location_id = " + std::to_string(occurrence.sourceLocationId) + ";");
+		"DELETE FROM occurrence WHERE element_id = " + to_string(occurrence.elementId) +
+		" AND source_location_id = " + to_string(occurrence.sourceLocationId) + ";");
 }
 
 void SqliteIndexStorage::removeOccurrences(const std::vector<StorageOccurrence>& occurrences)
@@ -647,28 +645,28 @@ void SqliteIndexStorage::removeAllErrors()
 bool SqliteIndexStorage::isEdge(Id elementId) const
 {
 	int count = executeStatementScalar(
-		"SELECT count(*) FROM edge WHERE id = " + std::to_string(elementId) + ";", 0);
+		"SELECT count(*) FROM edge WHERE id = " + to_string(elementId) + ";", 0);
 	return (count > 0);
 }
 
 bool SqliteIndexStorage::isNode(Id elementId) const
 {
 	int count = executeStatementScalar(
-		"SELECT count(*) FROM node WHERE id = " + std::to_string(elementId) + ";", 0);
+		"SELECT count(*) FROM node WHERE id = " + to_string(elementId) + ";", 0);
 	return (count > 0);
 }
 
 bool SqliteIndexStorage::isFile(Id elementId) const
 {
 	int count = executeStatementScalar(
-		"SELECT count(*) FROM file WHERE id = " + std::to_string(elementId) + ";", 0);
+		"SELECT count(*) FROM file WHERE id = " + to_string(elementId) + ";", 0);
 	return (count > 0);
 }
 
 StorageEdge SqliteIndexStorage::getEdgeById(Id edgeId) const
 {
 	std::vector<StorageEdge> candidates = doGetAll<StorageEdge>(
-		"WHERE id = " + std::to_string(edgeId));
+		"WHERE id = " + to_string(edgeId));
 
 	if (candidates.size() > 0)
 	{
@@ -683,10 +681,10 @@ StorageEdge SqliteIndexStorage::getEdgeBySourceTargetType(Id sourceId, Id target
 	return doGetFirst<StorageEdge>(
 		"WHERE "
 		"source_node_id == " +
-		std::to_string(sourceId) +
+		to_string(sourceId) +
 		" AND "
 		"target_node_id == " +
-		std::to_string(targetId) +
+		to_string(targetId) +
 		" AND "
 		"type == " +
 		std::to_string(type));
@@ -694,7 +692,7 @@ StorageEdge SqliteIndexStorage::getEdgeBySourceTargetType(Id sourceId, Id target
 
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourceId(Id sourceId) const
 {
-	return doGetAll<StorageEdge>("WHERE source_node_id == " + std::to_string(sourceId));
+	return doGetAll<StorageEdge>("WHERE source_node_id == " + to_string(sourceId));
 }
 
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourceIds(const std::vector<Id>& sourceIds) const
@@ -705,7 +703,7 @@ std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourceIds(const std::vect
 
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesByTargetId(Id targetId) const
 {
-	return doGetAll<StorageEdge>("WHERE target_node_id == " + std::to_string(targetId));
+	return doGetAll<StorageEdge>("WHERE target_node_id == " + to_string(targetId));
 }
 
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesByTargetIds(const std::vector<Id>& targetIds) const
@@ -717,8 +715,8 @@ std::vector<StorageEdge> SqliteIndexStorage::getEdgesByTargetIds(const std::vect
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourceOrTargetId(Id id) const
 {
 	return doGetAll<StorageEdge>(
-		"WHERE source_node_id == " + std::to_string(id) +
-		" OR target_node_id == " + std::to_string(id));
+		"WHERE source_node_id == " + to_string(id) +
+		" OR target_node_id == " + to_string(id));
 }
 
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesByType(int type) const
@@ -729,7 +727,7 @@ std::vector<StorageEdge> SqliteIndexStorage::getEdgesByType(int type) const
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourceType(Id sourceId, int type) const
 {
 	return doGetAll<StorageEdge>(
-		"WHERE source_node_id == " + std::to_string(sourceId) +
+		"WHERE source_node_id == " + to_string(sourceId) +
 		" AND type == " + std::to_string(type));
 }
 
@@ -746,7 +744,7 @@ std::vector<StorageEdge> SqliteIndexStorage::getEdgesBySourcesType(
 std::vector<StorageEdge> SqliteIndexStorage::getEdgesByTargetType(Id targetId, int type) const
 {
 	return doGetAll<StorageEdge>(
-		"WHERE target_node_id == " + std::to_string(targetId) +
+		"WHERE target_node_id == " + to_string(targetId) +
 		" AND type == " + std::to_string(type));
 }
 
@@ -762,7 +760,7 @@ std::vector<StorageEdge> SqliteIndexStorage::getEdgesByTargetsType(
 
 StorageNode SqliteIndexStorage::getNodeById(Id id) const
 {
-	std::vector<StorageNode> candidates = doGetAll<StorageNode>("WHERE id = " + std::to_string(id));
+	std::vector<StorageNode> candidates = doGetAll<StorageNode>("WHERE id = " + to_string(id));
 
 	if (candidates.size() > 0)
 	{
@@ -851,7 +849,7 @@ std::vector<StorageFile> SqliteIndexStorage::getFilesByPaths(const std::vector<F
 std::shared_ptr<TextAccess> SqliteIndexStorage::getFileContentById(Id fileId) const
 {
 	CppSQLite3Query q = executeQuery(
-		"SELECT content FROM filecontent WHERE id = '" + std::to_string(fileId) + "';");
+		"SELECT content FROM filecontent WHERE id = '" + to_string(fileId) + "';");
 	if (!q.eof())
 	{
 		return TextAccess::createFromString(q.getStringField(0, ""));
@@ -888,20 +886,20 @@ void SqliteIndexStorage::setFileIndexed(Id fileId, bool indexed)
 {
 	executeStatement(
 		"UPDATE file SET indexed = " + std::to_string(indexed) +
-		" WHERE id == " + std::to_string(fileId) + ";");
+		" WHERE id == " + to_string(fileId) + ";");
 }
 
 void SqliteIndexStorage::setFileCompleteIfNoError(Id fileId, const std::wstring& filePath, bool complete)
 {
 	bool fileHasErrors = doGetFirst<StorageSourceLocation>(
-							 "WHERE file_node_id == " + std::to_string(fileId) +
+							 "WHERE file_node_id == " + to_string(fileId) +
 							 " AND type == " + std::to_string(locationTypeToInt(LOCATION_ERROR)))
-							 .id;
+							 .id != 0;
 	if (fileHasErrors != complete)
 	{
 		executeStatement(
 			"UPDATE file SET complete = " + std::to_string(complete) +
-			" WHERE id == " + std::to_string(fileId) + ";");
+			" WHERE id == " + to_string(fileId) + ";");
 	}
 }
 
@@ -909,7 +907,7 @@ void SqliteIndexStorage::setNodeType(int type, Id nodeId)
 {
 	executeStatement(
 		"UPDATE node SET type = " + std::to_string(type) +
-		" WHERE id == " + std::to_string(nodeId) + ";");
+		" WHERE id == " + to_string(nodeId) + ";");
 }
 
 std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsForFile(
@@ -929,7 +927,7 @@ std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsForFil
 	ret->setIsIndexed(file.indexed);
 
 	std::vector<StorageSourceLocation> sourceLocations = doGetAll<StorageSourceLocation>(
-		"WHERE file_node_id == " + std::to_string(file.id) + " " + query);
+		"WHERE file_node_id == " + to_string(file.id) + " " + query);
 
 	std::vector<Id> sourceLocationIds;
 	sourceLocationIds.reserve(sourceLocations.size());
@@ -1050,7 +1048,7 @@ std::vector<StorageOccurrence> SqliteIndexStorage::getOccurrencesForElementIds(
 
 StorageComponentAccess SqliteIndexStorage::getComponentAccessByNodeId(Id nodeId) const
 {
-	return doGetFirst<StorageComponentAccess>("WHERE node_id == " + std::to_string(nodeId));
+	return doGetFirst<StorageComponentAccess>("WHERE node_id == " + to_string(nodeId));
 }
 
 std::vector<StorageComponentAccess> SqliteIndexStorage::getComponentAccessesByNodeIds(
@@ -1360,7 +1358,7 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"INSERT INTO node(id, type, serialized_name) VALUES",
 			3,
 			[](CppSQLite3Statement& stmt, const StorageNode& node, size_t index) {
-				stmt.bind(int(index) * 3 + 1, int(node.id));
+				stmt.bind(int(index) * 3 + 1, static_id_cast<int>(node.id));
 				stmt.bind(int(index) * 3 + 2, int(node.type));
 				stmt.bind(int(index) * 3 + 3, utility::encodeToUtf8(node.serializedName).c_str());
 			},
@@ -1369,17 +1367,17 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"INSERT INTO edge(id, type, source_node_id, target_node_id) VALUES",
 			4,
 			[](CppSQLite3Statement& stmt, const StorageEdge& edge, size_t index) {
-				stmt.bind(int(index) * 4 + 1, int(edge.id));
+				stmt.bind(int(index) * 4 + 1, static_id_cast<int>(edge.id));
 				stmt.bind(int(index) * 4 + 2, int(edge.type));
-				stmt.bind(int(index) * 4 + 3, int(edge.sourceNodeId));
-				stmt.bind(int(index) * 4 + 4, int(edge.targetNodeId));
+				stmt.bind(int(index) * 4 + 3, static_id_cast<int>(edge.sourceNodeId));
+				stmt.bind(int(index) * 4 + 4, static_id_cast<int>(edge.targetNodeId));
 			},
 			m_database);
 		m_insertSymbolBatchStatement.compile(
 			"INSERT OR IGNORE INTO symbol(id, definition_kind) VALUES",
 			2,
 			[](CppSQLite3Statement& stmt, const StorageSymbol& symbol, size_t index) {
-				stmt.bind(int(index) * 2 + 1, int(symbol.id));
+				stmt.bind(int(index) * 2 + 1, static_id_cast<int>(symbol.id));
 				stmt.bind(int(index) * 2 + 2, int(symbol.definitionKind));
 			},
 			m_database);
@@ -1387,7 +1385,7 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"INSERT INTO local_symbol(id, name) VALUES",
 			2,
 			[](CppSQLite3Statement& stmt, const StorageLocalSymbol& symbol, size_t index) {
-				stmt.bind(int(index) * 2 + 1, int(symbol.id));
+				stmt.bind(int(index) * 2 + 1, static_id_cast<int>(symbol.id));
 				stmt.bind(int(index) * 2 + 2, utility::encodeToUtf8(symbol.name).c_str());
 			},
 			m_database);
@@ -1396,7 +1394,7 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"end_column, type) VALUES",
 			6,
 			[](CppSQLite3Statement& stmt, const StorageSourceLocationData& location, size_t index) {
-				stmt.bind(int(index) * 6 + 1, int(location.fileNodeId));
+				stmt.bind(int(index) * 6 + 1, static_id_cast<int>(location.fileNodeId));
 				stmt.bind(int(index) * 6 + 2, int(location.startLine));
 				stmt.bind(int(index) * 6 + 3, int(location.startCol));
 				stmt.bind(int(index) * 6 + 4, int(location.endLine));
@@ -1408,15 +1406,15 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"INSERT OR IGNORE INTO occurrence(element_id, source_location_id) VALUES",
 			2,
 			[](CppSQLite3Statement& stmt, const StorageOccurrence& occurrence, size_t index) {
-				stmt.bind(int(index) * 2 + 1, int(occurrence.elementId));
-				stmt.bind(int(index) * 2 + 2, int(occurrence.sourceLocationId));
+				stmt.bind(int(index) * 2 + 1, static_id_cast<int>(occurrence.elementId));
+				stmt.bind(int(index) * 2 + 2, static_id_cast<int>(occurrence.sourceLocationId));
 			},
 			m_database);
 		m_insertComponentAccessBatchStatement.compile(
 			"INSERT OR IGNORE INTO component_access(node_id, type) VALUES",
 			2,
 			[](CppSQLite3Statement& stmt, const StorageComponentAccess& componentAccess, size_t index) {
-				stmt.bind(int(index) * 2 + 1, int(componentAccess.nodeId));
+				stmt.bind(int(index) * 2 + 1, static_id_cast<int>(componentAccess.nodeId));
 				stmt.bind(int(index) * 2 + 2, int(componentAccess.type));
 			},
 			m_database);

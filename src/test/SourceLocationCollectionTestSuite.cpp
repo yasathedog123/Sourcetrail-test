@@ -71,12 +71,12 @@ TEST_CASE("source locations have right file path line column and token id")
 	SourceLocation* a = collection.addSourceLocation(
 		LOCATION_TOKEN, 1, {1}, FilePath(L"file.c"), 2, 3, 4, 5);
 
-	REQUIRE(1 == a->getTokenIds()[0]);
-	REQUIRE(2 == a->getLineNumber());
-	REQUIRE(3 == a->getColumnNumber());
-	REQUIRE(4 == a->getOtherLocation()->getLineNumber());
-	REQUIRE(5 == a->getOtherLocation()->getColumnNumber());
-	REQUIRE(L"file.c" == a->getFilePath().wstr());
+	REQUIRE(a->getTokenIds()[0] == 1);
+	REQUIRE(a->getLineNumber() == 2);
+	REQUIRE(a->getColumnNumber() == 3);
+	REQUIRE(a->getOtherLocation()->getLineNumber() == 4);
+	REQUIRE(a->getOtherLocation()->getColumnNumber() == 5);
+	REQUIRE(a->getFilePath().wstr() == L"file.c");
 }
 
 TEST_CASE("finding source locations by id")

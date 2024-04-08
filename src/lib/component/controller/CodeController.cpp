@@ -770,7 +770,7 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 	size_t lineCount = textAccess->getLineCount();
 
 	SnippetMerger fileScopedMerger(1, static_cast<int>(lineCount));
-	std::map<int, std::shared_ptr<SnippetMerger>> mergers;
+	std::map<Id, std::shared_ptr<SnippetMerger>> mergers;
 
 	std::shared_ptr<SourceLocationFile> scopeLocations =
 		m_storageAccess->getSourceLocationsOfTypeInFile(
@@ -854,11 +854,10 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 	return snippets;
 }
 
-std::shared_ptr<SnippetMerger> CodeController::buildMergerHierarchy(
-	const SourceLocation* location,
+std::shared_ptr<SnippetMerger> CodeController::buildMergerHierarchy(const SourceLocation* location,
 	const SourceLocationFile* scopeLocations,
 	SnippetMerger& fileScopedMerger,
-	std::map<int, std::shared_ptr<SnippetMerger>>& mergers) const
+	std::map<Id, std::shared_ptr<SnippetMerger> > &mergers) const
 {
 	std::shared_ptr<SnippetMerger> currentMerger = std::make_shared<SnippetMerger>(
 		static_cast<int>(location->getStartLocation()->getLineNumber()),
@@ -873,12 +872,11 @@ std::shared_ptr<SnippetMerger> CodeController::buildMergerHierarchy(
 	}
 
 	std::shared_ptr<SnippetMerger> nextMerger;
-	std::map<int, std::shared_ptr<SnippetMerger>>::iterator it = mergers.find(
-		static_cast<int>(scopeLocation->getLocationId()));
+	auto it = mergers.find(scopeLocation->getLocationId());
 	if (it == mergers.end())
 	{
 		nextMerger = buildMergerHierarchy(scopeLocation, scopeLocations, fileScopedMerger, mergers);
-		mergers[static_cast<int>(scopeLocation->getLocationId())] = nextMerger;
+		mergers[scopeLocation->getLocationId()] = nextMerger;
 	}
 	else
 	{

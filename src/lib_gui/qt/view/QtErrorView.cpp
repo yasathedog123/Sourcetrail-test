@@ -205,7 +205,7 @@ void QtErrorView::setErrorId(Id errorId)
 {
 	m_onQtThread([=, this]() {
 		QList<QStandardItem*> items = m_model->findItems(
-			QString::number(errorId), Qt::MatchExactly, Column::ID);
+			QString::number(static_id_cast<Id::type>(errorId)), Qt::MatchExactly, Column::ID);
 
 		if (items.size() == 1)
 		{
@@ -294,7 +294,7 @@ void QtErrorView::addErrorToTable(const ErrorInfo& error)
 	}
 
 	QStandardItem* item = new QStandardItem();
-	item->setData(QVariant(qlonglong(error.id)), Qt::DisplayRole);
+	item->setData(static_id_cast<qulonglong>(error.id), Qt::DisplayRole);
 	m_model->setItem(rowNumber, Column::ID, item);
 
 	m_model->setItem(

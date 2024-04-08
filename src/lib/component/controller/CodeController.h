@@ -126,7 +126,7 @@ private:
 		const SourceLocation* location,
 		const SourceLocationFile* scopeLocations,
 		SnippetMerger& fileScopedMerger,
-		std::map<int, std::shared_ptr<SnippetMerger>>& mergers) const;
+		std::map<Id, std::shared_ptr<SnippetMerger>>& mergers) const;
 	const SourceLocation* getSourceLocationOfParentScope(
 		size_t lineNumber, const SourceLocationFile* scopeLocations) const;
 

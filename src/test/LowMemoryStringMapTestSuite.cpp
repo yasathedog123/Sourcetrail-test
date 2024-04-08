@@ -7,7 +7,7 @@
 
 TEST_CASE("roughly everything")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 
 	map.add("abcdefg", 2);
 	map.add("abcdefgerlitz", 1);
@@ -30,14 +30,14 @@ TEST_CASE("roughly everything")
 
 TEST_CASE("cannot find element after creation")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 
 	REQUIRE(map.find("a") == 0);
 }
 
 TEST_CASE("find element")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("a", 1);
 
 	REQUIRE(map.find("a") == 1);
@@ -46,7 +46,7 @@ TEST_CASE("find element")
 
 TEST_CASE("find fully different elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("a", 1);
 	map.add("b", 2);
 
@@ -56,7 +56,7 @@ TEST_CASE("find fully different elements")
 
 TEST_CASE("find similar short elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("ab", 1);
 	map.add("ac", 2);
 
@@ -67,7 +67,7 @@ TEST_CASE("find similar short elements")
 
 TEST_CASE("find similar long elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("aaaaabbbbb", 1);
 	map.add("aaaaaccccc", 2);
 	map.add("aaaaccccc", 3);
@@ -81,7 +81,7 @@ TEST_CASE("find similar long elements")
 
 TEST_CASE("add twice")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("abba", 1);
 	map.add("abba", 2);
 
@@ -90,7 +90,7 @@ TEST_CASE("add twice")
 
 TEST_CASE("find parent child elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("a", 1);
 	map.add("ab", 2);
 
@@ -101,7 +101,7 @@ TEST_CASE("find parent child elements")
 
 TEST_CASE("find long parent child elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("ababaaa", 1);
 	map.add("aba", 2);
 
@@ -113,7 +113,7 @@ TEST_CASE("find long parent child elements")
 
 TEST_CASE("find long similar prefix elements")
 {
-	LowMemoryStringMap<std::string, Id, 0> map;
+	LowMemoryStringMap<std::string, Id> map;
 	map.add("ababababaab", 1);
 	map.add("abababababababaccc", 2);
 	map.add("abababababababaer", 3);
@@ -133,7 +133,7 @@ TEST_CASE("find long similar prefix elements")
 
 TEST_CASE("wstring")
 {
-	LowMemoryStringMap<std::wstring, Id, 0> map;
+	LowMemoryStringMap<std::wstring, Id> map;
 
 	FilePath filePath(L"data/LowMemoryStringMapTestSuite/names.txt");
 	std::shared_ptr<TextAccess> textAccess = TextAccess::createFromFile(filePath);
