@@ -28,6 +28,23 @@
 			}
 		},
 		{
+			"hidden": true,
+			"name": "system-default-presets",
+			"inherits": "default-presets",
+			"generator": "Ninja",
+			"cacheVariables": {
+				"isVcpkgBuild": "FALSE"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			}
+		},
+
+
+
+		{
 			"name": "vcpkg-ninja-debug",
 			"displayName": "Vcpkg Ninja Debug Build",
 			"inherits": "vcpkg-default-presets",
@@ -43,32 +60,9 @@
 				"CMAKE_BUILD_TYPE": "Release"
 			}
 		},
-		{
-			"name": "vcpkg-ninja-relwithdebinfo",
-			"displayName": "Vcpkg Ninja RelWithDebInfo Build",
-			"inherits": "vcpkg-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
-			}
-		},
 
 
 
-
-		{
-			"hidden": true,
-			"name": "system-default-presets",
-			"inherits": "default-presets",
-			"generator": "Ninja",
-			"cacheVariables": {
-				"isVcpkgBuild": "FALSE"
-			},
-			"condition": {
-				"type": "equals",
-				"lhs": "${hostSystemName}",
-				"rhs": "Linux"
-			}
-		},
 		{
 			"name": "system-ninja-debug",
 			"displayName": "System Ninja Debug Build",
@@ -83,14 +77,6 @@
 			"inherits": "system-default-presets",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
-			}
-		},
-		{
-			"name": "system-ninja-relwithdebinfo",
-			"displayName": "System Ninja RelWithDebInfo Build",
-			"inherits": "system-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
 		}
 	]
