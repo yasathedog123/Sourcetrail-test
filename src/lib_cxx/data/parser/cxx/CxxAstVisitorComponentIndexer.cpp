@@ -176,6 +176,21 @@ void CxxAstVisitorComponentIndexer::beginTraverseLambdaCapture(
 	}
 }
 
+void CxxAstVisitorComponentIndexer::visitCastExpr(clang::CastExpr *d)
+{
+	if (getAstVisitor()->shouldVisitStmt(d))
+	{
+		if (d->getCastKind() == clang::CK_UserDefinedConversion)
+		{
+			Id referencedSymbolId = getOrCreateSymbolId(d->getConversionFunction());
+			Id contextSymbolId = getOrCreateSymbolId(getAstVisitor()->getComponent<CxxAstVisitorComponentContext>()->getContext());
+			ParseLocation location = getParseLocation(d->getSourceRange());
+
+			m_client->recordReference(REFERENCE_CALL, referencedSymbolId, contextSymbolId, location);
+		}
+	}
+}
+
 void CxxAstVisitorComponentIndexer::visitTagDecl(clang::TagDecl* d)
 {
 	if (getAstVisitor()->shouldVisitDecl(d))

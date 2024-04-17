@@ -17,11 +17,14 @@
 #include "TestStorage.h"
 #include "SourceGroupSettingsWithCppStandard.h"
 
+using namespace std;
 using namespace std::string_literals;
+using namespace utility;
+
 
 namespace
 {
-std::shared_ptr<TestStorage> parseCode(std::string code, std::vector<std::wstring> compilerFlags = {})
+std::shared_ptr<TestStorage> parseCode(const std::string &code, const std::vector<std::wstring> &compilerFlags = {})
 {
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
 	CxxParser parser(
@@ -35,7 +38,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code, std::vector<std::wstrin
 
 	return TestStorage::create(storage);
 }
-}	 // namespace
+}
 
 TEST_CASE("cxx parser finds global variable declaration")
 {
@@ -172,6 +175,33 @@ TEST_CASE("cxx parser finds overloaded operator declaration")
 
 	REQUIRE(utility::containsElement<std::wstring>(
 		client->methods, L"public B & B::operator=(const B &) <4:2 <4:5 4:13> 4:29>"));
+}
+
+
+TEST_CASE("cxx parser finds explicit bool conversion operator")
+{
+	// AST: https://godbolt.org/z/rKhTnKjf8
+	// To see the AST: 'clang <input_file> -Xclang -ast-dump -fsyntax-only [-fno-color-diagnostics]'
+
+	std::shared_ptr<TestStorage> client = parseCode(
+		R"(class B
+		{
+		public:
+			explicit operator bool() const;
+		};
+		void f()
+		{
+			B b;
+			if (b)
+				;
+		})");
+
+	REQUIRE(client->errors.empty());
+
+	// Find usage:
+	INFO(encodeToUtf8(join(client->calls, L"\n"s)));
+	REQUIRE(client->calls.size() == 2);
+	REQUIRE(containsElement(client->calls, L"void f() -> bool B::operator bool() const <9:8 9:8>"s));
 }
 
 TEST_CASE("cxx parser finds method declaration and definition")

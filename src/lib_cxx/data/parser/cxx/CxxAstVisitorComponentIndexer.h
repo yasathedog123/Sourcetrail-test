@@ -24,6 +24,7 @@ public:
 	void beginTraverseTemplateArgumentLoc(const clang::TemplateArgumentLoc& loc);
 	void beginTraverseLambdaCapture(clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture);
 
+	void visitCastExpr(clang::CastExpr *d);
 	void visitTagDecl(clang::TagDecl* d);
 	void visitClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl* d);
 	void visitVarDecl(clang::VarDecl* d);
