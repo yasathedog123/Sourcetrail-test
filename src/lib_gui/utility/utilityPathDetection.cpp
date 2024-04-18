@@ -9,6 +9,7 @@
 #	include "CxxHeaderPathDetector.h"
 #	include "CxxVs10To14HeaderPathDetector.h"
 #	include "CxxVs15ToLatestHeaderPathDetector.h"
+#	include "ToolVersionData.h"
 #endif
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
@@ -16,6 +17,8 @@
 #	include "JreSystemLibraryPathDetector.h"
 #	include "MavenPathDetectorUnixWindows.h"
 #endif
+
+using namespace std;
 
 std::shared_ptr<CombinedPathDetector> utility::getJavaRuntimePathDetector()
 {
@@ -61,12 +64,11 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxVsHeaderPathDetector()
 	}
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
-		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2022));
-	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
-		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2019));
-	combinedDetector->addDetector(std::make_shared<CxxVs15ToLatestHeaderPathDetector>(
-		CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2017));
+	for (const wstring &versionRange : VisualStudioVersionData::getVersionRanges())
+	{
+		combinedDetector->addDetector(make_shared<CxxVs15ToLatestHeaderPathDetector>(versionRange));
+	}
+	// Old Visual Studio versions:
 
 	combinedDetector->addDetector(std::make_shared<CxxVs10To14HeaderPathDetector>(
 		CxxVs10To14HeaderPathDetector::VISUAL_STUDIO_2015, false, ApplicationArchitectureType::X86_32));

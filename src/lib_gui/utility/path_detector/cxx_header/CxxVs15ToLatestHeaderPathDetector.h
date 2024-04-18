@@ -6,24 +6,10 @@
 class CxxVs15ToLatestHeaderPathDetector: public PathDetector
 {
 public:
-	class VisualStudioType {
-	public:
-		VisualStudioType(std::wstring_view versionRange);
-
-		std::wstring getVersionRange() const;
-
-	private:
-		const std::wstring_view m_versionRange;
-	};
-
-	static const VisualStudioType VISUAL_STUDIO_2017;
-	static const VisualStudioType VISUAL_STUDIO_2019;
-	static const VisualStudioType VISUAL_STUDIO_2022;
-
-	CxxVs15ToLatestHeaderPathDetector(const VisualStudioType &type);
+	CxxVs15ToLatestHeaderPathDetector(const std::wstring &versionRange);
 
 private:
-	const VisualStudioType m_type;
+	const std::wstring m_versionRange;
 
 	std::vector<FilePath> doGetPaths() const override;
 

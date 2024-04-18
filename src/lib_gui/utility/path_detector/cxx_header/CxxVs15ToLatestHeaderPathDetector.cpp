@@ -8,27 +8,11 @@
 #include "utilityApp.h"
 #include "utilityCxxHeaderDetection.h"
 
-// Version table: https://github.com/microsoft/vswhere/wiki/Versions#release-versions
+using namespace std;
 
-const CxxVs15ToLatestHeaderPathDetector::VisualStudioType CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2017(L"[15.0, 16.0)");
-const CxxVs15ToLatestHeaderPathDetector::VisualStudioType CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2019(L"[16.0, 17.0)");
-const CxxVs15ToLatestHeaderPathDetector::VisualStudioType CxxVs15ToLatestHeaderPathDetector::VISUAL_STUDIO_2022(L"[17.0, 18.0)");
-
-CxxVs15ToLatestHeaderPathDetector::VisualStudioType::VisualStudioType(std::wstring_view versionRange)
-	: m_versionRange(versionRange)
-{
-}
-
-std::wstring CxxVs15ToLatestHeaderPathDetector::VisualStudioType::getVersionRange() const
-{
-	return std::wstring(m_versionRange);
-}
-
-
-
-CxxVs15ToLatestHeaderPathDetector::CxxVs15ToLatestHeaderPathDetector(const VisualStudioType &type)
-	: PathDetector(utility::encodeToUtf8(getVsWhereProperty(type.getVersionRange(), L"displayName")))
-	, m_type(type)
+CxxVs15ToLatestHeaderPathDetector::CxxVs15ToLatestHeaderPathDetector(const wstring &versionRange)
+	: PathDetector(utility::encodeToUtf8(getVsWhereProperty(versionRange, L"displayName")))
+	, m_versionRange(versionRange)
 {
 }
 
@@ -37,7 +21,7 @@ std::vector<FilePath> CxxVs15ToLatestHeaderPathDetector::doGetPaths() const
 	std::vector<FilePath> headerSearchPaths;
 
 	{
-		const std::wstring installationPath = getVsWhereProperty(m_type.getVersionRange(), L"installationPath");
+		const std::wstring installationPath = getVsWhereProperty(m_versionRange, L"installationPath");
 
 		if (!installationPath.empty())
 		{
