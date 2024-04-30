@@ -24,7 +24,7 @@ Sourcetrail is licensed under the [GNU General Public License Version 3](LICENSE
 
 ## Note
 
-__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](COATI_SOFTWARE_README.md)
+__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](unused_coati_software_files/COATI_SOFTWARE_README.md)
 
 This is a fork of the Sourcetrail project and I want to keep this project at least buildable. 
 
@@ -52,7 +52,7 @@ git pull --recurse-submodules
 * In order to build the **java_indexer** additional software must be installed which are not provided by vcpkg:
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
-* **Linux:** Because **Qt5** is build from source, additional packages are needed. Install these packages with `script/install.ubuntu.qt5.dependencies.sh`.
+* **Linux:** Because **Qt5** is build from source, additional packages are needed. Install these packages with `setup/install.ubuntu.qt5.dependencies.sh`.
 
 Prepare the build:
 ```

@@ -1,5 +1,6 @@
-configure_file("${CMAKE_SOURCE_DIR}/setup/icon/windows/sourcetrail.ico" "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico" COPYONLY)
-configure_file("${CMAKE_SOURCE_DIR}/setup/Linux/data/package/Sourcetrail.sh" "${CMAKE_BINARY_DIR}/app/Sourcetrail.sh" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/setup/qt.conf" "${CMAKE_BINARY_DIR}/app/qt.conf" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/setup/Sourcetrail.sh" "${CMAKE_BINARY_DIR}/app/Sourcetrail.sh" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/setup/Sourcetrail.ico" "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico" COPYONLY)
 
 file(WRITE ${CMAKE_BINARY_DIR}/Sourcetrail.rc
 	"// Icon with lowest ID value placed first to ensure application icon\n"

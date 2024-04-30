@@ -72,12 +72,8 @@ void QtAbout::setupAbout()
 		layoutHorz1->addStretch();
 
 		QLabel* developerLabel = new QLabel(
-			QString::fromStdString("<b>Team:</b><br />"
-								   "Manuel Dobusch<br />"
-								   "Eberhard Gräther<br />"
-								   "Malte Langkabel<br />"
-								   "Viktoria Pfausler<br />"
-								   "Andreas Stallinger<br />"
+			QString::fromStdString("<b>Authors:</b><br />"
+								   "The Coati Software Developer<br />"
 								   "<br />"
 								   "<b>Maintainer:</b><br />"
 								   "Peter Most<br />"));
