@@ -32,6 +32,7 @@ add_library(Sourcetrail_lib_java
 	LanguagePackageJava.cpp
 	LanguagePackageJava.h
 )
+setDefaultTargetOptions(Sourcetrail_lib_java)
 
 target_include_directories(Sourcetrail_lib_java
 	PUBLIC

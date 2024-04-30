@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <iosfwd>
+#include <string>
 #include <unordered_map>
 
 
@@ -62,8 +63,12 @@ public:
 	template <typename T>
 		friend T static_id_cast(const Id) noexcept;
 
+		template <typename T>
+	friend T reinterpret_id_cast(const Id) noexcept;
+
+
 	template <typename T>
-		friend class std::hash;
+		friend struct std::hash;
 
 	//
 	// Unusual operations:
@@ -95,6 +100,12 @@ template <typename T>
 		return T{ id.m_value };
 	}
 
+template <typename T>
+	T reinterpret_id_cast(const Id id) noexcept
+	{
+		return T( id.m_value );
+	}
+
 std::string to_string(const Id id);
 std::wstring to_wstring(const Id id);
 
@@ -105,7 +116,7 @@ std::wostream &operator << (std::wostream &os, const Id id);
 namespace std
 {
 	template<>
-		class hash<Id> {
+		struct hash<Id> {
 			public:
 				std::size_t operator()(const Id id) const noexcept;
 

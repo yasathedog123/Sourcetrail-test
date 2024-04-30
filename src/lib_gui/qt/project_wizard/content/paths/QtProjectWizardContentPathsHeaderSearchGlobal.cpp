@@ -53,51 +53,48 @@ void QtProjectWizardContentPathsHeaderSearchGlobal::save()
 
 bool QtProjectWizardContentPathsHeaderSearchGlobal::check()
 {
-	if constexpr (utility::Os::isWindows())
+	if constexpr (!utility::Os::isWindows())
 	{
-		return QtProjectWizardContentPaths::check();
-	}
-
-	std::vector<FilePath> paths;
-	QString compilerHeaderPaths;
-	for (const FilePath& headerPath: m_list->getPathsAsDisplayed())
-	{
-		if (headerPath != ResourcePaths::getCxxCompilerHeaderDirectoryPath() &&
-			headerPath.getCanonical().getConcatenated(L"/stdarg.h").exists())
+		std::vector<FilePath> paths;
+		QString compilerHeaderPaths;
+		for (const FilePath& headerPath: m_list->getPathsAsDisplayed())
 		{
-			compilerHeaderPaths += QString::fromStdWString(headerPath.wstr()) + "\n";
+			if (headerPath != ResourcePaths::getCxxCompilerHeaderDirectoryPath() &&
+				headerPath.getCanonical().getConcatenated(L"/stdarg.h").exists())
+			{
+				compilerHeaderPaths += QString::fromStdWString(headerPath.wstr()) + "\n";
+			}
+			else
+			{
+				paths.push_back(headerPath);
+			}
 		}
-		else
-		{
-			paths.push_back(headerPath);
-		}
-	}
 
-	if (compilerHeaderPaths.size())
-	{
-		QMessageBox msgBox(m_window);
-		msgBox.setText(QStringLiteral("Multiple Compiler Headers"));
-		msgBox.setInformativeText(
-			"Your Global Include Paths contain other paths that hold C/C++ compiler headers, "
-			"probably those of your local C/C++ compiler. They are possibly in conflict with the "
-			"compiler headers of "
-			"Sourcetrail's C/C++ indexer. This can lead to compatibility errors during indexing. "
-			"Do "
-			"you want to remove "
-			"these paths?");
-		msgBox.setDetailedText(compilerHeaderPaths);
-		msgBox.addButton(QStringLiteral("Remove"), QMessageBox::ButtonRole::YesRole);
-		msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
-		msgBox.setIcon(QMessageBox::Icon::Question);
-		int ret = msgBox.exec();
-
-		if (ret == 0)	 // QMessageBox::Yes
+		if (compilerHeaderPaths.size())
 		{
-			setPaths(paths);
-			save();
+			QMessageBox msgBox(m_window);
+			msgBox.setText(QStringLiteral("Multiple Compiler Headers"));
+			msgBox.setInformativeText(
+				"Your Global Include Paths contain other paths that hold C/C++ compiler headers, "
+				"probably those of your local C/C++ compiler. They are possibly in conflict with the "
+				"compiler headers of "
+				"Sourcetrail's C/C++ indexer. This can lead to compatibility errors during indexing. "
+				"Do "
+				"you want to remove "
+				"these paths?");
+			msgBox.setDetailedText(compilerHeaderPaths);
+			msgBox.addButton(QStringLiteral("Remove"), QMessageBox::ButtonRole::YesRole);
+			msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
+			msgBox.setIcon(QMessageBox::Icon::Question);
+			int ret = msgBox.exec();
+
+			if (ret == 0)	 // QMessageBox::Yes
+			{
+				setPaths(paths);
+				save();
+			}
 		}
 	}
-
 	return QtProjectWizardContentPaths::check();
 }
 

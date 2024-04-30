@@ -76,6 +76,7 @@ add_executable(Sourcetrail_test
 	UtilityTestSuite.cpp
 	Vector2TestSuite.cpp
 )
+setDefaultTargetOptions(Sourcetrail_test)
 
 target_include_directories(Sourcetrail_test
 	PRIVATE

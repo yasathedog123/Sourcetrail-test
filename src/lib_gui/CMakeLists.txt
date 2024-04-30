@@ -320,6 +320,7 @@ add_library(Sourcetrail_lib_gui
 	utility/utilityPathDetection.cpp
 	utility/utilityPathDetection.h
 )
+setDefaultTargetOptions(Sourcetrail_lib_gui)
 
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC

@@ -8,6 +8,7 @@
 		"boost-filesystem",
 		"boost-program-options",
 
+		"boost-dll",
 		"boost-locale",
 		"boost-interprocess",
 		"boost-uuid",

@@ -59,7 +59,7 @@ Version Version::fromString(const std::string& versionString)
 
 		return version;
 	}
-	catch (std::invalid_argument &e)
+	catch (std::invalid_argument &)
 	{
 		// LOG_ERROR("Version string is invalid: " + versionString);
 	}

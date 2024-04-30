@@ -362,8 +362,6 @@ QtGraphNode* GraphFocusHandler::findNextNode(QtGraphEdge* edge, Direction direct
 			return edge->getTarget();
 		}
 	}
-
-	return nullptr;
 }
 
 QtGraphEdge* GraphFocusHandler::findNextEdge(QPointF pos, Direction direction, QtGraphEdge* previousEdge)

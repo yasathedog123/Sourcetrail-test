@@ -4,6 +4,7 @@ add_library(Sourcetrail_lib_utility
 	utility/utilityString.cpp
 	utility/utilityString.h
 )
+setDefaultTargetOptions(Sourcetrail_lib_utility)
 
 target_include_directories(Sourcetrail_lib_utility
 	PUBLIC

@@ -627,6 +627,7 @@ add_library(Sourcetrail_lib
 	utility/Version.cpp
 	utility/Version.h
 )
+setDefaultTargetOptions(Sourcetrail_lib)
 
 target_include_directories(Sourcetrail_lib
 	PUBLIC

@@ -21,7 +21,7 @@ std::shared_ptr<ApplicationSettings> ApplicationSettings::getInstance()
 {
 	if (!s_instance)
 	{
-		s_instance = std::shared_ptr<ApplicationSettings>(new ApplicationSettings());
+		s_instance = std::make_shared<ApplicationSettings>();
 	}
 
 	return s_instance;

@@ -3,7 +3,10 @@
 
 #include <memory>
 
+#pragma warning(push)
+#pragma warning(disable: 4702) // unreachable code
 #include <clang/AST/RecursiveASTVisitor.h>
+#pragma warning(pop)
 
 #include "CxxAstVisitorComponentBraceRecorder.h"
 #include "CxxAstVisitorComponentContext.h"

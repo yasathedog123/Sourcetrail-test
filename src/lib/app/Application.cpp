@@ -391,7 +391,7 @@ void Application::loadWindow(bool showStartWindow)
 
 	if (!m_loadedWindow)
 	{
-		ApplicationSettings* appSettings = ApplicationSettings::getInstance().get();
+		auto appSettings = ApplicationSettings::getInstance();
 
 		updateTitle();
 

@@ -462,9 +462,12 @@ void QtMainWindow::keyPressEvent(QKeyEvent* event)
 		break;
 
 	case Qt::Key_F4:
-		if constexpr (utility::Os::isWindows() && event->modifiers() & Qt::ControlModifier)
+		if constexpr (utility::Os::isWindows())
 		{
-			closeTab();
+			if (event->modifiers() & Qt::ControlModifier)
+			{
+				closeTab();
+			}
 		}
 		break;
 

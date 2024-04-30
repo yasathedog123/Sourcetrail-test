@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 3.27)
 
 if (isVcpkgBuild)
 	message(STATUS "Vcpkg Build")
+
+	# Try to limit the rebuilds:
+	set(VCPKG_INSTALL_OPTIONS --x-abi-tools-use-exact-versions CACHE STRING "Install options for Vcpkg" FORCE) # --debug
+
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
-		set(VCPKG_TARGET_TRIPLET "custom-x64-linux-static-md" CACHE STRING "Target triplet for Linux")
+		set(VCPKG_TARGET_TRIPLET "custom-x64-linux-static-md" CACHE STRING "Target triplet for Linux" FORCE)
 	elseif(WIN32)
-		set(VCPKG_TARGET_TRIPLET "custom-x64-windows-static-md" CACHE STRING "Target triplet for Windows")
+		set(VCPKG_TARGET_TRIPLET "custom-x64-windows-static-md" CACHE STRING "Target triplet for Windows" FORCE)
 	endif()
 else()
 	message(STATUS "System Build")
@@ -17,6 +21,7 @@ include(CMakePrintHelpers)
 include(cmake/version.cmake)
 include(cmake/version_setup.cmake)
 include(cmake/licenses.cmake)
+include(cmake/targetOptions.cmake)
 
 set(BUILD_CXX_LANGUAGE_PACKAGE ON CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
@@ -54,72 +59,12 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Settings ---------------------------------------------------------------------
-
-# We want *all* targets to build with the same settings, so we don't bother with
-# the target based commands but instead use the directory based approach:
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	add_compile_options(
-		-pipe
-
-		-Wall
-		-Wextra
-		-Wpedantic
-
-		-Wcast-align=strict
-		-Wcast-qual
-		-Wduplicated-branches
-		-Wduplicated-cond
-		-Wextra-semi
-		# -Wfloat-equal
-		# -Wformat=2
-		# -Wformat-nonliteral
-		-Wformat-overflow=2
-		-Wformat-truncation=2
-		-Wlogical-op
-		-Wnon-virtual-dtor
-		# -Wold-style-cast
-		# -Woverloaded-virtual
-		-Wsuggest-override
-		# -Wundef
-		-Wuninitialized
-		# -Wunused-macros
-		# -Wuseless-cast
-		-Wwrite-strings
-
-		-Werror=suggest-override
-
-		-Wno-comment
-		-Wno-implicit-fallthrough
-		-Wno-missing-field-initializers
-		-Wno-sign-compare
-		-Wno-stringop-truncation
-		-Wno-unused-parameter
-		-Wno-unused-variable
-	)
-	add_compile_definitions(
-		$<$<CONFIG:Debug>:_FORTIFY_SOURCE=3>
-		$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>
-
-		# We would also like to enable these switches, but then we get linker errors with prebuild
-		# libraries like boost, which have been build without them!
-		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
-		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
-		# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
-	)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	add_compile_options(
-		/MP
-	)
-endif()
-
-
 # Boost ------------------------------------------------------------------------
 
 set(Boost_NO_WARN_NEW_VERSIONS ON)
 
 if (isVcpkgBuild)
+	# TODO: Investigate bug entry: https://gitlab.kitware.com/cmake/cmake/-/issues/21200 under Linux.
 	set(Boost_NO_SYSTEM_PATHS ON)
 endif()
 
@@ -150,7 +95,7 @@ target_compile_definitions(External_lib_boost
 		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
 )
 
-message(STATUS "Found Boost ${Boost_VERSION_STRING}")
+message(STATUS "Found Boost ${Boost_VERSION}")
 
 # Qt ---------------------------------------------------------------------------
 
@@ -166,7 +111,7 @@ if (WIN32)
 	)
 endif()
 
-message(STATUS "Found Qt ${Qt5Widgets_VERSION_STRING}")
+message(STATUS "Found Qt ${Qt5_VERSION}")
 
 # According to this bug-entry (https://bugreports.qt.io/browse/QTBUG-87248)
 # the code below isn't necessary anymore:

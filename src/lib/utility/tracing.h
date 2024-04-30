@@ -134,21 +134,21 @@ ScopedTrace<TracerType>::~ScopedTrace()
 
 #ifdef TRACING_ENABLED
 #	ifdef USE_ACCUMULATED_TRACING
-#		define TRACE(__name__)                                                                    \
+#		define TRACE(...)                                                                    \
 			ScopedTrace<AccumulatingTracer> __trace__(                                             \
-				std::string(__name__), __FILE__, __LINE__, __FUNCTION__)
+				std::string(__VA_ARGS__), __FILE__, __LINE__, __FUNCTION__)
 
 #		define PRINT_TRACES() AccumulatingTracer::getInstance()->printTraces()
 #	else
-#		define TRACE(__name__)                                                                    \
-			ScopedTrace<Tracer> __trace__(std::string(__name__), __FILE__, __LINE__, __FUNCTION__)
+#		define TRACE(...)                                                                    \
+			ScopedTrace<Tracer> __trace__(std::string(__VA_ARGS__), __FILE__, __LINE__, __FUNCTION__)
 
 #		define PRINT_TRACES() Tracer::getInstance()->printTraces()
 #	endif
 
 
 #else
-#	define TRACE(__name__)
+#	define TRACE(...)
 #	define PRINT_TRACES()
 #endif
 

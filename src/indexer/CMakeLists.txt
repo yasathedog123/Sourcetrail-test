@@ -1,6 +1,7 @@
 add_executable(Sourcetrail_indexer
 	main.cpp
 )
+setDefaultTargetOptions(Sourcetrail_indexer)
 
 set_target_properties(Sourcetrail_indexer
 	PROPERTIES

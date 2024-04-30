@@ -137,7 +137,7 @@ Edge* Node::getMemberEdge() const
 
 bool Node::isParentOf(const Node* node) const
 {
-	while ((node = node->getParentNode()))
+	while ((node = node->getParentNode()) != nullptr)
 	{
 		if (node == this)
 		{

@@ -9,17 +9,24 @@
 #include "utilityApp.h"
 #include "utilityString.h"
 
-namespace
-{
+using namespace utility;
+using namespace std;
+using namespace std::string_literals;
 
-constexpr char getEnvironmentVariablePathSeparator()
+char FilePath::getEnvironmentVariablePathSeparator()
 {
-	if constexpr (utility::Os::isWindows())
+	if constexpr (Os::isWindows())
 		return ';';
 	else
 		return ':';
 }
 
+wstring FilePath::getExecutableExtension()
+{
+	if constexpr (Os::isWindows())
+		return L".exe"s;
+	else
+		return L""s;
 }
 
 FilePath::FilePath()

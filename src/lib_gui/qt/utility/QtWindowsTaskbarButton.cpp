@@ -1,4 +1,5 @@
 #include "QtWindowsTaskbarButton.h"
+#include <Os.h>
 
 #if BOOST_OS_WINDOWS
 	#include <QWinTaskbarButton>

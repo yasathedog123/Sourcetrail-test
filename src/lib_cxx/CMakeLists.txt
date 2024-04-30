@@ -113,6 +113,7 @@ add_library(Sourcetrail_lib_cxx
 	LanguagePackageCxx.cpp
 	LanguagePackageCxx.h
 )
+setDefaultTargetOptions(Sourcetrail_lib_cxx)
 
 target_include_directories(Sourcetrail_lib_cxx
 	PUBLIC

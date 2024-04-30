@@ -11,6 +11,7 @@ add_executable(Sourcetrail
 	main.cpp
 	${CMAKE_BINARY_DIR}/Sourcetrail.rc
 )
+setDefaultTargetOptions(Sourcetrail)
 
 set_target_properties(Sourcetrail
 	PROPERTIES

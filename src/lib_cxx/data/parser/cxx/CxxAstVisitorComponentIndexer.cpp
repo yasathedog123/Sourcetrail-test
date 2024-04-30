@@ -990,8 +990,6 @@ std::wstring CxxAstVisitorComponentIndexer::getLocalSymbolName(const clang::Sour
 
 ReferenceKind CxxAstVisitorComponentIndexer::consumeDeclRefContextKind()
 {
-	ReferenceKind refKind = REFERENCE_UNDEFINED;
-
 	CxxAstVisitorComponentTypeRefKind* typeRefKindComponent =
 		getAstVisitor()->getComponent<CxxAstVisitorComponentTypeRefKind>();
 	if (typeRefKindComponent->isTraversingInheritance())
