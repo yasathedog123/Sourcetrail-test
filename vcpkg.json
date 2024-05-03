@@ -19,13 +19,17 @@
 
 		"tinyxml",
 
-		"qt5-base",
-		"qt5-svg",
-		"qt5-imageformats",
+		"qtbase",
+		"qtsvg",
+		"qtimageformats",
 		{
-			"name": "qt5-winextras",
-			"platform": "windows"
+			"name": "qt5compat",
+			"default-features": false,
+			"features": [
+				"textcodec"
+			]
 		},
+
 		{
 			"name": "llvm",
 			"default-features": false,

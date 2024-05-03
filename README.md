@@ -52,7 +52,7 @@ git pull --recurse-submodules
 * In order to build the **java_indexer** additional software must be installed which are not provided by vcpkg:
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
-* **Linux:** Because **Qt5** is build from source, additional packages are needed. Install these packages with `setup/install.ubuntu.qt5.dependencies.sh`.
+* **Linux:** Because **Qt6** is build from source, additional packages are needed. Install these packages with `script/install-qt6-dependencies.sh`.
 
 Prepare the build:
 ```
@@ -86,9 +86,10 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 *Boost (1.81.0):*
 * libboost1.81-all-dev
 
-*Qt (5.15.10):*
-* qtbase5-dev
-* libqt5svg5-dev
+*Qt (6.4.2):*
+* qt6-base-dev
+* qt6-svg-dev
+* qt6-5compat-dev
 
 *SQLite3 (3.42.0):*
 * libsqlite3-dev

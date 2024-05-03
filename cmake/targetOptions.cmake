@@ -48,6 +48,7 @@ function(setGccTargetOptions targetName)
 			-Wno-missing-field-initializers
 			-Wno-sign-compare
 			-Wno-stringop-truncation
+			-Wno-unknown-pragmas
 			-Wno-unused-parameter
 			-Wno-unused-variable
 		)

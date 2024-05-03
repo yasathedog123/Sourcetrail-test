@@ -34,6 +34,8 @@
 #include "utilityString.h"
 #include "utilityQt.h"
 
+using namespace utility::compatibility;
+
 MouseWheelOverScrollbarFilter::MouseWheelOverScrollbarFilter() {}
 
 bool MouseWheelOverScrollbarFilter::eventFilter(QObject* obj, QEvent* event)
@@ -42,8 +44,7 @@ bool MouseWheelOverScrollbarFilter::eventFilter(QObject* obj, QEvent* event)
 	if (event->type() == QEvent::Wheel && scrollbar)
 	{
 		QRect scrollbarArea(scrollbar->pos(), scrollbar->size());
-		QPoint globalMousePos = utility::compatibility::QWheelEvent_globalPos(
-			*dynamic_cast<QWheelEvent*>(event));
+		QPoint globalMousePos = QWheelEvent_globalPos(dynamic_cast<QWheelEvent*>(event));
 		QPoint localMousePos = scrollbar->mapFromGlobal(globalMousePos);
 
 		// instead of "scrollbar->underMouse()" we need this check implemented here because
@@ -910,7 +911,7 @@ void QtCodeArea::mouseMoveEvent(QMouseEvent* event)
 					std::wstring errorMessage = m_navigator->getErrorMessageForId(
 						*annotation->tokenIds.begin());
 					QToolTip::showText(
-						event->globalPos(), QString::fromStdWString(errorMessage), this);
+						QMouseEvent_globalPos(event), QString::fromStdWString(errorMessage), this);
 
 					QtCodeField::focusTokenIds({*annotation->tokenIds.begin()});
 					viewport()->setCursor(Qt::PointingHandCursor);

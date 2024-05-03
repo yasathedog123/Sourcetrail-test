@@ -128,16 +128,16 @@ void QtTooltip::hide(bool force)
 	}
 }
 
+void QtTooltip::enterEvent(QEnterEvent *event)
+{
+	m_isHovered = true;
+}
+
 void QtTooltip::leaveEvent(QEvent* event)
 {
 	m_isHovered = false;
 
 	QTimer::singleShot(500, this, SLOT(hide()));
-}
-
-void QtTooltip::enterEvent(QEvent* event)
-{
-	m_isHovered = true;
 }
 
 void QtTooltip::addTitle(const QString& title, int count, const QString& countText)

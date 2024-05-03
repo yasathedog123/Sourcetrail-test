@@ -6,13 +6,20 @@ namespace utility
 {
 namespace compatibility
 {
-QPoint QWheelEvent_globalPos(const QWheelEvent& event)
+QPoint QWheelEvent_globalPos(const QWheelEvent *event)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-	return event.globalPosition().toPoint();
-#else
-	return event.globalPos();
-#endif
+	return event->globalPosition().toPoint();
 }
+
+QPoint QMouseEvent_globalPos(const QMouseEvent *event)
+{
+	return event->globalPosition().toPoint();
+}
+
+int QMouseEvent_x(const QMouseEvent *event)
+{
+	return qRound(event->position().x());
+}
+
 }	 // namespace compatibility
 }	 // namespace utility

@@ -99,32 +99,22 @@ message(STATUS "Found Boost ${Boost_VERSION}")
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION "5.15.10")
-set (QT_MIN_VERSION_HEX 0x050F0A)
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-	Widgets PrintSupport Network Svg
+set (QT_MIN_VERSION "6.4.2")
+set (QT_MIN_VERSION_HEX 0x060402)
+find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+	Widgets PrintSupport Network Svg Core5Compat
 )
 
 if (WIN32)
-	find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+	find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 		WinExtras
 	)
 endif()
 
-message(STATUS "Found Qt ${Qt5_VERSION}")
+message(STATUS "Found Qt ${Qt6_VERSION}")
 
-# According to this bug-entry (https://bugreports.qt.io/browse/QTBUG-87248)
-# the code below isn't necessary anymore:
-#[[
-# FIX: Qt was built with -reduce-relocations
-if (Qt5_POSITION_INDEPENDENT_CODE)
-	SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
-]]
-
-# Since Qt 5.13, the macro 'QT_DEPRECATED_WARNINGS' has no effect.
-# Disable all the APIs deprecated at or before the specified Qt version:
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=${QT_MIN_VERSION_HEX})
+# Disable deprecated APIs:
+add_compile_definitions(QT_DISABLE_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX})
 
 # SQLite3 ----------------------------------------------------------------------
 

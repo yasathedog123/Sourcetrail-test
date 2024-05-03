@@ -3,18 +3,21 @@
 #include <QFileDialog>
 #include <QListView>
 #include <QTreeView>
+#include <QRegExp>
 
 #include "ApplicationSettings.h"
 #include "FilePath.h"
 #include "QtFilesAndDirectoriesDialog.h"
 #include "utilityApp.h"
 
+using namespace std;
+
 QStringList QtFileDialog::getFileNamesAndDirectories(QWidget* parent, const FilePath& path)
 {
 	const QString dir = getDir(
 		QString::fromStdWString((path.isDirectory() ? path : path.getParentDirectory()).wstr()));
 
-	QFileDialog* dialog = (utility::Os::isMac() ? new QFileDialog(parent) : new QtFilesAndDirectoriesDialog(parent));
+	unique_ptr<QFileDialog> dialog = (utility::Os::isMac() ? make_unique<QFileDialog>(parent) : make_unique<QtFilesAndDirectoriesDialog>(parent));
 
 	if (!dir.isEmpty())
 	{
@@ -39,7 +42,6 @@ QStringList QtFileDialog::getFileNamesAndDirectories(QWidget* parent, const File
 	}
 
 	saveFilePickerLocation(FilePath(dialog->directory().path().toStdString()));
-	delete dialog;
 
 	return list;
 }
@@ -70,6 +72,10 @@ QString QtFileDialog::showSaveFileDialog(
 			parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
 
 	} else {
+		// Workaround for:
+		// "QFileDialog::getSaveFileName() does not append the file extension of the selected filter (QWidget-based, non-native)"
+		// https://bugreports.qt.io/browse/QTBUG-27186
+
 		QFileDialog dialog(parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
 
 		if (parent)

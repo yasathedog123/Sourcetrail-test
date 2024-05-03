@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Extracted from https://wiki.qt.io/Building_Qt_5_from_Git
+# Adapted from https://wiki.qt.io/Building_Qt_5_from_Git
 
 # Linux/X11
 sudo apt-get install build-dep qtbase5-dev

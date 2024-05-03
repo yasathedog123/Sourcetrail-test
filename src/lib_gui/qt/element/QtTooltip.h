@@ -24,8 +24,8 @@ public slots:
 	virtual void hide(bool force = false);
 
 protected:
+	void enterEvent(QEnterEvent* event) override;
 	void leaveEvent(QEvent* event) override;
-	void enterEvent(QEvent* event) override;
 
 private:
 	void addTitle(const QString& title, int count, const QString& countText);

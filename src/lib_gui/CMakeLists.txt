@@ -1,6 +1,3 @@
-# Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
-
 #[[ Seems only be used by 'setup\Linux\createPackages.sh'
 #configure the versioning file
 configure_file(
@@ -322,6 +319,13 @@ add_library(Sourcetrail_lib_gui
 )
 setDefaultTargetOptions(Sourcetrail_lib_gui)
 
+# Instruct CMake to run moc automatically when needed.
+set_target_properties(Sourcetrail_lib_gui
+	PROPERTIES
+		AUTOMOC ON
+		AUTORCC ON
+)
+
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
 		platform
@@ -452,15 +456,15 @@ target_link_libraries(Sourcetrail_lib_gui
 	PUBLIC
 		Sourcetrail_lib
 
-		Qt5::Widgets
-		Qt5::Network
-		Qt5::Svg
+		Qt6::Widgets
+		Qt6::Network
+		Qt6::Svg
 )
 
 if (WIN32)
 	target_link_libraries(Sourcetrail_lib_gui
 		PUBLIC
-			Qt5::WinExtras
+			Qt6::WinExtras
 	)
 endif()
 

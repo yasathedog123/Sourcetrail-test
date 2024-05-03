@@ -102,11 +102,6 @@ int main(int argc, char* argv[])
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
 
-	if constexpr (!utility::Os::isLinux())
-	{
-		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-	}
-
 	MessageStatus(
 		std::wstring(L"Starting Sourcetrail ") +
 		(utility::getApplicationArchitectureType() == ApplicationArchitectureType::X86_32 ? L"32" : L"64") +
@@ -179,8 +174,6 @@ int main(int argc, char* argv[])
 		QtApplication qtApp(argc, argv);
 
 		setupLogging();
-
-		qtApp.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 		QtViewFactory viewFactory;
 		QtNetworkFactory networkFactory;
