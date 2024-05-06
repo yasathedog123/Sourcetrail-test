@@ -17,17 +17,12 @@ void AppPath::setSharedDataDirectoryPath(const FilePath& path)
 
 FilePath AppPath::getCxxIndexerFilePath()
 {
-	std::wstring cxxIndexerName(L"sourcetrail_indexer");
-	if constexpr (utility::Os::isWindows())
-	{
-		cxxIndexerName = L"sourcetrail_indexer.exe";
-	}
+	std::wstring cxxIndexerName(L"sourcetrail_indexer" + FilePath::getExecutableExtension());
 
 	if (!s_cxxIndexerDirectoryPath.empty())
-	{
 		return s_cxxIndexerDirectoryPath.getConcatenated(cxxIndexerName);
-	}
-	return s_sharedDataDirectoryPath.getConcatenated(cxxIndexerName);
+	else
+		return s_sharedDataDirectoryPath.getConcatenated(cxxIndexerName);
 }
 
 void AppPath::setCxxIndexerDirectoryPath(const FilePath& path)
