@@ -172,9 +172,10 @@ namespace
 // Version table: https://github.com/microsoft/vswhere/wiki/Versions#release-versions
 
 const vector<wstring> releasedVisualStudioVersionRanges = {
-	L"[15.0, 16.0)"s, // 2017
+	// Sorted from newest to oldest:
+	L"[17.0, 18.0)"s, // 2022
 	L"[16.0, 17.0)"s, // 2019
-	L"[17.0, 18.0)"s  // 2022
+	L"[15.0, 16.0)"s  // 2017
 };
 
 }
