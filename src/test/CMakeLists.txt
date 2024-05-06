@@ -21,7 +21,7 @@ else()
 	message(STATUS "Copying: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
 	file(COPY "${CMAKE_SOURCE_DIR}/bin/test/data/" DESTINATION "${CMAKE_BINARY_DIR}/test/data/")
 
-	#[[ In case symlinking the test data is better, then here is the code for it, but be aware that 
+	#[[ In case symlinking the test data is better, then here is the code for it, but be aware that
 	the temporary test files will then show up in the version control!
 	message(STATUS "Linking: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
@@ -36,6 +36,7 @@ add_executable(Sourcetrail_test
 	helper/TestStorage.cpp
 
 	Catch2.hpp
+	Catch2.cpp
 	test_main.cpp
 
 	CommandlineTestSuite.cpp
