@@ -112,10 +112,6 @@ target_link_libraries(Sourcetrail_test
 )
 
 if (WIN32)
-	target_compile_options(Sourcetrail_test
-		PRIVATE
-			/bigobj
-	)
 	set_target_properties(Sourcetrail_test
 		PROPERTIES
 			VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/test"

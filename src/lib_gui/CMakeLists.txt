@@ -461,13 +461,6 @@ target_link_libraries(Sourcetrail_lib_gui
 		Qt6::Svg
 )
 
-if (WIN32)
-	target_link_libraries(Sourcetrail_lib_gui
-		PUBLIC
-			Qt6::WinExtras
-	)
-endif()
-
 # command for versioning script
 add_custom_command(
 	TARGET Sourcetrail_lib_gui

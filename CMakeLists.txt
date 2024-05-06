@@ -105,12 +105,6 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 	Widgets PrintSupport Network Svg Core5Compat
 )
 
-if (WIN32)
-	find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-		WinExtras
-	)
-endif()
-
 message(STATUS "Found Qt ${Qt6_VERSION}")
 
 # Disable deprecated APIs:

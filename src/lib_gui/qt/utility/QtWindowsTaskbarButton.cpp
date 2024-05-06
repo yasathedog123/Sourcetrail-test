@@ -1,7 +1,14 @@
 #include "QtWindowsTaskbarButton.h"
 #include <Os.h>
 
-#if BOOST_OS_WINDOWS
+// Disable this code for now because of https://www.qt.io/blog/qt-extras-modules-in-qt-6#qwintaskbarbutton
+// It also mentions 2 bug reports:
+// https://bugreports.qt.io/browse/QTBUG-94008 "Add API to set progress for application, reflected in Dock/task bar"
+// https://bugreports.qt.io/browse/QTBUG-94009 "Add API to set overlay for application icon"
+// 
+// Maybe a solution will be available in the future
+
+#if 0 // BOOST_OS_WINDOWS
 	#include <QWinTaskbarButton>
 	#include <QWinTaskbarProgress>
 #endif
@@ -14,7 +21,7 @@ QtWindowsTaskbarButton::QtWindowsTaskbarButton()
 
 void QtWindowsTaskbarButton::setWindow(QtMainWindow* mainWindow)
 {
-#if BOOST_OS_WINDOWS
+#if 0 // BOOST_OS_WINDOWS
 	QWinTaskbarButton* taskbarButton = new QWinTaskbarButton(mainWindow);
 	taskbarButton->setWindow(mainWindow->windowHandle());
 	m_taskbarProgress = taskbarButton->progress();
@@ -23,7 +30,7 @@ void QtWindowsTaskbarButton::setWindow(QtMainWindow* mainWindow)
 
 void QtWindowsTaskbarButton::setProgress(float progress)
 {
-#if BOOST_OS_WINDOWS
+#if 0 // BOOST_OS_WINDOWS
 	if (m_taskbarProgress != nullptr)
 	{
 		m_taskbarProgress->show();
@@ -35,7 +42,7 @@ void QtWindowsTaskbarButton::setProgress(float progress)
 
 void QtWindowsTaskbarButton::hideProgress()
 {
-#if BOOST_OS_WINDOWS
+#if 0 // BOOST_OS_WINDOWS
 	if (m_taskbarProgress != nullptr)
 	{
 		m_taskbarProgress->hide();

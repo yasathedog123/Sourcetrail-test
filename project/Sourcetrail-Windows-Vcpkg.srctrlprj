@@ -8,13 +8,13 @@
             <header_search_paths>
                 <header_search_path>../src/external/sqlite</header_search_path>
                 <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtCore</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtWidgets</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtGui</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtSvg</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtNetwork</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/qt5/QtWinExtras</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtCore</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtWidgets</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtGui</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtSvg</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtNetwork</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtCore5Compat</header_search_path>
                 <header_search_path>${JAVA_HOME}/include</header_search_path>
                 <header_search_path>${JAVA_HOME}/include/win32</header_search_path>
             </header_search_paths>
