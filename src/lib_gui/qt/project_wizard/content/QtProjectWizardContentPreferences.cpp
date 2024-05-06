@@ -88,7 +88,8 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 	m_textEncoding = addComboBox(QStringLiteral("Text Encoding"), QLatin1String(""), layout, row);
 	for (int mib: QTextCodec::availableMibs())
 	{
-		m_textEncoding->addItem(QTextCodec::codecForMib(mib)->name());
+		if (QTextCodec *codec = QTextCodec::codecForMib(mib); codec != nullptr)
+			m_textEncoding->addItem(codec->name());
 	}
 
 	// color scheme
