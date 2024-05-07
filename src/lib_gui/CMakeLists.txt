@@ -1,11 +1,3 @@
-#[[ Seems only be used by 'setup\Linux\createPackages.sh'
-#configure the versioning file
-configure_file(
-	${CMAKE_SOURCE_DIR}/cmake/version.txt.in
-	${CMAKE_BINARY_DIR}/version.txt
-)
-]]
-
 configure_file(
 	${CMAKE_SOURCE_DIR}/cmake/productVersion.h.in
 	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
@@ -471,5 +463,3 @@ add_custom_command(
 	#WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	COMMENT "check/update version number"
 )
-
-set(CMAKE_AUTOMOC OFF)

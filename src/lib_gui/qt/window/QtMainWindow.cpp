@@ -128,7 +128,7 @@ QtMainWindow::QtMainWindow()
 	app->installEventFilter(new MouseReleaseFilter(this));
 
 	refreshStyle();
-	
+
 	if constexpr (!utility::Os::isMac())
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
@@ -528,7 +528,7 @@ void QtMainWindow::showErrorHelpMessage()
 void QtMainWindow::showChangelog()
 {
 	QDesktopServices::openUrl(QUrl(
-		QStringLiteral("https://github.com/petermost/Sourcetrail/blob/master/unused_coati_software_files/CHANGELOG.md")));
+		QStringLiteral("https://github.com/petermost/Sourcetrail/blob/master/CHANGELOG.md")));
 }
 
 void QtMainWindow::showBugtracker()
@@ -1095,7 +1095,7 @@ void QtMainWindow::setupHelpMenu()
 	menu->addAction(tr("Keyboard Shortcuts"), this, &QtMainWindow::showKeyboardShortcuts);
 	menu->addAction(tr("Fixing Errors"), this, &QtMainWindow::showErrorHelpMessage);
 	menu->addAction(tr("Documentation"), this, &QtMainWindow::showDocumentation);
-	menu->addAction(tr("Changelog"), this, &QtMainWindow::showChangelog)->setDisabled(true);
+	menu->addAction(tr("Changelog"), this, &QtMainWindow::showChangelog);
 	menu->addAction(tr("Bug Tracker"), this, &QtMainWindow::showBugtracker);
 
 	menu->addSeparator();

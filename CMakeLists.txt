@@ -18,8 +18,9 @@ endif()
 
 include(CMakePrintHelpers)
 
+find_package(Git REQUIRED)
+
 include(cmake/version.cmake)
-include(cmake/version_setup.cmake)
 include(cmake/licenses.cmake)
 include(cmake/targetOptions.cmake)
 
@@ -41,7 +42,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION ${VERSION_STRING})
+project(Sourcetrail VERSION ${versionString})
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
