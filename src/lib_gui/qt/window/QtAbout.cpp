@@ -12,6 +12,9 @@
 #include "utilityApp.h"
 #include "utilityQt.h"
 
+using namespace utility;
+using namespace std::string_literals;
+
 QtAbout::QtAbout(QWidget* parent): QtWindow(false, parent) {}
 
 QSize QtAbout::sizeHint() const
@@ -45,21 +48,15 @@ void QtAbout::setupAbout()
 	windowLayout->addSpacing(10);
 
 	{
-		QLabel* versionLabel = new QLabel(
-			("Version " + Version::getApplicationVersion().toDisplayString() + " - " +
-			 std::string(
-				 utility::getApplicationArchitectureType() == ApplicationArchitectureType::X86_32
-					 ? "32"
-					 : "64") +
-			 " bit")
-				.c_str(),
+		QLabel* versionLabel = new QLabel(("Version " + Version::getApplicationVersion().toDisplayString() + " - " +
+			(getApplicationArchitectureType() == ApplicationArchitectureType::X86_32 ? "32"s : "64"s) + " bit").c_str(),
 			this);
 		windowLayout->addWidget(versionLabel, 0, Qt::Alignment(Qt::AlignmentFlag::AlignHCenter));
 	}
 
 	{
-		QLabel* dbVersionLabel = new QLabel(
-			"Database Version " + QString::number(SqliteIndexStorage::getStorageVersion()), this);
+		QLabel* dbVersionLabel = new QLabel("Database Version " + QString::number(SqliteIndexStorage::getStorageVersion()),
+			this);
 		windowLayout->addWidget(dbVersionLabel, 0, Qt::Alignment(Qt::AlignmentFlag::AlignHCenter));
 	}
 
@@ -72,48 +69,23 @@ void QtAbout::setupAbout()
 		layoutHorz1->addStretch();
 
 		QLabel* developerLabel = new QLabel(
-			QString::fromStdString("<b>Authors:</b><br />"
-								   "The Coati Software Developer<br />"
-								   "<br />"
-								   "<b>Maintainer:</b><br />"
-								   "Peter Most<br />"));
+			"<b>Authors:</b><br />"
+			"<a href=\"https://github.com/petermost/Sourcetrail/blob/master/unused_coati_software_files/AUTHORS.txt\" "
+			"style=\"color: white;\">The Coati Software Developer</a><br />"
+			"<br />"
+			"<b>Maintainer:</b><br />"
+			"Peter Most<br />"
+			"<br />"
+			"<b>Repository:</b><br />"
+			"<a href=\"https://github.com/petermost/Sourcetrail\" "
+			"style=\"color: white;\">github.com/petermost/Sourcetrail</a><br />");
+
 		developerLabel->setObjectName(QStringLiteral("small"));
+		developerLabel->setOpenExternalLinks(true);
 		layoutHorz1->addWidget(developerLabel);
 
 		layoutHorz1->addStretch();
 	}
 
-	 windowLayout->addStretch();
-
-	{
-		QLabel* acknowledgementsLabel = new QLabel(QString::fromStdString(
-			"<b>Acknowledgements:</b><br />"
-			"Sourcetrail (aka Coati) 0.1 was created in the context of education at "
-			"<a href=\"http://www.fh-salzburg.ac.at/en/\" style=\"color: white;\">Salzburg "
-			"University "
-			"of Applied Sciences</a>.<br />"
-			"Coati Software KG is member of <a href=\"http://www.startup-salzburg.at/\" "
-			"style=\"color: "
-			"white;\">Startup Salzburg</a>.<br />"
-			"The development of Sourcetrail was funded by <a href=\"http://awsg.at\" "
-			"style=\"color: "
-			"white;\">aws</a>."));
-		acknowledgementsLabel->setObjectName(QStringLiteral("small"));
-		acknowledgementsLabel->setWordWrap(true);
-		acknowledgementsLabel->setOpenExternalLinks(true);
-		windowLayout->addWidget(acknowledgementsLabel);
-		windowLayout->addSpacing(10);
-	}
-
-	{
-		QLabel* webLabel = new QLabel(
-			"<b>Repository: <a href=\"https://github.com/petermost/Sourcetrail\" "
-			"style=\"color: "
-			"white;\">github.com/petermost/Sourcetrail</a></b>",
-			this);
-		webLabel->setObjectName(QStringLiteral("small"));
-		webLabel->setOpenExternalLinks(true);
-		windowLayout->addWidget(webLabel);
-		windowLayout->addSpacing(10);
-	}
+	windowLayout->addStretch();
 }
