@@ -24,7 +24,7 @@ Sourcetrail is licensed under the [GNU General Public License Version 3](LICENSE
 
 ## Note
 
-__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](unused_coati_software_files/COATI_SOFTWARE_README.md)
+__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](unused_coati_software_files/README.md)
 
 This is a fork of the Sourcetrail project and I want to keep this project at least buildable. 
 
@@ -99,9 +99,9 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 
 **C++ packages:**
 
-*Clang (16.0.6):*
-* clang
-* libclang-dev
+*Clang (17.0.2):*
+* clang-17
+* libclang-17-dev
 
 *Catch2 (2.13.10)*
 * catch2
