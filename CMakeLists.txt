@@ -181,7 +181,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	# Clang:
 
-	find_package(Clang REQUIRED)
+	find_package(Clang 17 REQUIRED)
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
 	if (isVcpkgBuild)

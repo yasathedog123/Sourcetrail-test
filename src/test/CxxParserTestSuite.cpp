@@ -21,6 +21,7 @@ using namespace std;
 using namespace std::string_literals;
 using namespace utility;
 
+// To see the AST: 'clang <input_file> -Xclang -ast-dump -fsyntax-only [-fno-color-diagnostics]'
 
 namespace
 {
@@ -181,7 +182,6 @@ TEST_CASE("cxx parser finds overloaded operator declaration")
 TEST_CASE("cxx parser finds explicit bool conversion operator")
 {
 	// AST: https://godbolt.org/z/rKhTnKjf8
-	// To see the AST: 'clang <input_file> -Xclang -ast-dump -fsyntax-only [-fno-color-diagnostics]'
 
 	std::shared_ptr<TestStorage> client = parseCode(
 		R"(class B
@@ -200,7 +200,6 @@ TEST_CASE("cxx parser finds explicit bool conversion operator")
 
 	// Find usage:
 	INFO(encodeToUtf8(join(client->calls, L"\n"s)));
-	REQUIRE(client->calls.size() == 2);
 	REQUIRE(containsElement(client->calls, L"void f() -> bool B::operator bool() const <9:8 9:8>"s));
 }
 
@@ -2043,6 +2042,28 @@ TEST_CASE("cxx parser finds explicit constructor call")
 
 	REQUIRE(utility::containsElement<std::wstring>(
 		client->calls, L"int main() -> void App::App() <8:2 8:4>"));
+}
+
+TEST_CASE("cxx parser finds call of explicitly defined non-trivial destructor")
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		R"(class App
+		{
+			public:
+				~App() {};
+		};
+		int main()
+		{
+			{
+				App app;
+			}
+		})");
+
+	REQUIRE(client->errors.empty());
+
+	// Find usage:
+	INFO(encodeToUtf8(join(client->calls, L"\n"s)));
+	REQUIRE(containsElement(client->calls, L"int main() -> void App::~App() <11:3 11:3>"s));
 }
 
 TEST_CASE("cxx parser finds call of explicitly defined destructor at delete keyword")

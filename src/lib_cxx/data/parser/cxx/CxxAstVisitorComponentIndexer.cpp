@@ -1,6 +1,7 @@
 #include "CxxAstVisitorComponentIndexer.h"
 
 #include <clang/AST/ASTContext.h>
+#include <clang/Analysis/CFG.h>
 #include <clang/Basic/SourceLocation.h>
 #include <clang/Basic/SourceManager.h>
 #include <clang/Lex/Preprocessor.h>
@@ -15,6 +16,9 @@
 #include "CxxTypeNameResolver.h"
 #include "ParserClient.h"
 #include "utilityClang.h"
+
+using namespace std;
+using namespace clang;
 
 CxxAstVisitorComponentIndexer::CxxAstVisitorComponentIndexer(
 	CxxAstVisitor* astVisitor, clang::ASTContext* astContext, std::shared_ptr<ParserClient> client)
@@ -423,6 +427,75 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 					templateId,
 					symbolId,
 					getParseLocation(d->getLocation()));
+			}
+		}
+		findNonTrivialDestructorCalls(d);
+	}
+}
+
+void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const FunctionDecl *functionDecl)
+{
+	auto recordCall = [this](const FunctionDecl *functionDecl, const CXXDestructorDecl *destructorDecl)
+	{
+		Id referencedSymbolId = getOrCreateSymbolId(destructorDecl);
+		Id contextSymbolId = getOrCreateSymbolId(getAstVisitor()->getComponent<CxxAstVisitorComponentContext>()->getContext());
+		// functionDecl->getLocation: The function name
+		// functionDecl->getBeginLoc: Begin of function
+		// functionDecl->getEndLoc: End of function
+		// functionDecl->getSourceRange: The complete function
+		// functionDecl->getDefaultLoc: No location but 'call' edge
+		// destructorDecl->getSourceRange: The destructor itself
+
+		ParseLocation parseLocation = getParseLocation(functionDecl->getEndLoc());
+		m_client->recordReference(REFERENCE_CALL, referencedSymbolId, contextSymbolId, parseLocation);
+	};
+
+	// Adapted from:
+	// "How to get information about call to destructors in Clang LibTooling?"
+	// https://stackoverflow.com/questions/59610156/how-to-get-information-about-call-to-destructors-in-clang-libtooling
+
+	if (functionDecl->isThisDeclarationADefinition())
+	{
+		CFG::BuildOptions buildOptions;
+		buildOptions.AddImplicitDtors = true;
+		buildOptions.AddTemporaryDtors = true;
+
+		if (unique_ptr<CFG> cfg = CFG::buildCFG(functionDecl, functionDecl->getBody(), m_astContext, buildOptions))
+		{
+			for (CFGBlock *block : cfg->const_nodes())
+			{
+				for (auto ref : block->refs())
+				{
+					// It should not be necessary to special-case 'CFGBaseDtor'. But as of Clang/LLVM 17.0.2,
+					// 'CFGImplicitDtor::getDestructorDecl' is simply missing the implementation of
+					// that case. See CFG.cpp(5320):
+					// case CFGElement::BaseDtor:
+					//     // Not yet supported.
+					//     return nullptr;
+					if (optional<CFGBaseDtor> baseDtor = ref->getAs<CFGBaseDtor>())
+					{
+						const CXXBaseSpecifier *baseSpec = baseDtor->getBaseSpecifier();
+						if (const RecordType *recordType = dyn_cast<RecordType>(baseSpec->getType().getDesugaredType(*m_astContext).getTypePtr()))
+						{
+							if (const CXXRecordDecl *recordDecl = dyn_cast<CXXRecordDecl>(recordType->getDecl()))
+							{
+								if (const CXXDestructorDecl *dtorDecl = recordDecl->getDestructor())
+								{
+									recordCall(functionDecl, dtorDecl);
+								}
+							}
+						}
+					}
+					// If it were not for the above unimplemented functionality, we would only need
+					// this block.
+					else if (optional<CFGImplicitDtor> implicitDtor = ref->getAs<CFGImplicitDtor>())
+					{
+						if (const CXXDestructorDecl *dtorDecl = implicitDtor->getDestructorDecl(*m_astContext))
+						{
+							recordCall(functionDecl, dtorDecl);
+						}
+					}
+				}
 			}
 		}
 	}

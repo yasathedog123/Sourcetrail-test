@@ -60,6 +60,8 @@ private:
 		const ParseLocation& location,
 		SymbolKind symbolKind);
 
+	void findNonTrivialDestructorCalls(const clang::FunctionDecl *d);
+
 	ParseLocation getSignatureLocation(clang::FunctionDecl* d);
 	ParseLocation getParseLocationOfTagDeclBody(clang::TagDecl* decl) const;
 	ParseLocation getParseLocationOfFunctionBody(const clang::FunctionDecl* decl) const;
