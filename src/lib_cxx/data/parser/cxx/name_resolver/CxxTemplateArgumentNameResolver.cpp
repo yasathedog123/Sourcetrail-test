@@ -7,6 +7,9 @@
 
 #include "CxxTypeNameResolver.h"
 #include "utilityString.h"
+#include "utilityClang.h"
+
+using namespace utility;
 
 CxxTemplateArgumentNameResolver::CxxTemplateArgumentNameResolver(
 	CanonicalFilePathCache* canonicalFilePathCache)
@@ -42,10 +45,7 @@ std::wstring CxxTemplateArgumentNameResolver::getTemplateArgumentName(
 	case clang::TemplateArgument::TemplateExpansion:	// handled correctly? template template parameter...
 	case clang::TemplateArgument::Expression:
 	{
-		clang::PrintingPolicy pp = clang::PrintingPolicy(clang::LangOptions());
-		pp.SuppressTagKeyword =
-			true;		   // value "true": for a class A it prints "A" instead of "class A"
-		pp.Bool = true;	   // value "true": prints bool type as "bool" instead of "_Bool"
+		clang::PrintingPolicy pp = makePrintingPolicyForCPlusPlus();
 
 		constexpr bool includeType = false;
 		std::string buf;

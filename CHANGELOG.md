@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 2024.5.xx
+#### 2024.05.9
 
 * C/C++: Add indexing of user defined conversion operators
 * C/C++: Update support for C++ standards C++20, C++23

@@ -9,6 +9,11 @@
 #include "CxxTemplateArgumentNameResolver.h"
 #include "logging.h"
 #include "utilityString.h"
+#include "utilityClang.h"
+
+using namespace std;
+using namespace clang;
+using namespace utility;
 
 CxxTypeNameResolver::CxxTypeNameResolver(CanonicalFilePathCache* canonicalFilePathCache)
 	: CxxNameResolver(canonicalFilePathCache)
@@ -119,10 +124,7 @@ std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::Type* typ
 		}
 		case clang::Type::Builtin:
 		{
-			clang::PrintingPolicy pp = clang::PrintingPolicy(clang::LangOptions());
-			pp.SuppressTagKeyword =
-				true;		   // value "true": for a class A it prints "A" instead of "class A"
-			pp.Bool = true;	   // value "true": prints bool type as "bool" instead of "_Bool"
+			clang::PrintingPolicy pp = makePrintingPolicyForCPlusPlus();
 
 			return std::make_unique<CxxTypeName>(
 				utility::decodeFromUtf8(type->getAs<clang::BuiltinType>()->getName(pp).str()),
@@ -277,10 +279,7 @@ std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::Type* typ
 		{
 			const std::string typeClassName = type->getTypeClassName();
 			LOG_INFO("Unhandled kind of type encountered: " + typeClassName);
-			clang::PrintingPolicy pp = clang::PrintingPolicy(clang::LangOptions());
-			pp.SuppressTagKeyword =
-				true;		   // value "true": for a class A it prints "A" instead of "class A"
-			pp.Bool = true;	   // value "true": prints bool type as "bool" instead of "_Bool"
+			clang::PrintingPolicy pp = makePrintingPolicyForCPlusPlus();
 
 			clang::SmallString<64> Buf;
 			llvm::raw_svector_ostream StrOS(Buf);

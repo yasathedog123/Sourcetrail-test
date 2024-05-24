@@ -16,10 +16,13 @@ namespace clang
 class SourceRange;
 class Preprocessor;
 class SourceManager;
+struct PrintingPolicy;
 }	 // namespace clang
 
 namespace utility
 {
+clang::PrintingPolicy makePrintingPolicyForCPlusPlus();
+
 template <typename T>
 const T* getFirstDecl(const T* decl);
 bool isImplicit(const clang::Decl* d);
