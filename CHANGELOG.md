@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2024.6.0
+
+* C/C++: Add indexing of the deduced type of auto variables
+
 #### 2024.05.9
 
 * C/C++: Add indexing of user defined conversion operators
