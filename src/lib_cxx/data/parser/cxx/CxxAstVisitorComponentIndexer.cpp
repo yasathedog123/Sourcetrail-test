@@ -260,12 +260,32 @@ void CxxAstVisitorComponentIndexer::visitVarDecl(clang::VarDecl* d)
 {
 	if (getAstVisitor()->shouldVisitDecl(d))
 	{
-		if (utility::isLocalVariable(d) || utility::isParameter(d))
+		// string _varName = d->getNameAsString();
+		// string _typeName = d->getType().getAsString();
+
+		// Handle 'auto/deduced' types:
+		if (const DeducedType *deducedType = d->getType().getTypePtr()->getContainedDeducedType(); deducedType != nullptr)
+		{
+			if (QualType deducedQualType = deducedType->getDeducedType(); !deducedQualType.isNull())
+			{
+				// Record the deduced type location:
+				Id deducedTypeId = getOrCreateSymbolId(deducedQualType.getTypePtr());
+				ParseLocation typeLocation = getParseLocation(d->getTypeSourceInfo()->getTypeLoc().getSourceRange());
+				m_client->recordLocation(deducedTypeId, typeLocation, ParseLocationType::TOKEN);
+				m_client->recordDefinitionKind(deducedTypeId, DefinitionKind::DEFINITION_EXPLICIT);
+
+				// Record a reference to the type declaration:
+				m_client->recordReference(ReferenceKind::REFERENCE_TYPE_USAGE, deducedTypeId, getOrCreateSymbolId(d), typeLocation);
+
+				// 'auto' variables are always local variables, so record them:
+				m_client->recordLocalSymbol(getLocalSymbolName(d->getLocation()), getParseLocation(d->getLocation()));
+			}
+		}
+		else if (utility::isLocalVariable(d) || utility::isParameter(d))
 		{
 			if (!d->getNameAsString().empty())	  // don't record anonymous parameters
 			{
-				m_client->recordLocalSymbol(
-					getLocalSymbolName(d->getLocation()), getParseLocation(d->getLocation()));
+				m_client->recordLocalSymbol(getLocalSymbolName(d->getLocation()), getParseLocation(d->getLocation()));
 			}
 		}
 		else
@@ -277,11 +297,9 @@ void CxxAstVisitorComponentIndexer::visitVarDecl(clang::VarDecl* d)
 			m_client->recordSymbolKind(symbolId, symbolKind);
 			m_client->recordLocation(symbolId, location, ParseLocationType::TOKEN);
 			m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-			m_client->recordDefinitionKind(
-				symbolId, utility::isImplicit(d) ? DEFINITION_IMPLICIT : DEFINITION_EXPLICIT);
+			m_client->recordDefinitionKind(symbolId, utility::isImplicit(d) ? DEFINITION_IMPLICIT : DEFINITION_EXPLICIT);
 
-			recordTemplateMemberSpecialization(
-				d->getMemberSpecializationInfo(), symbolId, location, symbolKind);
+			recordTemplateMemberSpecialization(d->getMemberSpecializationInfo(), symbolId, location, symbolKind);
 		}
 	}
 }
@@ -696,7 +714,7 @@ void CxxAstVisitorComponentIndexer::visitTypeLoc(clang::TypeLoc tl)
 	}
 
 	if ((getAstVisitor()->shouldVisitReference(tl.getBeginLoc())) &&
-		(!getAstVisitor()->checkIgnoresTypeLoc(tl)))
+		(getAstVisitor()->shouldHandleTypeLoc(tl)))
 	{
 		if (!tl.getAs<clang::TemplateTypeParmTypeLoc>().isNull())
 		{

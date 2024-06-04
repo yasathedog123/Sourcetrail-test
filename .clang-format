@@ -39,7 +39,7 @@ Cpp11BracedListStyle: true
 DerivePointerAlignment: false
 FixNamespaceComments: true
 IncludeBlocks: Preserve
-IndentCaseLabels: false
+IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
 IndentWrappedFunctionNames: true

@@ -1,7 +1,7 @@
 #ifndef CXX_AST_VISITOR_COMPONENT_INDEXER_H
 #define CXX_AST_VISITOR_COMPONENT_INDEXER_H
 
-#include <unordered_map>
+#include <map>
 
 #include "CxxAstVisitorComponent.h"
 #include "ParseLocation.h"

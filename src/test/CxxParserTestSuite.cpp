@@ -22,6 +22,10 @@ using namespace std::string_literals;
 using namespace utility;
 
 // To see the AST: 'clang <input_file> -Xclang -ast-dump -fsyntax-only [-fno-color-diagnostics]'
+//
+// Note that some new test code snippets are written with raw string literals. They are easier to write,
+// but have the disadvantage that if the indentation changes the tested source code locations don't
+// match anymore!
 
 namespace
 {
@@ -1695,6 +1699,32 @@ TEST_CASE("cxx parser finds type use of typedef")
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"uint number -> uint <2:1 2:4>"));
+}
+
+TEST_CASE("cxx parser finds deduced type of auto variables")
+{
+	shared_ptr<TestStorage> client = parseCode(
+		R"(void f()
+		{
+			auto auto_double_var1 = 0.0;
+			auto auto_double_var2 = auto_double_var1;
+
+			auto auto_int_var = 0;
+			auto auto_int_ptr1 = &auto_int_var;
+			auto *auto_int_ptr2 = &auto_int_var;
+			auto &auto_int_ref = auto_int_var;
+		})");
+
+	REQUIRE(client->errors.empty());
+
+	// Find type usages:
+	INFO(encodeToUtf8(join(client->typeUses, L"\n"s)));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_double_var1 -> double <3:4 3:7>"s));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_double_var2 -> double <4:4 4:7>"s));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_int_var -> int <6:4 6:7>"s));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_int_ptr1 -> int <7:4 7:7>"s));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_int_ptr2 -> int <8:4 8:9>"s));
+	REQUIRE(containsElement(client->typeUses, L"f::auto_int_ref -> int <9:4 9:9>"s));
 }
 
 TEST_CASE("cxx parser finds class default private inheritance")

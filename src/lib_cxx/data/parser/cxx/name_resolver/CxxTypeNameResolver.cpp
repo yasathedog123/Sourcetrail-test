@@ -237,14 +237,27 @@ std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::Type* typ
 		}
 		case clang::Type::Auto:
 		{
-			clang::QualType deducedType = clang::dyn_cast<clang::AutoType>(type)->getDeducedType();
-			if (!deducedType.isNull())
+			const AutoType *autoType = cast<AutoType>(type);
+			if (QualType deducedType = autoType->getDeducedType(); !deducedType.isNull())
 			{
 				return getName(deducedType);
 			}
-
-			return std::make_unique<CxxTypeName>(
-				L"auto");	 // TODO: can we actually resolve this case? would be great!
+			else
+			{
+				// Actual type is resolved in CxxAstVisitorComponentIndexer::visitVarDecl
+				switch (autoType->getKeyword())
+				{
+					case AutoTypeKeyword::Auto:
+						return make_unique<CxxTypeName>(L"auto");
+					case AutoTypeKeyword::DecltypeAuto:
+						return make_unique<CxxTypeName>(L"decltype(auto)");
+					case AutoTypeKeyword::GNUAutoType:
+						return make_unique<CxxTypeName>(L"__auto_type"); // GNU C extension
+					default:
+						LOG_WARNING("Unknown auto type keyword encountered");
+						return make_unique<CxxTypeName>(L"auto");
+				}
+			}
 		}
 		case clang::Type::Decltype:
 		{

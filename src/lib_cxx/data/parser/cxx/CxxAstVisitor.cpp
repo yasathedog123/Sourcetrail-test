@@ -78,16 +78,17 @@ bool CxxAstVisitor::shouldVisitImplicitCode() const
 	return m_implicitCodeComponent.shouldVisitImplicitCode();
 }
 
-bool CxxAstVisitor::checkIgnoresTypeLoc(const clang::TypeLoc& tl) const
+bool CxxAstVisitor::shouldHandleTypeLoc(const clang::TypeLoc& tl) const
 {
-	return !((!tl.getAs<clang::TagTypeLoc>().isNull()) || (!tl.getAs<clang::TypedefTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::TemplateTypeParmTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::TemplateSpecializationTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::InjectedClassNameTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::DependentNameTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::DependentTemplateSpecializationTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::SubstTemplateTypeParmTypeLoc>().isNull()) ||
-		(!tl.getAs<clang::BuiltinTypeLoc>().isNull()) || (!tl.getAs<clang::AutoTypeLoc>().isNull()));
+	return tl.getAs<clang::TagTypeLoc>() ||
+		tl.getAs<clang::TypedefTypeLoc>() ||
+		tl.getAs<clang::TemplateTypeParmTypeLoc>() ||
+		tl.getAs<clang::TemplateSpecializationTypeLoc>() ||
+		tl.getAs<clang::InjectedClassNameTypeLoc>() ||
+		tl.getAs<clang::DependentNameTypeLoc>() ||
+		tl.getAs<clang::DependentTemplateSpecializationTypeLoc>() ||
+		tl.getAs<clang::SubstTemplateTypeParmTypeLoc>() ||
+		tl.getAs<clang::BuiltinTypeLoc>();
 }
 
 #define FOREACH_COMPONENT(__METHOD_CALL__)                                                         \

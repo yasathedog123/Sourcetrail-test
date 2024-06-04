@@ -81,7 +81,7 @@ void CxxAstVisitorComponentContext::beginTraverseTypeLoc(const clang::TypeLoc& t
 {
 	std::shared_ptr<CxxContextType> context;
 	clang::TypeLoc::TypeLocClass tlcc = tl.getTypeLocClass();
-	if (!getAstVisitor()->checkIgnoresTypeLoc(tl))
+	if (getAstVisitor()->shouldHandleTypeLoc(tl))
 	{
 		bool recordContext = true;
 		if (tl.getTypeLocClass() == clang::TypeLoc::TemplateSpecialization)
