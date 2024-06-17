@@ -8,7 +8,7 @@
 #include <clang/Basic/Version.h>
 #include <llvm/Option/ArgList.h>
 #include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/Host.h>
+#include <llvm/TargetParser/Host.h>
 
 #include "CxxCompilationDatabaseSingle.h"
 #include "CxxDiagnosticConsumer.h"
@@ -22,16 +22,10 @@ clang::driver::Driver* newDriver(
 	const char* BinaryName,
 	clang::IntrusiveRefCntPtr<llvm::vfs::FileSystem> VFS)
 {
-	#if CLANG_VERSION_MAJOR > 11
 	clang::driver::Driver* CompilerDriver = new clang::driver::Driver(
 		BinaryName, llvm::sys::getDefaultTargetTriple(), *Diagnostics,
 		"clang_based_tool", std::move(VFS));
-	#else
-	clang::driver::Driver* CompilerDriver = new clang::driver::Driver(
-		BinaryName, llvm::sys::getDefaultTargetTriple(), *Diagnostics,
-		std::move(VFS));
-	CompilerDriver->setTitle("clang_based_tool");
-	#endif
+
 	return CompilerDriver;
 }
 }	 // namespace

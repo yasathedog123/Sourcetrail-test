@@ -1,18 +1,14 @@
 #include <iostream>
 #include <boost/filesystem.hpp>
 
-#define CATCH_CONFIG_RUNNER
-#include "Catch2.hpp"
-
-// IMPORTANT NOTE: removed signal listener for "EXCEPTION_ACCESS_VIOLATION" from catch source code
-// because it interferes with the jni interface that emits such a signal on purpose
-
 #include <AppPath.h>
 #include "ApplicationSettings.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
 #include <setupApp.h>
 #include <UserPaths.h>
+
+#include "Catch2.hpp"
 
 using namespace std;
 using namespace boost::filesystem;

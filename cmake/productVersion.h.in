@@ -1,14 +1,11 @@
 #ifndef PRODUCT_VERSION_H
 #define PRODUCT_VERSION_H
 
-// Note the variable names must match the one created in version.cmake!
+// This is a generated file, DO NOT EDIT!
 
-#define GIT_BRANCH "@branchName@"
-#define GIT_VERSION_NUMBER "@versionNumber@"
-#define GIT_COMMIT_HASH "@commitHash@"
-#define GIT_COMMIT_TIME "@commitTime@"
-#define VERSION_YEAR @versionYear@
-#define VERSION_MINOR @versionMonth@
-#define VERSION_COMMIT @versionCommit@
+#define PRODUCT_VERSION_MAJOR   @Sourcetrail_VERSION_MAJOR@
+#define PRODUCT_VERSION_MINOR   @Sourcetrail_VERSION_MINOR@
+#define PRODUCT_VERSION_PATCH   @Sourcetrail_VERSION_PATCH@
+// #define PRODUCT_VERSION_TWEAK   @Sourcetrail_VERSION_TWEAK@
 
 #endif

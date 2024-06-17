@@ -176,7 +176,7 @@ TEST_CASE("file_path_canonical_removes_symlinks")
 
 		REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
 	} else
-		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
+		SKIP_TEST("Windows doesn't handle symlinks correctly.");
 }
 
 TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
@@ -187,7 +187,7 @@ TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
 
 		REQUIRE(pathB == pathB2);
 	} else
-		TEST_DISABLED("Comparing '/' and '\\' on Non-Windows doesn't work.");
+		SKIP_TEST("Comparing '/' and '\\' on Non-Windows doesn't work.");
 }
 
 TEST_CASE("file_path_differs_for_different_existing_files")

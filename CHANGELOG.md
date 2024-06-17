@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2024.7.0
+
+* Framework: Update libClang/LibTooling to Clang 18
+
 #### 2024.6.0
 
 * C/C++: Add indexing of the deduced type of auto variables
@@ -13,7 +17,7 @@
 * Java: Generalize detection of Maven
 * Java: Update support for Java Standard 16, 17, 18, 19, 20 
 * Framework: Update libClang/LibTooling to Clang 16/17
-* Framework: Port from Qt5 to Qt6
+* Framework: Switch from Qt5 to Qt6
 
 #### 2021.4.19 - 0.3.0
 [Coati Changelog](unused_coati_software_files/CHANGELOG.md)

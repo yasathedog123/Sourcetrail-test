@@ -80,15 +80,15 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 {
 	switch (tagKind)
 	{
-	case clang::TTK_Struct:
+	case TagTypeKind::Struct:
 		return SYMBOL_STRUCT;
-	case clang::TTK_Union:
+	case TagTypeKind::Union:
 		return SYMBOL_UNION;
-	case clang::TTK_Class:
+	case TagTypeKind::Class:
 		return SYMBOL_CLASS;
-	case clang::TTK_Enum:
+	case TagTypeKind::Enum:
 		return SYMBOL_ENUM;
-	case clang::TTK_Interface:
+	case TagTypeKind::Interface:
 		return SYMBOL_KIND_MAX;
 	default:
 		return SYMBOL_KIND_MAX;

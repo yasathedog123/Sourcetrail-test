@@ -101,7 +101,7 @@ TEST_CASE("find file infos ignore symlinks")
 		REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.cpp"));
 		REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.h"));
 	} else
-		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
+		SKIP_TEST("Windows doesn't handle symlinks correctly.");
 }
 
 TEST_CASE("find file infos follow symlinks")
@@ -135,7 +135,7 @@ TEST_CASE("find file infos follow symlinks")
 			L"./data/FileSystemTestSuite/src/test.h",
 			L"./data/FileSystemTestSuite/src/Settings/src/test.h"));
 	} else
-		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
+		SKIP_TEST("Windows doesn't handle symlinks correctly.");
 }
 
 TEST_CASE("find symlinked directories")
@@ -148,5 +148,5 @@ TEST_CASE("find symlinked directories")
 
 		REQUIRE(dirs.size() == 2);
 	} else
-		TEST_DISABLED("Windows doesn't handle symlinks correctly.");
+		SKIP_TEST("Windows doesn't handle symlinks correctly.");
 }

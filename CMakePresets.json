@@ -3,19 +3,41 @@
 	"configurePresets": [
 		{
 			"hidden": true,
+			"name": "debug-mixin-presets",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_VERBOSE_MAKEFILE": "TRUE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+			}
+		},
+		{
+			"hidden": true,
+			"name": "release-mixin-presets",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_VERBOSE_MAKEFILE": "FALSE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "FALSE"
+			}
+		},
+		{
+			"hidden": true,
+			"name": "sourcetrail-mixin-presets",
+			"cacheVariables": {
+				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
+				"BUILD_JAVA_LANGUAGE_PACKAGE": "ON"
+			}
+		},
+
+
+
+		{
+			"hidden": true,
 			"name": "default-presets",
 			"warnings": {
 				"dev": false,
 				"uninitialized": false
 			},
-			"binaryDir": "${sourceParentDir}/build/${presetName}",
-			"cacheVariables": {
-				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
-				"BUILD_JAVA_LANGUAGE_PACKAGE": "ON",
-
-				"CMAKE_VERBOSE_MAKEFILE": "TRUE",
-				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
-			}
+			"binaryDir": "${sourceParentDir}/build/${presetName}"
 		},
 		{
 			"hidden": true,
@@ -23,8 +45,8 @@
 			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
-				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
-				"isVcpkgBuild":  "TRUE"
+				"isVcpkgBuild":  "TRUE",
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 			}
 		},
 		{
@@ -47,18 +69,20 @@
 		{
 			"name": "vcpkg-ninja-debug",
 			"displayName": "Vcpkg Ninja Debug Build",
-			"inherits": "vcpkg-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
-			}
+			"inherits": [
+				"vcpkg-default-presets",
+				"sourcetrail-mixin-presets",
+				"debug-mixin-presets"
+			]
 		},
 		{
 			"name": "vcpkg-ninja-release",
 			"displayName": "Vcpkg Ninja Release Build",
-			"inherits": "vcpkg-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			}
+			"inherits": [
+				"vcpkg-default-presets",
+				"sourcetrail-mixin-presets",
+				"release-mixin-presets"
+			]
 		},
 
 
@@ -66,18 +90,20 @@
 		{
 			"name": "system-ninja-debug",
 			"displayName": "System Ninja Debug Build",
-			"inherits": "system-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
-			}
+			"inherits": [
+				"system-default-presets",
+				"sourcetrail-mixin-presets",
+				"debug-mixin-presets"
+			]
 		},
 		{
 			"name": "system-ninja-release",
 			"displayName": "System Ninja Release Build",
-			"inherits": "system-default-presets",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			}
+			"inherits": [
+				"system-default-presets",
+				"sourcetrail-mixin-presets",
+				"release-mixin-presets"
+			]
 		}
 	]
 }

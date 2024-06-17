@@ -6,36 +6,21 @@
 class Version
 {
 public:
-	static Version fromString(const std::string& versionString);
-
 	static void setApplicationVersion(const Version& version);
 	static const Version& getApplicationVersion();
 
-	Version(int year = 0, int minor = 0, int commit = 0, const std::string& hash = "");
+	Version() = default;
+	Version(int major, int minor, int patch);
 
-	bool isEmpty() const;
-	bool isValid() const;
-
-	Version toShortVersion() const;
-
-	std::string toString() const;
-	std::string toShortString() const;
 	std::string toDisplayString() const;
 	std::wstring toDisplayWString() const;
-
-	bool operator<(const Version& other) const;
-	bool operator>(const Version& other) const;
-	bool operator==(const Version& other) const;
-	Version& operator+=(const int& number);
 
 private:
 	static Version s_version;
 
-	int m_year;
-	int m_minorNumber;
-	int m_commitNumber;
-
-	std::string m_commitHash;
+	int m_majorNumber = 0;
+	int m_minorNumber = 0;
+	int m_patchNumber = 0;
 };
 
 #endif	  // VERSION_H

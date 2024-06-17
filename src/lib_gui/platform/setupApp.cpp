@@ -24,7 +24,7 @@ Version setupAppDirectories(int argc, char* argv[])
 {
 	QCoreApplication::setApplicationName(QStringLiteral("Sourcetrail"));
 
-	Version version(VERSION_YEAR, VERSION_MINOR, VERSION_COMMIT, GIT_COMMIT_HASH);
+	Version version(PRODUCT_VERSION_MAJOR, PRODUCT_VERSION_MINOR, PRODUCT_VERSION_PATCH);
 	QCoreApplication::setApplicationVersion(QString::fromStdString(version.toDisplayString()));
 
 	// Determine application directory (Can't use QCoreApplication::applicationDirPath here, because
@@ -63,7 +63,7 @@ void setupAppEnvironment(int argc, char* argv[])
 {
 	// setupPlatform will be called after setupApp, so UserPaths::setUserDataDirectoryPath has been
 	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.
-	
+
 	if constexpr(Os::isLinux()) {
 		// Set QT screen scaling factor
 		ApplicationSettings appSettings;

@@ -1,10 +1,6 @@
-configure_file(
-	${CMAKE_SOURCE_DIR}/cmake/productVersion.h.in
-	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
-)
-
 add_library(Sourcetrail_lib_gui
 	${CMAKE_CURRENT_BINARY_DIR}/productVersion.h
+	${CMAKE_CURRENT_BINARY_DIR}/licenses.h
 
 	platform/setupApp.h
 	platform/setupApp.cpp
@@ -451,15 +447,4 @@ target_link_libraries(Sourcetrail_lib_gui
 		Qt6::Widgets
 		Qt6::Network
 		Qt6::Svg
-)
-
-# command for versioning script
-add_custom_command(
-	TARGET Sourcetrail_lib_gui
-	PRE_BUILD
-	COMMAND ${CMAKE_COMMAND} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
-	BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/productVersion.h.in
-	DEPENDS ${CMAKE_SOURCE_DIR}/cmake/version.cmake
-	#WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	COMMENT "check/update version number"
 )

@@ -1,10 +1,6 @@
-#configure language package defines
-configure_file(
-	"${CMAKE_SOURCE_DIR}/cmake/language_packages.h.in"
-	"${CMAKE_BINARY_DIR}/src/lib/language_packages.h"
-)
-
 add_library(Sourcetrail_lib
+	${CMAKE_CURRENT_BINARY_DIR}/language_packages.h
+
 	app/paths/AppPath.cpp
 	app/paths/AppPath.h
 	app/paths/ResourcePaths.cpp

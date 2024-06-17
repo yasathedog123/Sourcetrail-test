@@ -44,6 +44,7 @@ std::wstring CxxTemplateArgumentNameResolver::getTemplateArgumentName(
 	case clang::TemplateArgument::Template:
 	case clang::TemplateArgument::TemplateExpansion:	// handled correctly? template template parameter...
 	case clang::TemplateArgument::Expression:
+	case clang::TemplateArgument::StructuralValue:
 	{
 		clang::PrintingPolicy pp = makePrintingPolicyForCPlusPlus();
 

@@ -18,14 +18,12 @@ endif()
 
 include(CMakePrintHelpers)
 
-find_package(Git REQUIRED)
 
-include(cmake/version.cmake)
-include(cmake/licenses.cmake)
-include(cmake/targetOptions.cmake)
-
-set(BUILD_CXX_LANGUAGE_PACKAGE ON CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
+# Configure which language(s) should be supported:
+set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
+
+configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
@@ -42,7 +40,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION ${versionString})
+project(Sourcetrail VERSION 2024.7.0)
+
+include(cmake/licenses.cmake)
+include(cmake/targetOptions.cmake)
+
+configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
+configureLicenseFile(src/lib_gui/licenses.h)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
@@ -69,7 +73,7 @@ if (isVcpkgBuild)
 	set(Boost_NO_SYSTEM_PATHS ON)
 endif()
 
-find_package(Boost 1.81 REQUIRED COMPONENTS
+find_package(Boost 1.83 REQUIRED COMPONENTS
 	# compiled libraries:
 	system program_options filesystem date_time locale
 
@@ -181,13 +185,12 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	# Clang:
 
-	find_package(Clang 17 REQUIRED)
+	find_package(Clang 18.1...<19.0 REQUIRED)
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
 
 	if (isVcpkgBuild)
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	else()
-		# V15: set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION}/include")
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	endif()
 	set(headerTargetDir "app/data/cxx/include/")
@@ -264,7 +267,7 @@ add_subdirectory(src/app)
 
 # Test ----------------------------------------------------------------------
 
-find_package(Catch2 CONFIG REQUIRED)
+find_package(Catch2 3.4 CONFIG REQUIRED)
 message(STATUS "Found Catch2 ${Catch2_VERSION}")
 
 include(CTest)

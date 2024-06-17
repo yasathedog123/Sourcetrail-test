@@ -53,6 +53,8 @@ git pull --recurse-submodules
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
 * **Linux:** Because **Qt6** is build from source, additional packages are needed. Install these packages with `script/install-qt6-dependencies.sh`.
+    * Additionally this package must be installed:
+        * python3-jinja2
 
 Prepare the build:
 ```
@@ -73,25 +75,25 @@ $ cmake --build .
 
 ### Linux
 
-To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", install the following packages:
+To compile it under the current (K)ubuntu platform 24.04, "Noble Numbat", install the following packages:
 
 **General packages:**
 
-*CMake (3.27.4):*
+*CMake (3.28.3):*
 * cmake
 
 *Ninja (1.11.1):*
 * ninja-build
 
-*Boost (1.81.0):*
-* libboost1.81-all-dev
+*Boost (1.83.0):*
+* libboost1.83-all-dev
 
 *Qt (6.4.2):*
 * qt6-base-dev
 * qt6-svg-dev
 * qt6-5compat-dev
 
-*SQLite3 (3.42.0):*
+*SQLite3 (3.45.1):*
 * libsqlite3-dev
 
 *TinyXml (2.6.2):*
@@ -99,11 +101,11 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 
 **C++ packages:**
 
-*Clang (17.0.2):*
-* clang-17
-* libclang-17-dev
+*Clang (18.1.3):*
+* clang-18
+* libclang-18-dev
 
-*Catch2 (2.13.10)*
+*Catch2 (3.4.0)*
 * catch2
 
 **Java packages:**
@@ -111,7 +113,7 @@ To compile it under the current (K)ubuntu platform 23.10, "Mantic Minotaur", ins
 *Maven (3.8.7)*
 * maven
 
-*OpenJDK (21.0.2)*
+*OpenJDK (21.0.3)*
 * openjdk-21-jdk
 
 Prepare the build:

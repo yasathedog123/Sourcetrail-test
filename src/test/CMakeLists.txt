@@ -16,13 +16,14 @@ else()
 	# doesn't copy symlinks correctly (https://gitlab.kitware.com/cmake/cmake/-/issues/14609)
 	# at least under Windows, but under Linux it seems to copy correctly. But it seems
 	# that Windows also doesn't handle symlinks very well and this is probably the reason why
-	# the orignal developers have disabled the tests for Windows.
+	# the orignal developers had disabled the tests for Windows.
 
 	message(STATUS "Copying: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
 	file(COPY "${CMAKE_SOURCE_DIR}/bin/test/data/" DESTINATION "${CMAKE_BINARY_DIR}/test/data/")
 
 	#[[ In case symlinking the test data is better, then here is the code for it, but be aware that
 	the temporary test files will then show up in the version control!
+
 	message(STATUS "Linking: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
 	file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data/" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
@@ -83,22 +84,6 @@ target_include_directories(Sourcetrail_test
 	PRIVATE
 		helper
 )
-
-# Determine which Catch2 version is available:
-
-if (${Catch2_VERSION} VERSION_LESS 3)
-	message(STATUS "Using Catch2 V2")
-	target_compile_definitions(Sourcetrail_test
-		PRIVATE
-			HAVE_CATCH2_V2
-	)
-elseif (${Catch2_VERSION} VERSION_GREATER_EQUAL 3)
-	message(STATUS "Using Catch2 V3")
-	target_compile_definitions(Sourcetrail_test
-		PRIVATE
-			HAVE_CATCH2_V3
-	)
-endif()
 
 set_target_properties(Sourcetrail_test
 	PROPERTIES

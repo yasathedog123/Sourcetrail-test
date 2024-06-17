@@ -1,3 +1,4 @@
+/*
 #include "Catch2.hpp"
 #include <boost/predef.h>
 
@@ -12,3 +13,4 @@
 		#error CATCH_CONFIG_NO_POSIX_SIGNALS is not defined!
 	#endif
 #endif
+*/

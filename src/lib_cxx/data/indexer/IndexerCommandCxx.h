@@ -7,13 +7,11 @@
 #include "IndexerCommand.h"
 
 class FilePath;
-namespace clang
-{
-namespace tooling
+
+namespace clang::tooling
 {
 class JSONCompilationDatabase;
 }
-}	 // namespace clang
 
 class IndexerCommandCxx: public IndexerCommand
 {

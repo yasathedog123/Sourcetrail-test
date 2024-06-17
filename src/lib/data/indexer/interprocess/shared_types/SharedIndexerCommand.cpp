@@ -1,8 +1,12 @@
 #include "SharedIndexerCommand.h"
 
-#include "IndexerCommandCxx.h"
-#include "IndexerCommandJava.h"
-
+#if BUILD_CXX_LANGUAGE_PACKAGE
+	#include "IndexerCommandCxx.h"
+#endif
+#if BUILD_JAVA_LANGUAGE_PACKAGE
+	#include "IndexerCommandJava.h"
+#endif
+#include "IndexerCommand.h"
 #include "logging.h"
 #include "utilityString.h"
 
@@ -11,10 +15,8 @@ void SharedIndexerCommand::fromLocal(IndexerCommand* indexerCommand)
 	setSourceFilePath(indexerCommand->getSourceFilePath());
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	if (dynamic_cast<IndexerCommandCxx*>(indexerCommand) != nullptr)
+	if (IndexerCommandCxx *cmd = dynamic_cast<IndexerCommandCxx*>(indexerCommand))
 	{
-		IndexerCommandCxx* cmd = dynamic_cast<IndexerCommandCxx*>(indexerCommand);
-
 		setType(CXX);
 		setIndexedPaths(cmd->getIndexedPaths());
 		setExcludeFilters(cmd->getExcludeFilters());
@@ -25,10 +27,8 @@ void SharedIndexerCommand::fromLocal(IndexerCommand* indexerCommand)
 	}
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	if (dynamic_cast<IndexerCommandJava*>(indexerCommand) != nullptr)
+	if (IndexerCommandJava *cmd = dynamic_cast<IndexerCommandJava*>(indexerCommand))
 	{
-		IndexerCommandJava* cmd = dynamic_cast<IndexerCommandJava*>(indexerCommand);
-
 		setType(JAVA);
 		setLanguageStandard(cmd->getLanguageStandard());
 		setClassPaths(cmd->getClassPath());
