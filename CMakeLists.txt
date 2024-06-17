@@ -22,6 +22,7 @@ include(CMakePrintHelpers)
 # Configure which language(s) should be supported:
 set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
+set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
 
 configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
 
@@ -255,6 +256,14 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 	add_subdirectory(src/lib_java)
 else()
 	message(STATUS "Building the Java indexer will be skipped. You can enable building this target by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
+endif()
+
+# Lib Python -------------------------------------------------------------------
+
+if (BUILD_PYTHON_LANGUAGE_PACKAGE)
+	add_subdirectory(src/lib_python)
+else()
+	message(STATUS "Building the Python indexer will be skipped. You can enable building this target by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")
 endif()
 
 # Indexer App ------------------------------------------------------------------

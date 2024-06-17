@@ -35,7 +35,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code)
 
 	if (!rootPath.exists())
 	{
-		FileSystem::createDirectory(rootPath);
+		FileSystem::createDirectories(rootPath);
 	}
 
 	deleteAllContents(rootPath);

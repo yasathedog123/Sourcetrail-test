@@ -61,7 +61,7 @@ void QtProjectWizardContentPathPythonEnvironment::onTextChanged(const QString& t
 	else
 	{
 		m_resultLabel->setText("Checking validity of Python environment...");
-		std::thread([=]() {
+		std::thread([=, this]() {
 			const utility::ProcessOutput out = utility::executeProcess(
 				ResourcePaths::getPythonIndexerFilePath().wstr(),
 				{L"check-environment",
@@ -72,7 +72,7 @@ void QtProjectWizardContentPathPythonEnvironment::onTextChanged(const QString& t
 				FilePath(),
 				false,
 				5000);
-			m_onQtThread([=]() {
+			m_onQtThread([=, this]() {
 				if (out.exitCode == 0)
 				{
 					m_resultLabel->setText(QString::fromStdWString(out.output));

@@ -7,7 +7,7 @@
 class SourceGroupSettingsWithPythonEnvironmentPath: public SourceGroupSettingsComponent
 {
 public:
-	virtual ~SourceGroupSettingsWithPythonEnvironmentPath() = default;
+	~SourceGroupSettingsWithPythonEnvironmentPath() override = default;
 
 	FilePath getEnvironmentPath() const;
 	FilePath getEnvironmentPathExpandedAndAbsolute() const;
