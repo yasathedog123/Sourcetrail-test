@@ -17,7 +17,7 @@ CxxVerboseAstVisitor::CxxVerboseAstVisitor(
 	std::shared_ptr<ParserClient> client,
 	std::shared_ptr<CanonicalFilePathCache> canonicalFilePathCache,
 	std::shared_ptr<IndexerStateInfo> indexerStateInfo)
-	: base(context, preprocessor, client, canonicalFilePathCache, indexerStateInfo), m_indentation(0)
+	: CxxAstVisitor(context, preprocessor, client, canonicalFilePathCache, indexerStateInfo), m_indentation(0)
 {
 }
 
@@ -49,7 +49,7 @@ bool CxxVerboseAstVisitor::TraverseDecl(clang::Decl* d)
 
 		{
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
-			return base::TraverseDecl(d);
+			return CxxAstVisitor::TraverseDecl(d);
 		}
 	}
 	return true;
@@ -66,7 +66,7 @@ bool CxxVerboseAstVisitor::TraverseStmt(clang::Stmt* stmt)
 			<< ":" << loc.endColumnNumber << ">");
 		{
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
-			return base::TraverseStmt(stmt);
+			return CxxAstVisitor::TraverseStmt(stmt);
 		}
 	}
 	return true;
@@ -83,7 +83,7 @@ bool CxxVerboseAstVisitor::TraverseTypeLoc(clang::TypeLoc tl)
 			<< ":" << loc.endColumnNumber << ">");
 		{
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
-			return base::TraverseTypeLoc(tl);
+			return CxxAstVisitor::TraverseTypeLoc(tl);
 		}
 	}
 	return true;

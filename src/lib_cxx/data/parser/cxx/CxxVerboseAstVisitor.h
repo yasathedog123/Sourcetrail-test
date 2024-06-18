@@ -20,8 +20,6 @@ public:
 		std::shared_ptr<IndexerStateInfo> indexerStateInfo);
 
 private:
-	typedef CxxAstVisitor base;
-
 	bool TraverseDecl(clang::Decl* d) override;
 	bool TraverseStmt(clang::Stmt* stmt) override;
 	bool TraverseTypeLoc(clang::TypeLoc tl) override;

@@ -14,7 +14,6 @@
 #include "CxxAstVisitorComponentImplicitCode.h"
 #include "CxxAstVisitorComponentIndexer.h"
 #include "CxxAstVisitorComponentTypeRefKind.h"
-#include "CxxContext.h"
 
 class CanonicalFilePathCache;
 class ParserClient;
@@ -34,6 +33,8 @@ struct ParseLocation;
 // 		|	`-	VisitFunctionDecl()
 // 		`-	TraverseChildNodes()
 
+// The "curiously recurring template pattern (CRTP)" doesn't need virtual functions. So the
+// existing virtual functions exist only for 'CxxVerboseAstVisitor'.
 class CxxAstVisitor: public clang::RecursiveASTVisitor<CxxAstVisitor>
 {
 public:
@@ -61,40 +62,40 @@ public:
 
 	// Traversal methods. These specify how to traverse the AST and record context info.
 	virtual bool TraverseDecl(clang::Decl* d);
-	virtual bool TraverseQualifiedTypeLoc(clang::QualifiedTypeLoc tl);
+	bool TraverseQualifiedTypeLoc(clang::QualifiedTypeLoc tl);
 	virtual bool TraverseTypeLoc(clang::TypeLoc tl);
-	virtual bool TraverseType(clang::QualType t);
+	bool TraverseType(clang::QualType t);
 	virtual bool TraverseStmt(clang::Stmt* stmt);
 
-	virtual bool TraverseCXXRecordDecl(clang::CXXRecordDecl* d);
+	bool TraverseCXXRecordDecl(clang::CXXRecordDecl* d);
 	bool traverseCXXBaseSpecifier(const clang::CXXBaseSpecifier& d);
-	virtual bool TraverseCXXMethodDecl(clang::CXXMethodDecl* d);
-	virtual bool TraverseTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d);
-	virtual bool TraverseTemplateTemplateParmDecl(clang::TemplateTemplateParmDecl* d);
-	virtual bool TraverseNestedNameSpecifierLoc(clang::NestedNameSpecifierLoc loc);
-	virtual bool TraverseConstructorInitializer(clang::CXXCtorInitializer* init);
-	virtual bool TraverseCallExpr(clang::CallExpr* s);
-	virtual bool TraverseCXXMemberCallExpr(clang::CXXMemberCallExpr* s);
-	virtual bool TraverseCXXOperatorCallExpr(clang::CXXOperatorCallExpr* s);
-	virtual bool TraverseCXXConstructExpr(clang::CXXConstructExpr* s);
-	virtual bool TraverseCXXTemporaryObjectExpr(clang::CXXTemporaryObjectExpr* s);
-	virtual bool TraverseLambdaExpr(clang::LambdaExpr* s);
-	virtual bool TraverseFunctionDecl(clang::FunctionDecl* d);
-	virtual bool TraverseClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl* d);
-	virtual bool TraverseClassTemplatePartialSpecializationDecl(clang::ClassTemplatePartialSpecializationDecl* d);
-	virtual bool TraverseDeclRefExpr(clang::DeclRefExpr* s);
-	virtual bool TraverseCXXForRangeStmt(clang::CXXForRangeStmt* s);
-	virtual bool TraverseTemplateSpecializationTypeLoc(clang::TemplateSpecializationTypeLoc loc);
-	virtual bool TraverseUnresolvedLookupExpr(clang::UnresolvedLookupExpr* s);
-	virtual bool TraverseUnresolvedMemberExpr(clang::UnresolvedMemberExpr* S);
-	virtual bool TraverseTemplateArgumentLoc(const clang::TemplateArgumentLoc& loc);
-	virtual bool TraverseLambdaCapture(clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture, clang::Expr* Init);
-	virtual bool TraverseBinComma(clang::BinaryOperator* s);
+	bool TraverseCXXMethodDecl(clang::CXXMethodDecl* d);
+	bool TraverseTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d);
+	bool TraverseTemplateTemplateParmDecl(clang::TemplateTemplateParmDecl* d);
+	bool TraverseNestedNameSpecifierLoc(clang::NestedNameSpecifierLoc loc);
+	bool TraverseConstructorInitializer(clang::CXXCtorInitializer* init);
+	bool TraverseCallExpr(clang::CallExpr* s);
+	bool TraverseCXXMemberCallExpr(clang::CXXMemberCallExpr* s);
+	bool TraverseCXXOperatorCallExpr(clang::CXXOperatorCallExpr* s);
+	bool TraverseCXXConstructExpr(clang::CXXConstructExpr* s);
+	bool TraverseCXXTemporaryObjectExpr(clang::CXXTemporaryObjectExpr* s);
+	bool TraverseLambdaExpr(clang::LambdaExpr* s);
+	bool TraverseFunctionDecl(clang::FunctionDecl* d);
+	bool TraverseClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl* d);
+	bool TraverseClassTemplatePartialSpecializationDecl(clang::ClassTemplatePartialSpecializationDecl* d);
+	bool TraverseDeclRefExpr(clang::DeclRefExpr* s);
+	bool TraverseCXXForRangeStmt(clang::CXXForRangeStmt* s);
+	bool TraverseTemplateSpecializationTypeLoc(clang::TemplateSpecializationTypeLoc loc);
+	bool TraverseUnresolvedLookupExpr(clang::UnresolvedLookupExpr* s);
+	bool TraverseUnresolvedMemberExpr(clang::UnresolvedMemberExpr* S);
+	bool TraverseTemplateArgumentLoc(const clang::TemplateArgumentLoc& loc);
+	bool TraverseLambdaCapture(clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture, clang::Expr* Init);
+	bool TraverseBinComma(clang::BinaryOperator* s);
 
-	virtual bool TraverseDeclarationNameInfo(clang::DeclarationNameInfo NameInfo);
+	bool TraverseDeclarationNameInfo(clang::DeclarationNameInfo NameInfo);
 
 #define OPERATOR(NAME)                                                                             \
-	virtual bool TraverseBin##NAME##Assign(clang::CompoundAssignOperator* s)                       \
+	bool TraverseBin##NAME##Assign(clang::CompoundAssignOperator* s)                       \
 	{                                                                                              \
 		return TraverseAssignCommon(s);                                                            \
 	}
@@ -116,44 +117,44 @@ public:
 	bool TraverseAssignCommon(clang::BinaryOperator* s);
 
 	// Visitor methods. These actually record stuff and store it in the database.
-	virtual bool VisitCastExpr(clang::CastExpr* s);
-	virtual bool VisitUnaryAddrOf(clang::UnaryOperator* s);
-	virtual bool VisitUnaryDeref(clang::UnaryOperator* s);
-	virtual bool VisitDeclStmt(clang::DeclStmt* s);
-	virtual bool VisitReturnStmt(clang::ReturnStmt* s);
-	virtual bool VisitCompoundStmt(clang::CompoundStmt* s);
-	virtual bool VisitInitListExpr(clang::InitListExpr* s);
+	bool VisitCastExpr(clang::CastExpr* s);
+	bool VisitUnaryAddrOf(clang::UnaryOperator* s);
+	bool VisitUnaryDeref(clang::UnaryOperator* s);
+	bool VisitDeclStmt(clang::DeclStmt* s);
+	bool VisitReturnStmt(clang::ReturnStmt* s);
+	bool VisitCompoundStmt(clang::CompoundStmt* s);
+	bool VisitInitListExpr(clang::InitListExpr* s);
 
 
-	virtual bool VisitTagDecl(clang::TagDecl* d);
-	virtual bool VisitClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl* d);
-	virtual bool VisitFunctionDecl(clang::FunctionDecl* d);
-	virtual bool VisitCXXMethodDecl(clang::CXXMethodDecl* d);
-	virtual bool VisitVarDecl(clang::VarDecl* d);
-	virtual bool VisitVarTemplateSpecializationDecl(clang::VarTemplateSpecializationDecl* d);
-	virtual bool VisitFieldDecl(clang::FieldDecl* d);
-	virtual bool VisitTypedefDecl(clang::TypedefDecl* d);
-	virtual bool VisitTypeAliasDecl(clang::TypeAliasDecl* d);
-	virtual bool VisitNamespaceDecl(clang::NamespaceDecl* d);
-	virtual bool VisitNamespaceAliasDecl(clang::NamespaceAliasDecl* d);
-	virtual bool VisitEnumConstantDecl(clang::EnumConstantDecl* d);
-	virtual bool VisitUsingDirectiveDecl(clang::UsingDirectiveDecl* d);
-	virtual bool VisitUsingDecl(clang::UsingDecl* d);
-	virtual bool VisitNonTypeTemplateParmDecl(clang::NonTypeTemplateParmDecl* d);
-	virtual bool VisitTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d);
-	virtual bool VisitTemplateTemplateParmDecl(clang::TemplateTemplateParmDecl* d);
-	virtual bool VisitTranslationUnitDecl(clang::TranslationUnitDecl* d);
+	bool VisitTagDecl(clang::TagDecl* d);
+	bool VisitClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl* d);
+	bool VisitFunctionDecl(clang::FunctionDecl* d);
+	bool VisitCXXMethodDecl(clang::CXXMethodDecl* d);
+	bool VisitVarDecl(clang::VarDecl* d);
+	bool VisitVarTemplateSpecializationDecl(clang::VarTemplateSpecializationDecl* d);
+	bool VisitFieldDecl(clang::FieldDecl* d);
+	bool VisitTypedefDecl(clang::TypedefDecl* d);
+	bool VisitTypeAliasDecl(clang::TypeAliasDecl* d);
+	bool VisitNamespaceDecl(clang::NamespaceDecl* d);
+	bool VisitNamespaceAliasDecl(clang::NamespaceAliasDecl* d);
+	bool VisitEnumConstantDecl(clang::EnumConstantDecl* d);
+	bool VisitUsingDirectiveDecl(clang::UsingDirectiveDecl* d);
+	bool VisitUsingDecl(clang::UsingDecl* d);
+	bool VisitNonTypeTemplateParmDecl(clang::NonTypeTemplateParmDecl* d);
+	bool VisitTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d);
+	bool VisitTemplateTemplateParmDecl(clang::TemplateTemplateParmDecl* d);
+	bool VisitTranslationUnitDecl(clang::TranslationUnitDecl* d);
 
-	virtual bool VisitTypeLoc(clang::TypeLoc tl);
+	bool VisitTypeLoc(clang::TypeLoc tl);
 
-	virtual bool VisitDeclRefExpr(clang::DeclRefExpr* s);
-	virtual bool VisitMemberExpr(clang::MemberExpr* s);
-	virtual bool VisitCXXDependentScopeMemberExpr(clang::CXXDependentScopeMemberExpr* s);
-	virtual bool VisitCXXConstructExpr(clang::CXXConstructExpr* s);
-	virtual bool VisitCXXDeleteExpr(clang::CXXDeleteExpr* s);
-	virtual bool VisitLambdaExpr(clang::LambdaExpr* s);
-	virtual bool VisitMSAsmStmt(clang::MSAsmStmt* s);
-	virtual bool VisitConstructorInitializer(clang::CXXCtorInitializer* init);
+	bool VisitDeclRefExpr(clang::DeclRefExpr* s);
+	bool VisitMemberExpr(clang::MemberExpr* s);
+	bool VisitCXXDependentScopeMemberExpr(clang::CXXDependentScopeMemberExpr* s);
+	bool VisitCXXConstructExpr(clang::CXXConstructExpr* s);
+	bool VisitCXXDeleteExpr(clang::CXXDeleteExpr* s);
+	bool VisitLambdaExpr(clang::LambdaExpr* s);
+	bool VisitMSAsmStmt(clang::MSAsmStmt* s);
+	bool VisitConstructorInitializer(clang::CXXCtorInitializer* init);
 
 	ParseLocation getParseLocationOfTagDeclBody(clang::TagDecl* decl) const;
 	ParseLocation getParseLocationOfFunctionBody(const clang::FunctionDecl* decl) const;
