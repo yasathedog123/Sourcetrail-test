@@ -261,6 +261,10 @@ endif()
 # Lib Python -------------------------------------------------------------------
 
 if (BUILD_PYTHON_LANGUAGE_PACKAGE)
+	# Bash:
+	find_program(BASH_COMMAND NAMES "bash" REQUIRED)
+	message(STATUS "Found Bash ${BASH_COMMAND}")
+
 	add_subdirectory(src/lib_python)
 else()
 	message(STATUS "Building the Python indexer will be skipped. You can enable building this target by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")

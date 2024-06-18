@@ -1,5 +1,4 @@
-#!/bin/bash
-
+# Call from CMakeLists.txtz like: 'download_python_indexer.sh ${CMAKE_BINARY_DIR}
 SOURCETRAIL_PYTHON_INDEXER_VERSION="v1_db25_p6"
 
 # Determine current platform
@@ -19,8 +18,8 @@ fi
 PACKAGE_NAME="SourcetrailPythonIndexer_${SOURCETRAIL_PYTHON_INDEXER_VERSION}-${PLATFORM}"
 PACKAGE_FILE_NAME="${PACKAGE_NAME}.zip"
 PACKAGE_URL="https://github.com/CoatiSoftware/SourcetrailPythonIndexer/releases/download/${SOURCETRAIL_PYTHON_INDEXER_VERSION}/${PACKAGE_FILE_NAME}"
-TEMP_PATH="build/temp"
-TARGET_PATH="bin/app/data/python"
+TEMP_PATH="$1/temp"
+TARGET_PATH="$1/app/data/python"
 
 
 ABORT="\033[31mAbort:\033[00m"

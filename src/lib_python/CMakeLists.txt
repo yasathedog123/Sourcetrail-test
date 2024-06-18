@@ -16,11 +16,10 @@ target_link_libraries(Sourcetrail_lib_python
 		Sourcetrail_lib
 )
 
-#[[
 add_custom_command(
 	TARGET Sourcetrail_lib_python
 	PRE_BUILD
-	COMMAND ${BASH} ${PROJECT_SOURCE_DIR}/script/download_python_indexer.sh
+	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/script/"
+	COMMAND ${BASH_COMMAND} download_python_indexer.sh ${CMAKE_BINARY_DIR}
 	COMMENT "download python indexer"
 )
-]]
