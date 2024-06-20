@@ -314,6 +314,19 @@ set_target_properties(Sourcetrail_lib_gui
 		AUTORCC ON
 )
 
+# Enable warnings for deprecated APIs:
+if (${Qt6_VERSION} VERSION_GREATER_EQUAL 6.5)
+	target_compile_definitions(Sourcetrail_lib_gui
+		PUBLIC
+			QT_WARN_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX}
+	)
+else()
+	target_compile_definitions(Sourcetrail_lib_gui
+		PUBLIC
+			QT_DEPRECATED_WARNINGS_SINCE=${QT_MIN_VERSION_HEX}
+	)
+endif()
+
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
 		platform

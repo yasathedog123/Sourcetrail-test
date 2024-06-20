@@ -41,7 +41,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2024.7.0)
+project(Sourcetrail VERSION 2024.7.1)
 
 include(cmake/licenses.cmake)
 include(cmake/targetOptions.cmake)
@@ -60,6 +60,14 @@ if (UNIX)
 	set(CMAKE_INSTALL_RPATH "$ORIGIN/lib/:$$ORIGIN/lib/")
 endif()
 ]]
+
+# Specify the requested standards:
+# https://cmake.org/cmake/help/latest/prop_tgt/C_STANDARD.html
+# https://cmake.org/cmake/help/latest/prop_tgt/CXX_STANDARD.html
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -84,6 +92,8 @@ find_package(Boost 1.83 REQUIRED COMPONENTS
 	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 	# for a list of compiled libraries.
 )
+message(STATUS "Found Boost ${Boost_VERSION}")
+
 add_library(External_lib_boost INTERFACE)
 
 target_compile_definitions(External_lib_boost
@@ -101,8 +111,6 @@ target_compile_definitions(External_lib_boost
 		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
 )
 
-message(STATUS "Found Boost ${Boost_VERSION}")
-
 # Qt ---------------------------------------------------------------------------
 
 set (QT_MIN_VERSION "6.4.2")
@@ -110,11 +118,7 @@ set (QT_MIN_VERSION_HEX 0x060402)
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 	Widgets PrintSupport Network Svg Core5Compat
 )
-
 message(STATUS "Found Qt ${Qt6_VERSION}")
-
-# Disable deprecated APIs:
-add_compile_definitions(QT_DISABLE_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX})
 
 # SQLite3 ----------------------------------------------------------------------
 
@@ -170,15 +174,17 @@ add_subdirectory(src/lib)
 # Resolve cyclic dependencies between Sourcetrail_lib and Sourcetrail_lib_gui:
 #
 
-set_target_properties(Sourcetrail_lib
-	PROPERTIES
-		LINK_INTERFACE_MULTIPLICITY 3
-)
+if (NOT isVcpkgBuild)
+	set_target_properties(Sourcetrail_lib
+		PROPERTIES
+			LINK_INTERFACE_MULTIPLICITY 3
+	)
 
-set_target_properties(Sourcetrail_lib_gui
-	PROPERTIES
-		LINK_INTERFACE_MULTIPLICITY 3
-)
+	set_target_properties(Sourcetrail_lib_gui
+		PROPERTIES
+			LINK_INTERFACE_MULTIPLICITY 3
+	)
+endif()
 
 # Lib Cxx ----------------------------------------------------------------------
 
@@ -302,6 +308,13 @@ set(CPACK_PACKAGE_VENDOR "PERA Software Solutions GmbH")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/petermost/Sourcetrail")
 set(CPACK_PACKAGE_ICON "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico")
 
+set(CPACK_GENERATOR ZIP)
+
+include(CPack)
+
+#[[
+TODO: Test debian packaing
+
 # https://www.debian.org/doc/debian-policy/ch-relationships.html
 set(CPACK_DEBIAN_PACKAGE_DEPENDS
 	"libclang-cpp16, libllvm16,
@@ -324,3 +337,4 @@ else()
 endif()
 
 include(CPack)
+]]

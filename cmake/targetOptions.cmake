@@ -71,9 +71,20 @@ function(setMsvcTargetOptions targetName)
 		PRIVATE
 			/nologo
 			/MP
-
-			/permissive-
 			/W4
+
+			#
+			# Make msvc standard compliant (sigh):
+			#
+			/permissive-
+			/Zc:__cplusplus
+			/Zc:__STDC__
+			/Zc:enumTypes
+			/Zc:externConstexpr
+			/Zc:inline
+			/Zc:preprocessor
+			/Zc:templateScope
+			/Zc:throwingNew
 
 			#
 			# Additional warnings:
