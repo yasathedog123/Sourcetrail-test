@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.27)
 
-if (isVcpkgBuild)
+# Detect vcpkg build scenario here so we don't depend on the CMakePresets settings:
+if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message(STATUS "Vcpkg Build")
+	set(isVcpkgBuild TRUE)
+else()
+	message(STATUS "System Build")
+	set(isVcpkgBuild FALSE)
+endif()
 
+if (isVcpkgBuild)
 	# Try to limit the rebuilds:
 	set(VCPKG_INSTALL_OPTIONS --x-abi-tools-use-exact-versions CACHE STRING "Install options for Vcpkg" FORCE) # --debug
 
@@ -12,8 +19,6 @@ if (isVcpkgBuild)
 	elseif(WIN32)
 		set(VCPKG_TARGET_TRIPLET "custom-x64-windows-static-md" CACHE STRING "Target triplet for Windows" FORCE)
 	endif()
-else()
-	message(STATUS "System Build")
 endif()
 
 include(CMakePrintHelpers)
@@ -25,6 +30,9 @@ set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetr
 set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
 
 configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
+
+# Configure whether unit tests should be supported:
+set(BUILD_UNIT_TESTS_PACKAGE OFF CACHE BOOL "Add support for unit tests.")
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
@@ -286,13 +294,17 @@ add_subdirectory(src/app)
 
 # Test ----------------------------------------------------------------------
 
-find_package(Catch2 3.4 CONFIG REQUIRED)
-message(STATUS "Found Catch2 ${Catch2_VERSION}")
+if (BUILD_UNIT_TESTS_PACKAGE)
+	find_package(Catch2 3.4 CONFIG REQUIRED)
+	message(STATUS "Found Catch2 ${Catch2_VERSION}")
 
-include(CTest)
-include(Catch)
+	include(CTest)
+	include(Catch)
 
-add_subdirectory(src/test)
+	add_subdirectory(src/test)
+else()
+	message(STATUS "Building the unit tests will be skipped. You can enable building this target by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
+endif()
 
 # Installing/Packaging ---------------------------------------------------------
 
@@ -313,7 +325,7 @@ set(CPACK_GENERATOR ZIP)
 include(CPack)
 
 #[[
-TODO: Test debian packaing
+TODO: Test debian packaging
 
 # https://www.debian.org/doc/debian-policy/ch-relationships.html
 set(CPACK_DEBIAN_PACKAGE_DEPENDS

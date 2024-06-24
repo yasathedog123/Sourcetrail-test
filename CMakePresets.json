@@ -1,5 +1,5 @@
 {
-	"version": 3,
+	"version": 4,
 	"configurePresets": [
 		{
 			"hidden": true,
@@ -25,7 +25,8 @@
 			"cacheVariables": {
 				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
 				"BUILD_JAVA_LANGUAGE_PACKAGE": "ON",
-				"BUILD_PYTHON_LANGUAGE_PACKAGE": "OFF"
+				"BUILD_PYTHON_LANGUAGE_PACKAGE": "OFF",
+				"BUILD_UNIT_TESTS_PACKAGE": "ON"
 			}
 		},
 
@@ -46,7 +47,6 @@
 			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
-				"isVcpkgBuild":  "TRUE",
 				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 			}
 		},
@@ -56,7 +56,6 @@
 			"inherits": "default-presets",
 			"generator": "Ninja",
 			"cacheVariables": {
-				"isVcpkgBuild": "FALSE"
 			},
 			"condition": {
 				"type": "equals",
