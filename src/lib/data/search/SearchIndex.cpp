@@ -197,7 +197,7 @@ void SearchIndex::searchRecursive(
 		size_t j = 0;
 		for (size_t i = 0; i < edgeString.size() && j < remainingQuery.size(); i++)
 		{
-			if (towlower(edgeString[i]) == remainingQuery[j])
+			if (static_cast<wchar_t>(towlower(edgeString[i])) == remainingQuery[j])
 			{
 				currentPath.indices.push_back(path.text.size() + i);
 				j++;

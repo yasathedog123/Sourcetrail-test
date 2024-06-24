@@ -87,7 +87,7 @@ TEST_CASE("shared memory")
 			access.accessValueWithAllocator<SharedMemory::Map<int, int>>("vals");
 		REQUIRE(vals->size() == 4);
 
-		size_t i = 0;
+		int i = 0;
 		for (auto val: *vals)
 		{
 			REQUIRE(val.first == i);

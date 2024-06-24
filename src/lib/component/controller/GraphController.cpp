@@ -1492,7 +1492,7 @@ void GraphController::addCharacterIndex()
 	m_dummyNodes.insert(m_dummyNodes.end(), newNodes.begin(), newNodes.end());
 
 	// Add index characters
-	wchar_t character = 0;
+	wint_t character = 0;
 	for (size_t i = 0; i < m_dummyNodes.size(); i++)
 	{
 		if (!m_dummyNodes[i]->visible || !m_dummyNodes[i]->name.size())

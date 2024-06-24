@@ -246,7 +246,7 @@ TEST_CASE("logger logs only logs of defined log level")
 TEST_CASE("new logger can be added to manager threaded")
 {
 	LogManagerImplementation logManagerImplementation;
-	unsigned int loggerCount = 100;
+	int loggerCount = 100;
 
 	std::thread thread0(addTestLogger, &logManagerImplementation, loggerCount);
 	std::thread thread1(addTestLogger, &logManagerImplementation, loggerCount);
@@ -276,7 +276,7 @@ TEST_CASE("logger logs threaded")
 	LogManagerImplementation logManagerImplementation;
 
 	std::wstring log = L"foo";
-	unsigned int messageCount = 100;
+	int messageCount = 100;
 	std::shared_ptr<TestLogger> logger = std::make_shared<TestLogger>();
 	logManagerImplementation.addLogger(logger);
 

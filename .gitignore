@@ -1,3 +1,6 @@
+# CMake
+CMakeUserPresets.json
+
 # Maven, Vcpkg:
 /java_indexer/target/
 vcpkg_installed/

@@ -10,8 +10,8 @@ TEST_CASE("parse message")
 	std::wstring divider = L">>";
 	std::wstring filePath = L"C:/Users/Manuel/important/file/location/fileName.cpp";
 	std::wstring endOfMessageToken = L"<EOM>";
-	int row = 1;
-	int column = 2;
+	unsigned int row = 1;
+	unsigned int column = 2;
 
 	// valid message
 	std::wstringstream message;

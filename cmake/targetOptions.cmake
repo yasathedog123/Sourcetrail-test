@@ -34,11 +34,10 @@ function(setGccTargetOptions targetName)
 			#
 			# Warnings which should be errors:
 			#
-			-Werror=suggest-override
-
-			# Get the same behaviour then msvc for 'narrowing conversions'
+			# Get the same behaviour as msvc for 'narrowing conversions'
 			# See https://gcc.gnu.org/wiki/FAQ#Wnarrowing for further information.
 			-Werror=narrowing
+			-Werror=suggest-override
 
 			#
 			# Disabled warnings:
@@ -46,24 +45,61 @@ function(setGccTargetOptions targetName)
 			-Wno-comment
 			-Wno-implicit-fallthrough
 			-Wno-missing-field-initializers
-			-Wno-sign-compare
 			-Wno-stringop-truncation
 			-Wno-unknown-pragmas
 			-Wno-unused-parameter
 			-Wno-unused-variable
 		)
 
-		target_compile_definitions(${targetName}
-			PRIVATE
-				$<$<CONFIG:Debug>:_FORTIFY_SOURCE=3>
-				$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>
+	target_compile_definitions(${targetName}
+		PRIVATE
+			$<$<CONFIG:Debug>:_FORTIFY_SOURCE=3>
+			$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>
 
-				# We would also like to enable these switches, but then we get linker errors with prebuild
-				# libraries like boost, which have been build without them!
-				# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
-				# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
-				# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
+			# We would also like to enable these switches, but then we get linker errors with prebuild
+			# libraries like boost, which have been build without them!
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
+	)
+endfunction()
+
+function(setClangTargetOptions targetName)
+	target_compile_options(${targetName}
+		PRIVATE
+			-pipe
+
+			-Wall
+			-Wextra
+			-Wpedantic
+
+			#
+			# Warnings which should be errors:
+			#
+			-Werror=c++11-narrowing
+			-Werror=inconsistent-missing-override
+
+			#
+			# Disabled warnings:
+			#
+			-Wno-missing-field-initializers
+			-Wno-overloaded-virtual
+			-Wno-unknown-pragmas
+			-Wno-unused-lambda-capture
+			-Wno-unused-parameter
+			-Wno-unused-variable
 		)
+	target_compile_definitions(${targetName}
+		PRIVATE
+			$<$<CONFIG:Debug>:_FORTIFY_SOURCE=3>
+			$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>
+
+			# We would also like to enable these switches, but then we get linker errors with prebuild
+			# libraries like boost, which have been build without them!
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
+			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
+	)
 endfunction()
 
 function(setMsvcTargetOptions targetName)
@@ -129,6 +165,8 @@ endfunction()
 function(setDefaultTargetOptions targetName)
 	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 		setGccTargetOptions(${targetName})
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		setClangTargetOptions(${targetName})
 	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		setMsvcTargetOptions(${targetName})
 	endif()

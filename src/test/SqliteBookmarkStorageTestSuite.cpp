@@ -6,14 +6,14 @@
 TEST_CASE("add bookmarks")
 {
 	FilePath databasePath(L"data/SQLiteTestSuite/bookmarkTest.sqlite");
-	size_t bookmarkCount = 4;
+	int bookmarkCount = 4;
 	int result = -1;
 	{
 		FileSystem::remove(databasePath);
 		SqliteBookmarkStorage storage(databasePath);
 		storage.setup();
 
-		for (size_t i = 0; i < bookmarkCount; i++)
+		for (int i = 0; i < bookmarkCount; i++)
 		{
 			const Id categoryId =
 				storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
@@ -32,7 +32,7 @@ TEST_CASE("add bookmarks")
 TEST_CASE("add bookmarked node")
 {
 	FilePath databasePath(L"data/SQLiteTestSuite/bookmarkTest.sqlite");
-	size_t bookmarkCount = 4;
+	int bookmarkCount = 4;
 	int result = -1;
 	{
 		FileSystem::remove(databasePath);
@@ -47,7 +47,7 @@ TEST_CASE("add bookmarked node")
 					L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId))
 				.id;
 
-		for (size_t i = 0; i < bookmarkCount; i++)
+		for (int i = 0; i < bookmarkCount; i++)
 		{
 			storage.addBookmarkedNode(StorageBookmarkedNodeData(bookmarkId, L"test name"));
 		}

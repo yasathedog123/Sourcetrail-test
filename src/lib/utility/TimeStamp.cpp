@@ -1,5 +1,7 @@
 #include "TimeStamp.h"
 
+using namespace std;
+
 TimeStamp TimeStamp::now()
 {
 	return TimeStamp(boost::posix_time::microsec_clock::local_time());
