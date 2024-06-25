@@ -25,14 +25,14 @@ include(CMakePrintHelpers)
 
 
 # Configure which language(s) should be supported:
-set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C and C++ support to the Sourcetrail indexer.")
+set(BUILD_CXX_LANGUAGE_PACKAGE OFF CACHE BOOL "Add C/C++ support to the Sourcetrail indexer.")
 set(BUILD_JAVA_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Java support to the Sourcetrail indexer.")
 set(BUILD_PYTHON_LANGUAGE_PACKAGE OFF CACHE BOOL "Add Python support to the Sourcetrail indexer.")
 
 configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
 
 # Configure whether unit tests should be supported:
-set(BUILD_UNIT_TESTS_PACKAGE OFF CACHE BOOL "Add support for unit tests.")
+set(BUILD_UNIT_TESTS_PACKAGE OFF CACHE BOOL "Build the corresponding language unit tests.")
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
