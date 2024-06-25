@@ -23,6 +23,7 @@
 		"qtimageformats",
 		{
 			"name": "qtbase",
+			"platform": "linux",
 			"default-features": false,
 			"$comment": "qtbase features without 'dbus' and 'testlib'. Queried with 'vcpkg depend-info qtbase'",
 			"features": [
@@ -53,6 +54,34 @@
 				"xkbcommon-x11",
 				"xlib",
 				"xrender",
+				"zstd"
+			]
+		},
+		{
+			"name": "qtbase",
+			"platform": "windows",
+			"default-features": false,
+			"$comment": "qtbase features without 'dbus' and 'testlib'. Queried with 'vcpkg depend-info qtbase'",
+			"features": [
+				"brotli",
+				"concurrent",
+				"default-features",
+				"doubleconversion",
+				"freetype",
+				"gui",
+				"harfbuzz",
+				"icu",
+				"jpeg",
+				"network",
+				"opengl",
+				"openssl",
+				"pcre2",
+				"png",
+				"sql-psql",
+				"sql-sqlite",
+				"sql",
+				"thread",
+				"widgets",
 				"zstd"
 			]
 		},
