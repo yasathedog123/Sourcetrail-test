@@ -47,7 +47,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2024.7.1)
+project(Sourcetrail VERSION 2024.7.1.1)
 
 include(cmake/licenses.cmake)
 include(cmake/targetOptions.cmake)

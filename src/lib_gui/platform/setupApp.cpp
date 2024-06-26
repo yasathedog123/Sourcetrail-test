@@ -22,7 +22,7 @@ Version setupAppDirectories(int argc, char* argv[])
 {
 	QCoreApplication::setApplicationName(QStringLiteral("Sourcetrail"));
 
-	Version version(PRODUCT_VERSION_MAJOR, PRODUCT_VERSION_MINOR, PRODUCT_VERSION_PATCH);
+	Version version(PRODUCT_VERSION_MAJOR, PRODUCT_VERSION_MINOR, PRODUCT_VERSION_PATCH, PRODUCT_VERSION_TWEAK);
 	QCoreApplication::setApplicationVersion(QString::fromStdString(version.toDisplayString()));
 
 	// Determine application directory (Can't use QCoreApplication::applicationDirPath here, because

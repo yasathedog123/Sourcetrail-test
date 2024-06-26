@@ -10,7 +10,7 @@ public:
 	static const Version& getApplicationVersion();
 
 	Version() = default;
-	Version(int major, int minor, int patch);
+	Version(int major, int minor, int patch, int tweak);
 
 	std::string toDisplayString() const;
 	std::wstring toDisplayWString() const;
@@ -21,6 +21,7 @@ private:
 	int m_majorNumber = 0;
 	int m_minorNumber = 0;
 	int m_patchNumber = 0;
+	int m_tweakNumber = 0;
 };
 
 #endif	  // VERSION_H
