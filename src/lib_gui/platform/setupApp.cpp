@@ -14,8 +14,6 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 
-#include <boost/filesystem.hpp>
-
 using namespace utility;
 using namespace boost::system;
 using namespace boost::filesystem;
@@ -29,7 +27,7 @@ Version setupAppDirectories(int argc, char* argv[])
 
 	// Determine application directory (Can't use QCoreApplication::applicationDirPath here, because
 	// an instance of QCoreApplication doesn't exist yet!).
-	FilePath appPath = FilePath(path(argv[0]).parent_path().wstring() + L"/").getAbsolute();
+	FilePath appPath = FilePath(argv[0]).getAbsolute().getParentDirectory().concatenate(L"/");
 	AppPath::setSharedDataDirectoryPath(appPath);
 	AppPath::setCxxIndexerDirectoryPath(appPath);
 
