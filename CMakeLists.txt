@@ -310,6 +310,7 @@ install(DIRECTORY "${CMAKE_BINARY_DIR}/app/" DESTINATION "app/")
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
 
 #set(CMAKE_PROJECT_VERSION_PATCH "${CMAKE_PROJECT_VERSION_PATCH}-alpha")
+set(CPACK_PACKAGE_VERSION ${CMAKE_PROJECT_VERSION})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Source code explorer")
 set(CPACK_PACKAGE_DESCRIPTION "Free and open-source cross-platform source explorer that helps you get productive on unfamiliar source code.")
 
