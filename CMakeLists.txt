@@ -47,7 +47,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2024.7.2)
+project(Sourcetrail VERSION 2024.7.3)
 
 include(cmake/licenses.cmake)
 include(cmake/targetOptions.cmake)
@@ -306,7 +306,7 @@ endif()
 
 # Installing/Packaging ---------------------------------------------------------
 
-install(DIRECTORY "${CMAKE_BINARY_DIR}/app/" DESTINATION "app/" USE_SOURCE_PERMISSIONS)
+install(DIRECTORY "${CMAKE_BINARY_DIR}/app/" DESTINATION "${PROJECT_NAME}/app/" USE_SOURCE_PERMISSIONS)
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
 
 set(CPACK_PACKAGE_VERSION ${CMAKE_PROJECT_VERSION})
@@ -324,7 +324,7 @@ else()
 	if (UNIX)
 		set(CPACK_GENERATOR DEB)
 		set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-		set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/${PROJECT_NAME}/")
+		set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/")
 	else()
 		set(CPACK_GENERATOR ZIP)
 	endif()
