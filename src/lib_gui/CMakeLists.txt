@@ -196,6 +196,8 @@ add_library(Sourcetrail_lib_gui
 	qt/utility/QtHelpButtonInfo.h
 	qt/utility/QtHighlighter.cpp
 	qt/utility/QtHighlighter.h
+	qt/utility/QtMessageBox.h
+	qt/utility/QtMessageBox.cpp
 	qt/utility/QtScrollSpeedChangeListener.cpp
 	qt/utility/QtScrollSpeedChangeListener.h
 	qt/utility/QtThreadedFunctor.h

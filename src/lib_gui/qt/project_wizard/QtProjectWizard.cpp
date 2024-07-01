@@ -1,8 +1,8 @@
 #include "QtProjectWizard.h"
+#include "QtMessageBox.h"
 
 #include <QFileDialog>
 #include <QListWidget>
-#include <QMessageBox>
 #include <QScrollArea>
 #include <QSysInfo>
 #include <QTimer>
@@ -144,7 +144,7 @@ void addSourceGroupContents<SourceGroupSettingsCEmpty>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-	
+
 	if constexpr (utility::Os::isMac())
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window));
@@ -175,7 +175,7 @@ void addSourceGroupContents<SourceGroupSettingsCppEmpty>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-	
+
 	if constexpr (utility::Os::isMac())
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window));
@@ -203,7 +203,7 @@ void addSourceGroupContents<SourceGroupSettingsCxxCdb>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window, true));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-	
+
 	if constexpr (utility::Os::isMac())
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window, true));
@@ -236,7 +236,7 @@ void addSourceGroupContents<SourceGroupSettingsCxxCodeblocks>(
 	group->addContent(new QtProjectWizardContentPathsHeaderSearch(settings, window, true));
 	group->addContent(new QtProjectWizardContentPathsHeaderSearchGlobal(window));
 	group->addSpace();
-	
+
 	if constexpr (utility::Os::isMac())
 	{
 		group->addContent(new QtProjectWizardContentPathsFrameworkSearch(settings, window, true));
@@ -770,16 +770,13 @@ void QtProjectWizard::removeSelectedSourceGroup()
 		return;
 	}
 
-	QMessageBox msgBox(this);
+	QtMessageBox msgBox(this);
 	msgBox.setText(QStringLiteral("Remove Source Group"));
-	msgBox.setInformativeText(
-		QStringLiteral("Do you really want to remove this source group from the project?"));
-	msgBox.addButton(QStringLiteral("Yes"), QMessageBox::ButtonRole::YesRole);
-	msgBox.addButton(QStringLiteral("No"), QMessageBox::ButtonRole::NoRole);
-	msgBox.setIcon(QMessageBox::Icon::Question);
-	int ret = msgBox.exec();
-
-	if (ret == 0)	 // QMessageBox::Yes
+	msgBox.setInformativeText(QStringLiteral("Do you really want to remove this source group from the project?"));
+	QPushButton *yesButton = msgBox.addButton(QStringLiteral("Yes"), QtMessageBox::ButtonRole::YesRole);
+	msgBox.addButton(QStringLiteral("No"), QtMessageBox::ButtonRole::NoRole);
+	msgBox.setIcon(QtMessageBox::Icon::Question);
+	if (msgBox.execModal() == yesButton)	 // QtMessageBox::Yes
 	{
 		int currentRow = m_sourceGroupList->currentRow();
 		m_allSourceGroupSettings.erase(m_allSourceGroupSettings.begin() + currentRow);
@@ -1042,13 +1039,13 @@ void QtProjectWizard::createProject()
 	{
 		MessageStatus(L"Unable to save project to location: " + path.wstr()).dispatch();
 
-		QMessageBox msgBox(this);
+		QtMessageBox msgBox(this);
 		msgBox.setText(QStringLiteral("Could not create Project"));
 		msgBox.setInformativeText(QString::fromStdWString(
 			L"<p>Sourcetrail was unable to save the project to the specified path. Please pick a "
 			L"different project location.</p>"));
-		msgBox.addButton(QStringLiteral("Ok"), QMessageBox::ButtonRole::AcceptRole);
-		msgBox.exec();
+		msgBox.addButton(QStringLiteral("Ok"), QtMessageBox::ButtonRole::AcceptRole);
+		msgBox.execModal();
 
 		return;
 	}

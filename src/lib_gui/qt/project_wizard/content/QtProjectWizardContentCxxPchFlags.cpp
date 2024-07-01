@@ -1,7 +1,7 @@
 #include "QtProjectWizardContentCxxPchFlags.h"
+#include "QtMessageBox.h"
 
 #include <QCheckBox>
-#include <QMessageBox>
 
 #include "QtStringListBox.h"
 #include "SourceGroupSettingsWithCxxPchOptions.h"
@@ -86,9 +86,9 @@ bool QtProjectWizardContentCxxPchFlags::check()
 
 	if (!error.empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QString::fromStdWString(error));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 

@@ -1,6 +1,5 @@
 #include "QtProjectWizardContentPath.h"
-
-#include <QMessageBox>
+#include "QtMessageBox.h"
 
 #include "SourceGroupSettings.h"
 #include "utilityFile.h"
@@ -73,9 +72,9 @@ bool QtProjectWizardContentPath::check()
 
 	if (!error.isEmpty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(error);
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 

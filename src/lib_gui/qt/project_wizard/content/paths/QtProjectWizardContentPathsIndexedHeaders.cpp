@@ -1,6 +1,5 @@
 #include "QtProjectWizardContentPathsIndexedHeaders.h"
-
-#include <QMessageBox>
+#include "QtMessageBox.h"
 
 #include "CodeblocksProject.h"
 #include "CompilationDatabase.h"
@@ -165,18 +164,17 @@ bool QtProjectWizardContentPathsIndexedHeaders::check()
 {
 	if (m_list->getPathsAsDisplayed().empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			QStringLiteral("You didn't specify any Header Files & Directories to Index."));
 		msgBox.setInformativeText(QString::fromStdString(
 			"Sourcetrail will only index the source files listed in the " + m_projectKindName +
 			" file and none of the included header files."));
-		QPushButton* yesButton = msgBox.addButton(
-			QStringLiteral("Continue"), QMessageBox::ButtonRole::YesRole);
-		msgBox.addButton(QStringLiteral("Cancel"), QMessageBox::ButtonRole::NoRole);
-		msgBox.setDefaultButton(yesButton);
+		QPushButton *continueButton = msgBox.addButton(QStringLiteral("Continue"), QtMessageBox::ButtonRole::YesRole);
+		msgBox.addButton(QStringLiteral("Cancel"), QtMessageBox::ButtonRole::NoRole);
+		msgBox.setDefaultButton(continueButton);
 
-		if (msgBox.exec() != 0)
+		if (msgBox.execModal() != continueButton)
 		{
 			return false;
 		}
@@ -198,11 +196,10 @@ void QtProjectWizardContentPathsIndexedHeaders::buttonClicked()
 				codeblocksSettings->getCodeblocksProjectPathExpandedAndAbsolute();
 			if (!codeblocksProjectPath.exists())
 			{
-				QMessageBox msgBox(m_window);
-				msgBox.setText(
-					QStringLiteral("The provided Code::Blocks project path does not exist."));
+				QtMessageBox msgBox(m_window);
+				msgBox.setText(QStringLiteral("The provided Code::Blocks project path does not exist."));
 				msgBox.setDetailedText(QString::fromStdWString(codeblocksProjectPath.wstr()));
-				msgBox.exec();
+				msgBox.execModal();
 				return;
 			}
 
@@ -244,11 +241,10 @@ void QtProjectWizardContentPathsIndexedHeaders::buttonClicked()
 			const FilePath cdbPath = cdbSettings->getCompilationDatabasePathExpandedAndAbsolute();
 			if (!cdbPath.exists())
 			{
-				QMessageBox msgBox(m_window);
-				msgBox.setText(
-					QStringLiteral("The provided Compilation Database path does not exist."));
+				QtMessageBox msgBox(m_window);
+				msgBox.setText(QStringLiteral("The provided Compilation Database path does not exist."));
 				msgBox.setDetailedText(QString::fromStdWString(cdbPath.wstr()));
-				msgBox.exec();
+				msgBox.execModal();
 				return;
 			}
 

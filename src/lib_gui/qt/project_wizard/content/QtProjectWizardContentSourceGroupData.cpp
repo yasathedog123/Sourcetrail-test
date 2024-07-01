@@ -1,8 +1,8 @@
 #include "QtProjectWizardContentSourceGroupData.h"
+#include "QtMessageBox.h"
 
 #include <QCheckBox>
 #include <QLineEdit>
-#include <QMessageBox>
 
 #include "SourceGroupSettings.h"
 
@@ -69,9 +69,9 @@ bool QtProjectWizardContentSourceGroupData::check()
 {
 	if (m_name->text().isEmpty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral("Please enter a source group name."));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 

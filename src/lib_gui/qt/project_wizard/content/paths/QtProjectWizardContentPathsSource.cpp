@@ -1,6 +1,5 @@
 #include "QtProjectWizardContentPathsSource.h"
-
-#include <QMessageBox>
+#include "QtMessageBox.h"
 
 #include "language_packages.h"
 
@@ -70,18 +69,17 @@ bool QtProjectWizardContentPathsSource::check()
 {
 	if (m_list->getPathsAsDisplayed().empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral("You didn't specify any 'Files & Directories to Index'."));
 		msgBox.setInformativeText(
 			QStringLiteral("Sourcetrail will not index any files for this Source Group. Please add "
 						   "paths to files or directories "
 						   "that should be indexed."));
-		QPushButton* yesButton = msgBox.addButton(
-			QStringLiteral("Continue"), QMessageBox::ButtonRole::YesRole);
-		msgBox.addButton(QStringLiteral("Cancel"), QMessageBox::ButtonRole::NoRole);
-		msgBox.setDefaultButton(yesButton);
+		QPushButton *continueButton = msgBox.addButton(QStringLiteral("Continue"), QtMessageBox::ButtonRole::YesRole);
+		msgBox.addButton(QStringLiteral("Cancel"), QtMessageBox::ButtonRole::NoRole);
+		msgBox.setDefaultButton(continueButton);
 
-		if (msgBox.exec() != 0)
+		if (msgBox.execModal() != continueButton)
 		{
 			return false;
 		}

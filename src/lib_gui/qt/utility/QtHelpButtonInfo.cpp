@@ -1,6 +1,5 @@
 #include "QtHelpButtonInfo.h"
-
-#include <QMessageBox>
+#include "QtMessageBox.h"
 
 QtHelpButtonInfo::QtHelpButtonInfo(const QString& title, const QString& text)
 	: m_title(title), m_text(text)
@@ -9,15 +8,15 @@ QtHelpButtonInfo::QtHelpButtonInfo(const QString& title, const QString& text)
 
 void QtHelpButtonInfo::displayMessage(QWidget* messageBoxParent)
 {
-	QMessageBox msgBox(messageBoxParent);
+	QtMessageBox msgBox(messageBoxParent);
 	msgBox.setWindowTitle(QStringLiteral("Sourcetrail"));
-	msgBox.setIcon(QMessageBox::Information);
+	msgBox.setIcon(QtMessageBox::Information);
 	msgBox.setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
 	msgBox.setText("<b>" + m_title + "</b>");
 	msgBox.setInformativeText(m_text);
-	msgBox.setStandardButtons(QMessageBox::Ok);
-	msgBox.setDefaultButton(QMessageBox::Ok);
-	msgBox.exec();
+	msgBox.setStandardButtons(QtMessageBox::Ok);
+	msgBox.setDefaultButton(QtMessageBox::Ok);
+	msgBox.execModal();
 }
 
 QtHelpButtonInfo createErrorHelpButtonInfo()

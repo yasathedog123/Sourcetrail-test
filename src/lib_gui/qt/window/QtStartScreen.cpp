@@ -1,10 +1,10 @@
 #include "QtStartScreen.h"
+#include "QtMessageBox.h"
 
 #include <QCheckBox>
 #include <QDesktopServices>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QMessageBox>
 #include <QString>
 #include <QVBoxLayout>
 
@@ -47,26 +47,24 @@ void QtRecentProjectButton::handleButtonClick()
 	}
 	else
 	{
-		QMessageBox msgBox;
+		QtMessageBox msgBox;
 		msgBox.setText(QStringLiteral("Missing Project File"));
 		msgBox.setInformativeText(QString::fromStdWString(
 			L"<p>Couldn't find \"" + m_projectFilePath.wstr() +
 			L"\" on your filesystem.</p><p>Do you want to remove it from recent project "
 			L"list?</p>"));
-		msgBox.addButton(QStringLiteral("Remove"), QMessageBox::ButtonRole::YesRole);
-		msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
-		msgBox.setIcon(QMessageBox::Icon::Question);
-		int ret = msgBox.exec();
+		QPushButton *removeButton = msgBox.addButton(QStringLiteral("Remove"), QtMessageBox::ButtonRole::YesRole);
+		msgBox.addButton(QStringLiteral("Keep"), QtMessageBox::ButtonRole::NoRole);
+		msgBox.setIcon(QtMessageBox::Icon::Question);
 
-		if (ret == 0)	 // QMessageBox::Yes
+		if (msgBox.execModal() == removeButton)
 		{
-			std::vector<FilePath> recentProjects =
-				ApplicationSettings::getInstance()->getRecentProjects();
-			for (size_t i = 0; i < recentProjects.size(); ++i)
+			std::vector<FilePath> recentProjects = ApplicationSettings::getInstance()->getRecentProjects();
+			for (auto it = recentProjects.begin(); it != recentProjects.end(); ++it)
 			{
-				if (recentProjects[i].wstr() == m_projectFilePath.wstr())
+				if (it->wstr() == m_projectFilePath.wstr())
 				{
-					recentProjects.erase(recentProjects.begin() + i);
+					recentProjects.erase(it);
 					ApplicationSettings::getInstance()->setRecentProjects(recentProjects);
 					ApplicationSettings::getInstance()->save();
 					break;

@@ -1,7 +1,7 @@
 #include "QtProjectWizardContentPaths.h"
+#include "QtMessageBox.h"
 
 #include <QComboBox>
-#include <QMessageBox>
 
 #include "SourceGroupSettings.h"
 #include "utility.h"
@@ -88,30 +88,27 @@ bool QtProjectWizardContentPaths::check()
 
 		if (!missingPaths.isEmpty())
 		{
-			QMessageBox msgBox(m_window);
+			QtMessageBox msgBox(m_window);
 			msgBox.setText(QString("Some provided paths do not exist at \"%1\". Do you want to "
 								   "remove them before continuing?")
 							   .arg(m_titleString));
 			msgBox.setDetailedText(missingPaths);
-			QPushButton* removeButton = msgBox.addButton(
-				QStringLiteral("Remove"), QMessageBox::YesRole);
-			QPushButton* keepButton = msgBox.addButton(
-				QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
-			QPushButton* cancelButton = msgBox.addButton(
-				QStringLiteral("Cancel"), QMessageBox::ButtonRole::RejectRole);
+			QPushButton* removeButton = msgBox.addButton(QStringLiteral("Remove"), QtMessageBox::YesRole);
+			QPushButton* keepButton = msgBox.addButton(QStringLiteral("Keep"), QtMessageBox::ButtonRole::NoRole);
+			QPushButton* cancelButton = msgBox.addButton(QStringLiteral("Cancel"), QtMessageBox::ButtonRole::RejectRole);
 
-			msgBox.exec();
+			QAbstractButton *clickedButton = msgBox.execModal();
 
-			if (msgBox.clickedButton() == removeButton)
+			if (clickedButton == removeButton)
 			{
 				m_list->setPaths(existingPaths);
 				save();
 			}
-			else if (msgBox.clickedButton() == keepButton)
+			else if (clickedButton == keepButton)
 			{
 				return true;
 			}
-			else if (msgBox.clickedButton() == cancelButton)
+			else if (clickedButton == cancelButton)
 			{
 				return false;
 			}

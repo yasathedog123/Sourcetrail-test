@@ -1,10 +1,10 @@
 #include "QtProjectWizardContentSelect.h"
+#include "QtMessageBox.h"
 
 #include <regex>
 
 #include <QButtonGroup>
 #include <QLabel>
-#include <QMessageBox>
 #include <QPushButton>
 
 #include "LanguageType.h"
@@ -317,9 +317,9 @@ bool QtProjectWizardContentSelect::check()
 
 	if (!sourceGroupChosen)
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral("Please choose a method of creating a new Source Group."));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 

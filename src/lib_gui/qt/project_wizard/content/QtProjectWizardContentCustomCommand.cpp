@@ -1,8 +1,8 @@
 #include "QtProjectWizardContentCustomCommand.h"
+#include "QtMessageBox.h"
 
 #include <QCheckBox>
 #include <QLineEdit>
-#include <QMessageBox>
 #include <boost/filesystem/path.hpp>
 
 #include "FileSystem.h"
@@ -71,18 +71,17 @@ bool QtProjectWizardContentCustomCommand::check()
 {
 	if (m_customCommand->text().isEmpty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral("Please enter a custom command."));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 
 	if (m_customCommand->text().toStdWString().find(L"%{SOURCE_FILE_PATH}") == std::wstring::npos)
 	{
-		QMessageBox msgBox(m_window);
-		msgBox.setText(
-			QStringLiteral("The variable %{SOURCE_FILE_PATH} is missing in the custom command."));
-		msgBox.exec();
+		QtMessageBox msgBox(m_window);
+		msgBox.setText(QStringLiteral("The variable %{SOURCE_FILE_PATH} is missing in the custom command."));
+		msgBox.execModal();
 		return false;
 	}
 

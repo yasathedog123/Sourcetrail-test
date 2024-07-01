@@ -1,8 +1,8 @@
 #include "QtBookmarkCategory.h"
+#include "QtMessageBox.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QMessageBox>
 #include <QPushButton>
 #include <QTreeWidget>
 
@@ -121,16 +121,13 @@ void QtBookmarkCategory::leaveEvent(QEvent* event)
 
 void QtBookmarkCategory::deleteClicked()
 {
-	QMessageBox msgBox;
+	QtMessageBox msgBox;
 	msgBox.setText(QStringLiteral("Delete Category"));
-	msgBox.setInformativeText(
-		QStringLiteral("Do you really want to delete this category AND all containing bookmarks?"));
-	msgBox.addButton(QStringLiteral("Delete"), QMessageBox::ButtonRole::YesRole);
-	msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
-	msgBox.setIcon(QMessageBox::Icon::Question);
-	int ret = msgBox.exec();
-
-	if (ret == 0)	 // QMessageBox::Yes
+	msgBox.setInformativeText(QStringLiteral("Do you really want to delete this category AND all containing bookmarks?"));
+	QPushButton *deleteButton = msgBox.addButton(QStringLiteral("Delete"), QtMessageBox::ButtonRole::YesRole);
+	msgBox.addButton(QStringLiteral("Keep"), QtMessageBox::ButtonRole::NoRole);
+	msgBox.setIcon(QtMessageBox::Icon::Question);
+	if (msgBox.execModal() == deleteButton)	 // QtMessageBox::Yes
 	{
 		m_controllerProxy->executeAsTaskWithArgs(&BookmarkController::deleteBookmarkCategory, m_id);
 	}

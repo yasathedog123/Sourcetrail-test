@@ -1,7 +1,7 @@
 #include "QtBookmark.h"
+#include "QtMessageBox.h"
 
 #include <QHBoxLayout>
-#include <QMessageBox>
 #include <QPixmap>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -211,15 +211,13 @@ void QtBookmark::editClicked()
 
 void QtBookmark::deleteClicked()
 {
-	QMessageBox msgBox;
+	QtMessageBox msgBox;
 	msgBox.setText(QStringLiteral("Delete Bookmark"));
 	msgBox.setInformativeText(QStringLiteral("Do you really want to delete this bookmark?"));
-	msgBox.addButton(QStringLiteral("Delete"), QMessageBox::ButtonRole::YesRole);
-	msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
-	msgBox.setIcon(QMessageBox::Icon::Question);
-	int ret = msgBox.exec();
-
-	if (ret == 0)	 // QMessageBox::Yes)
+	QPushButton *deleteButton = msgBox.addButton(QStringLiteral("Delete"), QtMessageBox::ButtonRole::YesRole);
+	msgBox.addButton(QStringLiteral("Keep"), QtMessageBox::ButtonRole::NoRole);
+	msgBox.setIcon(QtMessageBox::Icon::Question);
+	if (msgBox.execModal() == deleteButton)	 // QtMessageBox::Yes
 	{
 		m_controllerProxy->executeAsTaskWithArgs(
 			&BookmarkController::deleteBookmark, m_bookmark->getId());

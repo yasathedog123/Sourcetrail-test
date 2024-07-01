@@ -1,6 +1,6 @@
 #include "QtProjectWizardContentProjectData.h"
+#include "QtMessageBox.h"
 
-#include <QMessageBox>
 #include <QRegularExpression>
 #include <boost/filesystem/path.hpp>
 
@@ -72,28 +72,28 @@ bool QtProjectWizardContentProjectData::check()
 {
 	if (m_projectName->text().isEmpty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral("Please enter a project name."));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 
 	if (!boost::filesystem::portable_file_name(m_projectName->text().toStdString()))
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			"The provided project name is not a valid file name. Please adjust the name "
 			"accordingly.");
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 
 	if (m_projectFileLocation->getText().isEmpty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			QStringLiteral("Please define the location for the Sourcetrail project file."));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 
@@ -101,43 +101,42 @@ bool QtProjectWizardContentProjectData::check()
 		FilePath(m_projectFileLocation->getText().toStdWString()).expandEnvironmentVariables();
 	if (paths.size() != 1)
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			"The specified location seems to be invalid. Please make sure that the used "
 			"environment variables are unambiguous.");
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 	else if (!paths.front().isAbsolute())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			"The specified location seems to be invalid. Please specify an absolute directory "
 			"path.");
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 	else if (!paths.front().isValid())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			"The specified location seems to be invalid. Please check the characters used in the "
 			"path.");
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 	else if (!paths[0].exists())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral(
 			"The specified location does not exist. Do you want to create the directory?"));
-		msgBox.addButton(QStringLiteral("Abort"), QMessageBox::ButtonRole::NoRole);
+		msgBox.addButton(QStringLiteral("Abort"), QtMessageBox::ButtonRole::NoRole);
 		QPushButton* createButton = msgBox.addButton(
-			QStringLiteral("Create"), QMessageBox::ButtonRole::YesRole);
+			QStringLiteral("Create"), QtMessageBox::ButtonRole::YesRole);
 		msgBox.setDefaultButton(createButton);
-		msgBox.setIcon(QMessageBox::Icon::Question);
-		int ret = msgBox.exec();
-		if (ret == 1)	 // QMessageBox::Yes
+		msgBox.setIcon(QtMessageBox::Icon::Question);
+		if (msgBox.execModal() == createButton)	 // QtMessageBox::Yes
 		{
 			FileSystem::createDirectories(paths[0]);
 		}

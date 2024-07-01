@@ -1,10 +1,10 @@
 #include "QtDialogView.h"
+#include "QtMessageBox.h"
 
 #include <chrono>
 #include <sstream>
 #include <thread>
 
-#include <QMessageBox>
 #include <QTimer>
 
 #include "MessageIndexingStatus.h"
@@ -314,19 +314,19 @@ int QtDialogView::confirm(const std::wstring& message, const std::vector<std::ws
 	m_resultReady = false;
 
 	m_onQtThread2([=, this, &result]() {
-		QMessageBox msgBox;
+		QtMessageBox msgBox;
 		msgBox.setText(QString::fromStdWString(message));
 
 		for (const std::wstring& option: options)
 		{
-			msgBox.addButton(QString::fromStdWString(option), QMessageBox::AcceptRole);
+			msgBox.addButton(QString::fromStdWString(option), QtMessageBox::AcceptRole);
 		}
 
-		msgBox.exec();
+		QAbstractButton *clickedButton = msgBox.execModal();
 
 		for (int i = 0; i < msgBox.buttons().size(); i++)
 		{
-			if (msgBox.clickedButton() == msgBox.buttons().at(i))
+			if (clickedButton == msgBox.buttons().at(i))
 			{
 				result = i;
 				break;

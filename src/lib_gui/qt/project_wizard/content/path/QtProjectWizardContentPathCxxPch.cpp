@@ -1,6 +1,5 @@
 #include "QtProjectWizardContentPathCxxPch.h"
-
-#include <QMessageBox>
+#include "QtMessageBox.h"
 
 #include "IndexerCommandCxx.h"
 #include "SourceGroupSettingsCxxCdb.h"
@@ -56,10 +55,9 @@ bool QtProjectWizardContentPathCxxPch::check()
 		std::shared_ptr<clang::tooling::JSONCompilationDatabase> cdb = utility::loadCDB(cdbPath);
 		if (!cdb)
 		{
-			QMessageBox msgBox(m_window);
-			msgBox.setText(
-				QStringLiteral("Unable to open and read the provided compilation database file."));
-			msgBox.exec();
+			QtMessageBox msgBox(m_window);
+			msgBox.setText(QStringLiteral("Unable to open and read the provided compilation database file."));
+			msgBox.execModal();
 			return false;
 		}
 
@@ -67,35 +65,29 @@ bool QtProjectWizardContentPathCxxPch::check()
 		{
 			if (m_settingsCxxPch->getPchInputFilePath().empty())
 			{
-				QMessageBox msgBox(m_window);
+				QtMessageBox msgBox(m_window);
 				msgBox.setText(
 					"The provided compilation database file uses precompiled headers. If you want "
 					"to make use of "
 					"precompiled headers to speed up your indexer, please specify an input at "
 					"Precompiled Header File.");
-				QPushButton* cancelButton = msgBox.addButton(
-					QStringLiteral("Cancel"), QMessageBox::ButtonRole::RejectRole);
-				QPushButton* continueButton = msgBox.addButton(
-					QStringLiteral("Continue"), QMessageBox::ButtonRole::AcceptRole);
-				msgBox.exec();
-				return msgBox.clickedButton() != cancelButton;
+				QPushButton* cancelButton = msgBox.addButton(QStringLiteral("Cancel"), QtMessageBox::ButtonRole::RejectRole);
+				msgBox.addButton(QStringLiteral("Continue"), QtMessageBox::ButtonRole::AcceptRole);
+				return msgBox.execModal() != cancelButton;
 			}
 		}
 		else
 		{
 			if (!m_settingsCxxPch->getPchInputFilePath().empty())
 			{
-				QMessageBox msgBox(m_window);
+				QtMessageBox msgBox(m_window);
 				msgBox.setText(
 					"The provided compilation database file does not use precompiled headers. The "
 					"specified input file at "
 					"Precompiled Header File will not be used.");
-				QPushButton* cancelButton = msgBox.addButton(
-					QStringLiteral("Cancel"), QMessageBox::ButtonRole::RejectRole);
-				QPushButton* continueButton = msgBox.addButton(
-					QStringLiteral("Continue"), QMessageBox::ButtonRole::AcceptRole);
-				msgBox.exec();
-				return msgBox.clickedButton() != cancelButton;
+				QPushButton* cancelButton = msgBox.addButton(QStringLiteral("Cancel"), QtMessageBox::ButtonRole::RejectRole);
+				msgBox.addButton(QStringLiteral("Continue"), QtMessageBox::ButtonRole::AcceptRole);
+				return msgBox.execModal() != cancelButton;
 			}
 		}
 	}

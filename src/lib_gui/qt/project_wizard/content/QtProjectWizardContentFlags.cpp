@@ -1,7 +1,7 @@
 #include "QtProjectWizardContentFlags.h"
+#include "QtMessageBox.h"
 
 #include <QFormLayout>
-#include <QMessageBox>
 
 #include "QtStringListBox.h"
 #include "SourceGroupSettingsWithCxxPathsAndFlags.h"
@@ -73,9 +73,9 @@ bool QtProjectWizardContentFlags::check()
 
 	if (!error.empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QString::fromStdWString(error));
-		msgBox.exec();
+		msgBox.execModal();
 		return false;
 	}
 

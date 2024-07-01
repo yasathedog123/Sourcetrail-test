@@ -1,8 +1,8 @@
 #include "QtBookmarkButtonsView.h"
+#include "QtMessageBox.h"
 
 #include <QFrame>
 #include <QHBoxLayout>
-#include <QMessageBox>
 #include <QPushButton>
 
 #include "MessageBookmarkBrowse.h"
@@ -104,23 +104,22 @@ void QtBookmarkButtonsView::createBookmarkClicked()
 	}
 	else if (m_createButtonState == MessageBookmarkButtonState::ALREADY_CREATED)
 	{
-		QMessageBox msgBox;
+		QtMessageBox msgBox;
 		msgBox.setText(QStringLiteral("Edit Bookmark"));
 		msgBox.setInformativeText(
 			QStringLiteral("Do you want to edit or delete the bookmark for this symbol?"));
-		msgBox.addButton(QStringLiteral("Edit"), QMessageBox::ButtonRole::YesRole);
-		msgBox.addButton(QStringLiteral("Delete"), QMessageBox::ButtonRole::NoRole);
-		QPushButton* cancelButton = msgBox.addButton(
-			QStringLiteral("Cancel"), QMessageBox::ButtonRole::RejectRole);
+		QPushButton *editButton = msgBox.addButton(QStringLiteral("Edit"), QtMessageBox::ButtonRole::YesRole);
+		QPushButton *deleteButton = msgBox.addButton(QStringLiteral("Delete"), QtMessageBox::ButtonRole::NoRole);
+		QPushButton* cancelButton = msgBox.addButton( QStringLiteral("Cancel"), QtMessageBox::ButtonRole::RejectRole);
 		msgBox.setDefaultButton(cancelButton);
-		msgBox.setIcon(QMessageBox::Icon::Question);
-		int ret = msgBox.exec();
+		msgBox.setIcon(QtMessageBox::Icon::Question);
 
-		if (ret == 0)	 // QMessageBox::Yes
+		QAbstractButton *clickedButton = msgBox.execModal();
+		if (clickedButton == editButton)
 		{
 			MessageBookmarkEdit().dispatch();
 		}
-		else if (ret == 1)
+		else if (clickedButton == deleteButton)
 		{
 			MessageBookmarkDelete().dispatch();
 		}

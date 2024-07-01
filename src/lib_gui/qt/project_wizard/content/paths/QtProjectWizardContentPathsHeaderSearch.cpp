@@ -1,8 +1,7 @@
 #include "QtProjectWizardContentPathsHeaderSearch.h"
+#include "QtMessageBox.h"
 
 #include <cmath>
-
-#include <QMessageBox>
 
 #include "Application.h"
 #include "ApplicationSettings.h"
@@ -345,11 +344,11 @@ void QtProjectWizardContentPathsHeaderSearch::showDetectedIncludesResult(
 
 	if (additionalHeaderSearchPaths.empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(
 			"<p>No additional include paths have been detected while searching the provided "
 			"paths.</p>");
-		msgBox.exec();
+		msgBox.execModal();
 	}
 	else
 	{
@@ -393,10 +392,10 @@ void QtProjectWizardContentPathsHeaderSearch::showValidationResult(
 {
 	if (unresolvedIncludes.empty())
 	{
-		QMessageBox msgBox(m_window);
+		QtMessageBox msgBox(m_window);
 		msgBox.setText(QStringLiteral(
 			"<p>All include directives throughout the indexed files have been resolved.</p>"));
-		msgBox.exec();
+		msgBox.execModal();
 	}
 	else
 	{
