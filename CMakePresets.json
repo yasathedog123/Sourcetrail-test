@@ -21,6 +21,15 @@
 		},
 		{
 			"hidden": true,
+			"name": "relwithdebinfo-mixin-presets",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
+				"CMAKE_VERBOSE_MAKEFILE": "FALSE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "FALSE"
+			}
+		},
+		{
+			"hidden": true,
 			"name": "sourcetrail-mixin-presets",
 			"cacheVariables": {
 				"BUILD_CXX_LANGUAGE_PACKAGE": "ON",
@@ -82,6 +91,15 @@
 				"vcpkg-default-presets",
 				"sourcetrail-mixin-presets",
 				"release-mixin-presets"
+			]
+		},
+		{
+			"name": "vcpkg-ninja-relwithdebinfo",
+			"displayName": "Vcpkg Ninja RelWithDebInfo Build",
+			"inherits": [
+				"vcpkg-default-presets",
+				"sourcetrail-mixin-presets",
+				"relwithdebinfo-mixin-presets"
 			]
 		},
 

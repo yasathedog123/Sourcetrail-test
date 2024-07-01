@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <config>
     <source_groups>
-        <source_group_509e6bce-8122-43b9-8db0-e38ecf6ece65>
+        <source_group_3a6e8447-75e7-4eac-8c06-ca19854c5631>
             <java_standard>20</java_standard>
             <maven>
                 <project_file_path>../java_indexer/pom.xml</project_file_path>
@@ -13,8 +13,8 @@
             </source_extensions>
             <status>enabled</status>
             <type>Java Source Group from Maven</type>
-        </source_group_509e6bce-8122-43b9-8db0-e38ecf6ece65>
-        <source_group_9cb4e696-ff4d-4625-8f00-c81e41d8204f>
+        </source_group_3a6e8447-75e7-4eac-8c06-ca19854c5631>
+        <source_group_73e47663-298d-46c5-a617-7011d6a9b0ba>
             <cpp_standard>c++20</cpp_standard>
             <cross_compilation>
                 <target>
@@ -130,16 +130,16 @@
                 <header_search_path>../src/test/helper</header_search_path>
                 <header_search_path>../../build/vcpkg-ninja-debug/src/lib</header_search_path>
                 <header_search_path>../../build/vcpkg-ninja-debug/src/lib_gui</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtCore</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtWidgets</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtGui</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtSvg</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtNetwork</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-linux-static-md/include/Qt6/QtCore5Compat</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtCore</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtWidgets</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtGui</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtSvg</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtNetwork</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-windows-static-md/include/Qt6/QtCore5Compat</header_search_path>
                 <header_search_path>${JAVA_HOME}/include</header_search_path>
-                <header_search_path>${JAVA_HOME}/include/linux</header_search_path>
+                <header_search_path>${JAVA_HOME}/include/win32</header_search_path>
             </header_search_paths>
             <name>C++ Source Group</name>
             <pch_flags>
@@ -154,7 +154,7 @@
             </source_paths>
             <status>enabled</status>
             <type>C++ Source Group</type>
-        </source_group_9cb4e696-ff4d-4625-8f00-c81e41d8204f>
+        </source_group_73e47663-298d-46c5-a617-7011d6a9b0ba>
     </source_groups>
     <version>8</version>
 </config>
