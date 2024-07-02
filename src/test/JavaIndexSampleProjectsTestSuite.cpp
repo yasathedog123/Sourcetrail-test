@@ -33,7 +33,7 @@ void setupJavaEnvironmentFactory()
 
 std::shared_ptr<TextAccess> parseCode(
 	const FilePath& sourceFilePath,
-	const FilePath& projectDataSrcRoot,
+	const FilePath& /*projectDataSrcRoot*/,
 	const std::vector<FilePath>& classpath)
 {
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();

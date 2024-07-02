@@ -109,12 +109,12 @@ void QtBookmarkCategory::expandClicked()
 	}
 }
 
-void QtBookmarkCategory::enterEvent(QEnterEvent *event)
+void QtBookmarkCategory::enterEvent(QEnterEvent * /*event*/)
 {
 	m_deleteButton->show();
 }
 
-void QtBookmarkCategory::leaveEvent(QEvent* event)
+void QtBookmarkCategory::leaveEvent(QEvent*  /*event*/)
 {
 	m_deleteButton->hide();
 }

@@ -34,17 +34,17 @@ void CustomTrailController::activateTrail(MessageActivateTrail message)
 	message.dispatch();
 }
 
-void CustomTrailController::handleMessage(MessageCustomTrailShow* message)
+void CustomTrailController::handleMessage(MessageCustomTrailShow*  /*message*/)
 {
 	getView()->showView();
 }
 
-void CustomTrailController::handleMessage(MessageIndexingFinished* message)
+void CustomTrailController::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	clear();
 }
 
-void CustomTrailController::handleMessage(MessageWindowClosed* message)
+void CustomTrailController::handleMessage(MessageWindowClosed*  /*message*/)
 {
 	getView()->hideView();
 }

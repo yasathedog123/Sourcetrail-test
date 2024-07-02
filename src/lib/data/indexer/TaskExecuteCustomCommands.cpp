@@ -258,7 +258,7 @@ TaskExecuteCustomCommands::TaskExecuteCustomCommands(
 {
 }
 
-void TaskExecuteCustomCommands::doEnter(std::shared_ptr<Blackboard> blackboard)
+void TaskExecuteCustomCommands::doEnter(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	m_dialogView->hideUnknownProgressDialog();
 	m_start = TimeStamp::now();
@@ -376,9 +376,9 @@ void TaskExecuteCustomCommands::doExit(std::shared_ptr<Blackboard> blackboard)
 		"index_time", [duration](float currentDuration) { return currentDuration + duration; });
 }
 
-void TaskExecuteCustomCommands::doReset(std::shared_ptr<Blackboard> blackboard) {}
+void TaskExecuteCustomCommands::doReset(std::shared_ptr<Blackboard>  /*blackboard*/) {}
 
-void TaskExecuteCustomCommands::handleMessage(MessageIndexingInterrupted* message)
+void TaskExecuteCustomCommands::handleMessage(MessageIndexingInterrupted*  /*message*/)
 {
 	LOG_INFO("Interrupting custom command execution.");
 

@@ -52,7 +52,7 @@ public:
 	}
 
 private:
-	void handleMessage(MessageWindowClosed* message) override
+	void handleMessage(MessageWindowClosed*  /*message*/) override
 	{
 		// The QT thread probably won't relay signals anymore. So this stops other
 		// threads from getting stuck here (if they have less than 1000 open tasks,

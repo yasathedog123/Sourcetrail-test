@@ -218,7 +218,7 @@ void QtWindow::setCloseDefault(bool isDefault)
 	}
 }
 
-void QtWindow::closeEvent(QCloseEvent* event)
+void QtWindow::closeEvent(QCloseEvent*  /*event*/)
 {
 	handleClose();
 }
@@ -309,7 +309,7 @@ void QtWindow::keyPressEvent(QKeyEvent* event)
 	QWidget::keyPressEvent(event);
 }
 
-void QtWindow::populateWindow(QWidget* widget) {}
+void QtWindow::populateWindow(QWidget*  /*widget*/) {}
 
 void QtWindow::windowReady() {}
 

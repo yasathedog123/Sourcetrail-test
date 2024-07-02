@@ -55,7 +55,7 @@ void ErrorController::handleMessage(MessageActivateErrors* message)
 	}
 }
 
-void ErrorController::handleMessage(MessageErrorCountClear* message)
+void ErrorController::handleMessage(MessageErrorCountClear*  /*message*/)
 {
 	clear();
 
@@ -103,7 +103,7 @@ void ErrorController::handleMessage(MessageErrorCountUpdate* message)
 	}
 }
 
-void ErrorController::handleMessage(MessageErrorsAll* message)
+void ErrorController::handleMessage(MessageErrorsAll*  /*message*/)
 {
 	MessageActivateErrors(getView()->getErrorFilter()).dispatch();
 }
@@ -144,7 +144,7 @@ void ErrorController::handleMessage(MessageErrorsHelpMessage* message)
 	m_onQtThread([=]() { createErrorHelpButtonInfo().displayMessage(nullptr); });
 }
 
-void ErrorController::handleMessage(MessageIndexingFinished* message)
+void ErrorController::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	m_storageAccess->setUseErrorCache(false);
 
@@ -153,7 +153,7 @@ void ErrorController::handleMessage(MessageIndexingFinished* message)
 	showErrors(getView()->getErrorFilter(), false);
 }
 
-void ErrorController::handleMessage(MessageIndexingStarted* message)
+void ErrorController::handleMessage(MessageIndexingStarted*  /*message*/)
 {
 	m_storageAccess->setUseErrorCache(true);
 }

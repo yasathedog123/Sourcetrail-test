@@ -32,12 +32,12 @@ Id GraphController::getSchedulerId() const
 	return Controller::getTabId();
 }
 
-void GraphController::handleMessage(MessageActivateErrors* message)
+void GraphController::handleMessage(MessageActivateErrors*  /*message*/)
 {
 	clear();
 }
 
-void GraphController::handleMessage(MessageActivateFullTextSearch* message)
+void GraphController::handleMessage(MessageActivateFullTextSearch*  /*message*/)
 {
 	clear();
 }
@@ -316,7 +316,7 @@ void GraphController::handleMessage(MessageActivateTrailEdge* message)
 	getView()->activateEdge(message->edgeIds.back());
 }
 
-void GraphController::handleMessage(MessageDeactivateEdge* message)
+void GraphController::handleMessage(MessageDeactivateEdge*  /*message*/)
 {
 	TRACE("edge deactivate");
 
@@ -1164,7 +1164,7 @@ void GraphController::bundleNodes()
 	}
 
 	bundleNodesAndEdgesMatching(
-		[](const DummyNode::BundleInfo& info, const Node* data) {
+		[](const DummyNode::BundleInfo&  /*info*/, const Node* data) {
 			return data->getType().isFile() && data->findEdgeOfType(Edge::EDGE_IMPORT);
 		},
 		1,
@@ -1172,7 +1172,7 @@ void GraphController::bundleNodes()
 		L"Importing Files");
 
 	bundleNodesAndEdgesMatching(
-		[](const DummyNode::BundleInfo& info, const Node* data) {
+		[](const DummyNode::BundleInfo& info, const Node*  /*data*/) {
 			return !info.isDefined && info.isReferencing && !info.layoutVertical;
 		},
 		2,
@@ -1180,7 +1180,7 @@ void GraphController::bundleNodes()
 		L"Non-indexed Symbols");
 
 	bundleNodesAndEdgesMatching(
-		[](const DummyNode::BundleInfo& info, const Node* data) {
+		[](const DummyNode::BundleInfo& info, const Node*  /*data*/) {
 			return !info.isDefined && info.isReferenced && !info.layoutVertical;
 		},
 		2,
@@ -1196,7 +1196,7 @@ void GraphController::bundleNodes()
 		L"Built-in Types");
 
 	bundleNodesAndEdgesMatching(
-		[](const DummyNode::BundleInfo& info, const Node* data) {
+		[](const DummyNode::BundleInfo& info, const Node*  /*data*/) {
 			return info.isDefined && info.isReferencing && !info.layoutVertical;
 		},
 		10,
@@ -1204,7 +1204,7 @@ void GraphController::bundleNodes()
 		L"Referencing Symbols");
 
 	bundleNodesAndEdgesMatching(
-		[](const DummyNode::BundleInfo& info, const Node* data) {
+		[](const DummyNode::BundleInfo& info, const Node*  /*data*/) {
 			return info.isDefined && info.isReferenced && !info.layoutVertical;
 		},
 		10,

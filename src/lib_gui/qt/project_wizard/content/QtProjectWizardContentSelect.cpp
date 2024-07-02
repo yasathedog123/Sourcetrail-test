@@ -20,7 +20,7 @@ QtProjectWizardContentSelect::QtProjectWizardContentSelect(QtProjectWizardWindow
 {
 }
 
-void QtProjectWizardContentSelect::populate(QGridLayout* layout, int& row)
+void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 {
 	std::string pythonIndexerVersion = " ";
 	{

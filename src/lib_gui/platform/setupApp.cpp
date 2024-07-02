@@ -18,7 +18,7 @@ using namespace utility;
 using namespace boost::system;
 using namespace boost::filesystem;
 
-Version setupAppDirectories(int argc, char* argv[])
+Version setupAppDirectories(int  /*argc*/, char* argv[])
 {
 	QCoreApplication::setApplicationName(QStringLiteral("Sourcetrail"));
 
@@ -57,7 +57,7 @@ Version setupAppDirectories(int argc, char* argv[])
 	return version;
 }
 
-void setupAppEnvironment(int argc, char* argv[])
+void setupAppEnvironment(int  /*argc*/, char*  /*argv*/[])
 {
 	// setupPlatform will be called after setupApp, so UserPaths::setUserDataDirectoryPath has been
 	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.

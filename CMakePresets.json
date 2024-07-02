@@ -122,6 +122,15 @@
 				"sourcetrail-mixin-presets",
 				"release-mixin-presets"
 			]
+		},
+		{
+			"name": "system-ninja-relwithdebinfo",
+			"displayName": "System Ninja RelWithDebInfo Build",
+			"inherits": [
+				"system-default-presets",
+				"sourcetrail-mixin-presets",
+				"relwithdebinfo-mixin-presets"
+			]
 		}
 	]
 }

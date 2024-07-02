@@ -30,12 +30,12 @@ void TooltipController::clear()
 	getView()->hideTooltip(true);
 }
 
-void TooltipController::handleMessage(MessageActivateTokens* message)
+void TooltipController::handleMessage(MessageActivateTokens*  /*message*/)
 {
 	clear();
 }
 
-void TooltipController::handleMessage(MessageActivateLocalSymbols* message)
+void TooltipController::handleMessage(MessageActivateLocalSymbols*  /*message*/)
 {
 	clear();
 }
@@ -50,27 +50,27 @@ void TooltipController::handleMessage(MessageFocusIn* message)
 	requestTooltipShow(message->tokenIds, TooltipInfo(), message->origin);
 }
 
-void TooltipController::handleMessage(MessageFocusOut* message)
+void TooltipController::handleMessage(MessageFocusOut*  /*message*/)
 {
 	requestTooltipHide();
 }
 
-void TooltipController::handleMessage(MessageGraphNodeExpand* message)
+void TooltipController::handleMessage(MessageGraphNodeExpand*  /*message*/)
 {
 	clear();
 }
 
-void TooltipController::handleMessage(MessageScrollCode* message)
+void TooltipController::handleMessage(MessageScrollCode*  /*message*/)
 {
 	clear();
 }
 
-void TooltipController::handleMessage(MessageScrollGraph* message)
+void TooltipController::handleMessage(MessageScrollGraph*  /*message*/)
 {
 	clear();
 }
 
-void TooltipController::handleMessage(MessageTooltipHide* message)
+void TooltipController::handleMessage(MessageTooltipHide*  /*message*/)
 {
 	clear();
 }
@@ -106,7 +106,7 @@ void TooltipController::handleMessage(MessageTooltipShow* message)
 	}
 }
 
-void TooltipController::handleMessage(MessageWindowFocus* message)
+void TooltipController::handleMessage(MessageWindowFocus*  /*message*/)
 {
 	clear();
 }

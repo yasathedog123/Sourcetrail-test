@@ -47,7 +47,6 @@ function(setGccTargetOptions targetName)
 			-Wno-missing-field-initializers
 			-Wno-stringop-truncation
 			-Wno-unknown-pragmas
-			-Wno-unused-parameter
 		)
 
 	target_compile_definitions(${targetName}
@@ -85,7 +84,6 @@ function(setClangTargetOptions targetName)
 			-Wno-overloaded-virtual
 			-Wno-unknown-pragmas
 			-Wno-unused-lambda-capture
-			-Wno-unused-parameter
 		)
 	target_compile_definitions(${targetName}
 		PRIVATE
@@ -134,7 +132,6 @@ function(setMsvcTargetOptions targetName)
 			#
 			# Disabled warnings:
 			#
-			/wd4100 # unreferenced formal parameter
 			/wd4245 # signed/unsigned mismatch
 			/wd4250 # inherits via dominance
 			/wd4389 # '==': signed/unsigned mismatch

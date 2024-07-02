@@ -78,7 +78,7 @@ void CodeController::handleMessage(MessageActivateFullTextSearch* message)
 	showFiles(params, firstReferenceScrollParams(), !message->isReplayed());
 }
 
-void CodeController::handleMessage(MessageActivateLegend* message)
+void CodeController::handleMessage(MessageActivateLegend*  /*message*/)
 {
 	clear();
 }
@@ -423,7 +423,7 @@ void CodeController::handleMessage(MessageDeactivateEdge* message)
 	showFiles(m_codeParams, scrollParams, !message->isReplayed());
 }
 
-void CodeController::handleMessage(MessageErrorCountClear* message)
+void CodeController::handleMessage(MessageErrorCountClear*  /*message*/)
 {
 	if (getView()->showsErrors())
 	{
@@ -439,7 +439,7 @@ void CodeController::handleMessage(MessageFocusChanged* message)
 	}
 }
 
-void CodeController::handleMessage(MessageFlushUpdates* message)
+void CodeController::handleMessage(MessageFlushUpdates*  /*message*/)
 {
 	showFiles(m_codeParams, m_scrollParams, true);
 }
@@ -449,7 +449,7 @@ void CodeController::handleMessage(MessageFocusIn* message)
 	getView()->coFocusTokenIds(message->tokenIds);
 }
 
-void CodeController::handleMessage(MessageFocusOut* message)
+void CodeController::handleMessage(MessageFocusOut*  /*message*/)
 {
 	getView()->deCoFocusTokenIds();
 }

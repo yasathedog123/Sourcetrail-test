@@ -157,7 +157,7 @@ void TaskBuildIndex::doExit(std::shared_ptr<Blackboard> blackboard)
 	blackboard->set<bool>("indexer_threads_stopped", true);
 }
 
-void TaskBuildIndex::doReset(std::shared_ptr<Blackboard> blackboard) {}
+void TaskBuildIndex::doReset(std::shared_ptr<Blackboard>  /*blackboard*/) {}
 
 void TaskBuildIndex::terminate()
 {
@@ -165,7 +165,7 @@ void TaskBuildIndex::terminate()
 	utility::killRunningProcesses();
 }
 
-void TaskBuildIndex::handleMessage(MessageIndexingInterrupted* message)
+void TaskBuildIndex::handleMessage(MessageIndexingInterrupted*  /*message*/)
 {
 	LOG_INFO("sending indexer interrupt command.");
 

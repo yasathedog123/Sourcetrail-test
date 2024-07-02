@@ -22,7 +22,7 @@ std::string setupJavaEnvironmentFactory()
 	return utility::prepareJavaEnvironment(FilePath(L"../app/data/java/"));
 }
 
-std::shared_ptr<TestStorage> parseCode(std::string code, bool logErrors = true)
+std::shared_ptr<TestStorage> parseCode(std::string code, bool /*logErrors*/ = true)
 {
 	setupJavaEnvironmentFactory();
 

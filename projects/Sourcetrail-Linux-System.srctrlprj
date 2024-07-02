@@ -12,8 +12,7 @@
             </header_search_paths>
             <indexed_header_paths>
                 <indexed_header_path>/usr/include/x86_64-linux-gnu/qt6</indexed_header_path>
-                <indexed_header_path>/usr/lib/jvm/java-21-openjdk-amd64/include</indexed_header_path>
-                <indexed_header_path>/usr/lib/llvm-17/include</indexed_header_path>
+                <indexed_header_path>/usr/lib/llvm-18/include</indexed_header_path>
                 <indexed_header_path>..</indexed_header_path>
                 <indexed_header_path>../../build/system-ninja-debug</indexed_header_path>
             </indexed_header_paths>

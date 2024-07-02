@@ -108,7 +108,7 @@ void Tab::handleMessage(MessageFocusView* message)
 	codeView->setNavigationFocus(type == MessageFocusView::ViewType::CODE);
 }
 
-void Tab::handleMessage(MessageRefreshUI* message)
+void Tab::handleMessage(MessageRefreshUI*  /*message*/)
 {
 	m_componentManager.refreshViews();
 }

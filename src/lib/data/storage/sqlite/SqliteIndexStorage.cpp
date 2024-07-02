@@ -889,7 +889,7 @@ void SqliteIndexStorage::setFileIndexed(Id fileId, bool indexed)
 		" WHERE id == " + to_string(fileId) + ";");
 }
 
-void SqliteIndexStorage::setFileCompleteIfNoError(Id fileId, const std::wstring& filePath, bool complete)
+void SqliteIndexStorage::setFileCompleteIfNoError(Id fileId, const std::wstring&  /*filePath*/, bool complete)
 {
 	bool fileHasErrors = doGetFirst<StorageSourceLocation>(
 							 "WHERE file_node_id == " + to_string(fileId) +

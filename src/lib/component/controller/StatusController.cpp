@@ -18,13 +18,13 @@ StatusView* StatusController::getView() const
 
 void StatusController::clear() {}
 
-void StatusController::handleMessage(MessageClearStatusView* message)
+void StatusController::handleMessage(MessageClearStatusView*  /*message*/)
 {
 	m_status.clear();
 	getView()->clear();
 }
 
-void StatusController::handleMessage(MessageShowStatus* message)
+void StatusController::handleMessage(MessageShowStatus*  /*message*/)
 {
 	getView()->showDockWidget();
 }

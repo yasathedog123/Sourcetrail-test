@@ -141,7 +141,7 @@ TabsView* TabsController::getView() const
 	return Controller::getView<TabsView>();
 }
 
-void TabsController::handleMessage(MessageActivateErrors* message)
+void TabsController::handleMessage(MessageActivateErrors*  /*message*/)
 {
 	if (m_tabs.empty() && Application::getInstance()->isProjectLoaded())
 	{
@@ -149,7 +149,7 @@ void TabsController::handleMessage(MessageActivateErrors* message)
 	}
 }
 
-void TabsController::handleMessage(MessageIndexingFinished* message)
+void TabsController::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	if (m_tabs.empty() && Application::getInstance()->isProjectLoaded())
 	{
@@ -157,12 +157,12 @@ void TabsController::handleMessage(MessageIndexingFinished* message)
 	}
 }
 
-void TabsController::handleMessage(MessageTabClose* message)
+void TabsController::handleMessage(MessageTabClose*  /*message*/)
 {
 	getView()->closeTab();
 }
 
-void TabsController::handleMessage(MessageTabOpen* message)
+void TabsController::handleMessage(MessageTabOpen*  /*message*/)
 {
 	if (Application::getInstance()->isProjectLoaded())
 	{

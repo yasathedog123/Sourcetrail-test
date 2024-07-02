@@ -599,7 +599,7 @@ void QtGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 	menu.show();
 }
 
-void QtGraphicsView::focusInEvent(QFocusEvent* event)
+void QtGraphicsView::focusInEvent(QFocusEvent*  /*event*/)
 {
 	m_focusIndicator->show();
 	emit focusIn();
@@ -607,7 +607,7 @@ void QtGraphicsView::focusInEvent(QFocusEvent* event)
 	MessageFocusView(MessageFocusView::ViewType::GRAPH).dispatch();
 }
 
-void QtGraphicsView::focusOutEvent(QFocusEvent* event)
+void QtGraphicsView::focusOutEvent(QFocusEvent*  /*event*/)
 {
 	m_focusIndicator->hide();
 	emit focusOut();

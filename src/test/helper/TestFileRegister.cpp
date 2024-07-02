@@ -9,7 +9,7 @@ TestFileRegister::TestFileRegister()
 
 TestFileRegister::~TestFileRegister() {}
 
-bool TestFileRegister::hasFilePath(const FilePath& filePath) const
+bool TestFileRegister::hasFilePath(const FilePath&  /*filePath*/) const
 {
 	return true;
 }

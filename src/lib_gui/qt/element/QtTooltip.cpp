@@ -128,12 +128,12 @@ void QtTooltip::hide(bool force)
 	}
 }
 
-void QtTooltip::enterEvent(QEnterEvent *event)
+void QtTooltip::enterEvent(QEnterEvent * /*event*/)
 {
 	m_isHovered = true;
 }
 
-void QtTooltip::leaveEvent(QEvent* event)
+void QtTooltip::leaveEvent(QEvent*  /*event*/)
 {
 	m_isHovered = false;
 

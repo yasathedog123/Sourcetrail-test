@@ -204,7 +204,7 @@ void Application::updateBookmarks(const std::vector<std::shared_ptr<Bookmark>>& 
 	m_mainView->updateBookmarksMenu(bookmarks);
 }
 
-void Application::handleMessage(MessageActivateWindow* message)
+void Application::handleMessage(MessageActivateWindow*  /*message*/)
 {
 	if (m_hasGUI)
 	{
@@ -212,7 +212,7 @@ void Application::handleMessage(MessageActivateWindow* message)
 	}
 }
 
-void Application::handleMessage(MessageCloseProject* message)
+void Application::handleMessage(MessageCloseProject*  /*message*/)
 {
 	if (m_project && m_project->isIndexing())
 	{
@@ -225,7 +225,7 @@ void Application::handleMessage(MessageCloseProject* message)
 	m_mainView->clear();
 }
 
-void Application::handleMessage(MessageIndexingFinished* message)
+void Application::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	logStorageStats();
 

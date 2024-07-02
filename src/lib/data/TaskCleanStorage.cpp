@@ -18,7 +18,7 @@ TaskCleanStorage::TaskCleanStorage(
 {
 }
 
-void TaskCleanStorage::doEnter(std::shared_ptr<Blackboard> blackboard)
+void TaskCleanStorage::doEnter(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	m_dialogView->showUnknownProgressDialog(
 		L"Clearing Files", std::to_wstring(m_filePaths.size()) + L" Files");
@@ -34,7 +34,7 @@ void TaskCleanStorage::doEnter(std::shared_ptr<Blackboard> blackboard)
 	}
 }
 
-Task::TaskState TaskCleanStorage::doUpdate(std::shared_ptr<Blackboard> blackboard)
+Task::TaskState TaskCleanStorage::doUpdate(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	if (std::shared_ptr<PersistentStorage> storage = m_storage.lock())
 	{
@@ -61,4 +61,4 @@ void TaskCleanStorage::doExit(std::shared_ptr<Blackboard> blackboard)
 	m_dialogView->hideProgressDialog();
 }
 
-void TaskCleanStorage::doReset(std::shared_ptr<Blackboard> blackboard) {}
+void TaskCleanStorage::doReset(std::shared_ptr<Blackboard>  /*blackboard*/) {}

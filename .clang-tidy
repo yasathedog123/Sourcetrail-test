@@ -1,8 +1,11 @@
 ---
-Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr'
+Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters'
 WarningsAsErrors:  ''
 HeaderFilterRegex: '.*'
 FormatStyle:       'file'
 CheckOptions:
     - key: modernize-use-override.IgnoreDestructors
       value: '0'
+
+    - key: misc-unused-parameters.StrictMode
+      value: '1'

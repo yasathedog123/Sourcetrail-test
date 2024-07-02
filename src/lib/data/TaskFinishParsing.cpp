@@ -23,7 +23,7 @@ void TaskFinishParsing::terminate()
 	MessageIndexingFinished().dispatch();
 }
 
-void TaskFinishParsing::doEnter(std::shared_ptr<Blackboard> blackboard)
+void TaskFinishParsing::doEnter(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	m_storage->setMode(SqliteIndexStorage::STORAGE_MODE_READ);
 }
@@ -109,9 +109,9 @@ Task::TaskState TaskFinishParsing::doUpdate(std::shared_ptr<Blackboard> blackboa
 	return STATE_SUCCESS;
 }
 
-void TaskFinishParsing::doExit(std::shared_ptr<Blackboard> blackboard)
+void TaskFinishParsing::doExit(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	m_storage.reset();
 }
 
-void TaskFinishParsing::doReset(std::shared_ptr<Blackboard> blackboard) {}
+void TaskFinishParsing::doReset(std::shared_ptr<Blackboard>  /*blackboard*/) {}

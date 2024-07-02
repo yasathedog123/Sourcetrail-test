@@ -310,8 +310,8 @@ void JavaParser::doRecordError(
 	jint jIndexed,
 	jint beginLine,
 	jint beginColumn,
-	jint endLine,
-	jint endColumn)
+	jint  /*endLine*/,
+	jint  /*endColumn*/)
 {
 	bool fatal = jFatal;
 	bool indexed = jIndexed;

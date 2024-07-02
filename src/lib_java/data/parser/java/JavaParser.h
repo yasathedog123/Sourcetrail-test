@@ -161,7 +161,7 @@ private:
 		MAKE_ARGS_16())
 
 #define DEF_RELAYING_METHOD(NAME, PARAMETERS, ARGUMENTS)                                           \
-	static void NAME(JNIEnv* env, jobject objectOrClass, jint parserId PARAMETERS)                 \
+	static void NAME(JNIEnv* /*env*/, jobject /*objectOrClass*/, jint parserId PARAMETERS)                 \
 	{                                                                                              \
 		std::map<int, JavaParser*>::iterator it = s_parsers.find(int(parserId));                   \
 		if (it != s_parsers.end())                                                                 \
@@ -217,7 +217,7 @@ private:
 	DEF_RELAYING_METHOD_4(RecordComment, jint, jint, jint, jint)
 	DEF_RELAYING_METHOD_7(RecordError, jstring, jint, jint, jint, jint, jint, jint)
 
-	static bool GetInterrupted(JNIEnv* env, jobject objectOrClass, jint parserId)
+	static bool GetInterrupted(JNIEnv*  /*env*/, jobject  /*objectOrClass*/, jint parserId)
 	{
 		std::map<int, JavaParser*>::iterator it = s_parsers.find(int(parserId));
 		if (it != s_parsers.end())

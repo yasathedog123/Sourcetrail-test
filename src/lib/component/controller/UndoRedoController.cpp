@@ -220,7 +220,7 @@ void UndoRedoController::handleMessage(MessageGraphNodeMove* message)
 	processCommand(command);
 }
 
-void UndoRedoController::handleMessage(MessageHistoryRedo* message)
+void UndoRedoController::handleMessage(MessageHistoryRedo*  /*message*/)
 {
 	if (m_iterator == m_list.end())
 	{
@@ -297,7 +297,7 @@ void UndoRedoController::handleMessage(MessageHistoryToPosition* message)
 	updateHistory();
 }
 
-void UndoRedoController::handleMessage(MessageHistoryUndo* message)
+void UndoRedoController::handleMessage(MessageHistoryUndo*  /*message*/)
 {
 	if (!m_list.size())
 	{
@@ -338,7 +338,7 @@ void UndoRedoController::handleMessage(MessageHistoryUndo* message)
 	updateHistory();
 }
 
-void UndoRedoController::handleMessage(MessageIndexingFinished* message)
+void UndoRedoController::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	std::list<Command> newList;
 

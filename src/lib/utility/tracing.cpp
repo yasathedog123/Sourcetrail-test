@@ -30,7 +30,7 @@ std::shared_ptr<TraceEvent> Tracer::startEvent(const std::string& eventName)
 	return event;
 }
 
-void Tracer::finishEvent(std::shared_ptr<TraceEvent> event)
+void Tracer::finishEvent(std::shared_ptr<TraceEvent>  /*event*/)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 

@@ -45,7 +45,7 @@ bool runToolOnCodeWithArgs(
 	const llvm::Twine& Code,
 	const std::vector<std::string>& Args,
 	const llvm::Twine& FileName = "input.cc",
-	const clang::tooling::FileContentMappings& VirtualMappedFiles =
+	const clang::tooling::FileContentMappings& /*VirtualMappedFiles*/ =
 		clang::tooling::FileContentMappings())
 {
 	CxxParser::initializeLLVM();

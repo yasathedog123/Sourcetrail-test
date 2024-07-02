@@ -35,7 +35,7 @@ void TaskGroupParallel::doEnter(std::shared_ptr<Blackboard> blackboard)
 	}
 }
 
-Task::TaskState TaskGroupParallel::doUpdate(std::shared_ptr<Blackboard> blackboard)
+Task::TaskState TaskGroupParallel::doUpdate(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
@@ -47,7 +47,7 @@ Task::TaskState TaskGroupParallel::doUpdate(std::shared_ptr<Blackboard> blackboa
 	return (m_taskFailed ? STATE_FAILURE : STATE_SUCCESS);
 }
 
-void TaskGroupParallel::doExit(std::shared_ptr<Blackboard> blackboard)
+void TaskGroupParallel::doExit(std::shared_ptr<Blackboard>  /*blackboard*/)
 {
 	for (size_t i = 0; i < m_tasks.size(); i++)
 	{

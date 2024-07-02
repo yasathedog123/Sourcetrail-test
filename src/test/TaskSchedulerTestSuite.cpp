@@ -37,12 +37,12 @@ public:
 	{
 	}
 
-	void doEnter(std::shared_ptr<Blackboard> blackboard) override
+	void doEnter(std::shared_ptr<Blackboard>  /*blackboard*/) override
 	{
 		enterCallOrder = ++orderCount;
 	}
 
-	TaskState doUpdate(std::shared_ptr<Blackboard> blackboard) override
+	TaskState doUpdate(std::shared_ptr<Blackboard>  /*blackboard*/) override
 	{
 		updateCallOrder = ++orderCount;
 
@@ -61,12 +61,12 @@ public:
 		return returnState;
 	}
 
-	void doExit(std::shared_ptr<Blackboard> blackboard) override
+	void doExit(std::shared_ptr<Blackboard>  /*blackboard*/) override
 	{
 		exitCallOrder = ++orderCount;
 	}
 
-	void doReset(std::shared_ptr<Blackboard> blackboard) override
+	void doReset(std::shared_ptr<Blackboard>  /*blackboard*/) override
 	{
 		resetCallOrder = ++orderCount;
 	}

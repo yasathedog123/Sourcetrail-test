@@ -51,8 +51,7 @@ std::wstring utility::searchPath(const std::wstring& bin)
 
 namespace
 {
-template <typename Rep, typename Period>
-bool safely_wait_for(boost::process::child& process, const std::chrono::duration<Rep, Period>& rel_time)
+bool safely_wait_for(boost::process::child& process, const std::chrono::milliseconds& rel_time)
 {
 	// This wrapper around boost::process::wait_for handles the following edge case:
 	// Calling wait_for on an already exitted process will wait for the entire timeout.

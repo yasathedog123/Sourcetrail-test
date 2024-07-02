@@ -27,7 +27,7 @@ void QtIconButton::setColor(QColor color)
 	leaveEvent(nullptr);
 }
 
-void QtIconButton::enterEvent(QEnterEvent *event)
+void QtIconButton::enterEvent(QEnterEvent * /*event*/)
 {
 	if (!m_hoveredIconPath.empty() && isEnabled())
 	{
@@ -35,7 +35,7 @@ void QtIconButton::enterEvent(QEnterEvent *event)
 	}
 }
 
-void QtIconButton::leaveEvent(QEvent* event)
+void QtIconButton::leaveEvent(QEvent*  /*event*/)
 {
 	if (!m_iconPath.empty())
 	{

@@ -303,7 +303,7 @@ bool CxxAstVisitor::TraverseTemplateTemplateParmDecl(clang::TemplateTemplateParm
 	return true;
 }
 
-bool CxxAstVisitor::VisitTranslationUnitDecl(clang::TranslationUnitDecl* d)
+bool CxxAstVisitor::VisitTranslationUnitDecl(clang::TranslationUnitDecl*  /*d*/)
 {
 	return true;
 }
@@ -453,7 +453,7 @@ bool CxxAstVisitor::TraverseTemplateArgumentLoc(const clang::TemplateArgumentLoc
 }
 
 bool CxxAstVisitor::TraverseLambdaCapture(
-	clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture, clang::Expr* Init)
+	clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture, clang::Expr*  /*Init*/)
 {
 	FOREACH_COMPONENT(beginTraverseLambdaCapture(lambdaExpr, capture));
 	bool ret = true;
@@ -477,7 +477,7 @@ bool CxxAstVisitor::TraverseBinComma(clang::BinaryOperator* s)
 	return true;
 }
 
-bool CxxAstVisitor::TraverseDeclarationNameInfo(clang::DeclarationNameInfo NameInfo)
+bool CxxAstVisitor::TraverseDeclarationNameInfo(clang::DeclarationNameInfo  /*NameInfo*/)
 {
 	// we don't visit any children here
 	return true;

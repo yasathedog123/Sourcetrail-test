@@ -21,7 +21,7 @@ void StatusBarController::clear()
 	getView()->setErrorCount(ErrorCountInfo());
 }
 
-void StatusBarController::handleMessage(MessageErrorCountClear* message)
+void StatusBarController::handleMessage(MessageErrorCountClear*  /*message*/)
 {
 	getView()->setErrorCount(ErrorCountInfo());
 }
@@ -31,13 +31,13 @@ void StatusBarController::handleMessage(MessageErrorCountUpdate* message)
 	getView()->setErrorCount(message->errorCount);
 }
 
-void StatusBarController::handleMessage(MessageIndexingFinished* message)
+void StatusBarController::handleMessage(MessageIndexingFinished*  /*message*/)
 {
 	getView()->setErrorCount(m_storageAccess->getErrorCount());
 	getView()->hideIndexingProgress();
 }
 
-void StatusBarController::handleMessage(MessageIndexingStarted* message)
+void StatusBarController::handleMessage(MessageIndexingStarted*  /*message*/)
 {
 	getView()->showIndexingProgress(0);
 }
@@ -67,7 +67,7 @@ void StatusBarController::handleMessage(MessagePingReceived* message)
 	getView()->showIdeStatus(status);
 }
 
-void StatusBarController::handleMessage(MessageRefresh* message)
+void StatusBarController::handleMessage(MessageRefresh*  /*message*/)
 {
 	getView()->setErrorCount(m_storageAccess->getErrorCount());
 }

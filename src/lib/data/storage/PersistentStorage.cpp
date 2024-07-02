@@ -1775,7 +1775,7 @@ std::shared_ptr<SourceLocationFile> PersistentStorage::getSourceLocationsOfTypeI
 }
 
 std::shared_ptr<TextAccess> PersistentStorage::getFileContent(
-	const FilePath& filePath, bool showsErrors) const
+	const FilePath& filePath, bool  /*showsErrors*/) const
 {
 	TRACE();
 

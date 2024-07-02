@@ -436,7 +436,7 @@ void QtDialogView::dialogVisibilityChanged(bool visible)
 	}
 }
 
-void QtDialogView::handleMessage(MessageIndexingShowDialog* message)
+void QtDialogView::handleMessage(MessageIndexingShowDialog*  /*message*/)
 {
 	m_onQtThread3([=, this]() { dialogVisibilityChanged(true); });
 }
@@ -448,7 +448,7 @@ void QtDialogView::handleMessage(MessageErrorCountUpdate* message)
 	m_onQtThread3([=, this]() { updateErrorCount(errorInfo.total, errorInfo.fatal); });
 }
 
-void QtDialogView::handleMessage(MessageWindowClosed* message)
+void QtDialogView::handleMessage(MessageWindowClosed*  /*message*/)
 {
 	m_resultReady = true;
 }

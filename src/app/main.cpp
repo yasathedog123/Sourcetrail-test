@@ -48,7 +48,7 @@
 	#include <windows.h>
 #endif
 
-void signalHandler(int signum)
+void signalHandler(int  /*signum*/)
 {
 	std::cout << "interrupt indexing" << std::endl;
 	MessageIndexingInterrupted().dispatch();
