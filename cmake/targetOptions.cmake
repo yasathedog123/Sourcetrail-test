@@ -48,7 +48,6 @@ function(setGccTargetOptions targetName)
 			-Wno-stringop-truncation
 			-Wno-unknown-pragmas
 			-Wno-unused-parameter
-			-Wno-unused-variable
 		)
 
 	target_compile_definitions(${targetName}
@@ -87,7 +86,6 @@ function(setClangTargetOptions targetName)
 			-Wno-unknown-pragmas
 			-Wno-unused-lambda-capture
 			-Wno-unused-parameter
-			-Wno-unused-variable
 		)
 	target_compile_definitions(${targetName}
 		PRIVATE

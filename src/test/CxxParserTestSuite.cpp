@@ -4299,6 +4299,7 @@ TEST_CASE("cxx parser finds location of block comment")
 	REQUIRE(utility::containsElement<std::wstring>(client->comments, L"comment <1:1 2:17>"));
 }
 
+/*
 void _test_TEST()
 {
 	std::shared_ptr<TestStorage> client = parseCode(
@@ -4313,5 +4314,5 @@ void _test_TEST()
 		"A<B> a;\n");
 	int ofo = 0;
 }
-
+*/
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE

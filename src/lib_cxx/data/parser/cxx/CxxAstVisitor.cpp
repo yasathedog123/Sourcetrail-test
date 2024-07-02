@@ -395,7 +395,7 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 	{
 		if (clang::TypeSourceInfo* TSI = D->getTypeAsWritten())
 		{
-			clang::TypeLoc::TypeLocClass ccccc = TSI->getTypeLoc().getTypeLocClass();
+			// clang::TypeLoc::TypeLocClass ccccc = TSI->getTypeLoc().getTypeLocClass();
 			const clang::TemplateSpecializationTypeLoc tstl =
 				TSI->getTypeLoc().getAs<clang::TemplateSpecializationTypeLoc>();
 			if (!tstl.isNull())

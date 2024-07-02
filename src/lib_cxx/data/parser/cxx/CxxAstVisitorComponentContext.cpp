@@ -80,7 +80,7 @@ void CxxAstVisitorComponentContext::endTraverseDecl(clang::Decl* d)
 void CxxAstVisitorComponentContext::beginTraverseTypeLoc(const clang::TypeLoc& tl)
 {
 	std::shared_ptr<CxxContextType> context;
-	clang::TypeLoc::TypeLocClass tlcc = tl.getTypeLocClass();
+	// clang::TypeLoc::TypeLocClass tlcc = tl.getTypeLocClass();
 	if (getAstVisitor()->shouldHandleTypeLoc(tl))
 	{
 		bool recordContext = true;
