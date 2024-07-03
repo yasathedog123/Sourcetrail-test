@@ -179,8 +179,7 @@ std::shared_ptr<TextAccess> generateExpectedOutput(
 		});
 
 	std::wstring outputString;
-	for (std::shared_ptr<IndexerCommand> indexerCommand: indexerCommands)
-	{
+	for (const std::shared_ptr<IndexerCommand> &indexerCommand : indexerCommands) {
 		outputString += indexerCommandToString(indexerCommand, projectDataRoot);
 	}
 

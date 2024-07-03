@@ -265,8 +265,7 @@ void ConfigManager::setValues(const std::string& key, const std::vector<std::str
 void ConfigManager::setValues(const std::string& key, const std::vector<std::wstring>& values)
 {
 	std::vector<std::string> stringValues;
-	for (std::wstring v: values)
-	{
+	for (const std::wstring &v : values) {
 		stringValues.push_back(utility::encodeToUtf8(v));
 	}
 	setValues(key, stringValues);

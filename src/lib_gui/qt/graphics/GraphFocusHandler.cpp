@@ -460,8 +460,7 @@ QtGraphNode* GraphFocusHandler::findSibling(const QtGraphNode* node, Direction d
 	Vec4i rect = node->getBoundingRect();
 	int minDist = 0;
 
-	for (auto siblings: getSiblingsHierarchyRecursive(node))
-	{
+	for (const auto &siblings : getSiblingsHierarchyRecursive(node)) {
 		for (QtGraphNode* sibling: siblings)
 		{
 			if (sibling == node || !sibling->isFocusable())

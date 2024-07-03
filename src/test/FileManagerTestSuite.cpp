@@ -22,8 +22,7 @@ TEST_CASE("file manager has added file paths after first fetch")
 		REQUIRE(filePaths.size() == 3);
 
 		std::vector<std::wstring> sourceExtensions;
-		for (FilePath p: filePaths)
-		{
+		for (const FilePath &p : filePaths) {
 			sourceExtensions.push_back(p.extension());
 		}
 		REQUIRE(sourceExtensions.size() == 3);

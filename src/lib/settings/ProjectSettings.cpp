@@ -430,7 +430,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 	migrator.addMigration(
 		4, std::make_shared<SettingsMigrationDeleteKey>("source/extensions/header_extensions"));
 
-	for (std::shared_ptr<SourceGroupSettings> sourceGroupSettings: getAllSourceGroupSettings())
+	for (const std::shared_ptr<SourceGroupSettings> &sourceGroupSettings: getAllSourceGroupSettings())
 	{
 		const std::string key = SourceGroupSettings::s_keyPrefix + sourceGroupSettings->getId();
 		migrator.addMigration(
@@ -439,7 +439,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 				key + "/exclude_paths/exclude_path", key + "/exclude_filters/exclude_filter"));
 	}
 
-	for (std::shared_ptr<SourceGroupSettings> sourceGroupSettings: getAllSourceGroupSettings())
+	for (const std::shared_ptr<SourceGroupSettings> &sourceGroupSettings: getAllSourceGroupSettings())
 	{
 #if BUILD_CXX_LANGUAGE_PACKAGE
 		if (sourceGroupSettings->getType() == SOURCE_GROUP_CXX_CDB)
@@ -454,7 +454,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 	}
 
-	for (std::shared_ptr<SourceGroupSettings> sourceGroupSettings: getAllSourceGroupSettings())
+	for (const std::shared_ptr<SourceGroupSettings> &sourceGroupSettings: getAllSourceGroupSettings())
 	{
 		std::string languageName;
 		switch (getLanguageTypeForSourceGroupType(sourceGroupSettings->getType()))

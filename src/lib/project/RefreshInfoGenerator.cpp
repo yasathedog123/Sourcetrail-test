@@ -28,7 +28,7 @@ RefreshInfo RefreshInfoGenerator::getRefreshInfoForUpdatedFiles(
 				utility::convert<FileInfo, FilePath>(
 					fileInfosFromStorage, [](const FileInfo& info) { return info.path; }));
 
-			for (std::shared_ptr<SourceGroup> sourceGroup: sourceGroups)
+			for (const std::shared_ptr<SourceGroup> &sourceGroup: sourceGroups)
 			{
 				if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
 				{

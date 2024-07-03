@@ -1633,7 +1633,7 @@ void GraphController::groupNodesByParents(GroupType groupType)
 			m_dummyNodes.push_back(groupNode);
 		}
 
-		for (std::shared_ptr<DummyNode> dummyNode: p.second)
+		for (const std::shared_ptr<DummyNode> &dummyNode: p.second)
 		{
 			if (dummyNode->hasActiveSubNode())
 			{
@@ -1675,7 +1675,7 @@ DummyNode* GraphController::groupAllNodes(GroupType groupType, Id groupNodeId)
 	groupNode->tokenId = groupNodeId;
 	m_topLevelAncestorIds[groupNode->tokenId] = groupNode->tokenId;
 
-	for (std::shared_ptr<DummyNode> dummyNode: m_dummyNodes)
+	for (const std::shared_ptr<DummyNode> &dummyNode: m_dummyNodes)
 	{
 		groupNode->subNodes.push_back(dummyNode);
 		m_topLevelAncestorIds[dummyNode->tokenId] = groupNode->tokenId;
@@ -1704,7 +1704,7 @@ void GraphController::groupTrailNodes(GroupType groupType)
 	};
 
 	std::set<Id> possibleNodeIds;
-	for (auto dummyNode: m_dummyNodes)
+	for (const auto &dummyNode: m_dummyNodes)
 	{
 		if (dummyNode->visible && dummyNode->tokenId &&
 			(!dummyNode->subNodes.size() ||
@@ -1880,7 +1880,7 @@ void GraphController::extendEqualFunctionNames(const std::vector<std::shared_ptr
 		}
 	}
 
-	for (auto it: functionNames)
+	for (const auto &it: functionNames)
 	{
 		if (functionNames.count(it.first) < 2)
 		{
@@ -2199,7 +2199,7 @@ void GraphController::layoutGraph(bool getSortedNodes)
 	TRACE();
 
 	std::vector<std::shared_ptr<DummyNode>> visibleNodes;
-	for (auto node: m_dummyNodes)
+	for (const auto &node: m_dummyNodes)
 	{
 		if (node->visible)
 		{
@@ -2251,7 +2251,7 @@ void GraphController::layoutTrail(bool horizontal, bool hasOrigin)
 	}
 
 	std::vector<std::shared_ptr<DummyNode>> visibleNodes;
-	for (auto node: m_dummyNodes)
+	for (const auto &node: m_dummyNodes)
 	{
 		if (node->visible)
 		{
@@ -2737,7 +2737,7 @@ void GraphController::createLegendGraph()
 	createDummyGraphAndSetActiveAndVisibility({}, graph, false);
 	m_dummyNodes = utility::concat(nodes, m_dummyNodes);
 
-	for (std::shared_ptr<DummyNode> node: m_dummyNodes)
+	for (const std::shared_ptr<DummyNode> &node: m_dummyNodes)
 	{
 		if (node->tokenId)
 		{

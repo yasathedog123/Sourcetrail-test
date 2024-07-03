@@ -38,9 +38,8 @@ ParseLocation validLocation(Id locationId = 0)
 NameHierarchy createNameHierarchy(std::wstring s)
 {
 	NameHierarchy nameHierarchy(NAME_DELIMITER_CXX);
-	for (std::wstring element:
-		 utility::splitToVector(s, nameDelimiterTypeToString(NAME_DELIMITER_CXX)))
-	{
+	for (const std::wstring &element :
+		 utility::splitToVector(s, nameDelimiterTypeToString(NAME_DELIMITER_CXX))) {
 		nameHierarchy.push(element);
 	}
 	return nameHierarchy;

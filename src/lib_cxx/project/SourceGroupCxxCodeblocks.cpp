@@ -71,9 +71,8 @@ std::shared_ptr<IndexerCommandProvider> SourceGroupCxxCodeblocks::getIndexerComm
 	if (std::shared_ptr<Codeblocks::Project> project = Codeblocks::Project::load(
 			m_settings->getCodeblocksProjectPathExpandedAndAbsolute()))
 	{
-		for (std::shared_ptr<IndexerCommandCxx> indexerCommand:
-			 project->getIndexerCommands(m_settings, ApplicationSettings::getInstance()))
-		{
+		for (const std::shared_ptr<IndexerCommandCxx> &indexerCommand :
+			 project->getIndexerCommands(m_settings, ApplicationSettings::getInstance())) {
 			if (info.filesToIndex.find(indexerCommand->getSourceFilePath()) != info.filesToIndex.end())
 			{
 				provider->addCommand(indexerCommand);

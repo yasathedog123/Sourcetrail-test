@@ -7,10 +7,10 @@
 
 namespace
 {
-const std::wstring META_DELIMITER = L"\tm";
-const std::wstring NAME_DELIMITER = L"\tn";
-const std::wstring PART_DELIMITER = L"\ts";
-const std::wstring SIGNATURE_DELIMITER = L"\tp";
+const std::wstring_view META_DELIMITER = L"\tm";
+const std::wstring_view NAME_DELIMITER = L"\tn";
+const std::wstring_view PART_DELIMITER = L"\ts";
+const std::wstring_view SIGNATURE_DELIMITER = L"\tp";
 }	 // namespace
 
 std::wstring NameHierarchy::serialize(const NameHierarchy& nameHierarchy)

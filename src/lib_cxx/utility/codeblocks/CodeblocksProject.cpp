@@ -139,8 +139,7 @@ std::set<FilePath> Project::getAllSourceFilePathsCanonical(
 
 	std::set<FilePath> filePaths;
 	std::set<FilePath> nonTargetFilePaths;
-	for (std::shared_ptr<const Unit> unit: m_units)
-	{
+	for (const std::shared_ptr<Unit> &unit : m_units) {
 		if (unit && unit->getCompile())
 		{
 			FilePath filePath(unit->getCanonicalFilePath(m_projectFilePath.getParentDirectory()));
@@ -170,8 +169,7 @@ std::set<FilePath> Project::getAllSourceFilePathsCanonical(
 std::set<FilePath> Project::getAllCxxHeaderSearchPathsCanonical() const
 {
 	std::set<std::wstring> usedTargetNames;
-	for (std::shared_ptr<const Unit> unit: m_units)
-	{
+	for (const std::shared_ptr<Unit> &unit : m_units) {
 		if (unit && unit->getCompile())
 		{
 			utility::append(usedTargetNames, unit->getTargetNames());
@@ -182,8 +180,7 @@ std::set<FilePath> Project::getAllCxxHeaderSearchPathsCanonical() const
 		[](const FilePath& path) { return path.getCanonical(); });
 
 	std::set<FilePath> paths;
-	for (std::shared_ptr<const Target> target: m_targets)
-	{
+	for (const std::shared_ptr<Target> &target : m_targets) {
 		if (target && usedTargetNames.find(target->getTitle()) != usedTargetNames.end())
 		{
 			if (std::shared_ptr<const Compiler> compiler = target->getCompiler())
@@ -227,8 +224,7 @@ std::vector<std::shared_ptr<IndexerCommandCxx>> Project::getIndexerCommands(
 
 	OrderedCache<std::wstring, std::vector<std::wstring>> optionsCache([&](const std::wstring& targetName) {
 		std::vector<std::wstring> compilerFlags;
-		for (std::shared_ptr<Target> target: m_targets)
-		{
+		for (const std::shared_ptr<Target> &target : m_targets) {
 			if (target && target->getTitle() == targetName)
 			{
 				if (std::shared_ptr<const Compiler> compiler = target->getCompiler())
@@ -254,8 +250,7 @@ std::vector<std::shared_ptr<IndexerCommandCxx>> Project::getIndexerCommands(
 
 	std::vector<std::shared_ptr<IndexerCommandCxx>> indexerCommands;
 	std::vector<std::shared_ptr<IndexerCommandCxx>> nonTargetIndexerCommands;
-	for (std::shared_ptr<Unit> unit: m_units)
-	{
+	for (const std::shared_ptr<Unit> &unit : m_units) {
 		if (!unit || !unit->getCompile())
 		{
 			continue;

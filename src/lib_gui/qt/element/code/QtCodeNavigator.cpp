@@ -829,7 +829,7 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		}
 		else if (currentFocus.scopeLine)
 		{
-			currentFocus.scopeLine->clicked();
+			emit currentFocus.scopeLine->clicked();
 		}
 		else if (currentFocus.file)
 		{

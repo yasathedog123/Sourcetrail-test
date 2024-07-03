@@ -552,7 +552,7 @@ void QtProjectWizard::windowReady()
 
 void QtProjectWizard::handlePrevious()
 {
-	QtWindow::handlePrevious();
+	QtProjectWizardWindow::handlePrevious();
 }
 
 QtProjectWizardWindow* QtProjectWizard::createWindowWithContent(
