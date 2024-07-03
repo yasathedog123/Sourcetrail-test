@@ -98,7 +98,7 @@ void ListLayouter::layoutMultiColumn(Vec2i viewSize, std::vector<std::shared_ptr
 		{
 			if (lastTextNode && !visibleNodes[i]->isTextNode())
 			{
-				std::shared_ptr<DummyNode> textNode = std::make_shared<DummyNode>(*lastTextNode.get());
+				std::shared_ptr<DummyNode> textNode = std::make_shared<DummyNode>(*lastTextNode);
 
 				if (visibleNodes[i - 1] == lastTextNode)
 				{

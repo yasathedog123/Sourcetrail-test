@@ -166,7 +166,7 @@ void QtCodeView::updateSourceLocations(const std::vector<CodeFileParams>& files)
 
 			if (file.fileParams && file.fileParams->hasAllSourceLocations)
 			{
-				m_widget->updateSourceLocations(*file.fileParams.get());
+				m_widget->updateSourceLocations(*file.fileParams);
 			}
 		}
 

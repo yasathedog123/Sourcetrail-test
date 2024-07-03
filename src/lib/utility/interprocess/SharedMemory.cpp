@@ -273,7 +273,7 @@ boost::interprocess::named_mutex& SharedMemory::getMutex()
 			boost::interprocess::open_only, getMutexName().c_str());
 	}
 
-	return *m_mutex.get();
+	return *m_mutex;
 }
 
 size_t SharedMemory::getInitialMemorySize() const

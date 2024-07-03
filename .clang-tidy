@@ -1,5 +1,5 @@
 ---
-Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters'
+Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters,readability-redundant-smartptr-get'
 WarningsAsErrors:  ''
 HeaderFilterRegex: '.*'
 FormatStyle:       'file'

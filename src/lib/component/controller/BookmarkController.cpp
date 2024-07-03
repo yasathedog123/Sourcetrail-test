@@ -410,7 +410,7 @@ std::shared_ptr<Bookmark> BookmarkController::getBookmarkForActiveToken(Id tabId
 				edgeBookmark->getActiveNodeId() == m_activeNodeIds[tabId].front() &&
 				utility::isPermutation(edgeBookmark->getEdgeIds(), m_activeEdgeIds[tabId]))
 			{
-				return std::make_shared<EdgeBookmark>(*(edgeBookmark.get()));
+				return std::make_shared<EdgeBookmark>(*edgeBookmark);
 			}
 		}
 	}
@@ -420,7 +420,7 @@ std::shared_ptr<Bookmark> BookmarkController::getBookmarkForActiveToken(Id tabId
 		{
 			if (utility::isPermutation(nodeBookmark->getNodeIds(), m_activeNodeIds[tabId]))
 			{
-				return std::make_shared<NodeBookmark>(*(nodeBookmark.get()));
+				return std::make_shared<NodeBookmark>(*nodeBookmark);
 			}
 		}
 	}
@@ -434,7 +434,7 @@ std::shared_ptr<Bookmark> BookmarkController::getBookmarkForNodeId(Id nodeId) co
 	{
 		if (nodeBookmark->getNodeIds().size() == 1 && nodeBookmark->getNodeIds()[0] == nodeId)
 		{
-			return std::make_shared<NodeBookmark>(*(nodeBookmark.get()));
+			return std::make_shared<NodeBookmark>(*nodeBookmark);
 		}
 	}
 

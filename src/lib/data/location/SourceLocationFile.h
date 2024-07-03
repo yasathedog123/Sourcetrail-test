@@ -20,7 +20,7 @@ public:
 		bool operator()(
 			const std::shared_ptr<SourceLocation>& lhs, const std::shared_ptr<SourceLocation>& rhs) const
 		{
-			return *(lhs.get()) < *(rhs.get());
+			return *lhs < *rhs;
 		}
 	};
 

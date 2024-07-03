@@ -208,7 +208,7 @@ void AccumulatingTracer::finishEvent(std::shared_ptr<TraceEvent> event)
 	AccumulatedTraceEvent* acc = &p.first->second;
 	if (p.second)
 	{
-		acc->event = TraceEvent(*(event.get()));
+		acc->event = TraceEvent(*event);
 		acc->time = event->time;
 		acc->count = 1;
 	}

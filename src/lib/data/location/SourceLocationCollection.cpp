@@ -158,6 +158,6 @@ std::wostream& operator<<(std::wostream& ostream, const SourceLocationCollection
 {
 	ostream << L"Locations:\n";
 	base.forEachSourceLocationFile(
-		[&ostream](std::shared_ptr<SourceLocationFile> f) { ostream << *(f.get()); });
+		[&ostream](std::shared_ptr<SourceLocationFile> f) { ostream << *f; });
 	return ostream;
 }

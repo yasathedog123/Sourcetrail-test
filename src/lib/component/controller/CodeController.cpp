@@ -293,7 +293,7 @@ void CodeController::handleMessage(MessageChangeFileView* message)
 			if (message->viewMode == MessageChangeFileView::VIEW_LIST &&
 				message->state == MessageChangeFileView::FILE_MAXIMIZED)
 			{
-				file.snippetParams = {*file.fileParams.get()};
+				file.snippetParams = {*file.fileParams};
 			}
 
 			break;
@@ -747,7 +747,7 @@ CodeSnippetParams CodeController::getSnippetParamsForWholeFile(
 
 	// make a copy of SourceLocationFile so that isWhole flag is different for first snippet adding
 	// the file and second snippet adding the content
-	snippet.locationFile = std::make_shared<SourceLocationFile>(*locationFile.get());
+	snippet.locationFile = std::make_shared<SourceLocationFile>(*locationFile);
 	snippet.locationFile->setIsWhole(true);
 
 	return snippet;

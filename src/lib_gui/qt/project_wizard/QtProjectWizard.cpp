@@ -1058,10 +1058,10 @@ void QtProjectWizard::createProject()
 		if (currentProject)
 		{
 			settingsChanged = !(
-				currentProject->settingsEqualExceptNameAndLocation(*(m_projectSettings.get())));
+				currentProject->settingsEqualExceptNameAndLocation(*m_projectSettings));
 		}
 
-		settingsChanged |= !(m_appSettings == *ApplicationSettings::getInstance().get());
+		settingsChanged |= !(m_appSettings == *ApplicationSettings::getInstance());
 	}
 	else
 	{
