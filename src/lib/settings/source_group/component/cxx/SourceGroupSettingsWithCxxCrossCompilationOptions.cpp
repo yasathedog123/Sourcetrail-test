@@ -156,7 +156,7 @@ void SourceGroupSettingsWithCxxCrossCompilationOptions::setTargetAbi(const std::
 
 std::wstring SourceGroupSettingsWithCxxCrossCompilationOptions::getTargetFlag() const
 {
-	std::wstring targetFlag = L"";
+	std::wstring targetFlag;
 	if (m_targetOptionsEnabled && !m_targetArch.empty())
 	{
 		targetFlag = L"--target=";

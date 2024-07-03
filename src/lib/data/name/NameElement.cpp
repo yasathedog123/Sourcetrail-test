@@ -3,7 +3,7 @@
 #include "logging.h"
 #include "utilityString.h"
 
-NameElement::Signature::Signature(): m_prefix(L""), m_postfix(L"") {}
+NameElement::Signature::Signature() {}
 
 NameElement::Signature::Signature(std::wstring prefix, std::wstring postfix)
 	: m_prefix(std::move(prefix)), m_postfix(std::move(postfix))

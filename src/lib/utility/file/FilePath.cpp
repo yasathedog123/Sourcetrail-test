@@ -141,7 +141,7 @@ bool FilePath::isValid() const
 	if (isAbsolute() && m_path->has_root_path())
 	{
 		std::string root = m_path->root_path().string();
-		std::string current = "";
+		std::string current;
 		while (current.size() < root.size())
 		{
 			current += it->string();

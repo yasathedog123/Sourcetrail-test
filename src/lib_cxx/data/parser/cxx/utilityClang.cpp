@@ -126,7 +126,7 @@ SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 
 std::wstring utility::getFileNameOfFileEntry(const clang::FileEntry* entry)
 {
-	std::wstring fileName = L"";
+	std::wstring fileName;
 	if (entry != nullptr)
 	{
 		fileName = utility::decodeFromUtf8(entry->tryGetRealPathName().str());

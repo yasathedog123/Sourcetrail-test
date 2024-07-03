@@ -27,7 +27,7 @@ public:
 	struct CreateCDBProjectMessage
 	{
 	public:
-		CreateCDBProjectMessage(): cdbFileLocation(L""), ideId(L""), valid(false) {}
+		CreateCDBProjectMessage(): cdbFileLocation(L""),  valid(false) {}
 
 		FilePath cdbFileLocation;
 		std::wstring ideId;
@@ -37,7 +37,7 @@ public:
 	struct PingMessage
 	{
 	public:
-		PingMessage(): ideId(L""), valid(false) {}
+		PingMessage():  valid(false) {}
 
 		std::wstring ideId;
 		bool valid;

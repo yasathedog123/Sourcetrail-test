@@ -376,7 +376,7 @@ bool ConfigManager::load(const std::shared_ptr<TextAccess> textAccess)
 
 bool ConfigManager::save(const std::string filepath)
 {
-	std::string output("");
+	std::string output;
 	return createXmlDocument(true, filepath, output);
 }
 

@@ -305,8 +305,8 @@ std::string insertLineBreaksAtBlankSpaces(const std::string& s, size_t maxLineLe
 {
 	const std::vector<std::string> atoms = splitToVector(s, " ");
 
-	std::string ret = "";
-	std::string currentLine = "";
+	std::string ret;
+	std::string currentLine;
 	for (const std::string& atom: atoms)
 	{
 		if (currentLine.size() + 1 + atom.size() <= maxLineLength)

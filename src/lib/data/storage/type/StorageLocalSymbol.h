@@ -7,7 +7,7 @@
 
 struct StorageLocalSymbolData
 {
-	StorageLocalSymbolData(): name(L"") {}
+	StorageLocalSymbolData() {}
 
 	StorageLocalSymbolData(std::wstring name): name(std::move(name)) {}
 

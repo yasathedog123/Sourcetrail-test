@@ -7,7 +7,7 @@
 
 struct StorageNodeData
 {
-	StorageNodeData(): type(0), serializedName(L"") {}
+	StorageNodeData(): type(0) {}
 
 	StorageNodeData(int type, std::wstring serializedName)
 		: type(type), serializedName(std::move(serializedName))

@@ -1,5 +1,5 @@
 ---
-Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters,readability-redundant-smartptr-get'
+Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters,readability-redundant-smartptr-get,readability-redundant-string-init'
 WarningsAsErrors:  ''
 HeaderFilterRegex: '.*'
 FormatStyle:       'file'
@@ -9,3 +9,7 @@ CheckOptions:
 
     - key: misc-unused-parameters.StrictMode
       value: '1'
+
+    - key: readability-redundant-string-init.StringNames
+      value: ' ::std::basic_string;::std::basic_string_view;QString'
+

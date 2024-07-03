@@ -39,9 +39,7 @@ TestLogger::TestLogger()
 	, m_logMessageCount(0)
 	, m_logWarningCount(0)
 	, m_logErrorCount(0)
-	, m_lastInfo(L"")
-	, m_lastWarning(L"")
-	, m_lastError(L"")
+	 
 {
 }
 

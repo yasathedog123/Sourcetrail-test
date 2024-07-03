@@ -74,7 +74,7 @@ utility::ProcessOutput utility::executeProcess(
 	const int timeout,
 	bool logProcessOutput)
 {
-	std::string output = "";
+	std::string output;
 	int exitCode = 255;
 	try
 	{

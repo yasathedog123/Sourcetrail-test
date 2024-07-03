@@ -59,7 +59,7 @@ std::vector<FilePath> gradleGetAllSourceDirectories(
 		std::shared_ptr<JavaEnvironment> javaEnvironment =
 			JavaEnvironmentFactory::getInstance()->createEnvironment();
 		{
-			std::string output = "";
+			std::string output;
 			javaEnvironment->callStaticStringMethod(
 				"com/sourcetrail/gradle/InfoRetriever",
 				"getMainSrcDirs",
@@ -89,7 +89,7 @@ std::vector<FilePath> gradleGetAllSourceDirectories(
 
 		if (addTestDirectories)
 		{
-			std::string output = "";
+			std::string output;
 			javaEnvironment->callStaticStringMethod(
 				"com/sourcetrail/gradle/InfoRetriever",
 				"getTestSrcDirs",

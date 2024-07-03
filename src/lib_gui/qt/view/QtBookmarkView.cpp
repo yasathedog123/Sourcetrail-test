@@ -25,7 +25,7 @@ void QtBookmarkView::displayBookmarkCreator(
 				->getMainWindow());
 		bookmarkCreator->setupBookmarkCreator();
 
-		std::wstring displayName = L"";
+		std::wstring displayName;
 
 		for (unsigned int i = 0; i < names.size(); i++)
 		{

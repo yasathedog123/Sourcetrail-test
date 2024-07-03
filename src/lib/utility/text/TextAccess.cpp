@@ -123,7 +123,7 @@ const std::vector<std::string>& TextAccess::getAllLines() const
 
 std::string TextAccess::getText() const
 {
-	std::string result = "";
+	std::string result;
 
 	for (unsigned int i = 0; i < m_lines.size(); i++)
 	{

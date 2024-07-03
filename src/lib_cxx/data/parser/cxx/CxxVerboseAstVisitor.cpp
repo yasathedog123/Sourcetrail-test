@@ -91,7 +91,7 @@ bool CxxVerboseAstVisitor::TraverseTypeLoc(clang::TypeLoc tl)
 
 std::string CxxVerboseAstVisitor::getIndentString() const
 {
-	std::string indentString = "";
+	std::string indentString;
 	for (unsigned int i = 0; i < m_indentation; i++)
 	{
 		indentString += "| ";

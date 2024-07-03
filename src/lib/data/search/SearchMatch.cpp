@@ -96,15 +96,15 @@ std::wstring SearchMatch::getCommandName(CommandType type)
 }
 
 SearchMatch::SearchMatch()
-	: typeName(L""), nodeType(NODE_SYMBOL), searchType(SEARCH_NONE), hasChildren(false)
+	:  nodeType(NODE_SYMBOL), searchType(SEARCH_NONE), hasChildren(false)
 {
 }
 
 SearchMatch::SearchMatch(const std::wstring& query)
 	: name(query)
 	, text(query)
-	, typeName(L"")
-	, nodeType(NODE_SYMBOL)
+	, 
+	 nodeType(NODE_SYMBOL)
 	, searchType(SEARCH_NONE)
 	, hasChildren(false)
 {

@@ -7,7 +7,7 @@
 
 struct StorageBookmarkData
 {
-	StorageBookmarkData(): name(L""), comment(L""), timestamp(""), categoryId(0) {}
+	StorageBookmarkData():  categoryId(0) {}
 
 	StorageBookmarkData(
 		const std::wstring& name,

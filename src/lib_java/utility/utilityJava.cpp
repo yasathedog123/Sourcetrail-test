@@ -47,7 +47,7 @@ std::string prepareJavaEnvironment(const FilePath &javaDirectoryPath)
 
 	if (!JavaEnvironmentFactory::getInstance())
 	{
-		std::string classPath = "";
+		std::string classPath;
 		{
 			const std::vector<std::wstring> jarNames = getRequiredJarNames();
 			for (size_t i = 0; i < jarNames.size(); i++)
@@ -109,7 +109,7 @@ std::set<FilePath> fetchRootDirectories(const std::set<FilePath>& sourceFilePath
 	{
 		std::shared_ptr<TextAccess> textAccess = TextAccess::createFromFile(filePath);
 
-		std::string packageName = "";
+		std::string packageName;
 		javaEnvironment->callStaticStringMethod(
 			"com/sourcetrail/JavaIndexer", "getPackageName", packageName, textAccess->getText());
 

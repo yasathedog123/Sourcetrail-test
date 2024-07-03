@@ -96,7 +96,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code)
 			tempDbPath, FilePath());
 		persistentStorage->setup();
 		persistentStorage->buildCaches();
-		TaskExecuteCustomCommands::runPythonPostProcessing(*(persistentStorage.get()));
+		TaskExecuteCustomCommands::runPythonPostProcessing(*persistentStorage);
 
 		testStorage = TestStorage::create(persistentStorage);
 	}

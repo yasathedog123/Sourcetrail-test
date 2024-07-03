@@ -6,7 +6,7 @@
 class MessagePingReceived: public Message<MessagePingReceived>
 {
 public:
-	MessagePingReceived(): ideName(L"") {}
+	MessagePingReceived() {}
 
 	static const std::string getStaticType()
 	{

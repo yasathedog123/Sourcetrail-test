@@ -7,7 +7,7 @@
 
 struct StorageBookmarkedNodeData
 {
-	StorageBookmarkedNodeData(): bookmarkId(0), serializedNodeName(L"") {}
+	StorageBookmarkedNodeData(): bookmarkId(0) {}
 
 	StorageBookmarkedNodeData(Id bookmarkId, const std::wstring& serializedNodeName)
 		: bookmarkId(bookmarkId), serializedNodeName(serializedNodeName)

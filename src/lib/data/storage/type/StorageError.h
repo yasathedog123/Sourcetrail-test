@@ -8,7 +8,7 @@
 
 struct StorageErrorData
 {
-	StorageErrorData(): message(L""), translationUnit(L""), fatal(0), indexed(0) {}
+	StorageErrorData():  fatal(0), indexed(0) {}
 
 	StorageErrorData(std::wstring message, std::wstring translationUnit, bool fatal, bool indexed)
 		: message(std::move(message))

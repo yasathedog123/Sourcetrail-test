@@ -89,7 +89,7 @@ JavaParser::~JavaParser()
 
 void JavaParser::buildIndex(std::shared_ptr<IndexerCommandJava> indexerCommand)
 {
-	std::string classPath = "";
+	std::string classPath;
 	for (const FilePath& path: indexerCommand->getClassPath())
 	{
 		// the separator used here should be the same as the one used in JavaIndexer.java

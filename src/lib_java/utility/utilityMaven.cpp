@@ -23,7 +23,7 @@ void fetchDirectories(
 	const FilePath& toAppend = FilePath())
 {
 	{
-		std::string tagString = "";
+		std::string tagString;
 		for (size_t i = 0; i < tags.size(); i++)
 		{
 			if (i != 0)

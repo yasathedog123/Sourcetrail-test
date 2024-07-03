@@ -103,7 +103,7 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 
 				std::string prefixString = tokenLine.substr(0, startLoc->getColumnNumber() - 1);
 
-				std::wstring definitionContextName = L"";
+				std::wstring definitionContextName;
 				{
 					std::regex regex("\\s([^\\.()\\s]+)\\.$");
 					std::smatch matches;

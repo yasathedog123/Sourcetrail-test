@@ -352,7 +352,7 @@ void QtProjectWizardContentPathsHeaderSearch::showDetectedIncludesResult(
 	}
 	else
 	{
-		std::wstring detailedText = L"";
+		std::wstring detailedText;
 		for (const FilePath& path: additionalHeaderSearchPaths)
 		{
 			detailedText += path.wstr() + L"\n";
@@ -406,7 +406,7 @@ void QtProjectWizardContentPathsHeaderSearch::showValidationResult(
 				unresolvedInclude.getLineNumber(), unresolvedInclude.getDirective());
 		}
 
-		std::wstring detailedText = L"";
+		std::wstring detailedText;
 		for (const auto& p: orderedIncludes)
 		{
 			detailedText += p.first + L"\n";

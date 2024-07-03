@@ -9,9 +9,8 @@ struct StorageBookmarkedEdgeData
 {
 	StorageBookmarkedEdgeData()
 		: bookmarkId(0)
-		, serializedSourceNodeName(L"")
-		, serializedTargetNodeName(L"")
-		, edgeType(0)
+		, 
+		 edgeType(0)
 		, sourceNodeActive(false)
 	{
 	}

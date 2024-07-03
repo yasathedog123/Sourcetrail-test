@@ -18,7 +18,7 @@
 struct TraceEvent
 {
 public:
-	TraceEvent(): eventName(""), id(0), depth(0), time(0.0) {}
+	TraceEvent():  id(0), depth(0), time(0.0) {}
 
 	TraceEvent(const std::string& eventName, Id id, size_t depth)
 		: eventName(eventName), id(id), depth(depth), time(0.0)

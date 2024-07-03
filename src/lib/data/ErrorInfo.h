@@ -8,12 +8,11 @@ struct ErrorInfo
 {
 	ErrorInfo()
 		: id(0)
-		, message(L"")
-		, filePath(L"")
-		, lineNumber(-1)
+		, 
+		 lineNumber(-1)
 		, columnNumber(-1)
-		, translationUnit(L"")
-		, fatal(0)
+		, 
+		 fatal(0)
 		, indexed(0)
 	{
 	}

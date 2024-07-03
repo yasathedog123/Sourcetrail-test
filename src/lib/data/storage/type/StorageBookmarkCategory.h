@@ -7,7 +7,7 @@
 
 struct StorageBookmarkCategoryData
 {
-	StorageBookmarkCategoryData(): name(L"") {}
+	StorageBookmarkCategoryData() {}
 
 	StorageBookmarkCategoryData(const std::wstring& name): name(name) {}
 
