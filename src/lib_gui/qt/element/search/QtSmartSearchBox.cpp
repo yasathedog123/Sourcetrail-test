@@ -12,9 +12,9 @@
 #include "GraphViewStyle.h"
 #include "MessageFocusedSearchView.h"
 #include "NodeTypeSet.h"
+#include "compatibilityQt.h"
 #include "utility.h"
 #include "utilityString.h"
-#include "compatibilityQt.h"
 
 using namespace utility::compatibility;
 

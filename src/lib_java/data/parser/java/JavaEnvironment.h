@@ -1,9 +1,9 @@
 #ifndef JAVA_ENVIRONMENT_H
 #define JAVA_ENVIRONMENT_H
 
+#include <jni.h>
 #include <string>
 #include <vector>
-#include <jni.h>
 
 class JavaEnvironmentFactory;
 

@@ -4,8 +4,8 @@
 
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
 
-#	include <memory>
 #	include <fstream>
+#	include <memory>
 
 #	include "FileSystem.h"
 #	include "IndexerCommandCustom.h"

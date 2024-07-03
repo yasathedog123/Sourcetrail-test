@@ -1,10 +1,10 @@
 #ifndef FILE_PATH_H
 #define FILE_PATH_H
 
+#include <boost/filesystem.hpp>
 #include <memory>
 #include <string>
 #include <vector>
-#include <boost/filesystem.hpp>
 
 class FilePath
 {

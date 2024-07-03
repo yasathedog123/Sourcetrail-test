@@ -1,13 +1,13 @@
-#include <ApplicationSettings.h>
 #include <AppPath.h>
+#include <ApplicationSettings.h>
 #include <FilePath.h>
 #include <FileSystem.h>
-#include <productVersion.h>
 #include <ResourcePaths.h>
 #include <UserPaths.h>
+#include <Version.h>
+#include <productVersion.h>
 #include <utilityApp.h>
 #include <utilityQt.h>
-#include <Version.h>
 
 #include <QCoreApplication>
 #include <QDir>

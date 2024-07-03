@@ -8,8 +8,8 @@
 #include "CxxSpecifierNameResolver.h"
 #include "CxxTemplateArgumentNameResolver.h"
 #include "logging.h"
-#include "utilityString.h"
 #include "utilityClang.h"
+#include "utilityString.h"
 
 using namespace std;
 using namespace clang;

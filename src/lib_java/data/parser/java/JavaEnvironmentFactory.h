@@ -1,13 +1,13 @@
 #ifndef JAVA_ENVIRONMENT_FACTORY_H
 #define JAVA_ENVIRONMENT_FACTORY_H
 
+#include <boost/dll/shared_library.hpp>
+#include <jni.h>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <string>
 #include <thread>
-#include <jni.h>
-#include <boost/dll/shared_library.hpp>
 
 class JavaEnvironment;
 

@@ -6,8 +6,8 @@
 #include <clang/AST/PrettyPrinter.h>
 
 #include "CxxTypeNameResolver.h"
-#include "utilityString.h"
 #include "utilityClang.h"
+#include "utilityString.h"
 
 using namespace utility;
 

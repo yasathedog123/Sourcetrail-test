@@ -3,11 +3,11 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRegExp>
+#include <QRegularExpression>
 #include <QTextBlock>
 #include <QTextCursor>
 #include <QTextDocument>
-#include <QRegExp>
-#include <QRegularExpression>
 
 #include "ColorScheme.h"
 #include "FileSystem.h"

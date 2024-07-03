@@ -31,8 +31,8 @@
 #include "compatibilityQt.h"
 #include "utility.h"
 #include "utilityApp.h"
-#include "utilityString.h"
 #include "utilityQt.h"
+#include "utilityString.h"
 
 using namespace utility::compatibility;
 

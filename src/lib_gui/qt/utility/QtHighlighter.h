@@ -1,8 +1,8 @@
 #ifndef QT_HIGHLIGHTER_H
 #define QT_HIGHLIGHTER_H
 
-#include <QTextCharFormat>
 #include <QRegExp>
+#include <QTextCharFormat>
 
 class QTextBlock;
 class QTextDocument;

@@ -2,8 +2,8 @@
 #include "language_packages.h"
 
 #include "AppPath.h"
-#include "UserPaths.h"
 #include "ApplicationSettings.h"
+#include "UserPaths.h"
 // #include "ConsoleLogger.h"
 #include "FileLogger.h"
 #include "InterprocessIndexer.h"

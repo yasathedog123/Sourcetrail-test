@@ -1,12 +1,12 @@
 #ifndef UTILITY_APP_H
 #define UTILITY_APP_H
 
-#include <string>
 #include <boost/predef.h>
+#include <string>
 
-#include <Os.h>
 #include "ApplicationArchitectureType.h"
 #include "FilePath.h"
+#include <Os.h>
 
 namespace utility
 {

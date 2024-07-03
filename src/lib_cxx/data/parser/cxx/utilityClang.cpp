@@ -2,8 +2,8 @@
 
 #include <clang/AST/DeclCXX.h>
 #include <clang/AST/DeclTemplate.h>
-#include <clang/Lex/Preprocessor.h>
 #include <clang/Basic/FileManager.h>
+#include <clang/Lex/Preprocessor.h>
 
 #include "CanonicalFilePathCache.h"
 #include "FilePath.h"

@@ -1,7 +1,7 @@
 #include "ToolVersionData.h"
-#include "utility.h"
-#include "language_packages.h"
 #include "Os.h"
+#include "language_packages.h"
+#include "utility.h"
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	#include <llvm/Config/llvm-config.h>

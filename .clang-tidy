@@ -1,15 +1,37 @@
+# Note: tabs are not allowd!
+
 ---
-Checks:            '-*,modernize-use-override,readability-simplify-boolean-expr,misc-unused-parameters,readability-redundant-smartptr-get,readability-redundant-string-init'
+Checks: >
+    -*,
+    bugprone-copy-constructor-init,
+    # bugprone-parent-virtual-call, It is not clear whether the detected cases are intentional,
+    bugprone-shared-ptr-array-mismatch,
+    bugprone-standalone-empty,
+    bugprone-string-constructor,
+    bugprone-unique-ptr-array-mismatch,
+    llvm-include-order,
+    misc-unused-parameters,
+    modernize-use-override,
+    readability-redundant-smartptr-get,
+    readability-redundant-string-init,
+    readability-simplify-boolean-expr
+
 WarningsAsErrors:  ''
 HeaderFilterRegex: '.*'
 FormatStyle:       'file'
 CheckOptions:
-    - key: modernize-use-override.IgnoreDestructors
-      value: '0'
+    - key: bugprone-string-constructor.StringNames
+      value: ' ::std::basic_string;::std::basic_string_view;QString'
 
     - key: misc-unused-parameters.StrictMode
       value: '1'
 
+    - key: modernize-use-override.IgnoreDestructors
+      value: '0'
+
     - key: readability-redundant-string-init.StringNames
       value: ' ::std::basic_string;::std::basic_string_view;QString'
+
+    - key: readability-simplify-boolean-expr.SimplifyDeMorgan
+      value: '0'
 

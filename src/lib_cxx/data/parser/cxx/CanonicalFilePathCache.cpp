@@ -1,9 +1,9 @@
 #include "CanonicalFilePathCache.h"
 
-#include <clang/AST/ASTContext.h>
-#include <clang/Basic/FileManager.h>
 #include "utilityClang.h"
 #include "utilityString.h"
+#include <clang/AST/ASTContext.h>
+#include <clang/Basic/FileManager.h>
 
 CanonicalFilePathCache::CanonicalFilePathCache(std::shared_ptr<FileRegister> fileRegister)
 	: m_fileRegister(fileRegister)

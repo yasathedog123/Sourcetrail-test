@@ -5,9 +5,9 @@
 
 #include <QGraphicsView>
 
-#include "types.h"
 #include "MessageListener.h"
 #include "MessageSaveAsImage.h"
+#include "types.h"
 
 
 class GraphFocusHandler;

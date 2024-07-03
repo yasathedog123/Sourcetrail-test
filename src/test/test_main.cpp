@@ -1,12 +1,12 @@
-#include <iostream>
 #include <boost/filesystem.hpp>
+#include <iostream>
 
-#include <AppPath.h>
 #include "ApplicationSettings.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
-#include <setupApp.h>
+#include <AppPath.h>
 #include <UserPaths.h>
+#include <setupApp.h>
 
 #include "Catch2.hpp"
 

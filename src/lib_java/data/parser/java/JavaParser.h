@@ -1,10 +1,10 @@
 #ifndef JAVA_PARSER_H
 #define JAVA_PARSER_H
 
+#include <jni.h>
 #include <map>
 #include <mutex>
 #include <string>
-#include <jni.h>
 
 #include "FilePath.h"
 #include "IndexerCommandJava.h"
