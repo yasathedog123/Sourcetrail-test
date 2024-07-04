@@ -1,8 +1,8 @@
 #include "QtSmartSearchBox.h"
 
+#include <cstdlib>
 #include <deque>
 #include <regex>
-#include <stdlib.h>
 
 #include <QApplication>
 #include <QClipboard>

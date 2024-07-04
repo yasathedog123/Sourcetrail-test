@@ -1,7 +1,7 @@
 #include "SearchIndex.h"
 
 #include <algorithm>
-#include <ctype.h>
+#include <cctype>
 #include <iterator>
 
 #include "utility.h"
