@@ -162,4 +162,4 @@ void LogManager::logError(
 
 std::shared_ptr<LogManager> LogManager::s_instance;
 
-LogManager::LogManager(): m_loggingEnabled(false) {}
+LogManager::LogManager() {}

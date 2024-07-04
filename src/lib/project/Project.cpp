@@ -53,8 +53,6 @@ Project::Project(
 	bool hasGUI)
 	: m_settings(settings)
 	, m_storageCache(storageCache)
-	, m_state(PROJECT_STATE_NOT_LOADED)
-	, m_refreshStage(RefreshStageType::NONE)
 	, m_appUUID(appUUID)
 	, m_hasGUI(hasGUI)
 {

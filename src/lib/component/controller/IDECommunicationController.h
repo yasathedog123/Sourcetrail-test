@@ -53,7 +53,7 @@ private:
 
 	StorageAccess* m_storageAccess;
 
-	bool m_enabled;
+	bool m_enabled = true;
 };
 
 #endif	  // IDE_COMMUNICATION_CONTROLLER_H

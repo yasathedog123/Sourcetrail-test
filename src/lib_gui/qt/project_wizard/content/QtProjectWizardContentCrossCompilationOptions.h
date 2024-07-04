@@ -30,11 +30,11 @@ private:
 
 	std::shared_ptr<SourceGroupSettingsWithCxxCrossCompilationOptions> m_sourceGroupSettings;
 
-	QCheckBox* m_useTargetOptions;
-	QComboBox* m_arch;
-	QComboBox* m_vendor;
-	QComboBox* m_sys;
-	QComboBox* m_abi;
+	QCheckBox* m_useTargetOptions = nullptr;
+	QComboBox* m_arch = nullptr;
+	QComboBox* m_vendor = nullptr;
+	QComboBox* m_sys = nullptr;
+	QComboBox* m_abi = nullptr;
 };
 
 #endif	  // QT_PROJECT_WIZARD_CONTENT_CROSS_COMPILATION_OPTIONS

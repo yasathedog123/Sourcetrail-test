@@ -83,8 +83,8 @@ std::shared_ptr<IndexerCommand> SharedIndexerCommand::fromShared(const SharedInd
 
 
 SharedIndexerCommand::SharedIndexerCommand(SharedMemory::Allocator* allocator)
-	: m_type(Type::UNKNOWN)
-	, m_sourceFilePath("", allocator)
+	: 
+	 m_sourceFilePath("", allocator)
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	, m_indexedPaths(allocator)
 	, m_excludeFilters(allocator)

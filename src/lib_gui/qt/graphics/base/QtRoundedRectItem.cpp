@@ -4,7 +4,7 @@
 #include <QPainter>
 
 QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem* parent)
-	: QGraphicsRectItem(parent), m_radius(0.0f)
+	: QGraphicsRectItem(parent) 
 {
 	this->setZValue(-1.0f);
 }

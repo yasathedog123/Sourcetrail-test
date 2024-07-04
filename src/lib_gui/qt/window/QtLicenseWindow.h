@@ -7,7 +7,7 @@ class QtLicenseWindow: public QtWindow
 {
 	Q_OBJECT
 public:
-	QtLicenseWindow(QWidget* parent = 0);
+	QtLicenseWindow(QWidget* parent = nullptr);
 	QSize sizeHint() const override;
 
 protected:

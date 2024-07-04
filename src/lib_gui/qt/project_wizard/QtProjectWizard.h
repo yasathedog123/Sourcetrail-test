@@ -51,14 +51,14 @@ private:
 	std::vector<std::shared_ptr<SourceGroupSettings>> m_allSourceGroupSettings;
 	ApplicationSettings m_appSettings;
 
-	bool m_editing;
-	int m_previouslySelectedIndex;
+	bool m_editing = false;
+	int m_previouslySelectedIndex = -1;
 
 	QPushButton* m_generalButton;
 	QPushButton* m_removeButton;
 	QPushButton* m_duplicateButton;
 	QListWidget* m_sourceGroupList;
-	QWidget* m_contentWidget;
+	QWidget* m_contentWidget = nullptr;
 
 private slots:
 	void generalButtonClicked();

@@ -10,7 +10,7 @@ class QtTextEditDialog: public QtWindow
 	Q_OBJECT
 
 public:
-	QtTextEditDialog(const QString& title, const QString& description, QWidget* parent = 0);
+	QtTextEditDialog(const QString& title, const QString& description, QWidget* parent = nullptr);
 
 	QSize sizeHint() const override;
 

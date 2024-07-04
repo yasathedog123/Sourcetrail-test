@@ -26,9 +26,7 @@
 QtDialogView::QtDialogView(QtMainWindow* mainWindow, UseCase useCase, StorageAccess* storageAccess)
 	: DialogView(useCase, storageAccess)
 	, m_mainWindow(mainWindow)
-	, m_parentWindow(nullptr)
 	, m_windowStack(this)
-	, m_resultReady(false)
 {
 }
 

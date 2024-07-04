@@ -4,16 +4,19 @@
 Checks: >
     -*,
     bugprone-copy-constructor-init,
-    # bugprone-parent-virtual-call, It is not clear whether the detected cases are intentional,
+    # bugprone-parent-virtual-call, # It is not clear whether the detected cases are intentional,
     bugprone-shared-ptr-array-mismatch,
     bugprone-standalone-empty,
     bugprone-string-constructor,
     bugprone-unique-ptr-array-mismatch,
     llvm-include-order,
-    llvm-prefer-isa-or-dyn-cast-in-conditionals,
+    # misc-include-cleaner, # Breaks to many files and replaces the Qt header with lower level ones,
     misc-unused-parameters,
+    modernize-use-bool-literals,
     modernize-use-override,
-    readability-redundant-smartptr-get,
+    modernize-use-default-member-init,
+    modernize-use-nullptr,
+    readability-redundant-member-init,
     readability-redundant-string-init,
     readability-simplify-boolean-expr
 
@@ -27,12 +30,23 @@ CheckOptions:
     - key: misc-unused-parameters.StrictMode
       value: '1'
 
+    - key: modernize-use-bool-literals.IgnoreMacros
+      value: '0'
+
     - key: modernize-use-override.IgnoreDestructors
       value: '0'
+
+    - key: modernize-use-default-member-init.UseAssignment
+      value: '1'
+
+    - key: modernize-use-default-member-init.IgnoreMacros
+      value: '0'
+
+    - key: readability-redundant-member-init.IgnoreBaseInCopyConstructors
+      value: '1'
 
     - key: readability-redundant-string-init.StringNames
       value: ' ::std::basic_string;::std::basic_string_view;QString'
 
     - key: readability-simplify-boolean-expr.SimplifyDeMorgan
       value: '0'
-

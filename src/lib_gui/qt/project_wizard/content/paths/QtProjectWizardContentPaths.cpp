@@ -13,7 +13,6 @@ QtProjectWizardContentPaths::QtProjectWizardContentPaths(
 	bool checkMissingPaths)
 	: QtProjectWizardContent(window)
 	, m_settings(settings)
-	, m_makePathsRelativeToProjectFileLocation(true)
 	, m_selectionPolicy(selectionPolicy)
 	, m_checkMissingPaths(checkMissingPaths)
 {

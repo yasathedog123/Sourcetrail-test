@@ -105,7 +105,7 @@ private:
 	QPoint m_last;
 
 	float m_zoomFactor;
-	float m_appZoomFactor;
+	float m_appZoomFactor = 1.0f;
 
 	bool m_up = false;
 	bool m_down = false;
@@ -149,8 +149,8 @@ private:
 
 	QtSelfRefreshIconButton* m_legendButton;
 
-	float m_zoomInButtonSpeed;
-	float m_zoomOutButtonSpeed;
+	float m_zoomInButtonSpeed = 20.0f;
+	float m_zoomOutButtonSpeed = -20.0f;
 
 	QImage m_imageCached;
 	Id m_tabId;

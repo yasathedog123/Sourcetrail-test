@@ -30,9 +30,9 @@ public:
 class TestMessageListener: public MessageListener<TestMessage>
 {
 public:
-	TestMessageListener(): m_messageCount(0) {}
+	TestMessageListener() {}
 
-	int m_messageCount;
+	int m_messageCount = 0;
 
 private:
 	void handleMessage(TestMessage*  /*message*/) override
@@ -44,9 +44,9 @@ private:
 class Test2MessageListener: public MessageListener<Test2Message>
 {
 public:
-	Test2MessageListener(): m_messageCount(0) {}
+	Test2MessageListener() {}
 
-	int m_messageCount;
+	int m_messageCount = 0;
 
 private:
 	void handleMessage(Test2Message*  /*message*/) override

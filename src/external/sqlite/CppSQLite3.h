@@ -106,11 +106,11 @@ public:
 
 private:
 
-    unsigned char* mpBuf;
-    int mnBinaryLen;
-    int mnBufferLen;
-    int mnEncodedLen;
-    bool mbEncoded;
+    unsigned char* mpBuf = nullptr;
+    int mnBinaryLen = 0;
+    int mnBufferLen = 0;
+    int mnEncodedLen = 0;
+    bool mbEncoded = false;
 };
 
 

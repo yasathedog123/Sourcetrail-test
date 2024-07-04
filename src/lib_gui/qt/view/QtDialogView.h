@@ -87,7 +87,7 @@ private:
 	DialogType* createWindow(ParamTypes... params);
 
 	QtMainWindow* m_mainWindow;
-	QtWindow* m_parentWindow;
+	QtWindow* m_parentWindow = nullptr;
 
 	QtWindowStack m_windowStack;
 
@@ -98,7 +98,7 @@ private:
 	std::map<RefreshMode, RefreshInfo> m_refreshInfos;
 	bool m_shallowIndexingEnabled;
 
-	bool m_resultReady;
+	bool m_resultReady = false;
 	bool m_uiBlocked = false;
 	bool m_dialogsVisible = true;
 };

@@ -69,7 +69,7 @@ private:
 	Type getType() const;
 	void setType(const Type type);
 
-	Type m_type;
+	Type m_type = Type::UNKNOWN;
 
 	// indexer command
 	SharedMemory::String m_sourceFilePath;

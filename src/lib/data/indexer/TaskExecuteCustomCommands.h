@@ -59,7 +59,7 @@ private:
 	ErrorCountInfo m_errorCount;
 	std::mutex m_errorCountMutex;
 	FilePath m_targetDatabaseFilePath;
-	bool m_hasPythonCommands;
+	bool m_hasPythonCommands = false;
 	std::set<FilePath> m_sourceDatabaseFilePaths;
 	std::mutex m_sourceDatabaseFilePathsMutex;
 };

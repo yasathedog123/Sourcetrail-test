@@ -26,7 +26,7 @@ struct StorageBookmarkData
 
 struct StorageBookmark: public StorageBookmarkData
 {
-	StorageBookmark(): StorageBookmarkData(), id(0) {}
+	StorageBookmark():  id(0) {}
 
 	StorageBookmark(Id id, const StorageBookmarkData& data): StorageBookmarkData(data), id(id) {}
 

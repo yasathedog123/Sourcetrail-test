@@ -72,7 +72,7 @@ CppSQLite3Exception::CppSQLite3Exception(const int nErrCode,
 CppSQLite3Exception::CppSQLite3Exception(const CppSQLite3Exception&  e) :
 									mnErrCode(e.mnErrCode)
 {
-	mpszErrMess = 0;
+	mpszErrMess = nullptr;
 	if (e.mpszErrMess)
 	{
 		mpszErrMess = sqlite3_mprintf("%s", e.mpszErrMess);
@@ -123,7 +123,7 @@ CppSQLite3Exception::~CppSQLite3Exception()
 	if (mpszErrMess)
 	{
 		sqlite3_free(mpszErrMess);
-		mpszErrMess = 0;
+		mpszErrMess = nullptr;
 	}
 }
 
@@ -132,7 +132,7 @@ CppSQLite3Exception::~CppSQLite3Exception()
 
 CppSQLite3Buffer::CppSQLite3Buffer()
 {
-	mpBuf = 0;
+	mpBuf = nullptr;
 }
 
 
@@ -147,7 +147,7 @@ void CppSQLite3Buffer::clear()
 	if (mpBuf)
 	{
 		sqlite3_free(mpBuf);
-		mpBuf = 0;
+		mpBuf = nullptr;
 	}
 
 }
@@ -166,12 +166,8 @@ const char* CppSQLite3Buffer::format(const char* szFormat, ...)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-CppSQLite3Binary::CppSQLite3Binary() :
-						mpBuf(0),
-						mnBinaryLen(0),
-						mnBufferLen(0),
-						mnEncodedLen(0),
-						mbEncoded(false)
+CppSQLite3Binary::CppSQLite3Binary() 
+						
 {
 }
 
@@ -285,7 +281,7 @@ void CppSQLite3Binary::clear()
 		mnBinaryLen = 0;
 		mnBufferLen = 0;
 		free(mpBuf);
-		mpBuf = 0;
+		mpBuf = nullptr;
 	}
 }
 
@@ -294,7 +290,7 @@ void CppSQLite3Binary::clear()
 
 CppSQLite3Query::CppSQLite3Query()
 {
-	mpVM = 0;
+	mpVM = nullptr;
 	mbEof = true;
 	mnCols = 0;
 	mbOwnVM = false;
@@ -305,7 +301,7 @@ CppSQLite3Query::CppSQLite3Query(const CppSQLite3Query& rQuery)
 {
 	mpVM = rQuery.mpVM;
 	// Only one object can own the VM
-	const_cast<CppSQLite3Query&>(rQuery).mpVM = 0;
+	const_cast<CppSQLite3Query&>(rQuery).mpVM = nullptr;
 	mbEof = rQuery.mbEof;
 	mnCols = rQuery.mnCols;
 	mbOwnVM = rQuery.mbOwnVM;
@@ -348,7 +344,7 @@ CppSQLite3Query& CppSQLite3Query::operator=(const CppSQLite3Query& rQuery)
 	}
 	mpVM = rQuery.mpVM;
 	// Only one object can own the VM
-	const_cast<CppSQLite3Query&>(rQuery).mpVM = 0;
+	const_cast<CppSQLite3Query&>(rQuery).mpVM = nullptr;
 	mbEof = rQuery.mbEof;
 	mnCols = rQuery.mnCols;
 	mbOwnVM = rQuery.mbOwnVM;
@@ -594,7 +590,7 @@ void CppSQLite3Query::nextRow()
 	else
 	{
 		nRet = sqlite3_finalize(mpVM);
-		mpVM = 0;
+		mpVM = nullptr;
 		const char* szError = sqlite3_errmsg(mpDB);
 		throw CppSQLite3Exception(nRet,
 								szError,
@@ -608,7 +604,7 @@ void CppSQLite3Query::finalize()
 	if (mpVM && mbOwnVM)
 	{
 		int nRet = sqlite3_finalize(mpVM);
-		mpVM = 0;
+		mpVM = nullptr;
 		if (nRet != SQLITE_OK)
 		{
 			const char* szError = sqlite3_errmsg(mpDB);
@@ -620,7 +616,7 @@ void CppSQLite3Query::finalize()
 
 void CppSQLite3Query::checkVM()
 {
-	if (mpVM == 0)
+	if (mpVM == nullptr)
 	{
 		throw CppSQLite3Exception(CPPSQLITE_ERROR,
 								"Null Virtual Machine pointer",
@@ -633,7 +629,7 @@ void CppSQLite3Query::checkVM()
 
 CppSQLite3Table::CppSQLite3Table()
 {
-	mpaszResults = 0;
+	mpaszResults = nullptr;
 	mnRows = 0;
 	mnCols = 0;
 	mnCurrentRow = 0;
@@ -644,7 +640,7 @@ CppSQLite3Table::CppSQLite3Table(const CppSQLite3Table& rTable)
 {
 	mpaszResults = rTable.mpaszResults;
 	// Only one object can own the results
-	const_cast<CppSQLite3Table&>(rTable).mpaszResults = 0;
+	const_cast<CppSQLite3Table&>(rTable).mpaszResults = nullptr;
 	mnRows = rTable.mnRows;
 	mnCols = rTable.mnCols;
 	mnCurrentRow = rTable.mnCurrentRow;
@@ -683,7 +679,7 @@ CppSQLite3Table& CppSQLite3Table::operator=(const CppSQLite3Table& rTable)
 	}
 	mpaszResults = rTable.mpaszResults;
 	// Only one object can own the results
-	const_cast<CppSQLite3Table&>(rTable).mpaszResults = 0;
+	const_cast<CppSQLite3Table&>(rTable).mpaszResults = nullptr;
 	mnRows = rTable.mnRows;
 	mnCols = rTable.mnCols;
 	mnCurrentRow = rTable.mnCurrentRow;
@@ -696,7 +692,7 @@ void CppSQLite3Table::finalize()
 	if (mpaszResults)
 	{
 		sqlite3_free_table(mpaszResults);
-		mpaszResults = 0;
+		mpaszResults = nullptr;
 	}
 }
 
@@ -834,14 +830,14 @@ const char* CppSQLite3Table::getStringField(const char* szField, const char* szN
 bool CppSQLite3Table::fieldIsNull(int nField)
 {
 	checkResults();
-	return (fieldValue(nField) == 0);
+	return (fieldValue(nField) == nullptr);
 }
 
 
 bool CppSQLite3Table::fieldIsNull(const char* szField)
 {
 	checkResults();
-	return (fieldValue(szField) == 0);
+	return (fieldValue(szField) == nullptr);
 }
 
 
@@ -877,7 +873,7 @@ void CppSQLite3Table::setRow(int nRow)
 
 void CppSQLite3Table::checkResults()
 {
-	if (mpaszResults == 0)
+	if (mpaszResults == nullptr)
 	{
 		throw CppSQLite3Exception(CPPSQLITE_ERROR,
 								"Null Results pointer",
@@ -890,8 +886,8 @@ void CppSQLite3Table::checkResults()
 
 CppSQLite3Statement::CppSQLite3Statement()
 {
-	mpDB = 0;
-	mpVM = 0;
+	mpDB = nullptr;
+	mpVM = nullptr;
 }
 
 
@@ -900,7 +896,7 @@ CppSQLite3Statement::CppSQLite3Statement(const CppSQLite3Statement& rStatement)
 	mpDB = rStatement.mpDB;
 	mpVM = rStatement.mpVM;
 	// Only one object can own VM
-	const_cast<CppSQLite3Statement&>(rStatement).mpVM = 0;
+	const_cast<CppSQLite3Statement&>(rStatement).mpVM = nullptr;
 }
 
 
@@ -928,7 +924,7 @@ CppSQLite3Statement& CppSQLite3Statement::operator=(const CppSQLite3Statement& r
 	mpDB = rStatement.mpDB;
 	mpVM = rStatement.mpVM;
 	// Only one object can own VM
-	const_cast<CppSQLite3Statement&>(rStatement).mpVM = 0;
+	const_cast<CppSQLite3Statement&>(rStatement).mpVM = nullptr;
 	return *this;
 }
 
@@ -938,7 +934,7 @@ int CppSQLite3Statement::execDML()
 	checkDB();
 	checkVM();
 
-	const char* szError=0;
+	const char* szError=nullptr;
 
 	int nRet = sqlite3_step(mpVM);
 
@@ -1136,7 +1132,7 @@ void CppSQLite3Statement::finalize()
 	if (mpVM)
 	{
 		int nRet = sqlite3_finalize(mpVM);
-		mpVM = 0;
+		mpVM = nullptr;
 
 		if (nRet != SQLITE_OK)
 		{
@@ -1149,7 +1145,7 @@ void CppSQLite3Statement::finalize()
 
 void CppSQLite3Statement::checkDB()
 {
-	if (mpDB == 0)
+	if (mpDB == nullptr)
 	{
 		throw CppSQLite3Exception(CPPSQLITE_ERROR,
 								"Database not open",
@@ -1160,7 +1156,7 @@ void CppSQLite3Statement::checkDB()
 
 void CppSQLite3Statement::checkVM()
 {
-	if (mpVM == 0)
+	if (mpVM == nullptr)
 	{
 		throw CppSQLite3Exception(CPPSQLITE_ERROR,
 								"Null Virtual Machine pointer",
@@ -1173,7 +1169,7 @@ void CppSQLite3Statement::checkVM()
 
 CppSQLite3DB::CppSQLite3DB()
 {
-	mpDB = 0;
+	mpDB = nullptr;
 	mnBusyTimeoutMs = 60000; // 60 seconds
 }
 
@@ -1225,7 +1221,7 @@ void CppSQLite3DB::close()
 	{
 		if (sqlite3_close(mpDB) == SQLITE_OK)
 		{
-			mpDB = 0;
+			mpDB = nullptr;
 		}
 		else
 		{
@@ -1261,9 +1257,9 @@ int CppSQLite3DB::execDML(const char* szSQL)
 {
 	checkDB();
 
-	char* szError=0;
+	char* szError=nullptr;
 
-	int nRet = sqlite3_exec(mpDB, szSQL, 0, 0, &szError);
+	int nRet = sqlite3_exec(mpDB, szSQL, nullptr, nullptr, &szError);
 
 	if (nRet == SQLITE_OK)
 	{
@@ -1322,8 +1318,8 @@ CppSQLite3Table CppSQLite3DB::getTable(const char* szSQL)
 {
 	checkDB();
 
-	char* szError=0;
-	char** paszResults=0;
+	char* szError=nullptr;
+	char** paszResults=nullptr;
 	int nRet;
 	int nRows(0);
 	int nCols(0);
@@ -1369,7 +1365,7 @@ sqlite3_stmt* CppSQLite3DB::compile(const char* szSQL)
 {
 	checkDB();
 
-	const char* szTail=0;
+	const char* szTail=nullptr;
 	sqlite3_stmt* pVM;
 
 	int nRet = sqlite3_prepare_v2(mpDB, szSQL, -1, &pVM, &szTail);

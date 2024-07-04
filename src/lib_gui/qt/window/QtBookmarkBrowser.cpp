@@ -105,7 +105,7 @@ void QtBookmarkBrowser::setupBookmarkBrowser()
 
 		m_bookmarkTree = new QTreeWidget();
 		m_bookmarkTree->setObjectName(QStringLiteral("bookmark_tree"));
-		m_bookmarkTree->setAttribute(Qt::WA_MacShowFocusRect, 0);
+		m_bookmarkTree->setAttribute(Qt::WA_MacShowFocusRect, false);
 		m_bookmarkTree->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
 		m_bookmarkTree->header()->close();
 		m_bookmarkTree->setIndentation(0);

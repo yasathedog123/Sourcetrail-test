@@ -72,40 +72,17 @@ Vec2i GraphViewStyle::alignOnRaster(Vec2i position)
 }
 
 GraphViewStyle::NodeMargins::NodeMargins()
-	: left(0)
-	, right(0)
-	, top(0)
-	, bottom(0)
-	, spacingX(0)
-	, spacingY(0)
-	, spacingA(0)
-	, minWidth(0)
-	, charWidth(0.0f)
-	, charHeight(0.0f)
-	, iconWidth(0)
+	 
 {
 }
 
 GraphViewStyle::NodeStyle::NodeStyle()
-	: cornerRadius(0)
-	, borderWidth(0)
-	, borderDashed(false)
-	, fontSize(0)
-	, fontBold(false)
-	, iconSize(0)
-	, hasHatching(false)
+	 
 {
 }
 
 GraphViewStyle::EdgeStyle::EdgeStyle()
-	: width(0)
-	, zValue(0)
-	, arrowLength(0)
-	, arrowWidth(0)
-	, arrowClosed(false)
-	, cornerRadius(0)
-	, verticalOffset(0)
-	, dashed(false)
+	 
 {
 }
 

@@ -13,7 +13,7 @@
 Id TooltipController::TooltipRequest::s_requestId = 1;
 
 TooltipController::TooltipController(StorageAccess* storageAccess)
-	: m_storageAccess(storageAccess), m_hideRequest(false)
+	: m_storageAccess(storageAccess) 
 {
 }
 

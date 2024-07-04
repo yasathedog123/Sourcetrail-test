@@ -18,8 +18,6 @@
 
 QtCodeFileTitleButton::QtCodeFileTitleButton(QWidget* parent)
 	: QtSelfRefreshIconButton(QLatin1String(""), FilePath(), "code/file/title", parent)
-	, m_isComplete(true)
-	, m_isIndexed(true)
 {
 	setObjectName(QStringLiteral("title_button"));
 	minimumSizeHint();	  // force font loading

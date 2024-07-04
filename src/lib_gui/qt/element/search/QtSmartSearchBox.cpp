@@ -76,14 +76,9 @@ QtSmartSearchBox::QtSmartSearchBox(const QString& placeholder, bool supportsFull
 	: QLineEdit(parent)
 	, m_placeholder(placeholder)
 	, m_supportsFullTextSearch(supportsFullTextSearch)
-	, m_allowTextChange(false)
-	, m_cursorIndex(0)
-	, m_shiftKeyDown(false)
-	, m_mousePressed(false)
-	, m_ignoreNextMousePress(false)
 {
 	setObjectName(QStringLiteral("search_box"));
-	setAttribute(Qt::WA_MacShowFocusRect, 0);	 // remove blue focus box on Mac
+	setAttribute(Qt::WA_MacShowFocusRect, false);	 // remove blue focus box on Mac
 
 	m_highlightRect = new QWidget(this);
 	m_highlightRect->setGeometry(0, 0, 0, 0);

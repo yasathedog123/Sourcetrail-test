@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-TrailLayouter::TrailLayouter(LayoutDirection dir): m_direction(dir), m_rootNode(nullptr) {}
+TrailLayouter::TrailLayouter(LayoutDirection dir): m_direction(dir) {}
 
 void TrailLayouter::layoutGraph(
 	std::vector<std::shared_ptr<DummyNode>>& dummyNodes,

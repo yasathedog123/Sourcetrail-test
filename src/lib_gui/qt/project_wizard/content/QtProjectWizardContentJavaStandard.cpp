@@ -8,7 +8,7 @@
 QtProjectWizardContentJavaStandard::QtProjectWizardContentJavaStandard(
 	std::shared_ptr<SourceGroupSettingsWithJavaStandard> sourceGroupSettings,
 	QtProjectWizardWindow* window)
-	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings), m_standard(nullptr)
+	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings) 
 {
 }
 

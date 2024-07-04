@@ -16,7 +16,7 @@ struct StorageBookmarkCategoryData
 
 struct StorageBookmarkCategory: public StorageBookmarkCategoryData
 {
-	StorageBookmarkCategory(): StorageBookmarkCategoryData(), id(0) {}
+	StorageBookmarkCategory():  id(0) {}
 
 	StorageBookmarkCategory(Id id, const StorageBookmarkCategoryData& data)
 		: StorageBookmarkCategoryData(data), id(id)

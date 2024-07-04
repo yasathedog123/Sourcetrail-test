@@ -1,6 +1,6 @@
 #include "TaskGroupSelector.h"
 
-TaskGroupSelector::TaskGroupSelector(): m_taskIndex(0) {}
+TaskGroupSelector::TaskGroupSelector() {}
 
 void TaskGroupSelector::addTask(std::shared_ptr<Task> task)
 {

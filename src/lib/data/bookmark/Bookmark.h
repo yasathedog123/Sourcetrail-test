@@ -61,7 +61,7 @@ private:
 	std::wstring m_comment;
 	TimeStamp m_timeStamp;
 	BookmarkCategory m_category;
-	bool m_isValid;
+	bool m_isValid = false;
 };
 
 #endif	  // BOOKMARK_H

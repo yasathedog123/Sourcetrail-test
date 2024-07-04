@@ -114,7 +114,7 @@ private:
 	const QString m_placeholder;
 	const bool m_supportsFullTextSearch;
 
-	bool m_allowTextChange;
+	bool m_allowTextChange = false;
 	QString m_oldText;
 
 	std::deque<SearchMatch> m_matches;
@@ -122,14 +122,14 @@ private:
 
 	std::vector<QtSearchElement*> m_elements;
 
-	size_t m_cursorIndex;
+	size_t m_cursorIndex = 0;
 
 	SearchMatch m_highlightedMatch;
 
-	bool m_shiftKeyDown;
-	bool m_mousePressed;
-	int m_mouseX;
-	bool m_ignoreNextMousePress;
+	bool m_shiftKeyDown = false;
+	bool m_mousePressed = false;
+	int m_mouseX = 0;
+	bool m_ignoreNextMousePress = false;
 
 	QWidget* m_highlightRect;
 	QtAutocompletionList* m_completer;

@@ -10,8 +10,8 @@ Tab::Tab(
 	ScreenSearchSender* screenSearchSender)
 	: m_tabId(tabId)
 	, m_componentManager(viewFactory, storageAccess)
-	, m_parentLayout(nullptr)
-	, m_screenSearchSender(screenSearchSender)
+	, 
+	 m_screenSearchSender(screenSearchSender)
 {
 	m_componentManager.setupTab(this, m_tabId, m_screenSearchSender);
 	m_componentManager.refreshViews();

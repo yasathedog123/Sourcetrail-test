@@ -12,8 +12,8 @@ struct ErrorInfo
 		 lineNumber(-1)
 		, columnNumber(-1)
 		, 
-		 fatal(0)
-		, indexed(0)
+		 fatal(false)
+		, indexed(false)
 	{
 	}
 

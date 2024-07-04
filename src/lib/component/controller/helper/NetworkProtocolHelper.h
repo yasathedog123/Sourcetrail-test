@@ -12,12 +12,12 @@ public:
 	struct SetActiveTokenMessage
 	{
 	public:
-		SetActiveTokenMessage(): filePath(L""), row(0), column(0), valid(false) {}
+		SetActiveTokenMessage(): filePath(L"") {}
 
 		FilePath filePath;
-		unsigned int row;
-		unsigned int column;
-		bool valid;
+		unsigned int row = 0;
+		unsigned int column = 0;
+		bool valid = false;
 	};
 
 	struct CreateProjectMessage
@@ -27,20 +27,20 @@ public:
 	struct CreateCDBProjectMessage
 	{
 	public:
-		CreateCDBProjectMessage(): cdbFileLocation(L""),  valid(false) {}
+		CreateCDBProjectMessage(): cdbFileLocation(L"")  {}
 
 		FilePath cdbFileLocation;
 		std::wstring ideId;
-		bool valid;
+		bool valid = false;
 	};
 
 	struct PingMessage
 	{
 	public:
-		PingMessage():  valid(false) {}
+		PingMessage()  {}
 
 		std::wstring ideId;
-		bool valid;
+		bool valid = false;
 	};
 
 	enum MESSAGE_TYPE

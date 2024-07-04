@@ -77,8 +77,8 @@ private:
 	std::shared_ptr<ProjectSettings> m_settings;
 	StorageCache* const m_storageCache;
 
-	ProjectStateType m_state;
-	RefreshStageType m_refreshStage;
+	ProjectStateType m_state = PROJECT_STATE_NOT_LOADED;
+	RefreshStageType m_refreshStage = RefreshStageType::NONE;
 
 	std::shared_ptr<PersistentStorage> m_storage;
 	std::vector<std::shared_ptr<SourceGroup>> m_sourceGroups;

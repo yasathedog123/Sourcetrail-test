@@ -11,7 +11,7 @@
 #include "ResourcePaths.h"
 #include "utilityFile.h"
 
-QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent), m_pickDirectory(false)
+QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent) 
 {
 	setObjectName(QStringLiteral("picker"));
 
@@ -21,7 +21,7 @@ QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent), m_pickDire
 	layout->setAlignment(Qt::AlignTop);
 
 	m_data = new QtLineEdit(this);
-	m_data->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_data->setAttribute(Qt::WA_MacShowFocusRect, false);
 	m_data->setObjectName(QStringLiteral("locationField"));
 	connect(m_data, &QtLineEdit::textChanged, this, &QtLocationPicker::onDataTextChanged);
 	layout->addWidget(m_data);

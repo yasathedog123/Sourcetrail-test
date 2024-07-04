@@ -254,7 +254,7 @@ TaskExecuteCustomCommands::TaskExecuteCustomCommands(
 	, m_indexerThreadCount(indexerThreadCount)
 	, m_projectDirectory(projectDirectory)
 	, m_indexerCommandCount(m_indexerCommandProvider->size())
-	, m_hasPythonCommands(false)
+	 
 {
 }
 

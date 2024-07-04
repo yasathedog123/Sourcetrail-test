@@ -30,9 +30,9 @@ private slots:
 	void animate();
 
 private:
-	size_t m_percent;
+	size_t m_percent = 0;
 
-	size_t m_count;
+	size_t m_count = 0;
 	QTimer* m_timer;
 	TimeStamp m_TimeStamp;
 

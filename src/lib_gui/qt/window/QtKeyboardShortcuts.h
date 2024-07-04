@@ -21,7 +21,7 @@ class QtKeyboardShortcuts: public QtWindow
 {
 	Q_OBJECT
 public:
-	QtKeyboardShortcuts(QWidget* parent = 0);
+	QtKeyboardShortcuts(QWidget* parent = nullptr);
 	~QtKeyboardShortcuts() override;
 
 	QSize sizeHint() const override;

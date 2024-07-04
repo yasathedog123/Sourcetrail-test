@@ -11,7 +11,7 @@ public:
 		return "MessageRefreshUI";
 	}
 
-	MessageRefreshUI(): loadStyle(true), isAfterIndexing(false) {}
+	MessageRefreshUI() {}
 
 	MessageRefreshUI& noStyleReload()
 	{
@@ -33,8 +33,8 @@ public:
 		}
 	}
 
-	bool loadStyle;
-	bool isAfterIndexing;
+	bool loadStyle = true;
+	bool isAfterIndexing = false;
 };
 
 #endif	  // MESSAGE_REFRESH_UI_H

@@ -17,7 +17,7 @@ public:
 
 private:
 	std::shared_ptr<Task> m_task;
-	bool m_reset;
+	bool m_reset = false;
 
 	// Only created by the first TaskRunner in the hierarchy, then passed down.
 	std::shared_ptr<Blackboard> m_blackboard;

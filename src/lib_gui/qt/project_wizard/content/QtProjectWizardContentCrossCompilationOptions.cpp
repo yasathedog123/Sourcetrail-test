@@ -12,11 +12,6 @@ QtProjectWizardContentCrossCompilationOptions::QtProjectWizardContentCrossCompil
 	QtProjectWizardWindow* window)
 	: QtProjectWizardContent(window)
 	, m_sourceGroupSettings(sourceGroupSettings)
-	, m_useTargetOptions(nullptr)
-	, m_arch(nullptr)
-	, m_vendor(nullptr)
-	, m_sys(nullptr)
-	, m_abi(nullptr)
 {
 }
 

@@ -14,7 +14,7 @@ Node::Node(Id id, NodeType type, NameHierarchy nameHierarchy, DefinitionKind def
 	, m_type(type)
 	, m_nameHierarchy(std::move(nameHierarchy))
 	, m_definitionKind(definitionKind)
-	, m_childCount(0)
+	 
 {
 }
 

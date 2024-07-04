@@ -131,20 +131,20 @@ private:
 	QtCodeNavigator* m_navigator;
 	QWidget* m_lineNumberArea;
 
-	int m_digits;
+	int m_digits = 0;
 
-	bool m_isSelecting;
-	bool m_isPanning;
-	bool m_isDragging;
+	bool m_isSelecting = false;
+	bool m_isPanning = false;
+	bool m_isDragging = false;
 	QPoint m_oldMousePosition;
 	int m_panningDistance;
 
 	QAction* m_copyAction;
-	QAction* m_setIDECursorPositionAction;
+	QAction* m_setIDECursorPositionAction = nullptr;
 	QPoint m_eventPosition;	   // is needed for IDE cursor control via context menu
 							   // the position where the context menu is opened needs to be stored]
 
-	bool m_isActiveFile;
+	bool m_isActiveFile = false;
 	bool m_showLineNumbers;
 
 	QtScrollSpeedChangeListener m_scrollSpeedChangeListener;

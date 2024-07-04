@@ -47,7 +47,7 @@ void QtBookmarkCreator::setupBookmarkCreator()
 		m_displayName = new QLineEdit();
 		m_displayName->setObjectName(QStringLiteral("creator_name_edit"));
 		m_displayName->setPlaceholderText(QStringLiteral("Name"));
-		m_displayName->setAttribute(Qt::WA_MacShowFocusRect, 0);
+		m_displayName->setAttribute(Qt::WA_MacShowFocusRect, false);
 		layout->addWidget(m_displayName);
 
 		connect(m_displayName, &QLineEdit::textChanged, this, &QtBookmarkCreator::onNameChanged);

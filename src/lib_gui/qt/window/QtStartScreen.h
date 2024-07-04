@@ -30,7 +30,7 @@ class QtStartScreen: public QtWindow
 	Q_OBJECT
 
 public:
-	QtStartScreen(QWidget* parent = 0);
+	QtStartScreen(QWidget* parent = nullptr);
 	QSize sizeHint() const override;
 
 	void setupStartScreen();

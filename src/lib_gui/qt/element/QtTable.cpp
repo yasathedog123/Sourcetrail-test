@@ -33,7 +33,7 @@ QWidget* SelectableCellDelegate::createEditor(
 	return editor;
 }
 
-QtTable::QtTable(QWidget* parent): QTableView(parent), m_rowsToFill(0)
+QtTable::QtTable(QWidget* parent): QTableView(parent) 
 {
 	setAlternatingRowColors(true);
 	setShowGrid(false);

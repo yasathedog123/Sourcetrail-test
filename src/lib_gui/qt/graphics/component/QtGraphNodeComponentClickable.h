@@ -17,7 +17,7 @@ public:
 
 private:
 	Vec2i m_mousePos;
-	bool m_mouseMoved;
+	bool m_mouseMoved = false;
 };
 
 #endif	  // QT_GRAPH_NODE_COMPONENT_CLICKABLE

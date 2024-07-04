@@ -5,7 +5,7 @@
 #include "TaskScheduler.h"
 #include "logging.h"
 
-TaskRunner::TaskRunner(std::shared_ptr<Task> task): m_task(task), m_reset(false) {}
+TaskRunner::TaskRunner(std::shared_ptr<Task> task): m_task(task) {}
 
 Task::TaskState TaskRunner::update(Id schedulerId)
 {

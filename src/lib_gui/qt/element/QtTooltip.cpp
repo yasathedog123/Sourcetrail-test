@@ -14,7 +14,7 @@
 #include "TextCodec.h"
 #include "TooltipInfo.h"
 
-QtTooltip::QtTooltip(QWidget* parent): QFrame(parent), m_parentView(nullptr), m_isHovered(false)
+QtTooltip::QtTooltip(QWidget* parent): QFrame(parent) 
 {
 	QWidget::setWindowFlags(Qt::ToolTip);
 	setObjectName(QStringLiteral("tooltip"));

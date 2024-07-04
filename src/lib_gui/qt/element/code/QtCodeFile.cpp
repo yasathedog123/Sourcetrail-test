@@ -11,7 +11,7 @@
 #include "SourceLocationFile.h"
 
 QtCodeFile::QtCodeFile(const FilePath& filePath, QtCodeNavigator* navigator, bool isFirst)
-	: QFrame(), m_navigator(navigator), m_filePath(filePath), m_isWholeFile(false)
+	:  m_navigator(navigator), m_filePath(filePath) 
 {
 	setObjectName(QStringLiteral("code_file"));
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);

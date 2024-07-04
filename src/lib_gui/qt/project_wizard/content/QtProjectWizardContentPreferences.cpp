@@ -23,10 +23,6 @@ using namespace utility;
 
 QtProjectWizardContentPreferences::QtProjectWizardContentPreferences(QtProjectWizardWindow* window)
 	: QtProjectWizardContent(window)
-	, m_oldColorSchemeIndex(-1)
-	, m_newColorSchemeIndex(-1)
-	, m_screenAutoScaling(nullptr)
-	, m_screenScaleFactor(nullptr)
 {
 	m_colorSchemePaths = FileSystem::getFilePathsFromDirectory(
 		ResourcePaths::getColorSchemesDirectoryPath(), {L".xml"});
@@ -971,7 +967,7 @@ QLineEdit* QtProjectWizardContentPreferences::addLineEdit(
 {
 	QLineEdit* lineEdit = new QLineEdit(this);
 	lineEdit->setObjectName(QStringLiteral("name"));
-	lineEdit->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	lineEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	addLabelAndWidget(label, lineEdit, layout, row);
 

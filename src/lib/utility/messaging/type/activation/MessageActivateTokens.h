@@ -18,7 +18,6 @@ public:
 	}
 
 	MessageActivateTokens(const MessageBase* other)
-		: isEdge(false), isBundledEdges(false), isFromSearch(false)
 	{
 		setIsParallel(true);
 		setKeepContent(other->keepContent());
@@ -58,9 +57,9 @@ public:
 	std::vector<Id> tokenIds;
 	std::vector<SearchMatch> searchMatches;
 
-	bool isEdge;
-	bool isBundledEdges;
-	bool isFromSearch;
+	bool isEdge = false;
+	bool isBundledEdges = false;
+	bool isFromSearch = false;
 };
 
 #endif	  // MESSAGE_ACTIVATE_TOKENS_H

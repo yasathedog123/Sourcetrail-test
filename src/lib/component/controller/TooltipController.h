@@ -71,7 +71,7 @@ private:
 
 	std::unique_ptr<TooltipRequest> m_showRequest;
 	std::mutex m_showRequestMutex;
-	bool m_hideRequest;
+	bool m_hideRequest = false;
 };
 
 #endif	  // TOOLTIP_CONTROLLER_H

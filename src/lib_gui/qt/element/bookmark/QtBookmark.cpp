@@ -11,10 +11,7 @@
 
 QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	: m_controllerProxy(controllerProxy)
-	, m_treeWidgetItem(nullptr)
 	, m_arrowImageName(L"arrow_line_down.png")
-	, m_hovered(false)
-	, m_ignoreNextResize(false)
 {
 	setObjectName(QStringLiteral("bookmark"));
 

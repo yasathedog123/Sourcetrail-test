@@ -38,7 +38,7 @@ struct StorageBookmarkedEdgeData
 
 struct StorageBookmarkedEdge: public StorageBookmarkedEdgeData
 {
-	StorageBookmarkedEdge(): StorageBookmarkedEdgeData(), id(0) {}
+	StorageBookmarkedEdge():  id(0) {}
 
 	StorageBookmarkedEdge(Id id, const StorageBookmarkedEdgeData& data)
 		: StorageBookmarkedEdgeData(data), id(id)

@@ -44,7 +44,7 @@ private:
 	ComponentManager m_componentManager;
 	std::vector<View*> m_views;
 
-	ViewLayout* m_parentLayout;
+	ViewLayout* m_parentLayout = nullptr;
 	ScreenSearchSender* m_screenSearchSender;
 };
 

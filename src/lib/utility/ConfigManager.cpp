@@ -350,7 +350,7 @@ std::vector<std::string> ConfigManager::getSublevelKeys(const std::string& key) 
 bool ConfigManager::load(const std::shared_ptr<TextAccess> textAccess)
 {
 	TiXmlDocument doc;
-	const char* pTest = doc.Parse(textAccess->getText().c_str(), 0, TIXML_ENCODING_UTF8);
+	const char* pTest = doc.Parse(textAccess->getText().c_str(), nullptr, TIXML_ENCODING_UTF8);
 	if (pTest != nullptr)
 	{
 		TiXmlHandle docHandle(&doc);
@@ -385,7 +385,7 @@ void ConfigManager::setWarnOnEmptyKey(bool warnOnEmptyKey) const
 	m_warnOnEmptyKey = warnOnEmptyKey;
 }
 
-ConfigManager::ConfigManager(): m_warnOnEmptyKey(true) {}
+ConfigManager::ConfigManager() {}
 
 ConfigManager::ConfigManager(const ConfigManager& other)
 	: m_values(other.m_values), m_warnOnEmptyKey(other.m_warnOnEmptyKey)

@@ -40,7 +40,6 @@ QtCodeField::QtCodeField(
 	: QPlainTextEdit(parent)
 	, m_startLineNumber(startLineNumber)
 	, m_code(code)
-	, m_endTextEditPosition(0)
 {
 	TRACE();
 

@@ -18,7 +18,7 @@ public:
 	void setRadius(qreal radius);
 
 private:
-	qreal m_radius;
+	qreal m_radius = 0.0f;
 };
 
 #endif	  // QT_GRAPHICS_ROUNDED_RECT_ITEM_H

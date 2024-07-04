@@ -145,7 +145,7 @@ private:
 	std::vector<int> m_lineLengths;
 	std::vector<std::vector<std::pair<int, int>>> m_multibyteCharacterLocations;
 
-	int m_endTextEditPosition;
+	int m_endTextEditPosition = 0;
 
 	Id m_openInTabLocationId;
 };

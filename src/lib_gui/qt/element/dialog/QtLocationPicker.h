@@ -41,7 +41,7 @@ private:
 	QPushButton* m_button;
 	QtLineEdit* m_data;
 
-	bool m_pickDirectory;
+	bool m_pickDirectory = false;
 	QString m_fileFilter;
 	FilePath m_relativeRootDirectory;
 };

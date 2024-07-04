@@ -45,10 +45,10 @@ private:
 
 	QtThreadedLambdaFunctor m_onQtThread;
 
-	QWidget* m_widget;
+	QWidget* m_widget = nullptr;
 	QtTabBar* m_tabBar;
 
-	size_t m_insertedTabCount;
+	size_t m_insertedTabCount = 0;
 };
 
 #endif	  // QT_TABS_VIEW_H

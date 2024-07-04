@@ -13,7 +13,7 @@ SourceGroupSettings::SourceGroupSettings(
 	, m_type(type)
 	, m_id(id)
 	, m_name(sourceGroupTypeToString(type))
-	, m_status(SOURCE_GROUP_STATUS_ENABLED)
+	 
 {
 }
 

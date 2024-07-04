@@ -32,7 +32,7 @@
 #include "utilityQt.h"
 
 QtCodeNavigator::QtCodeNavigator(QWidget* parent)
-	: QWidget(parent), m_mode(MODE_NONE), m_oldMode(MODE_NONE), m_schedulerId(TabId::ignore())
+	: QWidget(parent),  m_schedulerId(TabId::ignore())
 {
 	QVBoxLayout* layout = new QVBoxLayout();
 	layout->setSpacing(0);

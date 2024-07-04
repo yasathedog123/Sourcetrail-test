@@ -74,7 +74,7 @@ private:
 	std::map<Id, std::shared_ptr<Node>> m_nodes;
 	std::map<Id, std::shared_ptr<Edge>> m_edges;
 
-	TrailMode m_trailMode;
+	TrailMode m_trailMode = TRAIL_NONE;
 	bool m_hasTrailOrigin;
 };
 

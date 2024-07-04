@@ -91,7 +91,7 @@ private:
 	std::vector<std::shared_ptr<TrailEdge>> m_allEdges;
 
 	std::map<Id, TrailNode*> m_nodesById;
-	TrailNode* m_rootNode;
+	TrailNode* m_rootNode = nullptr;
 
 	std::vector<std::vector<TrailNode*>> m_nodesPerCol;
 };

@@ -42,7 +42,7 @@ QtListBox::QtListBox(QWidget* parent, const QString& listName): QFrame(parent), 
 
 	m_list = new QtListWidget(this);
 	m_list->setObjectName(QStringLiteral("list"));
-	m_list->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_list->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(m_list, &QListWidget::doubleClicked, this, &QtListBox::doubleClicked);
 
 	setStyleSheet(

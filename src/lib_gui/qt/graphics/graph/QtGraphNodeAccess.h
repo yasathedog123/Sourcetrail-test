@@ -30,8 +30,8 @@ protected:
 private:
 	AccessKind m_accessKind;
 
-	QGraphicsPixmapItem* m_accessIcon;
-	int m_accessIconSize;
+	QGraphicsPixmapItem* m_accessIcon = nullptr;
+	int m_accessIconSize = 16;
 };
 
 #endif	  // QT_GRAPH_NODE_ACCESS_H

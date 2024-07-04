@@ -335,9 +335,6 @@ void addSourceGroupContents<SourceGroupSettingsUnloadable>(
 QtProjectWizard::QtProjectWizard(QWidget* parent)
 	: QtProjectWizardWindow(parent, false)
 	, m_windowStack(this)
-	, m_editing(false)
-	, m_previouslySelectedIndex(-1)
-	, m_contentWidget(nullptr)
 {
 	setScrollAble(true);
 
@@ -438,7 +435,7 @@ void QtProjectWizard::populateWindow(QWidget* widget)
 		menuLayout->addWidget(sourceGroupLabel);
 
 		m_sourceGroupList = new QListWidget();
-		m_sourceGroupList->setAttribute(Qt::WA_MacShowFocusRect, 0);
+		m_sourceGroupList->setAttribute(Qt::WA_MacShowFocusRect, false);
 		connect(
 			m_sourceGroupList,
 			&QListWidget::currentRowChanged,

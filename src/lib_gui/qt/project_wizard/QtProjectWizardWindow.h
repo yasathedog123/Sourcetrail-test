@@ -36,7 +36,7 @@ protected:
 	void handlePrevious() override;
 
 private:
-	QtProjectWizardContent* m_content;
+	QtProjectWizardContent* m_content = nullptr;
 	QSize m_preferredSize;
 	bool m_showSeparator;
 };

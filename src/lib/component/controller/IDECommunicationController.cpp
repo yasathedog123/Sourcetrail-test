@@ -12,7 +12,7 @@
 #include "StorageAccess.h"
 
 IDECommunicationController::IDECommunicationController(StorageAccess* storageAccess)
-	: m_storageAccess(storageAccess), m_enabled(true)
+	: m_storageAccess(storageAccess) 
 {
 }
 

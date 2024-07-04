@@ -30,8 +30,8 @@ private:
 	std::shared_ptr<ProjectSettings> m_projectSettings;
 
 	bool m_disableNameEditing;
-	QLineEdit* m_projectName;
-	QtLocationPicker* m_projectFileLocation;
+	QLineEdit* m_projectName = nullptr;
+	QtLocationPicker* m_projectFileLocation = nullptr;
 };
 
 #endif	  // QT_PROJECT_WIZARD_CONTENT_PROJECT_DATA_H

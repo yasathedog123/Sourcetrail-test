@@ -21,7 +21,7 @@ struct StorageLocalSymbolData
 
 struct StorageLocalSymbol: public StorageLocalSymbolData
 {
-	StorageLocalSymbol(): StorageLocalSymbolData(), id(0) {}
+	StorageLocalSymbol():  id(0) {}
 
 	StorageLocalSymbol(Id id, const StorageLocalSymbolData& data)
 		: StorageLocalSymbolData(data), id(id)

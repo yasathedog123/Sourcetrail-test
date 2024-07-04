@@ -105,17 +105,17 @@ private:
 
 	QComboBox* m_colorSchemes;
 	std::vector<FilePath> m_colorSchemePaths;
-	int m_oldColorSchemeIndex;
-	int m_newColorSchemeIndex;
+	int m_oldColorSchemeIndex = -1;
+	int m_newColorSchemeIndex = -1;
 
 	QCheckBox* m_useAnimations;
 	QCheckBox* m_showBuiltinTypes;
 	QCheckBox* m_showDirectoryInCode;
 
-	QComboBox* m_screenAutoScaling;
+	QComboBox* m_screenAutoScaling = nullptr;
 	QLabel* m_screenAutoScalingInfoLabel;
 
-	QComboBox* m_screenScaleFactor;
+	QComboBox* m_screenScaleFactor = nullptr;
 	QLabel* m_screenScaleFactorInfoLabel;
 
 	QLineEdit* m_scrollSpeed;

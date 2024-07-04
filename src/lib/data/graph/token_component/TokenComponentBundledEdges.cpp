@@ -14,7 +14,7 @@ TokenComponentBundledEdges::Direction TokenComponentBundledEdges::opposite(Direc
 	return direction;
 }
 
-TokenComponentBundledEdges::TokenComponentBundledEdges(): m_direction(DIRECTION_INVALID) {}
+TokenComponentBundledEdges::TokenComponentBundledEdges() {}
 
 TokenComponentBundledEdges::~TokenComponentBundledEdges() {}
 

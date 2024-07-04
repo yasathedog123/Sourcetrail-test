@@ -5,7 +5,7 @@
 #include "QtGraphNode.h"
 
 QtGraphNodeComponentClickable::QtGraphNodeComponentClickable(QtGraphNode* graphNode)
-	: QtGraphNodeComponent(graphNode), m_mousePos(0, 0), m_mouseMoved(false)
+	: QtGraphNodeComponent(graphNode), m_mousePos(0, 0) 
 {
 }
 

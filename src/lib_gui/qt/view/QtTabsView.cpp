@@ -17,7 +17,7 @@
 #include "utilityQt.h"
 
 QtTabsView::QtTabsView(ViewLayout* viewLayout)
-	: TabsView(viewLayout), m_widget(nullptr), m_insertedTabCount(0)
+	: TabsView(viewLayout) 
 {
 	m_widget = new QWidget();
 

@@ -8,7 +8,7 @@
 
 QtProjectWizardContentSourceGroupData::QtProjectWizardContentSourceGroupData(
 	std::shared_ptr<SourceGroupSettings> settings, QtProjectWizardWindow* window)
-	: QtProjectWizardContent(window), m_settings(settings), m_name(nullptr), m_status(nullptr)
+	: QtProjectWizardContent(window), m_settings(settings) 
 {
 	setIsRequired(true);
 }
@@ -17,7 +17,7 @@ void QtProjectWizardContentSourceGroupData::populate(QGridLayout* layout, int& r
 {
 	m_name = new QLineEdit();
 	m_name->setObjectName(QStringLiteral("name"));
-	m_name->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_name->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(m_name, &QLineEdit::textEdited, this, &QtProjectWizardContentSourceGroupData::editedName);
 
 	layout->addWidget(

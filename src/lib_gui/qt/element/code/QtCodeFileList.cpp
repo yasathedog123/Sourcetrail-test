@@ -33,10 +33,7 @@ void QtCodeFileListScrollArea::keyPressEvent(QKeyEvent* event)
 }
 
 QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
-	: QFrame()
-	, m_navigator(navigator)
-	, m_mirroredTitleBar(nullptr)
-	, m_mirroredSnippetScrollBar(nullptr)
+	: m_navigator(navigator)
 {
 	m_scrollArea = new QtCodeFileListScrollArea();
 

@@ -65,7 +65,7 @@ private:
 	std::map<Id, std::shared_ptr<Tab>> m_tabs;
 	std::mutex m_tabsMutex;
 
-	bool m_isCreatingTab;
+	bool m_isCreatingTab = false;
 	std::tuple<Id, FilePath, size_t> m_scrollToLine;
 };
 

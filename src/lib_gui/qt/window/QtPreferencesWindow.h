@@ -10,7 +10,7 @@ class QtPreferencesWindow: public QtProjectWizardWindow
 	Q_OBJECT
 
 public:
-	QtPreferencesWindow(QWidget* parent = 0);
+	QtPreferencesWindow(QWidget* parent = nullptr);
 	~QtPreferencesWindow() override;
 
 protected:

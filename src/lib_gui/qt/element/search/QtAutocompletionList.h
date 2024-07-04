@@ -17,7 +17,7 @@ class QtAutocompletionModel: public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	QtAutocompletionModel(QObject* parent = 0);
+	QtAutocompletionModel(QObject* parent = nullptr);
 	~QtAutocompletionModel() override;
 
 	void setMatchList(const std::vector<SearchMatch>& matchList);
@@ -42,7 +42,7 @@ class QtAutocompletionDelegate: public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	explicit QtAutocompletionDelegate(QtAutocompletionModel* model, QObject* parent = 0);
+	explicit QtAutocompletionDelegate(QtAutocompletionModel* model, QObject* parent = nullptr);
 	~QtAutocompletionDelegate() override;
 
 	void paint(
@@ -76,7 +76,7 @@ signals:
 	void matchActivated(const SearchMatch&);
 
 public:
-	QtAutocompletionList(QWidget* parent = 0);
+	QtAutocompletionList(QWidget* parent = nullptr);
 	~QtAutocompletionList() override;
 
 	void completeAt(QPoint pos, const std::vector<SearchMatch>& autocompletionList);

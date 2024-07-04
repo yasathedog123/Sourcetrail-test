@@ -2,8 +2,6 @@
 
 CxxAstVisitorComponentDeclRefKind::CxxAstVisitorComponentDeclRefKind(CxxAstVisitor* astVisitor)
 	: CxxAstVisitorComponent(astVisitor)
-	, m_thisRefKind(REFERENCE_USAGE)
-	, m_childRefKind(REFERENCE_USAGE)
 {
 }
 

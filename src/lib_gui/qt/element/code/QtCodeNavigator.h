@@ -137,8 +137,8 @@ private:
 	QtCodeFileList* m_list;
 	QtCodeFileSingle* m_single;
 
-	Mode m_mode;
-	Mode m_oldMode;
+	Mode m_mode = MODE_NONE;
+	Mode m_oldMode = MODE_NONE;
 
 	Id m_schedulerId;
 

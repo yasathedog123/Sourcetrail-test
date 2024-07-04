@@ -22,8 +22,8 @@ private:
 
 	QtThreadedFunctor<float> m_changeScrollSpeedFunctor;
 
-	QScrollBar* m_scrollBar;
-	int m_singleStep;
+	QScrollBar* m_scrollBar = nullptr;
+	int m_singleStep = 1;
 };
 
 #endif	  // QT_SCROLL_SPEED_CHANGE_LISTENER

@@ -36,7 +36,7 @@ public:
 
 private:
 	std::map<Id, Direction> m_ids;
-	Direction m_direction;
+	Direction m_direction = DIRECTION_INVALID;
 };
 
 #endif	  // TOKEN_COMPONENT_BUNDLED_EDGES_H

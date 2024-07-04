@@ -20,7 +20,7 @@ protected:
 	ViewType* getView() const;
 
 private:
-	Component* m_component;
+	Component* m_component = nullptr;
 };
 
 

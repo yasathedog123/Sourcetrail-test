@@ -35,7 +35,7 @@ struct StorageEdgeData
 
 struct StorageEdge: public StorageEdgeData
 {
-	StorageEdge(): StorageEdgeData(), id(0) {}
+	StorageEdge():  id(0) {}
 
 	StorageEdge(Id id, const StorageEdgeData& data): StorageEdgeData(data), id(id) {}
 

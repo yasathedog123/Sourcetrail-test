@@ -44,8 +44,8 @@ private:
 
 	FilePath m_filePath;
 	TimeStamp m_modificationTime;
-	bool m_isComplete;
-	bool m_isIndexed;
+	bool m_isComplete = true;
+	bool m_isIndexed = true;
 
 	QAction* m_openInTabAction;
 };

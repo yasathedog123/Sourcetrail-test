@@ -34,8 +34,8 @@ private slots:
 private:
 	std::shared_ptr<SourceGroupSettings> m_settings;
 
-	QLineEdit* m_name;
-	QCheckBox* m_status;
+	QLineEdit* m_name = nullptr;
+	QCheckBox* m_status = nullptr;
 };
 
 #endif	  // QT_PROJECT_WIZARD_CONTENT_SOURCE_GROUP_DATA_H

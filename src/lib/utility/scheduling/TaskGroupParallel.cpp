@@ -6,7 +6,6 @@
 #include "ScopedFunctor.h"
 
 TaskGroupParallel::TaskGroupParallel()
-	: m_needsToStartThreads(true)
 {
 }
 

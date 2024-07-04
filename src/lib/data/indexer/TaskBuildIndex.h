@@ -51,17 +51,17 @@ protected:
 	bool m_multiProcessIndexing;
 
 	InterprocessIndexingStatusManager m_interprocessIndexingStatusManager;
-	bool m_indexerCommandQueueStopped;
+	bool m_indexerCommandQueueStopped = false;
 	size_t m_processCount;
-	bool m_interrupted;
-	size_t m_indexingFileCount;
+	bool m_interrupted = false;
+	size_t m_indexingFileCount = 0;
 
 	// store as plain pointers to avoid deallocation issues when closing app during indexing
 	std::vector<std::thread*> m_processThreads;
 	std::vector<std::shared_ptr<InterprocessIntermediateStorageManager>>
 		m_interprocessIntermediateStorageManagers;
 
-	size_t m_runningThreadCount;
+	size_t m_runningThreadCount = 0;
 	std::mutex m_runningThreadCountMutex;
 };
 

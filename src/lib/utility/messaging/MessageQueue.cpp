@@ -200,11 +200,6 @@ void MessageQueue::setSendMessagesAsTasks(bool sendMessagesAsTasks)
 std::shared_ptr<MessageQueue> MessageQueue::s_instance;
 
 MessageQueue::MessageQueue()
-	: m_currentListenerIndex(0)
-	, m_listenersLength(0)
-	, m_loopIsRunning(false)
-	, m_threadIsRunning(false)
-	, m_sendMessagesAsTasks(false)
 {
 }
 

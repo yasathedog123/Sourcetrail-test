@@ -32,9 +32,9 @@ private:
 
 	const Id m_schedulerId;
 
-	bool m_loopIsRunning;
-	bool m_threadIsRunning;
-	bool m_terminateRunningTasks;
+	bool m_loopIsRunning = false;
+	bool m_threadIsRunning = false;
+	bool m_terminateRunningTasks = false;
 
 	std::deque<std::shared_ptr<TaskRunner>> m_taskRunners;
 

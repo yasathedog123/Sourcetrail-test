@@ -22,8 +22,7 @@ const std::wstring BookmarkController::s_defaultCategoryName = L"default";
 BookmarkController::BookmarkController(StorageAccess* storageAccess)
 	: m_storageAccess(storageAccess)
 	, m_bookmarkCache(storageAccess)
-	, m_filter(Bookmark::FILTER_ALL)
-	, m_order(Bookmark::ORDER_DATE_DESCENDING)
+	 
 {
 }
 

@@ -163,11 +163,11 @@ private:
 	std::vector<QtGraphNode*> m_activeNodes;
 	QtGraphNode* m_oldActiveNode = nullptr;
 
-	bool m_centerActiveNode;
-	bool m_scrollToTop;
-	bool m_restoreScroll;
+	bool m_centerActiveNode = false;
+	bool m_scrollToTop = false;
+	bool m_restoreScroll = false;
 	Vec2i m_scrollValues;
-	bool m_isIndexedList;
+	bool m_isIndexedList = false;
 
 	std::shared_ptr<QSequentialAnimationGroup> m_transition;
 	QPointF m_sceneRectOffset;

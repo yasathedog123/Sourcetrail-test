@@ -90,7 +90,7 @@ private:
 
 	QtCodeFileTitleBar* m_titleBar;
 
-	QtCodeArea* m_area;
+	QtCodeArea* m_area = nullptr;
 	std::map<FilePath, FileData> m_fileDatas;
 	std::deque<FilePath> m_filePaths;
 

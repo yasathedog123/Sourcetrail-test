@@ -45,7 +45,7 @@ case clang::TypeLoc::Class:                                                     
 	}
 
 	FilePath m_currentFilePath;
-	unsigned int m_indentation;
+	unsigned int m_indentation = 0;
 };
 
 #endif	  // CXX_VERBOSE_AST_VISITOR_H

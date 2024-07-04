@@ -12,7 +12,7 @@
 #include "QtSearchBarButton.h"
 
 QtUndoRedo::QtUndoRedo()
-	: m_pressed(false), m_historyList(nullptr), m_historyHiddenAt(TimeStamp::now())
+	:  m_historyHiddenAt(TimeStamp::now())
 {
 	setObjectName(QStringLiteral("undo_redo_bar"));
 

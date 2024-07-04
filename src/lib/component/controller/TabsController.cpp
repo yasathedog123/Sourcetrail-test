@@ -21,7 +21,7 @@ TabsController::TabsController(
 	, m_viewFactory(viewFactory)
 	, m_storageAccess(storageAccess)
 	, m_screenSearchSender(screenSearchSender)
-	, m_isCreatingTab(false)
+	 
 {
 }
 

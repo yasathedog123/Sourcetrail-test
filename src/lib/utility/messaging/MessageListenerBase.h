@@ -10,7 +10,7 @@
 class MessageListenerBase
 {
 public:
-	MessageListenerBase(): m_id(s_nextId++), m_alive(true)
+	MessageListenerBase(): m_id(s_nextId++) 
 	{
 		MessageQueue::getInstance()->registerListener(this);
 	}
@@ -63,7 +63,7 @@ private:
 	static Id s_nextId;
 
 	Id m_id;
-	bool m_alive;
+	bool m_alive = true;
 };
 
 #endif	  // MESSAGE_LISTENER_BASE_H

@@ -17,7 +17,7 @@ CxxVerboseAstVisitor::CxxVerboseAstVisitor(
 	std::shared_ptr<ParserClient> client,
 	std::shared_ptr<CanonicalFilePathCache> canonicalFilePathCache,
 	std::shared_ptr<IndexerStateInfo> indexerStateInfo)
-	: CxxAstVisitor(context, preprocessor, client, canonicalFilePathCache, indexerStateInfo), m_indentation(0)
+	: CxxAstVisitor(context, preprocessor, client, canonicalFilePathCache, indexerStateInfo) 
 {
 }
 

@@ -30,10 +30,6 @@ public:
 		: orderCount(*orderCountPtr)
 		, updateCount(updateCount)
 		, returnState(returnState)
-		, enterCallOrder(0)
-		, updateCallOrder(0)
-		, exitCallOrder(0)
-		, resetCallOrder(0)
 	{
 	}
 
@@ -75,10 +71,10 @@ public:
 	int updateCount;
 	TaskState returnState;
 
-	int enterCallOrder;
-	int updateCallOrder;
-	int exitCallOrder;
-	int resetCallOrder;
+	int enterCallOrder = 0;
+	int updateCallOrder = 0;
+	int exitCallOrder = 0;
+	int resetCallOrder = 0;
 };
 
 class TestTaskDispatch: public TestTask

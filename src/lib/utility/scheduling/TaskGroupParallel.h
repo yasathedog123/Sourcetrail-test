@@ -34,7 +34,7 @@ private:
 		std::shared_ptr<Blackboard> blackboard);
 
 	std::vector<std::shared_ptr<TaskInfo>> m_tasks;
-	bool m_needsToStartThreads;
+	bool m_needsToStartThreads = true;
 
 	std::atomic<bool> m_taskFailed;
 	std::atomic<int> m_activeTaskCount;

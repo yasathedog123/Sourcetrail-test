@@ -88,5 +88,5 @@ std::set<std::wstring> Unit::getTargetNames() const
 	return m_targetNames;
 }
 
-Unit::Unit(): m_filename(), m_compilerVar(COMPILER_VAR_CPP), m_compile(true) {}
+Unit::Unit() {}
 }	 // namespace Codeblocks

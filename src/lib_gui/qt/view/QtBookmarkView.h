@@ -34,7 +34,7 @@ private:
 	ControllerProxy<BookmarkController> m_controllerProxy;
 	QtThreadedLambdaFunctor m_onQtThread;
 
-	QtBookmarkBrowser* m_bookmarkBrowser;
+	QtBookmarkBrowser* m_bookmarkBrowser = nullptr;
 };
 
 #endif	  // QT_BOOKMARK_VIEW_H

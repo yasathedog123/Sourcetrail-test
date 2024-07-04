@@ -45,13 +45,13 @@ protected:
 	void getPivotPoints(Vec2f* p, const Vec4i& in, const Vec4i& out, int offset, bool target) const;
 
 	GraphViewStyle::EdgeStyle m_style;
-	bool m_showArrow;
+	bool m_showArrow = true;
 
-	bool m_onFront;
-	bool m_onBack;
-	bool m_earlyBend;
+	bool m_onFront = false;
+	bool m_onBack = false;
+	bool m_earlyBend = false;
 
-	Route m_route;
+	Route m_route = ROUTE_ANY;
 
 private:
 	Vec4i m_ownerRect;

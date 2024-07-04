@@ -55,18 +55,18 @@ private:
 	std::vector<MessageListenerBase*> m_listeners;
 	std::vector<std::shared_ptr<MessageFilter>> m_filters;
 
-	size_t m_currentListenerIndex;
-	size_t m_listenersLength;
+	size_t m_currentListenerIndex = 0;
+	size_t m_listenersLength = 0;
 
-	bool m_loopIsRunning;
-	bool m_threadIsRunning;
+	bool m_loopIsRunning = false;
+	bool m_threadIsRunning = false;
 
 	mutable std::mutex m_messageBufferMutex;
 	mutable std::mutex m_listenersMutex;
 	mutable std::mutex m_loopMutex;
 	mutable std::mutex m_threadMutex;
 
-	bool m_sendMessagesAsTasks;
+	bool m_sendMessagesAsTasks = false;
 };
 
 #endif	  // MESSAGE_QUEUE_H

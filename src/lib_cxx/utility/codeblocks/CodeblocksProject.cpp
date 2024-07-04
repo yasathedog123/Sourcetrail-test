@@ -31,7 +31,7 @@ std::shared_ptr<Project> Project::load(std::shared_ptr<TextAccess> xmlAccess)
 	std::shared_ptr<Project> project(new Project(xmlAccess->getFilePath()));
 
 	TiXmlDocument doc;
-	doc.Parse(xmlAccess->getText().c_str(), 0, TIXML_ENCODING_UTF8);
+	doc.Parse(xmlAccess->getText().c_str(), nullptr, TIXML_ENCODING_UTF8);
 	if (doc.Error())
 	{
 		LOG_ERROR(

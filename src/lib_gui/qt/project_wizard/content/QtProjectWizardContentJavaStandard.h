@@ -24,7 +24,7 @@ public:
 private:
 	std::shared_ptr<SourceGroupSettingsWithJavaStandard> m_sourceGroupSettings;
 
-	QComboBox* m_standard;
+	QComboBox* m_standard = nullptr;
 };
 
 #endif	  // QT_PROJECT_WIZARD_CONTENT_JAVA_STANDARD

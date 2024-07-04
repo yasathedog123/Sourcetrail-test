@@ -11,7 +11,7 @@
 #include "ResourcePaths.h"
 
 QtListBoxItem::QtListBoxItem(QListWidgetItem* item, QWidget* parent)
-	: QWidget(parent), m_item(item), m_readOnly(false)
+	: QWidget(parent), m_item(item) 
 {
 	QBoxLayout* layout = new QHBoxLayout();
 	layout->setSpacing(3);
@@ -20,7 +20,7 @@ QtListBoxItem::QtListBoxItem(QListWidgetItem* item, QWidget* parent)
 	setLayout(layout);
 
 	m_data = new QtLineEdit(this);
-	m_data->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_data->setAttribute(Qt::WA_MacShowFocusRect, false);
 	m_data->setAttribute(Qt::WA_LayoutUsesWidgetRect);	  // fixes layouting on Mac
 	m_data->setObjectName(QStringLiteral("field"));
 	m_data->setAcceptDrops(false);

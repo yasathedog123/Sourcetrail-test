@@ -17,7 +17,7 @@ InterprocessIntermediateStorageManager::InterprocessIntermediateStorageManager(
 		  instanceUuid,
 		  processId,
 		  isOwner)
-	, m_insertsWithoutGrowth(0)
+	 
 {
 }
 

@@ -80,9 +80,6 @@ std::shared_ptr<const Compiler> Target::getCompiler() const
 }
 
 Target::Target()
-	: m_title()
-	, m_projectCompilerOptionsRelation(CODEBLOCKS_TARGET_RELATION_TARGET_AFTER_PROJECT)
-	, m_projectIncludeDirsRelation(CODEBLOCKS_TARGET_RELATION_TARGET_AFTER_PROJECT)
 {
 }
 }	 // namespace Codeblocks

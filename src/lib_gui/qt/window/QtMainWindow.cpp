@@ -111,10 +111,7 @@ bool MouseReleaseFilter::eventFilter(QObject* obj, QEvent* event)
 
 
 QtMainWindow::QtMainWindow()
-	: m_historyMenu(nullptr)
-	, m_bookmarksMenu(nullptr)
-	, m_showDockWidgetTitleBars(true)
-	, m_windowStack(this)
+	: m_windowStack(this)
 {
 	setObjectName(QStringLiteral("QtMainWindow"));
 	setCentralWidget(nullptr);

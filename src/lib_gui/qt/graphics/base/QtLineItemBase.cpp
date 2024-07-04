@@ -6,11 +6,6 @@
 
 QtLineItemBase::QtLineItemBase(QGraphicsItem* parent)
 	: QGraphicsLineItem(parent)
-	, m_showArrow(true)
-	, m_onFront(false)
-	, m_onBack(false)
-	, m_earlyBend(false)
-	, m_route(ROUTE_ANY)
 {
 	this->setAcceptHoverEvents(true);
 	this->setCursor(Qt::PointingHandCursor);

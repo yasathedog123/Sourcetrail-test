@@ -25,7 +25,7 @@ struct StorageNodeData
 
 struct StorageNode: public StorageNodeData
 {
-	StorageNode(): StorageNodeData(), id(0) {}
+	StorageNode():  id(0) {}
 
 	StorageNode(Id id, int type, std::wstring serializedName)
 		: StorageNodeData(type, std::move(serializedName)), id(id)

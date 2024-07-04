@@ -29,7 +29,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-	float m_rowsToFill;
+	float m_rowsToFill = 0;
 
 	int m_colIndex = -1;
 	int m_lastPos = -1;

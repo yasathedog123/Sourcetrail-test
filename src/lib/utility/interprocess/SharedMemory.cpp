@@ -32,7 +32,7 @@ SharedMemory::ScopedAccess::ScopedAccess(SharedMemory* memory)
 			boost::interprocess::open_or_create,
 			memory->getMemoryName().c_str(),
 			memory->getInitialMemorySize(),
-			0,
+			nullptr,
 			permissions);
 	}
 }
@@ -150,7 +150,7 @@ SharedMemory::SharedMemory(const std::string& name, size_t initialMemorySize, Ac
 				boost::interprocess::create_only,
 				getMemoryName().c_str(),
 				initialMemorySize,
-				0,
+				nullptr,
 				permissions);
 			boost::interprocess::named_mutex(
 				boost::interprocess::create_only, getMutexName().c_str());
@@ -173,7 +173,7 @@ SharedMemory::SharedMemory(const std::string& name, size_t initialMemorySize, Ac
 				boost::interprocess::open_or_create,
 				getMemoryName().c_str(),
 				initialMemorySize,
-				0,
+				nullptr,
 				permissions);
 			boost::interprocess::named_mutex(
 				boost::interprocess::open_or_create, getMutexName().c_str());

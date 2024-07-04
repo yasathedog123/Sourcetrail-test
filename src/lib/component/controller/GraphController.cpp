@@ -23,7 +23,7 @@
 #include "utilityString.h"
 
 GraphController::GraphController(StorageAccess* storageAccess)
-	: m_storageAccess(storageAccess), m_useBezierEdges(false)
+	: m_storageAccess(storageAccess) 
 {
 }
 

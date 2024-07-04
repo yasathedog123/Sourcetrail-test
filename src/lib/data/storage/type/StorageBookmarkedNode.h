@@ -20,7 +20,7 @@ struct StorageBookmarkedNodeData
 
 struct StorageBookmarkedNode: public StorageBookmarkedNodeData
 {
-	StorageBookmarkedNode(): StorageBookmarkedNodeData(), id(0) {}
+	StorageBookmarkedNode():  id(0) {}
 
 	StorageBookmarkedNode(Id id, const StorageBookmarkedNodeData& data)
 		: StorageBookmarkedNodeData(data), id(id)

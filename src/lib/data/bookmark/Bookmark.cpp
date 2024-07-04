@@ -11,7 +11,7 @@ Bookmark::Bookmark(
 	, m_comment(comment)
 	, m_timeStamp(timeStamp)
 	, m_category(category)
-	, m_isValid(false)
+	 
 {
 }
 

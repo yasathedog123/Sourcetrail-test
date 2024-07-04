@@ -42,10 +42,6 @@
 QtGraphView::QtGraphView(ViewLayout* viewLayout)
 	: GraphView(viewLayout)
 	, m_focusHandler(this)
-	, m_centerActiveNode(false)
-	, m_scrollToTop(false)
-	, m_restoreScroll(false)
-	, m_isIndexedList(false)
 {
 	setWidgetWrapper(std::make_shared<QtViewWidgetWrapper>(new QFrame()));
 

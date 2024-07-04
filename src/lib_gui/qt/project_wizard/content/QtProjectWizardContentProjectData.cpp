@@ -14,8 +14,6 @@ QtProjectWizardContentProjectData::QtProjectWizardContentProjectData(
 	: QtProjectWizardContent(window)
 	, m_projectSettings(projectSettings)
 	, m_disableNameEditing(disableNameEditing)
-	, m_projectName(nullptr)
-	, m_projectFileLocation(nullptr)
 {
 	setIsRequired(true);
 }
@@ -25,7 +23,7 @@ void QtProjectWizardContentProjectData::populate(QGridLayout* layout, int& row)
 	QLabel* nameLabel = createFormLabel(QStringLiteral("Sourcetrail Project Name"));
 	m_projectName = new QLineEdit();
 	m_projectName->setObjectName(QStringLiteral("name"));
-	m_projectName->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_projectName->setAttribute(Qt::WA_MacShowFocusRect, false);
 	m_projectName->setEnabled(!m_disableNameEditing);
 	connect(
 		m_projectName,

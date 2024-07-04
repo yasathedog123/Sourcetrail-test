@@ -33,10 +33,10 @@ private:
 
 	void clearLayout(QLayout* layout);
 
-	QWidget* m_parentView;
+	QWidget* m_parentView = nullptr;
 	QPoint m_offset;
 
-	bool m_isHovered;
+	bool m_isHovered = false;
 };
 
 #endif	  // QT_TOOLTIP_H

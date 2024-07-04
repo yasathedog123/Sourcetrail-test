@@ -129,8 +129,8 @@ private:
 	mutable std::map<Id, std::vector<Id>> m_activeNodeIds;
 	mutable std::map<Id, std::vector<Id>> m_activeEdgeIds;
 
-	Bookmark::BookmarkFilter m_filter;
-	Bookmark::BookmarkOrder m_order;
+	Bookmark::BookmarkFilter m_filter = Bookmark::FILTER_ALL;
+	Bookmark::BookmarkOrder m_order = Bookmark::ORDER_DATE_DESCENDING;
 };
 
 #endif	  // BOOKMARK_CONTROLLER_H

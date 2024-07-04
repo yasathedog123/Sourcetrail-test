@@ -22,7 +22,7 @@ public:
 		const RefreshMode initialMode,
 		bool enabledShallowOption,
 		bool initialShallowState,
-		QWidget* parent = 0);
+		QWidget* parent = nullptr);
 	QSize sizeHint() const override;
 
 	void updateRefreshInfo(const RefreshInfo& info);

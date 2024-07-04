@@ -13,7 +13,7 @@
 #include "utilityQt.h"
 
 QtGraphNodeAccess::QtGraphNodeAccess(AccessKind accessKind)
-	: QtGraphNode(), m_accessKind(accessKind), m_accessIcon(nullptr), m_accessIconSize(16)
+	:  m_accessKind(accessKind) 
 {
 	std::wstring accessString = TokenComponentAccess::getAccessString(m_accessKind);
 	this->setName(accessString);

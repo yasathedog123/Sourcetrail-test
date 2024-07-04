@@ -2,7 +2,7 @@
 
 #include <thread>
 
-TaskDecoratorDelay::TaskDecoratorDelay(size_t delayMS): m_delayMS(delayMS), m_delayComplete(false)
+TaskDecoratorDelay::TaskDecoratorDelay(size_t delayMS): m_delayMS(delayMS) 
 {
 }
 

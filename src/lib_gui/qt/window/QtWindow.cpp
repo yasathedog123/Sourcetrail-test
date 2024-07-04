@@ -11,14 +11,6 @@
 
 QtWindow::QtWindow(bool isSubWindow, QWidget* parent)
 	: QtWindowBase(isSubWindow, parent)
-	, m_title(nullptr)
-	, m_subTitle(nullptr)
-	, m_nextButton(nullptr)
-	, m_previousButton(nullptr)
-	, m_closeButton(nullptr)
-	, m_cancelAble(true)
-	, m_scrollAble(false)
-	, m_hasLogo(false)
 {
 }
 

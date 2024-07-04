@@ -13,10 +13,6 @@ using namespace utility::compatibility;
 QtWindowBase::QtWindowBase(bool isSubWindow, QWidget* parent)
 	: QtWindowStackElement(parent)
 	, m_isSubWindow(isSubWindow)
-	, m_window(nullptr)
-	, m_content(nullptr)
-	, m_mousePressedInWindow(false)
-	, m_sizeGrip(nullptr)
 {
 	if (isSubWindow)
 	{

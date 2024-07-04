@@ -11,7 +11,7 @@ public:
 		return "MessageRefresh";
 	}
 
-	MessageRefresh(): all(false) {}
+	MessageRefresh() {}
 
 	MessageRefresh& refreshAll()
 	{
@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	bool all;
+	bool all = false;
 };
 
 #endif	  // MESSAGE_REFRESH_H

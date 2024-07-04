@@ -4,8 +4,6 @@
 #include "JavaEnvironment.h"
 #include "logging.h"
 
-#include <cstdlib>
-
 namespace
 {
 
@@ -159,7 +157,7 @@ std::shared_ptr<JavaEnvironment> JavaEnvironmentFactory::createEnvironment()
 		}
 		else
 		{
-			m_jvm->AttachCurrentThread((void**)&env, NULL);
+			m_jvm->AttachCurrentThread((void**)&env, nullptr);
 			m_threadIdToEnvAndUserCount.insert(
 				std::make_pair(currentThreadId, std::make_pair(env, 0)));
 		}

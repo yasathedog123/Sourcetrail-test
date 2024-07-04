@@ -17,7 +17,7 @@
 #include "utilityQt.h"
 
 QtCodeFileSingle::QtCodeFileSingle(QtCodeNavigator* navigator, QWidget*  /*parent*/)
-	: m_navigator(navigator), m_area(nullptr)
+	: m_navigator(navigator) 
 {
 	setObjectName(QStringLiteral("code_container"));
 

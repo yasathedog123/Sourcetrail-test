@@ -96,7 +96,7 @@ std::wstring SearchMatch::getCommandName(CommandType type)
 }
 
 SearchMatch::SearchMatch()
-	:  nodeType(NODE_SYMBOL), searchType(SEARCH_NONE), hasChildren(false)
+	:  nodeType(NODE_SYMBOL), searchType(SEARCH_NONE) 
 {
 }
 
@@ -106,7 +106,7 @@ SearchMatch::SearchMatch(const std::wstring& query)
 	, 
 	 nodeType(NODE_SYMBOL)
 	, searchType(SEARCH_NONE)
-	, hasChildren(false)
+	 
 {
 	tokenNames.emplace_back(query, NAME_DELIMITER_UNKNOWN);
 }

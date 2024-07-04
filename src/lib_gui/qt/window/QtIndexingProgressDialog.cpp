@@ -6,7 +6,7 @@
 #include "MessageIndexingInterrupted.h"
 
 QtIndexingProgressDialog::QtIndexingProgressDialog(bool  /*hideable*/, QWidget* parent)
-	: QtProgressBarDialog(0.38f, true, parent), m_filePathLabel(nullptr), m_errorWidget(nullptr)
+	: QtProgressBarDialog(0.38f, true, parent) 
 {
 	setSizeGripStyle(false);
 

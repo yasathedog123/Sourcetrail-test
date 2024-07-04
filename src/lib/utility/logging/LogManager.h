@@ -64,7 +64,7 @@ private:
 	void operator=(const LogManager&);
 
 	LogManagerImplementation m_logManagerImplementation;
-	bool m_loggingEnabled;
+	bool m_loggingEnabled = false;
 };
 
 #endif	  // LOG_MANAGER_H

@@ -38,9 +38,6 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	: QGraphicsView(parent)
 	, m_focusHandler(focusHandler)
 	, m_zoomFactor(ApplicationSettings::getInstance()->getGraphZoomLevel())
-	, m_appZoomFactor(1.0f)
-	, m_zoomInButtonSpeed(20.0f)
-	, m_zoomOutButtonSpeed(-20.0f)
 {
 	QString modifierName = utility::Os::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 

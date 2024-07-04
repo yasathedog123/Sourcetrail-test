@@ -13,12 +13,6 @@ public:
 	MessageBase()
 		: m_id(s_nextId++)
 		, m_schedulerId(0)
-		, m_isParallel(false)
-		, m_isReplayed(false)
-		, m_sendAsTask(true)
-		, m_keepContent(false)
-		, m_isLast(true)
-		, m_isLogged(true)
 	{
 	}
 
@@ -118,14 +112,14 @@ private:
 	Id m_id;
 	Id m_schedulerId;
 
-	bool m_isParallel;
-	bool m_isReplayed;
+	bool m_isParallel = false;
+	bool m_isReplayed = false;
 
-	bool m_sendAsTask;
-	bool m_keepContent;
+	bool m_sendAsTask = true;
+	bool m_keepContent = false;
 
-	bool m_isLast;
-	bool m_isLogged;
+	bool m_isLast = true;
+	bool m_isLogged = true;
 };
 
 #endif	  // MESSAGE_BASE_H

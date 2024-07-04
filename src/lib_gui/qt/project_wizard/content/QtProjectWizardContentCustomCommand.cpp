@@ -12,7 +12,7 @@
 
 QtProjectWizardContentCustomCommand::QtProjectWizardContentCustomCommand(
 	std::shared_ptr<SourceGroupSettingsCustomCommand> settings, QtProjectWizardWindow* window)
-	: QtProjectWizardContent(window), m_settings(settings), m_customCommand(nullptr)
+	: QtProjectWizardContent(window), m_settings(settings) 
 {
 }
 
@@ -42,7 +42,7 @@ void QtProjectWizardContentCustomCommand::populate(QGridLayout* layout, int& row
 
 	m_customCommand = new QLineEdit();
 	m_customCommand->setObjectName(QStringLiteral("name"));
-	m_customCommand->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_customCommand->setAttribute(Qt::WA_MacShowFocusRect, false);
 	m_runInParallel = new QCheckBox(QStringLiteral("Run in Parallel"));
 
 	layout->setRowMinimumHeight(row, 30);

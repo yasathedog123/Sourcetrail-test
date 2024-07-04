@@ -39,10 +39,10 @@ private:
 	FilePath m_logDirectory;
 	FilePath m_currentLogFilePath;
 
-	unsigned int m_maxLogLineCount;
-	unsigned int m_maxLogFileCount;
-	unsigned int m_currentLogLineCount;
-	unsigned int m_currentLogFileCount;
+	unsigned int m_maxLogLineCount = 0;
+	unsigned int m_maxLogFileCount = 0;
+	unsigned int m_currentLogLineCount = 0;
+	unsigned int m_currentLogFileCount = 0;
 };
 
 #endif	  // FILE_LOGGER_H

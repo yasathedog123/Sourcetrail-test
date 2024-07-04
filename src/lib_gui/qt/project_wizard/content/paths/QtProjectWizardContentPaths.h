@@ -44,7 +44,7 @@ protected:
 	QString m_showFilesString;
 	std::shared_ptr<CombinedPathDetector> m_pathDetector;
 
-	bool m_makePathsRelativeToProjectFileLocation;
+	bool m_makePathsRelativeToProjectFileLocation = true;
 
 private slots:
 	void detectionClicked();

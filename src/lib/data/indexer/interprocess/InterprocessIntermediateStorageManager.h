@@ -20,7 +20,7 @@ private:
 	static const char* s_sharedMemoryNamePrefix;
 	static const char* s_intermediateStoragesKeyName;
 
-	size_t m_insertsWithoutGrowth;
+	size_t m_insertsWithoutGrowth = 0;
 };
 
 #endif	  // INTERPROCESS_INTERMEDIATE_STORAGE_MANAGER_H

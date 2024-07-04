@@ -85,13 +85,7 @@ QtCodeArea::QtCodeArea(
 	QWidget* parent)
 	: QtCodeField(startLineNumber, code, locationFile, parent)
 	, m_navigator(navigator)
-	, m_digits(0)
-	, m_isSelecting(false)
-	, m_isPanning(false)
-	, m_isDragging(false)
-	, m_setIDECursorPositionAction(nullptr)
 	, m_eventPosition(0, 0)
-	, m_isActiveFile(false)
 	, m_showLineNumbers(showLineNumbers)
 {
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);

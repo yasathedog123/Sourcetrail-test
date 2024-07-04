@@ -91,7 +91,7 @@ void QtSelectPathsDialog::populateWindow(QWidget* widget)
 	m_list->setObjectName(QStringLiteral("pathList"));
 	m_list->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	m_list->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	m_list->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_list->setAttribute(Qt::WA_MacShowFocusRect, false);
 	layout->addWidget(m_list);
 
 	QHBoxLayout* buttonLayout = new QHBoxLayout();

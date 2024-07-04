@@ -73,7 +73,7 @@ private:
 	bool createXmlDocument(bool saveAsFile, std::string filepath, std::string& output);
 
 	std::multimap<std::string, std::string> m_values;
-	mutable bool m_warnOnEmptyKey;
+	mutable bool m_warnOnEmptyKey = true;
 };
 
 template <typename T>

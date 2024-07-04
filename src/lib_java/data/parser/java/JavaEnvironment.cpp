@@ -120,7 +120,7 @@ bool JavaEnvironment::callStaticStringMethod(
 
 std::string JavaEnvironment::toStdString(jstring s)
 {
-	const char* nativeString = m_env->GetStringUTFChars(s, 0);
+	const char* nativeString = m_env->GetStringUTFChars(s, nullptr);
 	std::string ret = nativeString;
 	m_env->ReleaseStringUTFChars(s, nativeString);
 	return ret;

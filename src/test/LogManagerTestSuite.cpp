@@ -25,9 +25,9 @@ private:
 	void logWarning(const LogMessage& message) override;
 	void logError(const LogMessage& message) override;
 
-	int m_logMessageCount;
-	int m_logWarningCount;
-	int m_logErrorCount;
+	int m_logMessageCount = 0;
+	int m_logWarningCount = 0;
+	int m_logErrorCount = 0;
 
 	std::wstring m_lastInfo;
 	std::wstring m_lastWarning;
@@ -36,10 +36,6 @@ private:
 
 TestLogger::TestLogger()
 	: Logger("TestLogger")
-	, m_logMessageCount(0)
-	, m_logWarningCount(0)
-	, m_logErrorCount(0)
-	 
 {
 }
 

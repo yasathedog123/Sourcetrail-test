@@ -25,7 +25,7 @@ public:
 private:
 	std::shared_ptr<SourceGroupSettingsCustomCommand> m_settings;
 
-	QLineEdit* m_customCommand;
+	QLineEdit* m_customCommand = nullptr;
 	QCheckBox* m_runInParallel;
 };
 

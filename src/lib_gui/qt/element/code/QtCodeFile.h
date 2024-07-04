@@ -89,7 +89,7 @@ private:
 	std::vector<QtCodeSnippet*> m_snippets;
 
 	const FilePath m_filePath;
-	bool m_isWholeFile;
+	bool m_isWholeFile = false;
 };
 
 #endif	  // QT_CODE_FILE_H

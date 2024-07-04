@@ -8,7 +8,7 @@
 
 struct StorageErrorData
 {
-	StorageErrorData():  fatal(0), indexed(0) {}
+	StorageErrorData():  fatal(false), indexed(false) {}
 
 	StorageErrorData(std::wstring message, std::wstring translationUnit, bool fatal, bool indexed)
 		: message(std::move(message))
@@ -46,7 +46,7 @@ struct StorageErrorData
 
 struct StorageError: public StorageErrorData
 {
-	StorageError(): StorageErrorData(), id(0) {}
+	StorageError():  id(0) {}
 
 	StorageError(Id id, const StorageErrorData& data): StorageErrorData(data), id(id) {}
 

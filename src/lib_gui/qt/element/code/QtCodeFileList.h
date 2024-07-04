@@ -91,10 +91,10 @@ private:
 
 	QtCodeFileTitleBar* m_firstSnippetTitleBar;
 	const QtCodeFile* m_firstSnippetFile = nullptr;
-	const QtCodeFileTitleBar* m_mirroredTitleBar;
+	const QtCodeFileTitleBar* m_mirroredTitleBar = nullptr;
 
 	QScrollBar* m_lastSnippetScrollBar;
-	QScrollBar* m_mirroredSnippetScrollBar;
+	QScrollBar* m_mirroredSnippetScrollBar = nullptr;
 
 	QtScrollSpeedChangeListener m_scrollSpeedChangeListener;
 	int m_styleSize = 0;

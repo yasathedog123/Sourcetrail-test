@@ -8,7 +8,7 @@
 QtProjectWizardContentCppStandard::QtProjectWizardContentCppStandard(
 	std::shared_ptr<SourceGroupSettingsWithCppStandard> sourceGroupSettings,
 	QtProjectWizardWindow* window)
-	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings), m_standard(nullptr)
+	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings) 
 {
 }
 

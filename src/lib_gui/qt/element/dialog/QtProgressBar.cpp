@@ -9,8 +9,6 @@
 
 QtProgressBar::QtProgressBar(QWidget* parent)
 	: QWidget(parent)
-	, m_percent(0)
-	, m_count(0)
 	, m_pixmap(QString::fromStdWString(
 		  ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/progress_bar_element.png").wstr()))
 {

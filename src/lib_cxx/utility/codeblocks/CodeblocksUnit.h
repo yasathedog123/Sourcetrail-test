@@ -26,8 +26,8 @@ private:
 	Unit();
 
 	std::wstring m_filename;
-	CompilerVarType m_compilerVar;
-	bool m_compile;
+	CompilerVarType m_compilerVar = COMPILER_VAR_CPP;
+	bool m_compile = true;
 	std::set<std::wstring> m_targetNames;
 };
 }	 // namespace Codeblocks

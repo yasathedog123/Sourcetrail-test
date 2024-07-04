@@ -2,7 +2,7 @@
 
 #include "logging.h"
 
-Graph::Graph(): m_trailMode(TRAIL_NONE) {}
+Graph::Graph() {}
 
 Graph::~Graph()
 {

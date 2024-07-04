@@ -8,8 +8,6 @@
 
 QtScrollSpeedChangeListener::QtScrollSpeedChangeListener()
 	: m_changeScrollSpeedFunctor([this](float scrollSpeed) { doChangeScrollSpeed(scrollSpeed); })
-	, m_scrollBar(nullptr)
-	, m_singleStep(1)
 {
 }
 

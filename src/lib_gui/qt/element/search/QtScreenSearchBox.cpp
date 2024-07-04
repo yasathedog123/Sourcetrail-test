@@ -53,7 +53,7 @@ QtScreenSearchBox::QtScreenSearchBox(
 
 		m_searchBox = new QLineEdit(this);
 		m_searchBox->setObjectName(QStringLiteral("search_box"));
-		m_searchBox->setAttribute(Qt::WA_MacShowFocusRect, 0);	  // remove blue focus box on Mac
+		m_searchBox->setAttribute(Qt::WA_MacShowFocusRect, false);	  // remove blue focus box on Mac
 		layout->addWidget(m_searchBox);
 
 		connect(m_searchBox, &QLineEdit::textChanged, this, &QtScreenSearchBox::searchQueryChanged);

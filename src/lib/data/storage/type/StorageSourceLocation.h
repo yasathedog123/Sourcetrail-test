@@ -59,7 +59,7 @@ struct StorageSourceLocationData
 
 struct StorageSourceLocation: public StorageSourceLocationData
 {
-	StorageSourceLocation(): StorageSourceLocationData(), id(0) {}
+	StorageSourceLocation():  id(0) {}
 
 	StorageSourceLocation(Id id, const StorageSourceLocationData& data)
 		: StorageSourceLocationData(data), id(id)

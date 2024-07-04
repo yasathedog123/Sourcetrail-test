@@ -71,7 +71,7 @@ private:
 	const NameHierarchy m_nameHierarchy;
 	DefinitionKind m_definitionKind;
 
-	size_t m_childCount;
+	size_t m_childCount = 0;
 };
 
 std::wostream& operator<<(std::wostream& ostream, const Node& node);

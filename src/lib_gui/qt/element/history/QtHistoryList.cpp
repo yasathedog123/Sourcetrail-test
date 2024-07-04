@@ -27,7 +27,7 @@ QtHistoryItem::QtHistoryItem(const SearchMatch& match, size_t index, bool isCurr
 	const std::wstring name = utility::elide(match.getFullName(), utility::ELIDE_RIGHT, 100);
 
 	m_name = new QLabel(QString::fromStdWString(name), this);
-	m_name->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	m_name->setAttribute(Qt::WA_MacShowFocusRect, false);
 	m_name->setAttribute(Qt::WA_LayoutUsesWidgetRect);	  // fixes layouting on Mac
 	m_name->setObjectName(
 		isCurrent ? QStringLiteral("history_item_current") : QStringLiteral("history_item"));

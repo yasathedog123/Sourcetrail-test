@@ -39,7 +39,7 @@ private:
 
 	QListWidgetItem* m_item;
 	QtLineEdit* m_data;
-	bool m_readOnly;
+	bool m_readOnly = false;
 };
 
 #endif	  // QT_LIST_BOX_ITEM_H
