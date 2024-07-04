@@ -12,7 +12,7 @@
 
 SourceGroupJavaGradle::SourceGroupJavaGradle(std::shared_ptr<SourceGroupSettingsJavaGradle> settings)
 	: m_settings(settings)
-	, m_allSourcePathsCache(std::bind(&SourceGroupJavaGradle::doGetAllSourcePaths, this))
+	, m_allSourcePathsCache([this] { return doGetAllSourcePaths(); })
 {
 }
 

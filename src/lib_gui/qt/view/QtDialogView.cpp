@@ -487,10 +487,7 @@ DialogType* QtDialogView::createWindow(ParamTypes... params)
 
 	if (m_mainWindow)
 	{
-		connect(
-			m_mainWindow,
-			&QtMainWindow::hideIndexingDialog,
-			std::bind(&QtDialogView::dialogVisibilityChanged, this, true));
+		connect(m_mainWindow, &QtMainWindow::hideIndexingDialog, [this] { dialogVisibilityChanged(true); });
 	}
 
 	m_windowStack.pushWindow(window);

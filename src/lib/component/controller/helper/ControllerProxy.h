@@ -27,8 +27,7 @@ public:
 		ControllerType* controller = m_view->getController<ControllerType>();
 		if (controller)
 		{
-			Task::dispatch(
-				m_schedulerId, std::make_shared<TaskLambda>(std::bind(callback, controller)));
+			Task::dispatch(m_schedulerId, std::make_shared<TaskLambda>([=] { callback(controller); }));
 		}
 	}
 
@@ -38,10 +37,7 @@ public:
 		ControllerType* controller = m_view->getController<ControllerType>();
 		if (controller)
 		{
-			Task::dispatch(
-				m_schedulerId,
-				std::make_shared<TaskLambda>(
-					[func = std::bind(callback, controller, args...)]() { func(); }));
+			Task::dispatch(m_schedulerId, std::make_shared<TaskLambda>([=] { (controller->*callback)(args...); }));
 		}
 	}
 

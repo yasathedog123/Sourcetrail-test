@@ -24,14 +24,11 @@ QtProjectWizardContentPathsHeaderSearch::QtProjectWizardContentPathsHeaderSearch
 	std::shared_ptr<SourceGroupSettings> settings,
 	QtProjectWizardWindow* window,
 	bool indicateAsAdditional)
-	: QtProjectWizardContentPaths(
-		  settings, window, QtPathListBox::SELECTION_POLICY_DIRECTORIES_ONLY, true)
-	, m_showDetectedIncludesResultFunctor(std::bind(
-		  &QtProjectWizardContentPathsHeaderSearch::showDetectedIncludesResult,
-		  this,
-		  std::placeholders::_1))
-	, m_showValidationResultFunctor(std::bind(
-		  &QtProjectWizardContentPathsHeaderSearch::showValidationResult, this, std::placeholders::_1))
+	: QtProjectWizardContentPaths(settings, window, QtPathListBox::SELECTION_POLICY_DIRECTORIES_ONLY, true)
+	, m_showDetectedIncludesResultFunctor([this](const std::set<FilePath> &detectedHeaderSearchPaths)
+		{ showDetectedIncludesResult(detectedHeaderSearchPaths); })
+	, m_showValidationResultFunctor([this](const std::vector<IncludeDirective> &unresolvedIncludes)
+		{ showValidationResult(unresolvedIncludes); })
 	, m_indicateAsAdditional(indicateAsAdditional)
 {
 	setTitleString(m_indicateAsAdditional ? "Additional Include Paths" : "Include Paths");

@@ -14,7 +14,7 @@
 
 SourceGroupJavaMaven::SourceGroupJavaMaven(std::shared_ptr<SourceGroupSettingsJavaMaven> settings)
 	: m_settings(settings)
-	, m_allSourcePathsCache(std::bind(&SourceGroupJavaMaven::doGetAllSourcePaths, this))
+	, m_allSourcePathsCache([this] { return doGetAllSourcePaths(); })
 {
 }
 

@@ -9,8 +9,7 @@
 QtProjectWizardContent::QtProjectWizardContent(QtProjectWizardWindow* window)
 	: QWidget(window)
 	, m_window(window)
-	, m_showFilesFunctor(
-		  std::bind(&QtProjectWizardContent::showFilesDialog, this, std::placeholders::_1))
+	, m_showFilesFunctor([this](const std::vector<FilePath> &filePaths) { showFilesDialog(filePaths); })
 {
 }
 

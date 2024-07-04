@@ -7,8 +7,7 @@
 QtIDECommunicationController::QtIDECommunicationController(QObject* parent, StorageAccess* storageAccess)
 	: IDECommunicationController(storageAccess), m_tcpWrapper(parent)
 {
-	m_tcpWrapper.setReadCallback(std::bind(
-		&QtIDECommunicationController::handleIncomingMessage, this, std::placeholders::_1));
+	m_tcpWrapper.setReadCallback([this](const std::wstring &message) { handleIncomingMessage(message); });
 }
 
 QtIDECommunicationController::~QtIDECommunicationController() {}
