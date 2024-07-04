@@ -2,9 +2,8 @@
 
 #include <QtGlobal>
 
-namespace utility
-{
-namespace compatibility
+
+namespace utility::compatibility
 {
 QPoint QWheelEvent_globalPos(const QWheelEvent *event)
 {
@@ -21,5 +20,5 @@ int QMouseEvent_x(const QMouseEvent *event)
 	return qRound(event->position().x());
 }
 
-}	 // namespace compatibility
-}	 // namespace utility
+} // namespace utility::compatibility
+

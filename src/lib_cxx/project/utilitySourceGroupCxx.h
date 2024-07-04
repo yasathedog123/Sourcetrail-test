@@ -5,13 +5,12 @@
 #include <string>
 #include <vector>
 
-namespace clang
-{
-namespace tooling
+
+namespace clang::tooling
 {
 class JSONCompilationDatabase;
 }
-}	 // namespace clang
+
 
 class DialogView;
 class FilePath;

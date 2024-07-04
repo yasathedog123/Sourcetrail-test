@@ -14,14 +14,13 @@ class IndexerCommandCxx;
 class TaskParseCxx;
 class TextAccess;
 
-namespace clang
-{
-namespace tooling
+
+namespace clang::tooling
 {
 class CompilationDatabase;
 class FixedCompilationDatabase;
-}	 // namespace tooling
-}	 // namespace clang
+} // namespace clang::tooling
+
 
 struct IndexerStateInfo;
 
