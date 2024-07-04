@@ -1,8 +1,8 @@
 #include "Controller.h"
 
-Controller::Controller() {}
+Controller::Controller() = default;
 
-Controller::~Controller() {}
+Controller::~Controller() = default;
 
 void Controller::setComponent(Component* component)
 {

@@ -16,7 +16,7 @@ IDECommunicationController::IDECommunicationController(StorageAccess* storageAcc
 {
 }
 
-IDECommunicationController::~IDECommunicationController() {}
+IDECommunicationController::~IDECommunicationController() = default;
 
 void IDECommunicationController::clear() {}
 

@@ -5,7 +5,7 @@ SettingsMigrationMoveKey::SettingsMigrationMoveKey(const std::string& oldKey, co
 {
 }
 
-SettingsMigrationMoveKey::~SettingsMigrationMoveKey() {}
+SettingsMigrationMoveKey::~SettingsMigrationMoveKey() = default;
 
 void SettingsMigrationMoveKey::apply(Settings* migratable) const
 {

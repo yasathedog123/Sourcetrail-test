@@ -9,7 +9,7 @@ QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem* parent)
 	this->setZValue(-1.0f);
 }
 
-QtRoundedRectItem::~QtRoundedRectItem() {}
+QtRoundedRectItem::~QtRoundedRectItem() = default;
 
 void QtRoundedRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*  /*options*/, QWidget*  /*widget*/)
 {

@@ -6,9 +6,9 @@
 #include "FilePathFilter.h"
 #include "FileSystem.h"
 
-FileManager::FileManager() {}
+FileManager::FileManager() = default;
 
-FileManager::~FileManager() {}
+FileManager::~FileManager() = default;
 
 void FileManager::update(
 	const std::vector<FilePath>& sourcePaths,

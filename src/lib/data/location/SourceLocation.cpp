@@ -46,7 +46,7 @@ SourceLocation::SourceLocation(const SourceLocation* other, SourceLocationFile* 
 {
 }
 
-SourceLocation::~SourceLocation() {}
+SourceLocation::~SourceLocation() = default;
 
 bool SourceLocation::operator==(const SourceLocation& rhs) const
 {

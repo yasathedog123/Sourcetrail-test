@@ -9,10 +9,12 @@ Checks: >
     bugprone-standalone-empty,
     bugprone-string-constructor,
     bugprone-unique-ptr-array-mismatch,
+    # cppcoreguidelines-pro-type-member-init,
     llvm-include-order,
     # misc-include-cleaner, # Breaks to many files and replaces the Qt header with lower level ones,
     misc-unused-parameters,
     modernize-use-bool-literals,
+    modernize-use-equals-default,
     modernize-use-override,
     modernize-use-default-member-init,
     modernize-use-nullptr,
@@ -27,12 +29,18 @@ CheckOptions:
     - key: bugprone-string-constructor.StringNames
       value: ' ::std::basic_string;::std::basic_string_view;QString'
 
+    - key: cppcoreguidelines-pro-type-member-init.UseAssignment
+      value: '1'
+
     - key: misc-unused-parameters.StrictMode
       value: '1'
 
     - key: modernize-use-bool-literals.IgnoreMacros
       value: '0'
 
+    - key: modernize-use-equals-default.IgnoreMacros
+      value: '0'
+      
     - key: modernize-use-override.IgnoreDestructors
       value: '0'
 

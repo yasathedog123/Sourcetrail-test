@@ -14,7 +14,7 @@ CommandlineCommandIndex::CommandlineCommandIndex(CommandLineParser* parser)
 {
 }
 
-CommandlineCommandIndex::~CommandlineCommandIndex() {}
+CommandlineCommandIndex::~CommandlineCommandIndex() = default;
 
 void CommandlineCommandIndex::setup()
 {

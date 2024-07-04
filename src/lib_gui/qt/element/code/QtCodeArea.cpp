@@ -36,7 +36,7 @@
 
 using namespace utility::compatibility;
 
-MouseWheelOverScrollbarFilter::MouseWheelOverScrollbarFilter() {}
+MouseWheelOverScrollbarFilter::MouseWheelOverScrollbarFilter() = default;
 
 bool MouseWheelOverScrollbarFilter::eventFilter(QObject* obj, QEvent* event)
 {
@@ -63,7 +63,7 @@ QtLineNumberArea::QtLineNumberArea(QtCodeArea* codeArea): QWidget(codeArea), m_c
 	setObjectName(QStringLiteral("line_number_area"));
 }
 
-QtLineNumberArea::~QtLineNumberArea() {}
+QtLineNumberArea::~QtLineNumberArea() = default;
 
 QSize QtLineNumberArea::sizeHint() const
 {

@@ -24,9 +24,7 @@ private:
 
 
 template <typename MigratableType>
-Migrator<MigratableType>::~Migrator()
-{
-}
+Migrator<MigratableType>::~Migrator() = default;
 
 template <typename MigratableType>
 void Migrator<MigratableType>::addMigration(

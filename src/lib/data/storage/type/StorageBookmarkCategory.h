@@ -7,7 +7,7 @@
 
 struct StorageBookmarkCategoryData
 {
-	StorageBookmarkCategoryData() {}
+	StorageBookmarkCategoryData() = default;
 
 	StorageBookmarkCategoryData(const std::wstring& name): name(name) {}
 

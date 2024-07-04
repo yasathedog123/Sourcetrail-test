@@ -8,7 +8,7 @@ CompositeView::CompositeView(
 {
 }
 
-CompositeView::~CompositeView() {}
+CompositeView::~CompositeView() = default;
 
 Id CompositeView::getSchedulerId() const
 {

@@ -64,7 +64,7 @@ QtCodeSnippet::QtCodeSnippet(const CodeSnippetParams& params, QtCodeNavigator* n
 	}
 }
 
-QtCodeSnippet::~QtCodeSnippet() {}
+QtCodeSnippet::~QtCodeSnippet() = default;
 
 QtCodeFile* QtCodeSnippet::getFile() const
 {

@@ -17,7 +17,7 @@ TooltipController::TooltipController(StorageAccess* storageAccess)
 {
 }
 
-TooltipController::~TooltipController() {}
+TooltipController::~TooltipController() = default;
 
 void TooltipController::clear()
 {

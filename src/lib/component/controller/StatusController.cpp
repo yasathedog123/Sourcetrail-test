@@ -9,7 +9,7 @@ StatusController::StatusController()
 	m_statusFilter = ApplicationSettings::getInstance()->getStatusFilter();
 }
 
-StatusController::~StatusController() {}
+StatusController::~StatusController() = default;
 
 StatusView* StatusController::getView() const
 {

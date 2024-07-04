@@ -11,7 +11,7 @@ public:
 		return "MessageRefresh";
 	}
 
-	MessageRefresh() {}
+	MessageRefresh() = default;
 
 	MessageRefresh& refreshAll()
 	{

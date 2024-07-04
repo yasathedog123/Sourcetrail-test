@@ -53,7 +53,7 @@ QtTable::QtTable(QWidget* parent): QTableView(parent)
 	connect(horizontalHeader(), &QHeaderView::sectionResized, this, &QtTable::columnResized);
 }
 
-QtTable::~QtTable() {}
+QtTable::~QtTable() = default;
 
 void QtTable::updateRows()
 {

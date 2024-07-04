@@ -93,7 +93,7 @@ QtSmartSearchBox::QtSmartSearchBox(const QString& placeholder, bool supportsFull
 	updatePlaceholder();
 }
 
-QtSmartSearchBox::~QtSmartSearchBox() {}
+QtSmartSearchBox::~QtSmartSearchBox() = default;
 
 QCompleter* QtSmartSearchBox::getCompleter() const
 {

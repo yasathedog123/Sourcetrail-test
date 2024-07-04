@@ -12,7 +12,7 @@ SearchIndex::SearchIndex()
 	clear();
 }
 
-SearchIndex::~SearchIndex() {}
+SearchIndex::~SearchIndex() = default;
 
 void SearchIndex::addNode(Id id, std::wstring name, NodeType type)
 {

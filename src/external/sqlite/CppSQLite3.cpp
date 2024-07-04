@@ -166,10 +166,7 @@ const char* CppSQLite3Buffer::format(const char* szFormat, ...)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-CppSQLite3Binary::CppSQLite3Binary() 
-						
-{
-}
+CppSQLite3Binary::CppSQLite3Binary() = default;
 
 
 CppSQLite3Binary::~CppSQLite3Binary()

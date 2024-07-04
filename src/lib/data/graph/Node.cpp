@@ -27,7 +27,7 @@ Node::Node(const Node& other)
 {
 }
 
-Node::~Node() {}
+Node::~Node() = default;
 
 NodeType Node::getType() const
 {

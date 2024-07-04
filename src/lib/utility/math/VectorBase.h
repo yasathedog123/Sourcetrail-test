@@ -118,9 +118,7 @@ private:
 
 
 template <class T, unsigned int N>
-VectorBase<T, N>::VectorBase()
-{
-}
+VectorBase<T, N>::VectorBase() = default;
 
 template <class T, unsigned int N>
 VectorBase<T, N>::VectorBase(const T values[N])
@@ -135,9 +133,7 @@ VectorBase<T, N>::VectorBase(const VectorBase<T, N>& vector)
 }
 
 template <class T, unsigned int N>
-VectorBase<T, N>::~VectorBase()
-{
-}
+VectorBase<T, N>::~VectorBase() = default;
 
 template <class T, unsigned int N>
 T VectorBase<T, N>::getValue(const unsigned int index) const

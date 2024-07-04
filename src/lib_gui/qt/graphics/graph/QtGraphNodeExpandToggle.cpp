@@ -41,7 +41,7 @@ QtGraphNodeExpandToggle::QtGraphNodeExpandToggle(bool expanded, int invisibleSub
 	m_icon->setPixmap(pixmap.pixmap());
 }
 
-QtGraphNodeExpandToggle::~QtGraphNodeExpandToggle() {}
+QtGraphNodeExpandToggle::~QtGraphNodeExpandToggle() = default;
 
 bool QtGraphNodeExpandToggle::isExpandToggleNode() const
 {

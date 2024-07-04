@@ -16,7 +16,7 @@ QtBookmarkBrowser::QtBookmarkBrowser(ControllerProxy<BookmarkController>* contro
 {
 }
 
-QtBookmarkBrowser::~QtBookmarkBrowser() {}
+QtBookmarkBrowser::~QtBookmarkBrowser() = default;
 
 void QtBookmarkBrowser::setupBookmarkBrowser()
 {

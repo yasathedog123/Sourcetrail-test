@@ -4,7 +4,7 @@ BookmarkCategory::BookmarkCategory(): m_id(-1) {}
 
 BookmarkCategory::BookmarkCategory(const Id id, const std::wstring& name): m_id(id), m_name(name) {}
 
-BookmarkCategory::~BookmarkCategory() {}
+BookmarkCategory::~BookmarkCategory() = default;
 
 Id BookmarkCategory::getId() const
 {

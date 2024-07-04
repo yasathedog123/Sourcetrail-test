@@ -6,7 +6,7 @@ SettingsMigrationLambda::SettingsMigrationLambda(
 {
 }
 
-SettingsMigrationLambda::~SettingsMigrationLambda() {}
+SettingsMigrationLambda::~SettingsMigrationLambda() = default;
 
 void SettingsMigrationLambda::apply(Settings* migratable) const
 {

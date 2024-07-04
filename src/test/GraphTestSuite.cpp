@@ -9,7 +9,7 @@ class TestToken: public Token
 public:
 	TestToken(): Token(0) {}
 
-	TestToken(const TestToken& other): Token(other) {}
+	TestToken(const TestToken& other) = default;
 
 	bool isNode() const override
 	{

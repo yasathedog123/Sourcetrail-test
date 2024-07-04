@@ -14,7 +14,7 @@ std::shared_ptr<ColorScheme> ColorScheme::getInstance()
 	return s_instance;
 }
 
-ColorScheme::~ColorScheme() {}
+ColorScheme::~ColorScheme() = default;
 
 bool ColorScheme::hasColor(const std::string& key) const
 {
@@ -128,7 +128,7 @@ std::string ColorScheme::getCodeAnnotationTypeColor(
 	return color;
 }
 
-ColorScheme::ColorScheme() {}
+ColorScheme::ColorScheme() = default;
 
 std::string ColorScheme::stateToString(ColorState state)
 {

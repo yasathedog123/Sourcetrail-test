@@ -71,7 +71,7 @@ QtGraphEdge::QtGraphEdge(
 	}
 }
 
-QtGraphEdge::~QtGraphEdge() {}
+QtGraphEdge::~QtGraphEdge() = default;
 
 const Edge* QtGraphEdge::getData() const
 {

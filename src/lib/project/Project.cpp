@@ -58,7 +58,7 @@ Project::Project(
 {
 }
 
-Project::~Project() {}
+Project::~Project() = default;
 
 FilePath Project::getProjectSettingsFilePath() const
 {

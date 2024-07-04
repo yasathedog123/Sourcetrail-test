@@ -28,7 +28,7 @@ QtGraphNodeBundle::QtGraphNodeBundle(
 	this->setToolTip(QStringLiteral("bundle"));
 }
 
-QtGraphNodeBundle::~QtGraphNodeBundle() {}
+QtGraphNodeBundle::~QtGraphNodeBundle() = default;
 
 bool QtGraphNodeBundle::isBundleNode() const
 {

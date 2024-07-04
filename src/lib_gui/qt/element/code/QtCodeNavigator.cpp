@@ -187,7 +187,7 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 	connect(app, &QApplication::focusChanged, this, &QtCodeNavigator::focusChanged);
 }
 
-QtCodeNavigator::~QtCodeNavigator() {}
+QtCodeNavigator::~QtCodeNavigator() = default;
 
 void QtCodeNavigator::addSnippetFile(const CodeFileParams& params)
 {

@@ -7,7 +7,7 @@
 
 struct StorageLocalSymbolData
 {
-	StorageLocalSymbolData() {}
+	StorageLocalSymbolData() = default;
 
 	StorageLocalSymbolData(std::wstring name): name(std::move(name)) {}
 

@@ -1,6 +1,6 @@
 #include "TaskGroupSelector.h"
 
-TaskGroupSelector::TaskGroupSelector() {}
+TaskGroupSelector::TaskGroupSelector() = default;
 
 void TaskGroupSelector::addTask(std::shared_ptr<Task> task)
 {

@@ -27,7 +27,7 @@ QtKeyboardShortcuts::QtKeyboardShortcuts(QWidget* parent): QtWindow(false, paren
 	setScrollAble(true);
 }
 
-QtKeyboardShortcuts::~QtKeyboardShortcuts() {}
+QtKeyboardShortcuts::~QtKeyboardShortcuts() = default;
 
 QSize QtKeyboardShortcuts::sizeHint() const
 {

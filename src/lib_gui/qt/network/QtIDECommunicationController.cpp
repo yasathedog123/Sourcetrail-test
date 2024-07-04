@@ -10,7 +10,7 @@ QtIDECommunicationController::QtIDECommunicationController(QObject* parent, Stor
 	m_tcpWrapper.setReadCallback([this](const std::wstring &message) { handleIncomingMessage(message); });
 }
 
-QtIDECommunicationController::~QtIDECommunicationController() {}
+QtIDECommunicationController::~QtIDECommunicationController() = default;
 
 void QtIDECommunicationController::startListening()
 {

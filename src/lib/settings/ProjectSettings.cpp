@@ -60,14 +60,14 @@ LanguageType ProjectSettings::getLanguageOfProject(const FilePath& filePath)
 	return languageType;
 }
 
-ProjectSettings::ProjectSettings() {}
+ProjectSettings::ProjectSettings() = default;
 
 ProjectSettings::ProjectSettings(const FilePath& projectFilePath)
 {
 	setFilePath(projectFilePath);
 }
 
-ProjectSettings::~ProjectSettings() {}
+ProjectSettings::~ProjectSettings() = default;
 
 bool ProjectSettings::equalsExceptNameAndLocation(const ProjectSettings& other) const
 {

@@ -10,7 +10,7 @@ EdgeBookmark::EdgeBookmark(
 {
 }
 
-EdgeBookmark::~EdgeBookmark() {}
+EdgeBookmark::~EdgeBookmark() = default;
 
 void EdgeBookmark::addEdgeId(const Id edgeId)
 {

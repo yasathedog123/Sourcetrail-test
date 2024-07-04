@@ -149,17 +149,14 @@ NameHierarchy::NameHierarchy(const std::vector<std::wstring>& names, const NameD
 {
 }
 
-NameHierarchy::NameHierarchy(const NameHierarchy& other)
-	: m_elements(other.m_elements), m_delimiter(other.m_delimiter)
-{
-}
+NameHierarchy::NameHierarchy(const NameHierarchy& other) = default;
 
 NameHierarchy::NameHierarchy(NameHierarchy&& other)
 	: m_elements(std::move(other.m_elements)), m_delimiter(std::move(other.m_delimiter))
 {
 }
 
-NameHierarchy::~NameHierarchy() {}
+NameHierarchy::~NameHierarchy() = default;
 
 void NameHierarchy::push(NameElement element)
 {
@@ -196,19 +193,9 @@ const NameElement& NameHierarchy::operator[](size_t pos) const
 	return m_elements[pos];
 }
 
-NameHierarchy& NameHierarchy::operator=(const NameHierarchy& other)
-{
-	m_elements = other.m_elements;
-	m_delimiter = other.m_delimiter;
-	return *this;
-}
+NameHierarchy& NameHierarchy::operator=(const NameHierarchy& other) = default;
 
-NameHierarchy& NameHierarchy::operator=(NameHierarchy&& other)
-{
-	m_elements = std::move(other.m_elements);
-	m_delimiter = std::move(other.m_delimiter);
-	return *this;
-}
+NameHierarchy& NameHierarchy::operator=(NameHierarchy&& other) = default;
 
 NameHierarchy NameHierarchy::getRange(size_t first, size_t last) const
 {

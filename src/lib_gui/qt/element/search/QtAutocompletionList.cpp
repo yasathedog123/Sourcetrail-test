@@ -12,7 +12,7 @@
 
 QtAutocompletionModel::QtAutocompletionModel(QObject* parent): QAbstractTableModel(parent) {}
 
-QtAutocompletionModel::~QtAutocompletionModel() {}
+QtAutocompletionModel::~QtAutocompletionModel() = default;
 
 void QtAutocompletionModel::setMatchList(const std::vector<SearchMatch>& matchList)
 {
@@ -124,7 +124,7 @@ QtAutocompletionDelegate::QtAutocompletionDelegate(QtAutocompletionModel* model,
 	resetCharSizes();
 }
 
-QtAutocompletionDelegate::~QtAutocompletionDelegate() {}
+QtAutocompletionDelegate::~QtAutocompletionDelegate() = default;
 
 void QtAutocompletionDelegate::paint(
 	QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -403,7 +403,7 @@ QtAutocompletionList::QtAutocompletionList(QWidget* parent): QCompleter(parent)
 	setMaxVisibleItems(8);
 }
 
-QtAutocompletionList::~QtAutocompletionList() {}
+QtAutocompletionList::~QtAutocompletionList() = default;
 
 void QtAutocompletionList::completeAt(QPoint pos, const std::vector<SearchMatch>& autocompletionList)
 {

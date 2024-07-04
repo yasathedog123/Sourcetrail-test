@@ -5,9 +5,7 @@
 
 #include "ScopedFunctor.h"
 
-TaskGroupParallel::TaskGroupParallel()
-{
-}
+TaskGroupParallel::TaskGroupParallel() = default;
 
 void TaskGroupParallel::addTask(std::shared_ptr<Task> task)
 {

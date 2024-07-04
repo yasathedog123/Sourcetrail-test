@@ -3,7 +3,7 @@
 #include "logging.h"
 #include "utilityString.h"
 
-NameElement::Signature::Signature() {}
+NameElement::Signature::Signature() = default;
 
 NameElement::Signature::Signature(std::wstring prefix, std::wstring postfix)
 	: m_prefix(std::move(prefix)), m_postfix(std::move(postfix))
@@ -63,7 +63,7 @@ NameElement::NameElement(std::wstring name, std::wstring prefix, std::wstring po
 {
 }
 
-NameElement::~NameElement() {}
+NameElement::~NameElement() = default;
 
 const std::wstring& NameElement::getName() const
 {

@@ -99,7 +99,7 @@ SharedIndexerCommand::SharedIndexerCommand(SharedMemory::Allocator* allocator)
 {
 }
 
-SharedIndexerCommand::~SharedIndexerCommand() {}
+SharedIndexerCommand::~SharedIndexerCommand() = default;
 
 FilePath SharedIndexerCommand::getSourceFilePath() const
 {

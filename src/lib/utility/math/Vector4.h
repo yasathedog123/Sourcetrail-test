@@ -91,9 +91,7 @@ Vector4<T>::Vector4(const Vector4<T>& vector)
 }
 
 template <class T>
-Vector4<T>::~Vector4()
-{
-}
+Vector4<T>::~Vector4() = default;
 
 template <class T>
 T Vector4<T>::getValue(const unsigned int index) const

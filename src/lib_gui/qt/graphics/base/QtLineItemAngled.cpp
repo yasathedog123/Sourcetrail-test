@@ -10,7 +10,7 @@ QtLineItemAngled::QtLineItemAngled(QGraphicsItem* parent): QtLineItemBase(parent
 	this->setFlag(QGraphicsItem::ItemUsesExtendedStyleOption, true);
 }
 
-QtLineItemAngled::~QtLineItemAngled() {}
+QtLineItemAngled::~QtLineItemAngled() = default;
 
 QPainterPath QtLineItemAngled::shape() const
 {

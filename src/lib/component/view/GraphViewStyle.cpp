@@ -71,20 +71,11 @@ Vec2i GraphViewStyle::alignOnRaster(Vec2i position)
 	return position;
 }
 
-GraphViewStyle::NodeMargins::NodeMargins()
-	 
-{
-}
+GraphViewStyle::NodeMargins::NodeMargins() = default;
 
-GraphViewStyle::NodeStyle::NodeStyle()
-	 
-{
-}
+GraphViewStyle::NodeStyle::NodeStyle() = default;
 
-GraphViewStyle::EdgeStyle::EdgeStyle()
-	 
-{
-}
+GraphViewStyle::EdgeStyle::EdgeStyle() = default;
 
 std::shared_ptr<GraphViewStyleImpl> GraphViewStyle::getImpl()
 {

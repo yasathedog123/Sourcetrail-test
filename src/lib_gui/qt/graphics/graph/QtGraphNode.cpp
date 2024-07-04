@@ -70,7 +70,7 @@ QtGraphNode::QtGraphNode(GraphFocusHandler* focusHandler): m_focusHandler(focusH
 	m_undefinedRect->hide();
 }
 
-QtGraphNode::~QtGraphNode() {}
+QtGraphNode::~QtGraphNode() = default;
 
 QtGraphNode* QtGraphNode::getParent() const
 {

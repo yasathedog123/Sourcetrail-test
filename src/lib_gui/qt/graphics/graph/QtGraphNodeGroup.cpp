@@ -59,7 +59,7 @@ QtGraphNodeGroup::QtGraphNodeGroup(
 	m_background->setPolygon(path.toFillPolygon());
 }
 
-QtGraphNodeGroup::~QtGraphNodeGroup() {}
+QtGraphNodeGroup::~QtGraphNodeGroup() = default;
 
 bool QtGraphNodeGroup::isGroupNode() const
 {

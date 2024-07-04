@@ -57,7 +57,7 @@ QtSearchBar::QtSearchBar()
 	refreshStyle();
 }
 
-QtSearchBar::~QtSearchBar() {}
+QtSearchBar::~QtSearchBar() = default;
 
 QSize QtSearchBar::sizeHint() const
 {

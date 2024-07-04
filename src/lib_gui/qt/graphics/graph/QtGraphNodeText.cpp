@@ -10,7 +10,7 @@ QtGraphNodeText::QtGraphNodeText(const std::wstring& name, int fontSizeDiff)
 	setName(name);
 }
 
-QtGraphNodeText::~QtGraphNodeText() {}
+QtGraphNodeText::~QtGraphNodeText() = default;
 
 bool QtGraphNodeText::isTextNode() const
 {

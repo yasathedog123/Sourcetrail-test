@@ -10,14 +10,14 @@ qreal QtDeviceScaledPixmap::devicePixelRatio()
 	return app->devicePixelRatio();
 }
 
-QtDeviceScaledPixmap::QtDeviceScaledPixmap() {}
+QtDeviceScaledPixmap::QtDeviceScaledPixmap() = default;
 
 QtDeviceScaledPixmap::QtDeviceScaledPixmap(const QString& filePath): m_pixmap(filePath)
 {
 	m_pixmap.setDevicePixelRatio(devicePixelRatio());
 }
 
-QtDeviceScaledPixmap::~QtDeviceScaledPixmap() {}
+QtDeviceScaledPixmap::~QtDeviceScaledPixmap() = default;
 
 const QPixmap& QtDeviceScaledPixmap::pixmap() const
 {

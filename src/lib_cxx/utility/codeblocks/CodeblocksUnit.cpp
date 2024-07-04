@@ -88,5 +88,5 @@ std::set<std::wstring> Unit::getTargetNames() const
 	return m_targetNames;
 }
 
-Unit::Unit() {}
+Unit::Unit() = default;
 }	 // namespace Codeblocks

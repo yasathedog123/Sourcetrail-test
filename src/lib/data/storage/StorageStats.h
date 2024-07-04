@@ -5,9 +5,7 @@
 
 struct StorageStats
 {
-	StorageStats() 
-	{
-	}
+	StorageStats() = default;
 
 	size_t nodeCount = 0;
 	size_t edgeCount = 0;

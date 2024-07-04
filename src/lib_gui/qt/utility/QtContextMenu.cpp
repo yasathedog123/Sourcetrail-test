@@ -137,4 +137,4 @@ void QtContextMenu::openContainingFolderActionTriggered()
 	}
 }
 
-QtContextMenu::QtContextMenu() {}
+QtContextMenu::QtContextMenu() = default;

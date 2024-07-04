@@ -52,7 +52,7 @@ QtUndoRedo::QtUndoRedo()
 	connect(m_historyButton, &QPushButton::released, this, &QtUndoRedo::showHistory);
 }
 
-QtUndoRedo::~QtUndoRedo() {}
+QtUndoRedo::~QtUndoRedo() = default;
 
 void QtUndoRedo::setUndoButtonEnabled(bool enabled)
 {

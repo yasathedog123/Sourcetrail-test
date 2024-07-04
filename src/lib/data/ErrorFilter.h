@@ -5,9 +5,7 @@
 
 struct ErrorFilter
 {
-	ErrorFilter() 
-	{
-	}
+	ErrorFilter() = default;
 
 	bool filter(const ErrorInfo& info) const
 	{

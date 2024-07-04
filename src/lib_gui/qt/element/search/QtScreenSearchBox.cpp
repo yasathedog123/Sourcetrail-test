@@ -125,7 +125,7 @@ QtScreenSearchBox::QtScreenSearchBox(
 	setMatchCount(0);
 }
 
-QtScreenSearchBox::~QtScreenSearchBox() {}
+QtScreenSearchBox::~QtScreenSearchBox() = default;
 
 void QtScreenSearchBox::setMatchCount(size_t matchCount)
 {

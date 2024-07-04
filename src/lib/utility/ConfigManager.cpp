@@ -385,12 +385,9 @@ void ConfigManager::setWarnOnEmptyKey(bool warnOnEmptyKey) const
 	m_warnOnEmptyKey = warnOnEmptyKey;
 }
 
-ConfigManager::ConfigManager() {}
+ConfigManager::ConfigManager() = default;
 
-ConfigManager::ConfigManager(const ConfigManager& other)
-	: m_values(other.m_values), m_warnOnEmptyKey(other.m_warnOnEmptyKey)
-{
-}
+ConfigManager::ConfigManager(const ConfigManager& other) = default;
 
 bool ConfigManager::createXmlDocument(bool saveAsFile, const std::string filepath, std::string& output)
 {

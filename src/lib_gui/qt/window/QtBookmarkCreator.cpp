@@ -20,7 +20,7 @@ QtBookmarkCreator::QtBookmarkCreator(
 {
 }
 
-QtBookmarkCreator::~QtBookmarkCreator() {}
+QtBookmarkCreator::~QtBookmarkCreator() = default;
 
 void QtBookmarkCreator::setupBookmarkCreator()
 {

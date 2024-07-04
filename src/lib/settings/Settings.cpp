@@ -20,7 +20,7 @@ Settings& Settings::operator=(const Settings& other)
 	return *this;
 }
 
-Settings::~Settings() {}
+Settings::~Settings() = default;
 
 bool Settings::load(const FilePath& filePath, bool readOnly)
 {

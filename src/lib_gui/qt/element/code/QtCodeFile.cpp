@@ -47,7 +47,7 @@ QtCodeFile::QtCodeFile(const FilePath& filePath, QtCodeNavigator* navigator, boo
 	update();
 }
 
-QtCodeFile::~QtCodeFile() {}
+QtCodeFile::~QtCodeFile() = default;
 
 void QtCodeFile::setModificationTime(const TimeStamp modificationTime)
 {

@@ -110,7 +110,7 @@ QtCodeField::QtCodeField(
 	connect(m_openInTabAction, &QAction::triggered, this, &QtCodeField::openInTab);
 }
 
-QtCodeField::~QtCodeField() {}
+QtCodeField::~QtCodeField() = default;
 
 QSize QtCodeField::sizeHint() const
 {

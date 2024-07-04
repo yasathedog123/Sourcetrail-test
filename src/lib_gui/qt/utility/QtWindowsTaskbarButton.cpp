@@ -15,9 +15,7 @@
 
 #include "QtMainWindow.h"
 
-QtWindowsTaskbarButton::QtWindowsTaskbarButton()
-{
-}
+QtWindowsTaskbarButton::QtWindowsTaskbarButton() = default;
 
 void QtWindowsTaskbarButton::setWindow(QtMainWindow*  /*mainWindow*/)
 {

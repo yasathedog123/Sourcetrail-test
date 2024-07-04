@@ -22,7 +22,7 @@ void LogManager::destroyInstance()
 	s_instance.reset();
 }
 
-LogManager::~LogManager() {}
+LogManager::~LogManager() = default;
 
 void LogManager::setLoggingEnabled(bool enabled)
 {
@@ -162,4 +162,4 @@ void LogManager::logError(
 
 std::shared_ptr<LogManager> LogManager::s_instance;
 
-LogManager::LogManager() {}
+LogManager::LogManager() = default;

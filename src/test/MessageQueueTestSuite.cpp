@@ -30,7 +30,7 @@ public:
 class TestMessageListener: public MessageListener<TestMessage>
 {
 public:
-	TestMessageListener() {}
+	TestMessageListener() = default;
 
 	int m_messageCount = 0;
 
@@ -44,7 +44,7 @@ private:
 class Test2MessageListener: public MessageListener<Test2Message>
 {
 public:
-	Test2MessageListener() {}
+	Test2MessageListener() = default;
 
 	int m_messageCount = 0;
 

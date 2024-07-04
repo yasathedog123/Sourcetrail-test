@@ -9,7 +9,7 @@ StatusBarController::StatusBarController(StorageAccess* storageAccess)
 {
 }
 
-StatusBarController::~StatusBarController() {}
+StatusBarController::~StatusBarController() = default;
 
 StatusBarView* StatusBarController::getView()
 {

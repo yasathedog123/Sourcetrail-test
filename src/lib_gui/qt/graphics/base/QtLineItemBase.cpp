@@ -11,7 +11,7 @@ QtLineItemBase::QtLineItemBase(QGraphicsItem* parent)
 	this->setCursor(Qt::PointingHandCursor);
 }
 
-QtLineItemBase::~QtLineItemBase() {}
+QtLineItemBase::~QtLineItemBase() = default;
 
 void QtLineItemBase::updateLine(
 	const Vec4i& ownerRect,

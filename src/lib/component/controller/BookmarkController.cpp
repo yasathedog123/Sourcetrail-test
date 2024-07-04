@@ -26,7 +26,7 @@ BookmarkController::BookmarkController(StorageAccess* storageAccess)
 {
 }
 
-BookmarkController::~BookmarkController() {}
+BookmarkController::~BookmarkController() = default;
 
 void BookmarkController::clear()
 {

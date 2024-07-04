@@ -37,7 +37,7 @@ public:
 	struct PingMessage
 	{
 	public:
-		PingMessage()  {}
+		PingMessage() = default;
 
 		std::wstring ideId;
 		bool valid = false;

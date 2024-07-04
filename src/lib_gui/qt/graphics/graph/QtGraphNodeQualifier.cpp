@@ -29,7 +29,7 @@ QtGraphNodeQualifier::QtGraphNodeQualifier(const NameHierarchy& name): m_qualifi
 	m_name->setText(QString::fromStdWString(name.getQualifiedName()));
 }
 
-QtGraphNodeQualifier::~QtGraphNodeQualifier() {}
+QtGraphNodeQualifier::~QtGraphNodeQualifier() = default;
 
 bool QtGraphNodeQualifier::isQualifierNode() const
 {

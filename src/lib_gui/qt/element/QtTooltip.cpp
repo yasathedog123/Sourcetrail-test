@@ -25,7 +25,7 @@ QtTooltip::QtTooltip(QWidget* parent): QFrame(parent)
 	setLayout(layout);
 }
 
-QtTooltip::~QtTooltip() {}
+QtTooltip::~QtTooltip() = default;
 
 void QtTooltip::setTooltipInfo(const TooltipInfo& info)
 {

@@ -79,7 +79,5 @@ std::shared_ptr<const Compiler> Target::getCompiler() const
 	return m_compiler;
 }
 
-Target::Target()
-{
-}
+Target::Target() = default;
 }	 // namespace Codeblocks

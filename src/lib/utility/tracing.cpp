@@ -162,7 +162,7 @@ void Tracer::printTraces()
 	m_events.clear();
 }
 
-Tracer::Tracer() {}
+Tracer::Tracer() = default;
 
 
 std::shared_ptr<AccumulatingTracer> AccumulatingTracer::s_instance;
@@ -269,4 +269,4 @@ void AccumulatingTracer::printTraces()
 	m_accumulatedEvents.clear();
 }
 
-AccumulatingTracer::AccumulatingTracer() {}
+AccumulatingTracer::AccumulatingTracer() = default;

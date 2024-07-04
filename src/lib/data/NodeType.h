@@ -25,7 +25,7 @@ public:
 
 	struct BundleInfo
 	{
-		BundleInfo() {}
+		BundleInfo() = default;
 
 		BundleInfo(std::wstring bundleName)
 			: nameMatcher([](const std::wstring&) { return true; }), bundleName(bundleName)

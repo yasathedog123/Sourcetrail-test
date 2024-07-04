@@ -57,7 +57,7 @@ QtGraphNodeAccess::QtGraphNodeAccess(AccessKind accessKind)
 	}
 }
 
-QtGraphNodeAccess::~QtGraphNodeAccess() {}
+QtGraphNodeAccess::~QtGraphNodeAccess() = default;
 
 AccessKind QtGraphNodeAccess::getAccessKind() const
 {

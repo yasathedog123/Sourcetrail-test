@@ -10,7 +10,7 @@ SourceLocationFile::SourceLocationFile(
 {
 }
 
-SourceLocationFile::~SourceLocationFile() {}
+SourceLocationFile::~SourceLocationFile() = default;
 
 const FilePath& SourceLocationFile::getFilePath() const
 {

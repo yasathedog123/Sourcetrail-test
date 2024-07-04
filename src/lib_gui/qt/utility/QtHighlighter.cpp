@@ -441,7 +441,7 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::c
 	return multiLineRanges;
 }
 
-QtHighlighter::HighlightingRule::HighlightingRule() {}
+QtHighlighter::HighlightingRule::HighlightingRule() = default;
 
 QtHighlighter::HighlightingRule::HighlightingRule(
 	HighlightType type, const QRegExp& regExp, bool priority, bool multiLine)

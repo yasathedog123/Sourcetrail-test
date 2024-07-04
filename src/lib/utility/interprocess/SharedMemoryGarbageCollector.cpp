@@ -52,7 +52,7 @@ SharedMemoryGarbageCollector::SharedMemoryGarbageCollector()
 {
 }
 
-SharedMemoryGarbageCollector::~SharedMemoryGarbageCollector() {}
+SharedMemoryGarbageCollector::~SharedMemoryGarbageCollector() = default;
 
 void SharedMemoryGarbageCollector::run(const std::string& uuid)
 {

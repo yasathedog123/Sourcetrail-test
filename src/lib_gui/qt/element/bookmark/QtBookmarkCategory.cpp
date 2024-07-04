@@ -54,7 +54,7 @@ QtBookmarkCategory::QtBookmarkCategory(ControllerProxy<BookmarkController>* cont
 	connect(m_deleteButton, &QPushButton::clicked, this, &QtBookmarkCategory::deleteClicked);
 }
 
-QtBookmarkCategory::~QtBookmarkCategory() {}
+QtBookmarkCategory::~QtBookmarkCategory() = default;
 
 void QtBookmarkCategory::setName(const std::wstring& name)
 {

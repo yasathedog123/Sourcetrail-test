@@ -75,9 +75,7 @@ Vector2<T>::Vector2(const Vector2<T>& vector)
 }
 
 template <class T>
-Vector2<T>::~Vector2()
-{
-}
+Vector2<T>::~Vector2() = default;
 
 template <class T>
 T Vector2<T>::getValue(const unsigned int index) const

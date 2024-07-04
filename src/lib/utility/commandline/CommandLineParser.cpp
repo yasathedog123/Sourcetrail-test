@@ -35,7 +35,7 @@ CommandLineParser::CommandLineParser(const std::string& version): m_version(vers
 	}
 }
 
-CommandLineParser::~CommandLineParser() {}
+CommandLineParser::~CommandLineParser() = default;
 
 void CommandLineParser::preparse(int argc, char** argv)
 {

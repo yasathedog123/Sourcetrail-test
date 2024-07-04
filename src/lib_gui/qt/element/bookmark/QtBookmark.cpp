@@ -85,7 +85,7 @@ QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	connect(m_toggleCommentButton, &QPushButton::clicked, this, &QtBookmark::commentToggled);
 }
 
-QtBookmark::~QtBookmark() {}
+QtBookmark::~QtBookmark() = default;
 
 void QtBookmark::setBookmark(const std::shared_ptr<Bookmark> bookmark)
 {

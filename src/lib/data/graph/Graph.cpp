@@ -2,7 +2,7 @@
 
 #include "logging.h"
 
-Graph::Graph() {}
+Graph::Graph() = default;
 
 Graph::~Graph()
 {

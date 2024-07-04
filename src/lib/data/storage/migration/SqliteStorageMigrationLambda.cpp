@@ -7,7 +7,7 @@ SqliteStorageMigrationLambda::SqliteStorageMigrationLambda(
 {
 }
 
-SqliteStorageMigrationLambda::~SqliteStorageMigrationLambda() {}
+SqliteStorageMigrationLambda::~SqliteStorageMigrationLambda() = default;
 
 void SqliteStorageMigrationLambda::apply(SqliteStorage* migratable) const
 {

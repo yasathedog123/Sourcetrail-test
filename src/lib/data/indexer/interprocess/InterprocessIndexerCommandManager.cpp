@@ -14,7 +14,7 @@ InterprocessIndexerCommandManager::InterprocessIndexerCommandManager(
 {
 }
 
-InterprocessIndexerCommandManager::~InterprocessIndexerCommandManager() {}
+InterprocessIndexerCommandManager::~InterprocessIndexerCommandManager() = default;
 
 void InterprocessIndexerCommandManager::pushIndexerCommands(
 	const std::vector<std::shared_ptr<IndexerCommand>>& indexerCommands)

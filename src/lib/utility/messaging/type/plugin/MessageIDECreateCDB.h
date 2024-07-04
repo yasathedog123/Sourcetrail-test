@@ -6,7 +6,7 @@
 class MessageIDECreateCDB: public Message<MessageIDECreateCDB>
 {
 public:
-	MessageIDECreateCDB() {}
+	MessageIDECreateCDB() = default;
 
 	static const std::string getStaticType()
 	{

@@ -15,7 +15,7 @@ SharedIntermediateStorage::SharedIntermediateStorage(SharedMemory::Allocator* al
 {
 }
 
-SharedIntermediateStorage::~SharedIntermediateStorage() {}
+SharedIntermediateStorage::~SharedIntermediateStorage() = default;
 
 std::vector<StorageFile> SharedIntermediateStorage::getStorageFiles() const
 {

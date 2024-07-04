@@ -1,6 +1,6 @@
 #include "TaskGroupSequence.h"
 
-TaskGroupSequence::TaskGroupSequence() {}
+TaskGroupSequence::TaskGroupSequence() = default;
 
 void TaskGroupSequence::addTask(std::shared_ptr<Task> task)
 {

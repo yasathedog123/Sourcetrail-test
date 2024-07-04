@@ -4,7 +4,7 @@
 
 QtLineItemBezier::QtLineItemBezier(QGraphicsItem* parent): QtLineItemBase(parent) {}
 
-QtLineItemBezier::~QtLineItemBezier() {}
+QtLineItemBezier::~QtLineItemBezier() = default;
 
 QPainterPath QtLineItemBezier::shape() const
 {

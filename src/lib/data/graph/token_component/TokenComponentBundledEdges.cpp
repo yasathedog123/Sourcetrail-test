@@ -14,9 +14,9 @@ TokenComponentBundledEdges::Direction TokenComponentBundledEdges::opposite(Direc
 	return direction;
 }
 
-TokenComponentBundledEdges::TokenComponentBundledEdges() {}
+TokenComponentBundledEdges::TokenComponentBundledEdges() = default;
 
-TokenComponentBundledEdges::~TokenComponentBundledEdges() {}
+TokenComponentBundledEdges::~TokenComponentBundledEdges() = default;
 
 std::shared_ptr<TokenComponent> TokenComponentBundledEdges::copy() const
 {

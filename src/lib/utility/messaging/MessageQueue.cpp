@@ -199,9 +199,7 @@ void MessageQueue::setSendMessagesAsTasks(bool sendMessagesAsTasks)
 
 std::shared_ptr<MessageQueue> MessageQueue::s_instance;
 
-MessageQueue::MessageQueue()
-{
-}
+MessageQueue::MessageQueue() = default;
 
 void MessageQueue::processMessages()
 {

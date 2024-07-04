@@ -6,7 +6,7 @@
 
 #include "ApplicationSettings.h"
 
-QtCodeNavigable::~QtCodeNavigable() {}
+QtCodeNavigable::~QtCodeNavigable() = default;
 
 void QtCodeNavigable::ensureWidgetVisibleAnimated(
 	const QWidget* parentWidget,

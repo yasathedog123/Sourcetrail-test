@@ -89,7 +89,7 @@ FilePath::FilePath(const std::wstring& filePath, const std::wstring& base)
 {
 }
 
-FilePath::~FilePath() {}
+FilePath::~FilePath() = default;
 
 const boost::filesystem::path &FilePath::getPath() const
 {

@@ -3,9 +3,9 @@
 #include "SourceLocationFile.h"
 #include "logging.h"
 
-SourceLocationCollection::SourceLocationCollection() {}
+SourceLocationCollection::SourceLocationCollection() = default;
 
-SourceLocationCollection::~SourceLocationCollection() {}
+SourceLocationCollection::~SourceLocationCollection() = default;
 
 const std::map<FilePath, std::shared_ptr<SourceLocationFile>>& SourceLocationCollection::
 	getSourceLocationFiles() const

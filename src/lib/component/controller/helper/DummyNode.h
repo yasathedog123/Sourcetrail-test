@@ -48,10 +48,7 @@ public:
 
 	struct BundleInfo
 	{
-		BundleInfo()
-			 
-		{
-		}
+		BundleInfo() = default;
 
 		static BundleInfo averageBundleInfo(const std::vector<DummyNode::BundleInfo>& bundleInfos)
 		{

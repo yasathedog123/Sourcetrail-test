@@ -37,7 +37,7 @@ SharedMemory::ScopedAccess::ScopedAccess(SharedMemory* memory)
 	}
 }
 
-SharedMemory::ScopedAccess::~ScopedAccess() {}
+SharedMemory::ScopedAccess::~ScopedAccess() = default;
 
 SharedMemory::Allocator* SharedMemory::ScopedAccess::getAllocator()
 {

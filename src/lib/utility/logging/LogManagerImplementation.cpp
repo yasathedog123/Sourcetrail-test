@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-LogManagerImplementation::LogManagerImplementation() {}
+LogManagerImplementation::LogManagerImplementation() = default;
 
 LogManagerImplementation::LogManagerImplementation(const LogManagerImplementation& other)
 {
@@ -14,7 +14,7 @@ void LogManagerImplementation::operator=(const LogManagerImplementation& other)
 	m_loggers = other.m_loggers;
 }
 
-LogManagerImplementation::~LogManagerImplementation() {}
+LogManagerImplementation::~LogManagerImplementation() = default;
 
 void LogManagerImplementation::addLogger(std::shared_ptr<Logger> logger)
 {

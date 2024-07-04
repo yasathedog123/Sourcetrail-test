@@ -24,9 +24,7 @@ Property<T>::Property(T* valuePointer): m_valuePointer(valuePointer)
 }
 
 template <class T>
-Property<T>::~Property()
-{
-}
+Property<T>::~Property() = default;
 
 template <class T>
 T& Property<T>::operator=(const T& value)

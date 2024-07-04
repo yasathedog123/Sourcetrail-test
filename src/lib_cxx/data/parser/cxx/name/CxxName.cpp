@@ -2,7 +2,7 @@
 
 #include "utilityString.h"
 
-CxxName::CxxName() {}
+CxxName::CxxName() = default;
 
 CxxName::CxxName(std::shared_ptr<CxxName> parent): m_parent(parent) {}
 

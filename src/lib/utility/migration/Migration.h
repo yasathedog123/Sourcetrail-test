@@ -10,8 +10,6 @@ public:
 };
 
 template <typename MigratableType>
-Migration<MigratableType>::~Migration()
-{
-}
+Migration<MigratableType>::~Migration() = default;
 
 #endif	  // MIGRATION_H

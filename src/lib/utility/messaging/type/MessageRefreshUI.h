@@ -11,7 +11,7 @@ public:
 		return "MessageRefreshUI";
 	}
 
-	MessageRefreshUI() {}
+	MessageRefreshUI() = default;
 
 	MessageRefreshUI& noStyleReload()
 	{

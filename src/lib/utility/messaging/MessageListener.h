@@ -11,7 +11,7 @@ template <typename MessageType>
 class MessageListener: public MessageListenerBase
 {
 public:
-	MessageListener() {}
+	MessageListener() = default;
 
 private:
 	std::string doGetType() const override

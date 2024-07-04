@@ -9,7 +9,7 @@ QtGraphNodeComponentClickable::QtGraphNodeComponentClickable(QtGraphNode* graphN
 {
 }
 
-QtGraphNodeComponentClickable::~QtGraphNodeComponentClickable() {}
+QtGraphNodeComponentClickable::~QtGraphNodeComponentClickable() = default;
 
 void QtGraphNodeComponentClickable::nodeMousePressEvent(QGraphicsSceneMouseEvent* event)
 {

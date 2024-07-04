@@ -51,7 +51,7 @@ FileRegister::FileRegister(
 {
 }
 
-FileRegister::~FileRegister() {}
+FileRegister::~FileRegister() = default;
 
 bool FileRegister::hasFilePath(const FilePath& filePath) const
 {

@@ -9,7 +9,7 @@
 class MessageCloseProject: public Message<MessageCloseProject>
 {
 public:
-	MessageCloseProject() {}
+	MessageCloseProject() = default;
 
 	static const std::string getStaticType()
 	{

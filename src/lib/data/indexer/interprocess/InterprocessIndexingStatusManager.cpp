@@ -19,7 +19,7 @@ InterprocessIndexingStatusManager::InterprocessIndexingStatusManager(
 {
 }
 
-InterprocessIndexingStatusManager::~InterprocessIndexingStatusManager() {}
+InterprocessIndexingStatusManager::~InterprocessIndexingStatusManager() = default;
 
 void InterprocessIndexingStatusManager::startIndexingSourceFile(const FilePath& filePath)
 {

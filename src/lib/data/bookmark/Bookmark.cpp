@@ -15,7 +15,7 @@ Bookmark::Bookmark(
 {
 }
 
-Bookmark::~Bookmark() {}
+Bookmark::~Bookmark() = default;
 
 Id Bookmark::getId() const
 {

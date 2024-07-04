@@ -29,7 +29,7 @@ QtGraphNodeData::QtGraphNodeData(
 	this->setName(name);
 }
 
-QtGraphNodeData::~QtGraphNodeData() {}
+QtGraphNodeData::~QtGraphNodeData() = default;
 
 const Node* QtGraphNodeData::getData() const
 {
