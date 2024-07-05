@@ -113,7 +113,7 @@ Task::TaskState TaskBuildIndex::doUpdate(std::shared_ptr<Blackboard> blackboard)
 
 void TaskBuildIndex::doExit(std::shared_ptr<Blackboard> blackboard)
 {
-	for (auto processThread: m_processThreads)
+	for (auto *processThread: m_processThreads)
 	{
 		processThread->join();
 		delete processThread;

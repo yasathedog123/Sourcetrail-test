@@ -523,7 +523,7 @@ void QtGraphicsView::contextMenuEvent(QContextMenuEvent* event)
 
 			if (!m_collapseNodeId && !m_expandNodeId)
 			{
-				for (auto subNode: node->getSubNodes())
+				for (auto *subNode: node->getSubNodes())
 				{
 					if (subNode->isExpandToggleNode())
 					{

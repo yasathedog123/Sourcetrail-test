@@ -185,7 +185,7 @@ std::set<FilePath> FileSystem::getSymLinkedDirectories(const std::vector<FilePat
 	}
 
 	std::set<FilePath> files;
-	for (auto& p: symlinkDirs)
+	for (const auto& p: symlinkDirs)
 	{
 		files.insert(FilePath(p.wstring()));
 	}

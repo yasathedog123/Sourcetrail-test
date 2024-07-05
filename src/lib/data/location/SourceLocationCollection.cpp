@@ -16,7 +16,7 @@ const std::map<FilePath, std::shared_ptr<SourceLocationFile>>& SourceLocationCol
 size_t SourceLocationCollection::getSourceLocationCount() const
 {
 	size_t count = 0;
-	for (auto& p: m_files)
+	for (const auto& p: m_files)
 	{
 		count += p.second->getSourceLocationCount();
 	}
@@ -43,7 +43,7 @@ std::shared_ptr<SourceLocationFile> SourceLocationCollection::getSourceLocationF
 
 SourceLocation* SourceLocationCollection::getSourceLocationById(Id locationId) const
 {
-	for (auto& p: m_files)
+	for (const auto& p: m_files)
 	{
 		SourceLocation* location = p.second->getSourceLocationById(locationId);
 		if (location)
@@ -125,7 +125,7 @@ void SourceLocationCollection::addSourceLocationFile(std::shared_ptr<SourceLocat
 void SourceLocationCollection::forEachSourceLocationFile(
 	std::function<void(std::shared_ptr<SourceLocationFile>)> func) const
 {
-	for (auto& p: m_files)
+	for (const auto& p: m_files)
 	{
 		func(p.second);
 	}
@@ -133,7 +133,7 @@ void SourceLocationCollection::forEachSourceLocationFile(
 
 void SourceLocationCollection::forEachSourceLocation(std::function<void(SourceLocation*)> func) const
 {
-	for (auto& p: m_files)
+	for (const auto& p: m_files)
 	{
 		p.second->forEachSourceLocation(func);
 	}

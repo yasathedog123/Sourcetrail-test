@@ -149,7 +149,7 @@ void CommandLineParser::printHelp() const
 
 	// Commands
 	std::cout << "Commands:\n";
-	for (auto& command: m_commands)
+	for (const auto& command: m_commands)
 	{
 		std::cout << "  " << command->name();
 		std::cout << std::string(std::max(23 - command->name().size(), size_t(2)), ' ');

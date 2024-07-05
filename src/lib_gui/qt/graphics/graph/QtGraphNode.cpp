@@ -216,7 +216,7 @@ bool QtGraphNode::hasActiveChild() const
 		return true;
 	}
 
-	for (auto subNode: m_subNodes)
+	for (auto *subNode: m_subNodes)
 	{
 		if (subNode->hasActiveChild())
 		{
@@ -349,7 +349,7 @@ void QtGraphNode::showNodeRecursive()
 	blendIn();
 	showNode();
 
-	for (auto subNode: m_subNodes)
+	for (auto *subNode: m_subNodes)
 	{
 		subNode->showNodeRecursive();
 	}
@@ -359,7 +359,7 @@ void QtGraphNode::matchNameRecursive(const std::wstring& query, std::vector<QtGr
 {
 	matchName(query, matchedNodes);
 
-	for (auto subNode: m_subNodes)
+	for (auto *subNode: m_subNodes)
 	{
 		subNode->matchNameRecursive(query, matchedNodes);
 	}
@@ -474,7 +474,7 @@ void QtGraphNode::onHide()
 
 Id QtGraphNode::onCollapseExpand()
 {
-	for (auto subNode: getSubNodes())
+	for (auto *subNode: getSubNodes())
 	{
 		if (subNode->isExpandToggleNode())
 		{

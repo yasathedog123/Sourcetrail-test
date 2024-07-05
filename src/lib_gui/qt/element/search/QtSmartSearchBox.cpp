@@ -814,7 +814,7 @@ SearchMatch QtSmartSearchBox::editElement(QtSearchElement* element)
 
 void QtSmartSearchBox::updateElements()
 {
-	for (auto e: m_elements)
+	for (auto *e: m_elements)
 	{
 		e->hide();
 		e->deleteLater();

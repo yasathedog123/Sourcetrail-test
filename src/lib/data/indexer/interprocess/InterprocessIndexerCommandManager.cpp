@@ -22,7 +22,7 @@ void InterprocessIndexerCommandManager::pushIndexerCommands(
 	size_t size = 0;
 	{
 		const size_t overestimationMultiplier = 2;
-		for (auto& command: indexerCommands)
+		for (const auto& command: indexerCommands)
 		{
 			size += command->getByteSize(sizeof(SharedMemory::String)) + sizeof(SharedIndexerCommand);
 		}
@@ -50,7 +50,7 @@ void InterprocessIndexerCommandManager::pushIndexerCommands(
 		return;
 	}
 
-	for (auto& command: indexerCommands)
+	for (const auto& command: indexerCommands)
 	{
 		queue->push_back(SharedIndexerCommand(access.getAllocator()));
 		SharedIndexerCommand& sharedCommand = queue->back();

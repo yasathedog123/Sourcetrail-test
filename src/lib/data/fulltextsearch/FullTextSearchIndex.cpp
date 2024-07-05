@@ -31,7 +31,7 @@ std::vector<FullTextSearchResult> FullTextSearchIndex::searchForTerm(const std::
 	std::vector<FullTextSearchResult> ret;
 	{
 		std::lock_guard<std::mutex> lock(m_filesMutex);
-		for (auto& f: m_files)
+		for (const auto& f: m_files)
 		{
 			FullTextSearchResult hit;
 			hit.fileId = f.fileId;

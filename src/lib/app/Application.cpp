@@ -115,7 +115,7 @@ void Application::loadSettings()
 	Logger* logger = LogManager::getInstance()->getLoggerByType("FileLogger");
 	if (logger)
 	{
-		const auto fileLogger = dynamic_cast<FileLogger*>(logger);
+		auto *fileLogger = dynamic_cast<FileLogger*>(logger);
 		fileLogger->setLogDirectory(settings->getLogDirectoryPath());
 		fileLogger->setFileName(FileLogger::generateDatedFileName(L"log"));
 	}

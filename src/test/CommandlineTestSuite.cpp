@@ -17,7 +17,7 @@ TEST_CASE("command line")
 		std::vector<std::string> args({"--version", "help"});
 
 		std::stringstream redStream;
-		auto oldBuf = std::cout.rdbuf(redStream.rdbuf());
+		auto *oldBuf = std::cout.rdbuf(redStream.rdbuf());
 
 		commandline::CommandLineParser parser("2016.1");
 		parser.preparse(args);
@@ -50,7 +50,7 @@ TEST_CASE("command line")
 		std::vector<std::string> args({"config", "--maven-path", "/opt/testpath/mvn"});
 
 		std::stringstream redStream;
-		auto oldBuf = std::cout.rdbuf(redStream.rdbuf());
+		auto *oldBuf = std::cout.rdbuf(redStream.rdbuf());
 
 		commandline::CommandLineParser parser("2");
 		parser.preparse(args);

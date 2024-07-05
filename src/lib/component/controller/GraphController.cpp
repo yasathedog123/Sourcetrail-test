@@ -1872,7 +1872,7 @@ void GraphController::layoutNesting()
 void GraphController::extendEqualFunctionNames(const std::vector<std::shared_ptr<DummyNode>>& nodes) const
 {
 	std::multimap<std::wstring, std::shared_ptr<DummyNode>> functionNames;
-	for (auto& node: nodes)
+	for (const auto& node: nodes)
 	{
 		if (node->visible && node->isGraphNode() && node->data->isType(NODE_FUNCTION | NODE_METHOD))
 		{
@@ -1895,7 +1895,7 @@ void GraphController::extendEqualFunctionNames(const std::vector<std::shared_ptr
 		}
 	}
 
-	for (auto& node: nodes)
+	for (const auto& node: nodes)
 	{
 		if (node->subNodes.size())
 		{
