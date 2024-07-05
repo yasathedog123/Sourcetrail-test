@@ -6,7 +6,6 @@ function(setGccTargetOptions targetName)
 			-Wall
 			-Wextra
 			-Wpedantic
-			#-Weffc++
 
 			#
 			# Additional warnings:

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-# Detect vcpkg build scenario here so we don't depend on the CMakePresets settings:
+# Detect vcpkg build scenario here, so we don't rely on CMakePresets settings:
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message(STATUS "Vcpkg Build")
 	set(isVcpkgBuild TRUE)
@@ -23,7 +23,6 @@ endif()
 
 include(CMakePrintHelpers)
 
-
 # Configure which language(s)/package(s) should be supported:
 option(BUILD_CXX_LANGUAGE_PACKAGE    "Add C/C++ support to the Sourcetrail indexer." OFF)
 option(BUILD_JAVA_LANGUAGE_PACKAGE   "Add Java support to the Sourcetrail indexer." OFF)
@@ -31,6 +30,10 @@ option(BUILD_PYTHON_LANGUAGE_PACKAGE "Add Python support to the Sourcetrail inde
 option(BUILD_UNIT_TESTS_PACKAGE      "Build the corresponding language unit tests." OFF)
 
 configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
+
+# Create license information:
+include(cmake/licenses.cmake)
+configureLicenseFile(src/lib_gui/licenses.h)
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
@@ -48,12 +51,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Project ----------------------------------------------------------------------
 
 project(Sourcetrail VERSION 2024.7.3)
-
-include(cmake/licenses.cmake)
-include(cmake/targetOptions.cmake)
-
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
-configureLicenseFile(src/lib_gui/licenses.h)
+
+include(cmake/Sourcetrail.cmake)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
