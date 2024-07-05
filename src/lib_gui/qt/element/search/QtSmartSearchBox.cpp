@@ -1105,7 +1105,7 @@ void QtSmartSearchBox::startFullTextSearch()
 	emit fullTextSearch(term, caseSensitive);
 }
 
-std::deque<SearchMatch> QtSmartSearchBox::getMatchesForInput(const std::wstring& text) const
+std::deque<SearchMatch> QtSmartSearchBox::getMatchesForInput(const std::wstring& text) 
 {
 	std::deque<SearchMatch> matches;
 	if (!text.empty())

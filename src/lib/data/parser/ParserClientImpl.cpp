@@ -103,7 +103,7 @@ bool ParserClientImpl::hasContent() const
 	return m_storage->getByteSize(1) > 0;
 }
 
-NodeKind ParserClientImpl::symbolKindToNodeKind(SymbolKind symbolKind) const
+NodeKind ParserClientImpl::symbolKindToNodeKind(SymbolKind symbolKind) 
 {
 	switch (symbolKind)
 	{
@@ -149,7 +149,7 @@ NodeKind ParserClientImpl::symbolKindToNodeKind(SymbolKind symbolKind) const
 	return NODE_SYMBOL;
 }
 
-Edge::EdgeType ParserClientImpl::referenceKindToEdgeType(ReferenceKind referenceKind) const
+Edge::EdgeType ParserClientImpl::referenceKindToEdgeType(ReferenceKind referenceKind) 
 {
 	switch (referenceKind)
 	{
@@ -181,7 +181,7 @@ Edge::EdgeType ParserClientImpl::referenceKindToEdgeType(ReferenceKind reference
 	return Edge::EDGE_UNDEFINED;
 }
 
-LocationType ParserClientImpl::parseLocationTypeToLocationType(ParseLocationType type) const
+LocationType ParserClientImpl::parseLocationTypeToLocationType(ParseLocationType type) 
 {
 	switch (type)
 	{

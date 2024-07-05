@@ -25,9 +25,9 @@ private:
 	bool TraverseTypeLoc(clang::TypeLoc tl) override;
 
 	std::string getIndentString() const;
-	std::string obfuscateName(const std::string& name) const;
+	static std::string obfuscateName(const std::string& name);
 
-	std::string typeLocClassToString(clang::TypeLoc tl) const
+	static std::string typeLocClassToString(clang::TypeLoc tl) 
 	{
 		switch (tl.getTypeLocClass())
 		{

@@ -21,7 +21,7 @@ void SourceGroupSettingsWithJavaStandard::setJavaStandard(const std::wstring& st
 	m_javaStandard = standard;
 }
 
-std::vector<std::wstring> SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards() const
+std::vector<std::wstring> SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards() 
 {
 	// Must be in sync with 'JavaIndexer.convertLanguageStandard'.
 	return {
@@ -66,7 +66,7 @@ void SourceGroupSettingsWithJavaStandard::save(ConfigManager* config, const std:
 	config->setValue(key + "/java_standard", getJavaStandard());
 }
 
-std::wstring SourceGroupSettingsWithJavaStandard::getDefaultJavaStandard() const
+std::wstring SourceGroupSettingsWithJavaStandard::getDefaultJavaStandard() 
 {
 	return getDefaultJavaStandardStatic();
 }

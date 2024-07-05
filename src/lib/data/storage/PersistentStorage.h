@@ -223,12 +223,12 @@ private:
 	std::unordered_map<Id, std::set<Id>> getFileIdToIncludingFileIdMap() const;
 	std::unordered_map<Id, std::set<Id>> getFileIdToIncludedFileIdMap() const;
 	std::unordered_map<Id, std::set<Id>> getFileIdToImportingFileIdMap() const;
-	std::set<Id> getReferenced(
+	static std::set<Id> getReferenced(
 		const std::set<Id>& filePaths,
-		std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) const;
-	std::set<Id> getReferencing(
+		std::unordered_map<Id, std::set<Id>> idToReferencingIdMap);
+	static std::set<Id> getReferencing(
 		const std::set<Id>& filePaths,
-		std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) const;
+		std::unordered_map<Id, std::set<Id>> idToReferencingIdMap);
 
 	std::set<FilePath> getReferencedByIncludes(const std::set<FilePath>& filePaths) const;
 	std::set<FilePath> getReferencedByImports(const std::set<FilePath>& filePaths) const;

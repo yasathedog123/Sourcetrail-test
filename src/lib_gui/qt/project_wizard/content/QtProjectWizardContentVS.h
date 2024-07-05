@@ -13,7 +13,7 @@ public:
 	void populate(QGridLayout* layout, int& row) override;
 
 private slots:
-	void handleVSCDBClicked();
+	static void handleVSCDBClicked();
 };
 
 #endif	  // QT_PROJECT_WIZARD_CONTENT_VS_H

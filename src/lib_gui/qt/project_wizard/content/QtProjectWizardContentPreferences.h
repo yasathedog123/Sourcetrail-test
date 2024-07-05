@@ -59,9 +59,9 @@ private:
 	void addJreSystemLibraryPathsDetection(QGridLayout* layout, int& row);
 	void addMavenPathDetection(QGridLayout* layout, int& row);
 
-	void addTitle(const QString& title, QGridLayout* layout, int& row);
+	static void addTitle(const QString& title, QGridLayout* layout, int& row);
 	void addLabel(const QString& label, QGridLayout* layout, int row);
-	void addWidget(
+	static void addWidget(
 		QWidget* widget, QGridLayout* layout, int row, Qt::Alignment widgetAlignment = Qt::Alignment());
 	void addLabelAndWidget(
 		const QString& label,
@@ -69,7 +69,7 @@ private:
 		QGridLayout* layout,
 		int row,
 		Qt::Alignment widgetAlignment = Qt::Alignment());
-	void addGap(QGridLayout* layout, int& row);
+	static void addGap(QGridLayout* layout, int& row);
 
 	QCheckBox* addCheckBox(
 		const QString& label,

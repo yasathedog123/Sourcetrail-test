@@ -216,7 +216,7 @@ void SearchIndex::searchRecursive(
 }
 
 std::multiset<SearchResult> SearchIndex::createScoredResults(
-	const std::vector<SearchPath>& paths, NodeTypeSet acceptedNodeTypes, size_t maxResultCount) const
+	const std::vector<SearchPath>& paths, NodeTypeSet acceptedNodeTypes, size_t maxResultCount) 
 {
 	// score and order initial paths
 	std::multimap<int, SearchPath, std::greater<int>> scoredPaths;

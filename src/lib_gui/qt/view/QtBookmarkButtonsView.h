@@ -27,7 +27,7 @@ public:
 
 private slots:
 	void createBookmarkClicked();
-	void showBookmarksClicked();
+	static void showBookmarksClicked();
 
 private:
 	QtThreadedLambdaFunctor m_onQtThread;

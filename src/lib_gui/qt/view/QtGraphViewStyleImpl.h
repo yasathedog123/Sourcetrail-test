@@ -15,7 +15,7 @@ public:
 	float getGraphViewZoomDifferenceForPlatform() override;
 
 private:
-	QFont getFontForStyleType(const std::string& fontName, size_t fontSize) const;
+	static QFont getFontForStyleType(const std::string& fontName, size_t fontSize);
 };
 
 #endif	  // QT_GRAPH_VIEW_STYLE_IMPL_H

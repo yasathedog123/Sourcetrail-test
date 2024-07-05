@@ -106,7 +106,7 @@ private:
 
 	void startFullTextSearch();
 
-	std::deque<SearchMatch> getMatchesForInput(const std::wstring& text) const;
+	static std::deque<SearchMatch> getMatchesForInput(const std::wstring& text);
 
 	NodeTypeSet getMatchAcceptedNodeTypes() const;
 	bool lastMatchIsNoFilter() const;

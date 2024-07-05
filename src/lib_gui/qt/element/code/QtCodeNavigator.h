@@ -119,11 +119,11 @@ protected:
 private slots:
 	void focusChanged(QWidget* from, QWidget* to);
 
-	void previousReference();
-	void nextReference();
+	static void previousReference();
+	static void nextReference();
 
-	void previousLocalReference();
-	void nextLocalReference();
+	static void previousLocalReference();
+	static void nextLocalReference();
 
 	void setModeList();
 	void setModeSingle();

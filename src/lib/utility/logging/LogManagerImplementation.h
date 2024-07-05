@@ -46,7 +46,7 @@ public:
 		const unsigned int line);
 
 private:
-	tm getTime();
+	static tm getTime();
 
 	std::vector<std::shared_ptr<Logger>> m_loggers;
 

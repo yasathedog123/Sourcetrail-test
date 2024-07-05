@@ -2715,7 +2715,7 @@ std::unordered_map<Id, std::set<Id>> PersistentStorage::getFileIdToImportingFile
 }
 
 std::set<Id> PersistentStorage::getReferenced(
-	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) const
+	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) 
 {
 	std::unordered_map<Id, std::set<Id>> idToReferencedIdMap;
 	for (const auto& it: idToReferencingIdMap)
@@ -2730,7 +2730,7 @@ std::set<Id> PersistentStorage::getReferenced(
 }
 
 std::set<Id> PersistentStorage::getReferencing(
-	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) const
+	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) 
 {
 	std::set<Id> referencingIds;
 

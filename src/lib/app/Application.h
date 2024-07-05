@@ -72,7 +72,7 @@ private:
 	void handleMessage(MessageRefreshUI* message) override;
 	void handleMessage(MessageSwitchColorScheme* message) override;
 
-	void startMessagingAndScheduling();
+	static void startMessagingAndScheduling();
 
 	void loadWindow(bool showStartWindow);
 

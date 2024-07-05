@@ -605,7 +605,7 @@ std::pair<int, int> QtCodeField::toLineColumn(int textEditPosition) const
 	return std::make_pair(lineNumber, textEditPosition);
 }
 
-int QtCodeField::startTextEditPosition() const
+int QtCodeField::startTextEditPosition() 
 {
 	return 0;
 }

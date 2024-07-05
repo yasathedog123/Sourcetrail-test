@@ -527,7 +527,7 @@ std::wstring BookmarkController::getNodeDisplayName(const Id nodeId) const
 }
 
 std::vector<std::shared_ptr<Bookmark>> BookmarkController::getFilteredBookmarks(
-	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkFilter filter) const
+	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkFilter filter) 
 {
 	std::vector<std::shared_ptr<Bookmark>> result;
 
@@ -560,7 +560,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getFilteredBookmarks(
 }
 
 std::vector<std::shared_ptr<Bookmark>> BookmarkController::getOrderedBookmarks(
-	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order) const
+	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order) 
 {
 	std::vector<std::shared_ptr<Bookmark>> result = bookmarks;
 
@@ -585,7 +585,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getOrderedBookmarks(
 }
 
 std::vector<std::shared_ptr<Bookmark>> BookmarkController::getDateOrderedBookmarks(
-	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) const
+	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) 
 {
 	std::vector<std::shared_ptr<Bookmark>> result = bookmarks;
 
@@ -600,7 +600,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getDateOrderedBookmar
 }
 
 std::vector<std::shared_ptr<Bookmark>> BookmarkController::getNameOrderedBookmarks(
-	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) const
+	const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) 
 {
 	std::vector<std::shared_ptr<Bookmark>> result = bookmarks;
 

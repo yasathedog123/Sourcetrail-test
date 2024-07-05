@@ -1158,7 +1158,7 @@ int SqliteIndexStorage::getErrorCount() const
 		"SELECT COUNT(*) FROM error INNER JOIN occurrence ON (error.id = occurrence.element_id);", 0);
 }
 
-std::vector<std::pair<int, SqliteDatabaseIndex>> SqliteIndexStorage::getIndices() const
+std::vector<std::pair<int, SqliteDatabaseIndex>> SqliteIndexStorage::getIndices() 
 {
 	std::vector<std::pair<int, SqliteDatabaseIndex>> indices;
 	indices.push_back(std::make_pair(

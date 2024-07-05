@@ -90,7 +90,7 @@ private slots:
 
 	void hideZoomLabel();
 
-	void legendClicked();
+	static void legendClicked();
 
 private:
 	bool moves() const;

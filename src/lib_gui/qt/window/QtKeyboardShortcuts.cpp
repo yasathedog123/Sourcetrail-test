@@ -135,7 +135,7 @@ QtShortcutTable* QtKeyboardShortcuts::createTableWidget(const std::string& objec
 	return table;
 }
 
-void QtKeyboardShortcuts::addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts) const
+void QtKeyboardShortcuts::addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts) 
 {
 	table->setRowCount(static_cast<int>(shortcuts.size()));
 

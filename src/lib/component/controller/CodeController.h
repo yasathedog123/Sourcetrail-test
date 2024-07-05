@@ -113,10 +113,10 @@ private:
 
 	void clear() override;
 
-	std::vector<CodeFileParams> getFilesForActiveSourceLocations(
-		const SourceLocationCollection* collection, Id declarationId) const;
-	std::vector<CodeFileParams> getFilesForCollection(
-		std::shared_ptr<SourceLocationCollection> collection) const;
+	static std::vector<CodeFileParams> getFilesForActiveSourceLocations(
+		const SourceLocationCollection* collection, Id declarationId);
+	static std::vector<CodeFileParams> getFilesForCollection(
+		std::shared_ptr<SourceLocationCollection> collection);
 	CodeSnippetParams getSnippetParamsForWholeFile(
 		std::shared_ptr<SourceLocationFile> locationFile, bool useSingleFileCache) const;
 	std::vector<CodeSnippetParams> getSnippetsForFile(
@@ -127,8 +127,8 @@ private:
 		const SourceLocationFile* scopeLocations,
 		SnippetMerger& fileScopedMerger,
 		std::map<Id, std::shared_ptr<SnippetMerger>>& mergers) const;
-	const SourceLocation* getSourceLocationOfParentScope(
-		size_t lineNumber, const SourceLocationFile* scopeLocations) const;
+	static const SourceLocation* getSourceLocationOfParentScope(
+		size_t lineNumber, const SourceLocationFile* scopeLocations);
 
 	std::vector<std::string> getProjectDescription(SourceLocationFile* locationFile) const;
 
@@ -144,12 +144,12 @@ private:
 	void showCurrentReference();
 	void showCurrentLocalReference(bool updateView);
 
-	std::pair<int, int> findClosestReferenceIndex(
+	static std::pair<int, int> findClosestReferenceIndex(
 		const std::vector<Reference>& references,
 		const FilePath& currentFilePath,
 		size_t currentLineNumber,
 		size_t currentColumnNumber,
-		bool next) const;
+		bool next);
 
 	void expandVisibleFiles(bool useSingleFileCache);
 	CodeFileParams* addSourceLocations(std::shared_ptr<SourceLocationFile> locationFile);
@@ -162,7 +162,7 @@ private:
 
 	CodeScrollParams firstReferenceScrollParams() const;
 	CodeScrollParams definitionReferenceScrollParams(const std::vector<Id>& activeTokenIds) const;
-	CodeScrollParams toReferenceScrollParams(const Reference& ref) const;
+	static CodeScrollParams toReferenceScrollParams(const Reference& ref);
 
 	void saveOrRestoreViewMode(MessageBase* message);
 

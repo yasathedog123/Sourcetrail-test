@@ -53,7 +53,7 @@ void QtProjectWizardContent::setIsRequired(bool isRequired)
 	m_isRequired = isRequired;
 }
 
-QLabel* QtProjectWizardContent::createFormTitle(const QString& name) const
+QLabel* QtProjectWizardContent::createFormTitle(const QString& name) 
 {
 	QLabel* label = new QLabel(name);
 	label->setObjectName(QStringLiteral("titleLabel"));
@@ -71,7 +71,7 @@ QLabel* QtProjectWizardContent::createFormLabel(QString name) const
 	return createFormSubLabel(name);
 }
 
-QLabel* QtProjectWizardContent::createFormSubLabel(const QString& name) const
+QLabel* QtProjectWizardContent::createFormSubLabel(const QString& name) 
 {
 	QLabel* label = new QLabel(name);
 	label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -81,7 +81,7 @@ QLabel* QtProjectWizardContent::createFormSubLabel(const QString& name) const
 }
 
 QToolButton* QtProjectWizardContent::createSourceGroupButton(
-	const QString& name, const QString& iconPath) const
+	const QString& name, const QString& iconPath) 
 {
 	QToolButton* button = new QToolButton();
 	button->setObjectName(QStringLiteral("sourceGroupButton"));
@@ -117,7 +117,7 @@ QPushButton* QtProjectWizardContent::addFilesButton(const QString& name, QGridLa
 	return button;
 }
 
-QFrame* QtProjectWizardContent::addSeparator(QGridLayout* layout, int row) const
+QFrame* QtProjectWizardContent::addSeparator(QGridLayout* layout, int row) 
 {
 	QFrame* separator = new QFrame();
 	separator->setFrameShape(QFrame::HLine);

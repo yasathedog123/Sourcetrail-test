@@ -31,9 +31,9 @@ protected:
 	void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-	void showStatus();
-	void showErrors();
-	void clickedIndexingProgress();
+	static void showStatus();
+	static void showErrors();
+	static void clickedIndexingProgress();
 
 private:
 	QWidget* addPermanentVLine();

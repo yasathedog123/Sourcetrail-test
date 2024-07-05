@@ -99,7 +99,7 @@ std::string CxxVerboseAstVisitor::getIndentString() const
 	return indentString;
 }
 
-std::string CxxVerboseAstVisitor::obfuscateName(const std::string& name) const
+std::string CxxVerboseAstVisitor::obfuscateName(const std::string& name) 
 {
 	if (name.length() <= 2)
 	{

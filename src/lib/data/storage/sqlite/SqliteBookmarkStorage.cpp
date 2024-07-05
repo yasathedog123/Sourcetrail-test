@@ -25,7 +25,7 @@ void SqliteBookmarkStorage::migrateIfNecessary()
 	migrator.addMigration(
 		2,
 		std::make_shared<SqliteStorageMigrationLambda>(
-			[](const SqliteStorageMigration* migration, SqliteStorage* storage) {
+			[](const SqliteStorageMigration*  /*migration*/, SqliteStorage* storage) {
 				std::string separator = "::";
 				if (Application::getInstance())
 				{
@@ -48,15 +48,15 @@ void SqliteBookmarkStorage::migrateIfNecessary()
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 					}
 				}
-				migration->executeStatementInStorage(
+				SqliteStorageMigration::executeStatementInStorage(
 					storage,
 					"UPDATE bookmarked_node SET serialized_node_name = '" + separator +
 						"\tm' || serialized_node_name");
-				migration->executeStatementInStorage(
+				SqliteStorageMigration::executeStatementInStorage(
 					storage,
 					"UPDATE bookmarked_edge SET serialized_source_node_name = '" + separator +
 						"\tm' || serialized_source_node_name");
-				migration->executeStatementInStorage(
+				SqliteStorageMigration::executeStatementInStorage(
 					storage,
 					"UPDATE bookmarked_edge SET serialized_target_node_name = '" + separator +
 						"\tm' || serialized_target_node_name");

@@ -78,7 +78,7 @@ bool CxxAstVisitor::shouldVisitImplicitCode() const
 	return m_implicitCodeComponent.shouldVisitImplicitCode();
 }
 
-bool CxxAstVisitor::shouldHandleTypeLoc(const clang::TypeLoc& tl) const
+bool CxxAstVisitor::shouldHandleTypeLoc(const clang::TypeLoc& tl) 
 {
 	return tl.getAs<clang::TagTypeLoc>() ||
 		tl.getAs<clang::TypedefTypeLoc>() ||

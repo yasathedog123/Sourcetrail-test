@@ -11,7 +11,7 @@
 	{                                                                                              \
 		unsigned int i((idx));                                                                     \
 		checkIndexInRange(i, __FUNCTION__);                                                        \
-	} while (0)
+	} while (false)
 
 
 template <class T, unsigned int N>

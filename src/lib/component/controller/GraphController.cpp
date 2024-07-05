@@ -2102,7 +2102,7 @@ Vec4i GraphController::layoutNestingRecursive(DummyNode* node, int relayoutAcces
 	return ListLayouter::boundingRect(node->subNodes);
 }
 
-void GraphController::addExpandToggleNode(DummyNode* node) const
+void GraphController::addExpandToggleNode(DummyNode* node) 
 {
 	std::shared_ptr<DummyNode> expandNode = std::make_shared<DummyNode>(
 		DummyNode::DUMMY_EXPAND_TOGGLE);
@@ -2144,7 +2144,7 @@ void GraphController::addExpandToggleNode(DummyNode* node) const
 	}
 }
 
-void GraphController::layoutToGrid(DummyNode* node) const
+void GraphController::layoutToGrid(DummyNode* node) 
 {
 	if (!node->visible || !node->isGraphNode() || !node->hasVisibleSubNode())
 	{

@@ -62,7 +62,7 @@ public:
 
 private:
 	QtGraphNode* findNextNode(QtGraphNode* node, Direction direction);
-	QtGraphNode* findNextNode(QtGraphEdge* edge, Direction direction);
+	static QtGraphNode* findNextNode(QtGraphEdge* edge, Direction direction);
 	QtGraphEdge* findNextEdge(QPointF pos, Direction direction, QtGraphEdge* previousEdge = nullptr);
 
 	QtGraphNode* findChildNodeRecursive(const std::list<QtGraphNode*>& nodes, bool first);

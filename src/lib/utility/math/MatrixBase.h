@@ -14,7 +14,7 @@
 		unsigned int n((nIdx));                                                                    \
 		unsigned int m((mIdx));                                                                    \
 		checkIndexInRange(n, m, __FUNCTION__);                                                     \
-	} while (0)
+	} while (false)
 
 template <class T, unsigned int N, unsigned int M>
 class MatrixBase

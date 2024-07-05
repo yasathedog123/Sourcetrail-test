@@ -12,7 +12,7 @@ class SettingsMigration: public Migration<Settings>
 public:
 	~SettingsMigration() override;
 
-	bool isValueDefinedInSettings(const Settings* settings, const std::string& key) const;
+	static bool isValueDefinedInSettings(const Settings* settings, const std::string& key);
 
 	template <typename T>
 	T getValueFromSettings(Settings* settings, const std::string& key, T defaultValue) const;
@@ -27,7 +27,7 @@ public:
 	template <typename T>
 	bool setValuesInSettings(Settings* settings, const std::string& key, std::vector<T> values) const;
 
-	void removeValuesInSettings(Settings* settings, const std::string& key) const;
+	static void removeValuesInSettings(Settings* settings, const std::string& key);
 };
 
 template <typename T>

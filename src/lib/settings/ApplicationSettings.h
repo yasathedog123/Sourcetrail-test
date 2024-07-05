@@ -22,7 +22,7 @@ public:
 
 	bool operator==(const ApplicationSettings& other) const;
 
-	size_t getMaxRecentProjectsCount() const;
+	static size_t getMaxRecentProjectsCount();
 
 	// application
 	std::string getFontName() const;

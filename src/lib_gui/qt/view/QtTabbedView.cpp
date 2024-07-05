@@ -34,7 +34,7 @@ QtTabbedView::QtTabbedView(ViewLayout* viewLayout, const std::string& name)
 	m_closeButton->setIconSize(QSize(15, 15));
 	m_closeButton->setStyleSheet(QStringLiteral("background: transparent; border: none;"));
 
-	widget->connect(m_closeButton, &QPushButton::clicked, [this]() { hideView(this); });
+	QWidget::connect(m_closeButton, &QPushButton::clicked, [this]() { hideView(this); });
 	m_widget->tabBar()->installEventFilter(this);
 	widget->installEventFilter(this);
 }

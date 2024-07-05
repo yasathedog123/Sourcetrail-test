@@ -95,7 +95,7 @@ private slots:
 	void clickedCollapse();
 	void clickedExpand();
 
-	void clickedCustomTrail();
+	static void clickedCustomTrail();
 	void clickedBackwardTrail();
 	void clickedForwardTrail();
 
@@ -131,7 +131,7 @@ private:
 	QtGraphEdge* createBundledEdgesEdge(
 		QGraphicsView* view, const DummyEdge* edge, std::set<Id>* visibleEdgeIds, bool interactive);
 
-	QRectF itemsBoundingRect(const std::list<QtGraphNode*>& items) const;
+	static QRectF itemsBoundingRect(const std::list<QtGraphNode*>& items);
 	QRectF getSceneRect(const std::list<QtGraphNode*>& items) const;
 
 	void centerNode(QtGraphNode* node);

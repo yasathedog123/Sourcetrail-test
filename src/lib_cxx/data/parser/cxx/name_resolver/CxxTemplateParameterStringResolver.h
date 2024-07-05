@@ -17,7 +17,7 @@ public:
 
 	std::wstring getTemplateParameterString(const clang::NamedDecl* parameter);
 	std::wstring getTemplateParameterTypeString(const clang::NonTypeTemplateParmDecl* parameter);
-	std::wstring getTemplateParameterTypeString(const clang::TemplateTypeParmDecl* parameter);
+	static std::wstring getTemplateParameterTypeString(const clang::TemplateTypeParmDecl* parameter);
 	std::wstring getTemplateParameterTypeString(const clang::TemplateTemplateParmDecl* parameter);
 };
 

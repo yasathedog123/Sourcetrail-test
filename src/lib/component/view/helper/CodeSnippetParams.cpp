@@ -31,7 +31,7 @@ CodeSnippetParams CodeSnippetParams::merge(const CodeSnippetParams& a, const Cod
 	{
 		secondCodeStartIndex = secondCode.find("\n", secondCodeStartIndex) + 1;
 	}
-	code += secondCode.substr(secondCodeStartIndex, secondCode.npos);
+	code += secondCode.substr(secondCodeStartIndex, std::string::npos);
 
 	CodeSnippetParams params;
 	params.startLineNumber = first->startLineNumber;

@@ -2,7 +2,6 @@
 #define SQLITE_STORAGE_MIGRATION_H
 
 #include <string>
-#include <vector>
 
 #include "Migration.h"
 #include "SqliteStorage.h"
@@ -12,7 +11,7 @@ class SqliteStorageMigration: public Migration<SqliteStorage>
 public:
 	~SqliteStorageMigration() override;
 
-	bool executeStatementInStorage(SqliteStorage* storage, const std::string& statement) const;
+	static bool executeStatementInStorage(SqliteStorage* storage, const std::string& statement);
 };
 
 #endif	  // SQLITE_STORAGE_MIGRATION_H

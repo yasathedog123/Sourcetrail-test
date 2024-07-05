@@ -1227,7 +1227,7 @@ QtGraphEdge* QtGraphView::createBundledEdgesEdge(
 	return createEdge(view, edge, visibleEdgeIds, Graph::TRAIL_NONE, QPointF(), false, interactive);
 }
 
-QRectF QtGraphView::itemsBoundingRect(const std::list<QtGraphNode*>& items) const
+QRectF QtGraphView::itemsBoundingRect(const std::list<QtGraphNode*>& items) 
 {
 	QRectF boundingRect;
 	for (const QtGraphNode* item: items)

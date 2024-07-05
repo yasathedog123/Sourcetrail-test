@@ -56,7 +56,7 @@ protected:
 	void ensurePercentVisibleAnimated(
 		double percentA, double percentB, bool animated, CodeScrollParams::Target target);
 
-	QRect getFocusRectForWidget(const QWidget* childWidget, const QWidget* parentWidget) const;
+	static QRect getFocusRectForWidget(const QWidget* childWidget, const QWidget* parentWidget);
 };
 
 #endif	  // QT_CODE_NAVIGABLE_H

@@ -96,17 +96,17 @@ std::wstring SearchMatch::getCommandName(CommandType type)
 }
 
 SearchMatch::SearchMatch()
-	:  nodeType(NODE_SYMBOL), searchType(SEARCH_NONE) 
+	:  nodeType(NODE_SYMBOL), searchType(SEARCH_NONE)
 {
 }
 
 SearchMatch::SearchMatch(const std::wstring& query)
 	: name(query)
 	, text(query)
-	, 
+	,
 	 nodeType(NODE_SYMBOL)
 	, searchType(SEARCH_NONE)
-	 
+
 {
 	tokenNames.emplace_back(query, NAME_DELIMITER_UNKNOWN);
 }
@@ -133,7 +133,7 @@ bool SearchMatch::operator<(const SearchMatch& other) const
 	}
 
 	size_t size = getTextSizeForSorting(str);
-	size_t otherSize = other.getTextSizeForSorting(otherStr);
+	size_t otherSize = getTextSizeForSorting(otherStr);
 
 	// text size
 	if (size < otherSize)
@@ -182,7 +182,7 @@ bool SearchMatch::operator==(const SearchMatch& other) const
 	return text == other.text && searchType == other.searchType;
 }
 
-size_t SearchMatch::getTextSizeForSorting(const std::wstring* str) const
+size_t SearchMatch::getTextSizeForSorting(const std::wstring* str)
 {
 	// check if templated symbol and only use size up to template stuff
 	size_t pos = str->find(L'<');

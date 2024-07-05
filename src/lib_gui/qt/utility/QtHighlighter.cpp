@@ -449,7 +449,7 @@ QtHighlighter::HighlightingRule::HighlightingRule(
 {
 }
 
-bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightType, int, int>>& ranges) const
+bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightType, int, int>>& ranges) 
 {
 	for (const std::tuple<HighlightType, int, int>& range: ranges)
 	{
@@ -463,7 +463,7 @@ bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightTyp
 }
 
 std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::getRangesForRule(
-	const QTextBlock& block, const HighlightingRule& rule) const
+	const QTextBlock& block, const HighlightingRule& rule) 
 {
 	const int pos = block.position();
 	const QString text = block.text();

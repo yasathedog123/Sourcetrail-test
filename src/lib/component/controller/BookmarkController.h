@@ -101,15 +101,15 @@ private:
 	std::vector<std::wstring> getActiveEdgeDisplayNames() const;
 	std::wstring getNodeDisplayName(const Id id) const;
 
-	std::vector<std::shared_ptr<Bookmark>> getFilteredBookmarks(
+	static std::vector<std::shared_ptr<Bookmark>> getFilteredBookmarks(
 		const std::vector<std::shared_ptr<Bookmark>>& bookmarks,
-		Bookmark::BookmarkFilter filter) const;
-	std::vector<std::shared_ptr<Bookmark>> getOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order) const;
-	std::vector<std::shared_ptr<Bookmark>> getDateOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) const;
-	std::vector<std::shared_ptr<Bookmark>> getNameOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending) const;
+		Bookmark::BookmarkFilter filter);
+	static std::vector<std::shared_ptr<Bookmark>> getOrderedBookmarks(
+		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order);
+	static std::vector<std::shared_ptr<Bookmark>> getDateOrderedBookmarks(
+		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
+	static std::vector<std::shared_ptr<Bookmark>> getNameOrderedBookmarks(
+		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
 
 	void cleanBookmarkCategories();
 

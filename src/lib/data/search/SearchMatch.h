@@ -48,7 +48,7 @@ struct SearchMatch
 	bool operator<(const SearchMatch& other) const;
 	bool operator==(const SearchMatch& other) const;
 
-	size_t getTextSizeForSorting(const std::wstring* str) const;
+	static size_t getTextSizeForSorting(const std::wstring* str);
 
 	bool isValid() const;
 	bool isFilterCommand() const;

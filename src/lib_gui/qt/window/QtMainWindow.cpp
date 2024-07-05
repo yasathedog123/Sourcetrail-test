@@ -691,9 +691,7 @@ void QtMainWindow::overview()
 
 void QtMainWindow::closeWindow()
 {
-	QApplication* app = dynamic_cast<QApplication*>(QCoreApplication::instance());
-
-	QWidget* activeWindow = app->activeWindow();
+	QWidget* activeWindow = QApplication::activeWindow();
 	if (activeWindow)
 	{
 		activeWindow->close();

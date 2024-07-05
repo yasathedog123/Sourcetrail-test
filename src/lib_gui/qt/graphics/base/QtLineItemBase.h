@@ -37,12 +37,12 @@ public:
 
 protected:
 	QPolygon getPath() const;
-	int getDirection(QPointF a, QPointF b) const;
+	static int getDirection(QPointF a, QPointF b);
 
 	QRectF getArrowBoundingRect(const QPolygon& poly) const;
 	void drawArrow(const QPolygon& poly, QPainterPath* path, QPainterPath* arrowPath = nullptr) const;
 
-	void getPivotPoints(Vec2f* p, const Vec4i& in, const Vec4i& out, int offset, bool target) const;
+	static void getPivotPoints(Vec2f* p, const Vec4i& in, const Vec4i& out, int offset, bool target);
 
 	GraphViewStyle::EdgeStyle m_style;
 	bool m_showArrow = true;

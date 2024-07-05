@@ -235,7 +235,7 @@ private:
 		uint8_t type;
 	};
 
-	std::vector<std::pair<int, SqliteDatabaseIndex>> getIndices() const;
+	static std::vector<std::pair<int, SqliteDatabaseIndex>> getIndices();
 
 	void clearTables() override;
 	void setupTables() override;
@@ -318,7 +318,7 @@ private:
 			}
 		}
 
-		bool execute(const std::vector<StorageType>& types, SqliteIndexStorage* storage)
+		bool execute(const std::vector<StorageType>& types, SqliteIndexStorage*  /*storage*/)
 		{
 			size_t i = 0;
 			for (std::pair<size_t, CppSQLite3Statement>& p: m_stmts)
@@ -333,7 +333,7 @@ private:
 						m_bindValuesFunc(stmt, types[i + j], j);
 					}
 
-					const bool success = storage->executeStatement(stmt);
+					const bool success = SqliteIndexStorage::executeStatement(stmt);
 					if (!success)
 					{
 						return false;

@@ -872,8 +872,7 @@ void QtCodeNavigator::focusInEvent(QFocusEvent*  /*event*/)
 
 void QtCodeNavigator::focusOutEvent(QFocusEvent*  /*event*/)
 {
-	QApplication* app = dynamic_cast<QApplication*>(QCoreApplication::instance());
-	if (isAncestorOf(app->focusWidget()))
+	if (isAncestorOf(QApplication::focusWidget()))
 	{
 		return;
 	}

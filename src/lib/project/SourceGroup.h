@@ -50,11 +50,11 @@ protected:
 	virtual std::shared_ptr<SourceGroupSettings> getSourceGroupSettings() = 0;
 	virtual std::shared_ptr<const SourceGroupSettings> getSourceGroupSettings() const = 0;
 
-	std::set<FilePath> filterToContainedFilePaths(
+	static std::set<FilePath> filterToContainedFilePaths(
 		const std::set<FilePath>& filePaths,
 		const std::set<FilePath>& indexedFilePaths,
 		const std::set<FilePath>& indexedFileOrDirectoryPaths,
-		const std::vector<FilePathFilter>& excludeFilters) const;
+		const std::vector<FilePathFilter>& excludeFilters);
 };
 
 #endif	  // SOURCE_GROUP_H

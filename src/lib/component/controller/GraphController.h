@@ -112,7 +112,7 @@ private:
 		size_t count,
 		bool countConnectedNodes,
 		const std::wstring& name);
-	std::shared_ptr<DummyNode> bundleNodesMatching(
+	static std::shared_ptr<DummyNode> bundleNodesMatching(
 		std::list<std::shared_ptr<DummyNode>>& nodes,
 		std::function<bool(const DummyNode*)> matcher,
 		const std::wstring& name);
@@ -133,8 +133,8 @@ private:
 	void layoutNesting();
 	void extendEqualFunctionNames(const std::vector<std::shared_ptr<DummyNode>>& nodes) const;
 	Vec4i layoutNestingRecursive(DummyNode* node, int relayoutAccessMaxWidth = -1) const;
-	void addExpandToggleNode(DummyNode* node) const;
-	void layoutToGrid(DummyNode* node) const;
+	static void addExpandToggleNode(DummyNode* node);
+	static void layoutToGrid(DummyNode* node);
 
 	void layoutGraph(bool getSortedNodes = false);
 	void layoutList();

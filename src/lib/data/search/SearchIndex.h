@@ -90,10 +90,10 @@ private:
 		NodeTypeSet acceptedNodeTypes,
 		std::vector<SearchIndex::SearchPath>* results) const;
 
-	std::multiset<SearchResult> createScoredResults(
+	static std::multiset<SearchResult> createScoredResults(
 		const std::vector<SearchPath>& paths,
 		NodeTypeSet acceptedNodeTypes,
-		size_t maxResultCount) const;
+		size_t maxResultCount);
 
 	static SearchResult bestScoredResult(
 		SearchResult result,

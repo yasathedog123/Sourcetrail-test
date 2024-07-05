@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
 				.dispatch();
 		}
 
-		return qtApp.exec();
+		return QtCoreApplication::exec();
 	}
 	else
 	{
@@ -196,6 +196,6 @@ int main(int argc, char* argv[])
 			MessageLoadProject(commandLineParser.getProjectFilePath(), false, REFRESH_NONE).dispatch();
 		}
 
-		return qtApp.exec();
+		return QtApplication::exec();
 	}
 }

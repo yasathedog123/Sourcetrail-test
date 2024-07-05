@@ -18,9 +18,11 @@ Checks: >
     modernize-use-override,
     modernize-use-default-member-init,
     modernize-use-nullptr,
+    readability-convert-member-functions-to-static,
     readability-redundant-member-init,
     readability-redundant-string-init,
-    readability-simplify-boolean-expr
+    readability-simplify-boolean-expr,
+    readability-static-accessed-through-instance
 
 WarningsAsErrors:  ''
 HeaderFilterRegex: '.*'

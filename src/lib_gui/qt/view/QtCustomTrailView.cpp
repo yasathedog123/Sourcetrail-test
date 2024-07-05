@@ -462,7 +462,7 @@ void QtCustomTrailView::updateStyleSheet()
 	}
 }
 
-QWidget* QtCustomTrailView::createSearchBox(QtSmartSearchBox* searchBox) const
+QWidget* QtCustomTrailView::createSearchBox(QtSmartSearchBox* searchBox) 
 {
 	QWidget* searchBoxContainer = new QWidget();
 	searchBoxContainer->setObjectName(QStringLiteral("search_box_container"));
@@ -543,7 +543,7 @@ QVBoxLayout* QtCustomTrailView::addFilters(
 	return vLayout;
 }
 
-QHBoxLayout* QtCustomTrailView::addCheckButtons(const std::vector<QCheckBox*>& checkBoxes) const
+QHBoxLayout* QtCustomTrailView::addCheckButtons(const std::vector<QCheckBox*>& checkBoxes) 
 {
 	QHBoxLayout* buttonLayout = new QHBoxLayout();
 

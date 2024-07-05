@@ -129,7 +129,7 @@ private:
 	bool sameMessageTypeAsLast(MessageBase* message) const;
 	MessageBase* lastMessage() const;
 
-	void updateHistoryMenu(std::shared_ptr<MessageBase> message);
+	static void updateHistoryMenu(std::shared_ptr<MessageBase> message);
 	void updateHistory();
 
 	void dump() const;

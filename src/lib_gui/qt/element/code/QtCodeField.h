@@ -100,16 +100,16 @@ protected:
 	int toTextEditPosition(int lineNumber, int columnNumber) const;
 	std::pair<int, int> toLineColumn(int textEditPosition) const;
 
-	int startTextEditPosition() const;
+	static int startTextEditPosition();
 	int endTextEditPosition() const;
 
 	void setHoveredAnnotations(const std::vector<const Annotation*>& annotations);
 	std::vector<QRect> getCursorRectsForAnnotation(const Annotation& annotation) const;
 
-	const AnnotationColor& getAnnotationColorForAnnotation(const Annotation& annotation);
+	static const AnnotationColor& getAnnotationColorForAnnotation(const Annotation& annotation);
 	void setTextColorForAnnotation(const Annotation& annotation, QColor color) const;
 
-	const std::string& getFocusColor();
+	static const std::string& getFocusColor();
 
 	const Annotation* getAnnotationForLocationId(Id locationId) const;
 	std::vector<const Annotation*> getInteractiveAnnotationsForLineNumber(size_t lineNumber) const;

@@ -62,9 +62,9 @@ private:
 		const HighlightingRule* startRule,
 		const HighlightingRule* endRule);
 
-	bool isInRange(int index, const std::vector<std::tuple<HighlightType, int, int>>& ranges) const;
-	std::vector<std::tuple<HighlightType, int, int>> getRangesForRule(
-		const QTextBlock& block, const HighlightingRule& rule) const;
+	static bool isInRange(int index, const std::vector<std::tuple<HighlightType, int, int>>& ranges);
+	static std::vector<std::tuple<HighlightType, int, int>> getRangesForRule(
+		const QTextBlock& block, const HighlightingRule& rule);
 
 	void formatBlockForRule(
 		const QTextBlock& block,

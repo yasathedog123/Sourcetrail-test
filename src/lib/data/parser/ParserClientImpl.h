@@ -42,9 +42,9 @@ public:
 	bool hasContent() const override;
 
 private:
-	NodeKind symbolKindToNodeKind(SymbolKind symbolType) const;
-	Edge::EdgeType referenceKindToEdgeType(ReferenceKind referenceKind) const;
-	LocationType parseLocationTypeToLocationType(ParseLocationType type) const;
+	static NodeKind symbolKindToNodeKind(SymbolKind symbolType);
+	static Edge::EdgeType referenceKindToEdgeType(ReferenceKind referenceKind);
+	static LocationType parseLocationTypeToLocationType(ParseLocationType type);
 
 	void addAccess(Id nodeId, AccessKind access);
 

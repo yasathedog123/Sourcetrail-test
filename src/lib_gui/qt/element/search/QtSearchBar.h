@@ -33,11 +33,11 @@ public:
 	void refreshStyle();
 
 private slots:
-	void homeButtonClicked();
+	static void homeButtonClicked();
 
-	void requestAutocomplete(const std::wstring& query, NodeTypeSet acceptedNodeTypes);
-	void requestSearch(const std::vector<SearchMatch>& matches, NodeTypeSet acceptedNodeTypes);
-	void requestFullTextSearch(const std::wstring& query, bool caseSensitive);
+	static void requestAutocomplete(const std::wstring& query, NodeTypeSet acceptedNodeTypes);
+	static void requestSearch(const std::vector<SearchMatch>& matches, NodeTypeSet acceptedNodeTypes);
+	static void requestFullTextSearch(const std::wstring& query, bool caseSensitive);
 
 private:
 	QWidget* m_searchBoxContainer;	  // used for correct clipping inside the search box

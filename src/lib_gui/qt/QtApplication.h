@@ -10,10 +10,10 @@ public:
 	QtApplication(int& argc, char** argv);
 
 	bool event(QEvent* event) override;
-	int exec();
+	static int exec();
 
 private slots:
-	void onApplicationStateChanged(Qt::ApplicationState state);
+	static void onApplicationStateChanged(Qt::ApplicationState state);
 };
 
 #endif	  // QT_APPLICATION_H

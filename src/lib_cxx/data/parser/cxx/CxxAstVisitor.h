@@ -58,7 +58,7 @@ public:
 	virtual bool shouldVisitTemplateInstantiations() const;
 	virtual bool shouldVisitImplicitCode() const;
 
-	bool shouldHandleTypeLoc(const clang::TypeLoc& tl) const;
+	static bool shouldHandleTypeLoc(const clang::TypeLoc& tl);
 
 	// Traversal methods. These specify how to traverse the AST and record context info.
 	virtual bool TraverseDecl(clang::Decl* d);
@@ -92,7 +92,7 @@ public:
 	bool TraverseLambdaCapture(clang::LambdaExpr* lambdaExpr, const clang::LambdaCapture* capture, clang::Expr* Init);
 	bool TraverseBinComma(clang::BinaryOperator* s);
 
-	bool TraverseDeclarationNameInfo(clang::DeclarationNameInfo NameInfo);
+	static bool TraverseDeclarationNameInfo(clang::DeclarationNameInfo NameInfo);
 
 #define OPERATOR(NAME)                                                                             \
 	bool TraverseBin##NAME##Assign(clang::CompoundAssignOperator* s)                       \
@@ -143,7 +143,7 @@ public:
 	bool VisitNonTypeTemplateParmDecl(clang::NonTypeTemplateParmDecl* d);
 	bool VisitTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d);
 	bool VisitTemplateTemplateParmDecl(clang::TemplateTemplateParmDecl* d);
-	bool VisitTranslationUnitDecl(clang::TranslationUnitDecl* d);
+	static bool VisitTranslationUnitDecl(clang::TranslationUnitDecl* d);
 
 	bool VisitTypeLoc(clang::TypeLoc tl);
 

@@ -71,7 +71,7 @@ std::set<FilePath> SourceGroup::filterToContainedFilePaths(
 	const std::set<FilePath>& filePaths,
 	const std::set<FilePath>& indexedFilePaths,
 	const std::set<FilePath>& indexedFileOrDirectoryPaths,
-	const std::vector<FilePathFilter>& excludeFilters) const
+	const std::vector<FilePathFilter>& excludeFilters) 
 {
 	std::set<FilePath> containedFilePaths;
 

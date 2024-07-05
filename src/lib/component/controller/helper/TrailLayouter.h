@@ -80,7 +80,7 @@ private:
 
 	void addNode(const std::shared_ptr<DummyNode>& dummyNode);
 	void addEdge(const std::shared_ptr<DummyEdge> dummyEdge, const std::map<Id, Id>& topLevelAncestorIds);
-	void switchEdge(TrailEdge* edge);
+	static void switchEdge(TrailEdge* edge);
 
 	bool horizontalLayout() const;
 	bool invertedLayout() const;

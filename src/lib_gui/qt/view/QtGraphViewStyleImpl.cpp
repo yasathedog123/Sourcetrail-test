@@ -28,7 +28,7 @@ float QtGraphViewStyleImpl::getGraphViewZoomDifferenceForPlatform()
 	return 1.25;
 }
 
-QFont QtGraphViewStyleImpl::getFontForStyleType(const std::string& fontName, size_t fontSize) const
+QFont QtGraphViewStyleImpl::getFontForStyleType(const std::string& fontName, size_t fontSize) 
 {
 	QFont font(fontName.c_str());
 	font.setPixelSize(static_cast<int>(fontSize));

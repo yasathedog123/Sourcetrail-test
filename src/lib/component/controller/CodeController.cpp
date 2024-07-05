@@ -663,7 +663,7 @@ void CodeController::clear()
 }
 
 std::vector<CodeFileParams> CodeController::getFilesForActiveSourceLocations(
-	const SourceLocationCollection* collection, Id declarationId) const
+	const SourceLocationCollection* collection, Id declarationId) 
 {
 	TRACE();
 
@@ -701,7 +701,7 @@ std::vector<CodeFileParams> CodeController::getFilesForActiveSourceLocations(
 }
 
 std::vector<CodeFileParams> CodeController::getFilesForCollection(
-	std::shared_ptr<SourceLocationCollection> collection) const
+	std::shared_ptr<SourceLocationCollection> collection) 
 {
 	TRACE();
 
@@ -887,7 +887,7 @@ std::shared_ptr<SnippetMerger> CodeController::buildMergerHierarchy(const Source
 }
 
 const SourceLocation* CodeController::getSourceLocationOfParentScope(
-	size_t lineNumber, const SourceLocationFile* scopeLocations) const
+	size_t lineNumber, const SourceLocationFile* scopeLocations) 
 {
 	const SourceLocation* location = nullptr;
 
@@ -1195,7 +1195,7 @@ std::pair<int, int> CodeController::findClosestReferenceIndex(
 	const FilePath& currentFilePath,
 	size_t currentLineNumber,
 	size_t currentColumnNumber,
-	bool next) const
+	bool next) 
 {
 	int referenceIndex = -1;
 	bool beforeCurrentFile = true;
@@ -1537,7 +1537,7 @@ CodeScrollParams CodeController::definitionReferenceScrollParams(const std::vect
 	return firstReferenceScrollParams();
 }
 
-CodeScrollParams CodeController::toReferenceScrollParams(const Reference& ref) const
+CodeScrollParams CodeController::toReferenceScrollParams(const Reference& ref) 
 {
 	return CodeScrollParams::toReference(
 		ref.filePath, ref.locationId, ref.scopeLocationId, CodeScrollParams::Target::CENTER);

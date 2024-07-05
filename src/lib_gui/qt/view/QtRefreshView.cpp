@@ -25,7 +25,7 @@ QtRefreshView::QtRefreshView(ViewLayout* viewLayout): RefreshView(viewLayout)
 		ResourcePaths::getGuiDirectoryPath().concatenate(L"refresh_view/images/refresh.png"));
 	refreshButton->setObjectName(QStringLiteral("refresh_button"));
 	refreshButton->setToolTip(QStringLiteral("refresh"));
-	m_widget->connect(refreshButton, &QPushButton::clicked, []() {
+	QWidget::connect(refreshButton, &QPushButton::clicked, []() {
 		MessageIndexingShowDialog().dispatch();
 		MessageRefresh().dispatch();
 	});

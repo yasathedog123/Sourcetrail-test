@@ -53,7 +53,7 @@ std::vector<FilePathFilter> SourceGroupSettingsWithExcludeFilters::getFiltersExp
 		if (!filterString.empty())
 		{
 			const size_t wildcardPos = filterString.find(L"*");
-			if (wildcardPos != filterString.npos)
+			if (wildcardPos != std::wstring::npos)
 			{
 				std::wsmatch match;
 				if (std::regex_search(filterString, match, std::wregex(L"[\\\\/]")) &&

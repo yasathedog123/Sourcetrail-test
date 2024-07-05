@@ -40,11 +40,11 @@ protected:
 	void clearMetaTable();
 
 	bool executeStatement(const std::string& statement) const;
-	bool executeStatement(CppSQLite3Statement& statement) const;
+	static bool executeStatement(CppSQLite3Statement& statement);
 	int executeStatementScalar(const std::string& statement, const int nullValue) const;
-	int executeStatementScalar(CppSQLite3Statement& statement, const int nullValue) const;
+	static int executeStatementScalar(CppSQLite3Statement& statement, const int nullValue);
 	CppSQLite3Query executeQuery(const std::string& statement) const;
-	CppSQLite3Query executeQuery(CppSQLite3Statement& statement) const;
+	static CppSQLite3Query executeQuery(CppSQLite3Statement& statement);
 
 	bool hasTable(const std::string& tableName) const;
 

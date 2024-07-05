@@ -41,9 +41,9 @@ protected:
 
 private:
 	void handleSetActiveTokenMessage(const NetworkProtocolHelper::SetActiveTokenMessage& message);
-	void handleCreateProjectMessage(const NetworkProtocolHelper::CreateProjectMessage& message);
-	void handleCreateCDBProjectMessage(const NetworkProtocolHelper::CreateCDBProjectMessage& message);
-	void handlePing(const NetworkProtocolHelper::PingMessage& message);
+	static void handleCreateProjectMessage(const NetworkProtocolHelper::CreateProjectMessage& message);
+	static void handleCreateCDBProjectMessage(const NetworkProtocolHelper::CreateCDBProjectMessage& message);
+	static void handlePing(const NetworkProtocolHelper::PingMessage& message);
 
 	void handleMessage(MessageWindowFocus* message) override;
 	void handleMessage(MessageIDECreateCDB* message) override;

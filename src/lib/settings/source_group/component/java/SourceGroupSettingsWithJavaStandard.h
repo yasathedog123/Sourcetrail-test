@@ -15,7 +15,7 @@ public:
 	std::wstring getJavaStandard() const;
 	void setJavaStandard(const std::wstring& standard);
 
-	std::vector<std::wstring> getAvailableJavaStandards() const;
+	static std::vector<std::wstring> getAvailableJavaStandards();
 
 protected:
 	bool equals(const SourceGroupSettingsBase* other) const override;
@@ -24,7 +24,7 @@ protected:
 	void save(ConfigManager* config, const std::string& key) override;
 
 private:
-	std::wstring getDefaultJavaStandard() const;
+	static std::wstring getDefaultJavaStandard();
 
 	std::wstring m_javaStandard;
 };

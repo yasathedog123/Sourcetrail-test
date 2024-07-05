@@ -187,7 +187,7 @@ void QtCodeNavigable::ensurePercentVisibleAnimated(
 }
 
 QRect QtCodeNavigable::getFocusRectForWidget(
-	const QWidget* childWidget, const QWidget* parentWidget) const
+	const QWidget* childWidget, const QWidget* parentWidget) 
 {
 	const QRect microFocus = childWidget->inputMethodQuery(Qt::ImCursorRectangle).toRect();
 	const QRect defaultMicroFocus =

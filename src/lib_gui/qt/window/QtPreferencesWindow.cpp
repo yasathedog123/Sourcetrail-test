@@ -98,7 +98,7 @@ void QtPreferencesWindow::handleNext()
 		MessagePluginPortChange().dispatch();
 	}
 
-	app->loadSettings();
+	Application::loadSettings();
 
 	if (appSettingsChanged)
 	{

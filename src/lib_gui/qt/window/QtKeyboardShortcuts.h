@@ -46,7 +46,7 @@ private:
 	};
 
 	QtShortcutTable* createTableWidget(const std::string& objectName);
-	void addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts) const;
+	static void addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts);
 
 	QTableWidget* createGeneralShortcutsTable();
 	QTableWidget* createCodeViewShortcutsTable();
