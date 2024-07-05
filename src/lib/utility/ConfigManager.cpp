@@ -56,7 +56,7 @@ bool ConfigManager::getValue(const std::string& key, std::wstring& value) const
 	std::string valueString;
 	if (getValue(key, valueString))
 	{
-		value = utility::decodeFromUtf8(valueString.c_str());
+		value = utility::decodeFromUtf8(valueString);
 		return true;
 	}
 	return false;

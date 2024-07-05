@@ -68,7 +68,7 @@ QtCodeField::QtCodeField(
 		}
 	}
 
-	TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding().c_str());
+	TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
 	if (convertLocationsOnDemand && codec.isValid())
 	{
 		QString convertedDisplayCode = QString::fromStdWString(codec.decode(displayCode));
