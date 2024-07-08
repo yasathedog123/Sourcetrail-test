@@ -50,6 +50,7 @@ bool Migrator<MigratableType>::willMigrate(const MigratableType* migratable, siz
 
 			for (typename MigrationMap::const_iterator it = ret.first; it != ret.second; it++)
 			{
+				// TODO (PMost): MSVC warns about unreachable code
 				return true;
 			}
 		}

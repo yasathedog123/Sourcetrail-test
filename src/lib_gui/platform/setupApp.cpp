@@ -44,7 +44,7 @@ Version setupAppDirectories(int  /*argc*/, char* argv[])
 			UserPaths::getAppSettingsFilePath());
 
 		// The GUI is a mess without a default 'window_settings.ini'!
-		// TODO(PMost): Get rid of the need for a default 'window_settings.ini'
+		// TODO (PMost): Get rid of the need for a default 'window_settings.ini'
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"window_settings.ini"),
 			UserPaths::getWindowSettingsFilePath());
 
