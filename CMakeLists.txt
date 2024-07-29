@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-# Detect vcpkg build scenario here, so we don't rely on CMakePresets settings:
+# Detect vcpkg build scenario here, so we don't depend on CMakePresets settings:
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message(STATUS "Vcpkg Build")
 	set(isVcpkgBuild TRUE)
@@ -10,9 +10,6 @@ else()
 endif()
 
 if (isVcpkgBuild)
-	# Try to limit the rebuilds:
-	set(VCPKG_INSTALL_OPTIONS --x-abi-tools-use-exact-versions CACHE STRING "Install options for Vcpkg" FORCE) # --debug
-
 	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
 	if (UNIX)
 		set(VCPKG_TARGET_TRIPLET "custom-x64-linux-static-md" CACHE STRING "Target triplet for Linux" FORCE)
