@@ -158,7 +158,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 
 	connect(
 		m_languages,
-		static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked),
+		qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked),
 		[this](QAbstractButton* button)
 		{
 			LanguageType selectedLanguage = LANGUAGE_UNKNOWN;
@@ -232,7 +232,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 	{
 		connect(
 			it.second,
-			static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked),
+			qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked),
 			[this](QAbstractButton* button)
 			{
 				SourceGroupType selectedType = SOURCE_GROUP_UNKNOWN;

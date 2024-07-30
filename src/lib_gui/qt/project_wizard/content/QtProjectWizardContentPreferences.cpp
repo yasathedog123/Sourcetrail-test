@@ -98,7 +98,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 	}
 	connect(
 		m_colorSchemes,
-		static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
+		qOverload<int>(&QComboBox::activated),
 		this,
 		&QtProjectWizardContentPreferences::colorSchemeChanged);
 
@@ -133,6 +133,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 
 	// Linux UI scale
+	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
 	if constexpr (utility::Os::isLinux())
 	{
 		// screen
@@ -165,7 +166,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		m_screenAutoScaling->addItem(QStringLiteral("on"), 1);
 		connect(
 			m_screenAutoScaling,
-			static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
+			qOverload<int>(&QComboBox::activated),
 			this,
 			&QtProjectWizardContentPreferences::uiAutoScalingChanges);
 
@@ -199,7 +200,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		m_screenScaleFactor->addItem(QStringLiteral("400%"), 4.0);
 		connect(
 			m_screenScaleFactor,
-			static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
+			qOverload<int>(&QComboBox::activated),
 			this,
 			&QtProjectWizardContentPreferences::uiScaleFactorChanges);
 
@@ -309,7 +310,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 	m_threads->setItemText(0, QStringLiteral("default"));
 	connect(
 		m_threads,
-		static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
+		qOverload<int>(&QComboBox::activated),
 		this,
 		&QtProjectWizardContentPreferences::indexerThreadsChanges);
 

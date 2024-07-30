@@ -431,8 +431,7 @@ void QtAutocompletionList::completeAt(QPoint pos, const std::vector<SearchMatch>
 					 // QtSmartSearchBox
 	connect(
 		this,
-		static_cast<void (QtAutocompletionList::*)(const QModelIndex&)>(
-			&QtAutocompletionList::highlighted),
+		qOverload<const QModelIndex&>(&QtAutocompletionList::highlighted),
 		this,
 		&QtAutocompletionList::onHighlighted,
 		Qt::DirectConnection);
