@@ -1,4 +1,3 @@
-configure_file("${CMAKE_SOURCE_DIR}/setup/qt.conf"         "${CMAKE_BINARY_DIR}/app/qt.conf" COPYONLY)
 configure_file("${CMAKE_SOURCE_DIR}/setup/Sourcetrail.sh"  "${CMAKE_BINARY_DIR}/app/Sourcetrail.sh" COPYONLY)
 configure_file("${CMAKE_SOURCE_DIR}/setup/Sourcetrail.ico" "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico" COPYONLY)
 configure_file("${CMAKE_SOURCE_DIR}/script/_gdbinit"       "${CMAKE_BINARY_DIR}/app/.gdbinit" COPYONLY)

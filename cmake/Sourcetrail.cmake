@@ -24,7 +24,6 @@ function(setGccTargetOptions targetName)
 			-Wnon-virtual-dtor
 			# -Wold-style-cast
 			# -Woverloaded-virtual
-			-Wsuggest-override
 			# -Wundef
 			-Wuninitialized
 			# -Wunused-macros
@@ -38,6 +37,8 @@ function(setGccTargetOptions targetName)
 			# See https://gcc.gnu.org/wiki/FAQ#Wnarrowing for further information.
 			-Werror=narrowing
 			-Werror=suggest-override
+			# GCC doesn't seem to have a warning flag 'inconsistent-missing-override' like Clang
+			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84695
 
 			#
 			# Disabled warnings:
@@ -75,6 +76,7 @@ function(setClangTargetOptions targetName)
 			# Warnings which should be errors:
 			#
 			-Werror=c++11-narrowing
+			-Werror=suggest-override
 			-Werror=inconsistent-missing-override
 
 			#
