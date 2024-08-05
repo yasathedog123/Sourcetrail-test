@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 2024.8.2
+* GUI: Remove `qt.conf` which seems to improve the menu font rendering under Windows
+
 #### 2024.7.3
 * GUI: Fix non-working dialogs i.e. the selected action weren't executed
 * C/C++: Disabled indexing of non-trivial destructor calls. See [#7 (comment)](https://github.com/petermost/Sourcetrail/issues/7#issuecomment-2199640807) for further details.

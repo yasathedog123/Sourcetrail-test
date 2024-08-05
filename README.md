@@ -10,8 +10,8 @@ Sourcetrail is a free and open-source cross-platform source explorer that helps 
 
 
 ## __Links__
-* [Quick Start Guide](DOCUMENTATION.md#getting-started)
-* [Documentation](DOCUMENTATION.md)
+* [Quick Start Guide (Version 2021.4)](DOCUMENTATION.md#getting-started)
+* [Documentation (Version 2021.4)](DOCUMENTATION.md)
 * [Building](#building)
 
 !["Sourcetrail User Interface"](docs/readme/user_interface.png "Sourcetrail User Interface")
