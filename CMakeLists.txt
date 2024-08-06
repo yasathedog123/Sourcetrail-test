@@ -9,13 +9,11 @@ else()
 	set(isVcpkgBuild FALSE)
 endif()
 
+# Make the build type available as a compiler variable:
 if (isVcpkgBuild)
-	# A condition in the 'CMakePresets.json' would be prefered, but seems not possible
-	if (UNIX)
-		set(VCPKG_TARGET_TRIPLET "custom-x64-linux-static-md" CACHE STRING "Target triplet for Linux" FORCE)
-	elseif(WIN32)
-		set(VCPKG_TARGET_TRIPLET "custom-x64-windows-static-md" CACHE STRING "Target triplet for Windows" FORCE)
-	endif()
+	add_compile_definitions(IS_VCPKG_BUILD=1)
+else()
+	add_compile_definitions(IS_VCPKG_BUILD=0)
 endif()
 
 include(CMakePrintHelpers)
