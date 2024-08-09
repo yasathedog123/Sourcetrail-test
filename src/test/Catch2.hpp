@@ -3,7 +3,7 @@
 
 // To prevent Catch2 V3 from intercepting JVM signals;
 // (https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#catch_config_-customization-options-in-cmake)
-// See the vcpkg tripplet files in 'vcpkg-custom-tripplets/'
+// See the vcpkg triplet file in 'vcpkg-custom-triplets/'
 
 #include <catch2/catch_all.hpp>
 
