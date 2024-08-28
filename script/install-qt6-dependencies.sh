@@ -15,3 +15,7 @@ sudo apt install libfontconfig1-dev libfreetype-dev libx11-dev libx11-xcb-dev li
 # https://github.com/microsoft/vcpkg/pull/38019:
 
 sudo apt install autoconf-archive
+
+# Not sure whether this package is needed for Qt6 but it was necessary:
+
+sudo apt install python3-jinja2

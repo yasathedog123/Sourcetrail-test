@@ -53,8 +53,7 @@ git pull --recurse-submodules
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
 * **Linux:** Because **Qt6** is build from source, additional packages are needed. Install these packages with `script/install-qt6-dependencies.sh`.
-    * Additionally this package must be installed:
-        * python3-jinja2
+* **Windows:** The build must be done in a **"x64 Native Tools Command Prompt for VS 2022"**.
 
 Prepare the build:
 ```
