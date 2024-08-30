@@ -11,29 +11,37 @@ function(ReadLicense licenseFile licenseVariable)
     file(READ ${licenseFile} tempVariable)
     STRING(REGEX REPLACE "\"" "\\\\\"" tempVariable "${tempVariable}")
     STRING(REGEX REPLACE "\n" "\\\\n\"\n\t\"" tempVariable "${tempVariable}")
+
     set(var "\n\nstatic const char *${licenseVariable}=\n\t\"")
     set(LICENSES "${LICENSES}${var}${tempVariable}\"\;" PARENT_SCOPE)
 endfunction(ReadLicense)
 
 function(AddLicense softwareName softwareVersion softwareURL licenseFile)
-        ReadLicense(${licenseFile} ${softwareName}_license)
+		# Make a valid C++ variable name:
+		STRING(REPLACE " " "_" softwareVariableName "${softwareName}")
+
+		# Remove the quotes from a version literal:
+		STRING(REPLACE "\"" "" softwareVersion "${softwareVersion}")
+
+        ReadLicense(${licenseFile} ${softwareVariableName}_license)
         set(LICENSES ${LICENSES} PARENT_SCOPE)
-        set(LICENSE_ARRAY "${LICENSE_ARRAY}\n\tLicenseInfo(\"${softwareName}\", \"${softwareVersion}\", \"${softwareURL}\", ${softwareName}_license)," PARENT_SCOPE)
+        set(LICENSE_ARRAY "${LICENSE_ARRAY}\n\tLicenseInfo(\"${softwareName}\", \"${softwareVersion}\", \"${softwareURL}\", ${softwareVariableName}_license)," PARENT_SCOPE)
 endfunction(AddLicense)
 
 function(configureLicenseFile outputFile)
 	ReadLicense(${CMAKE_SOURCE_DIR}/LICENSE.txt Sourcetrail_license)
 	set(LICENSE_APP "LicenseInfo(\"Sourcetrail\", \"${Sourcetrail_VERSION}\", \"https://github.com/petermost/Sourcetrail\", Sourcetrail_license)")
 
-	AddLicense("Boost" "" "http://www.boost.org" "${LICENSEFOLDER}/license_boost.txt")
-	AddLicense("catch" "" "https://github.com/catchorg/Catch2" "${LICENSEFOLDER}/license_catch.txt")
-	AddLicense("Clang" "" "http://clang.llvm.org/" "${LICENSEFOLDER}/license_clang.txt")
-	AddLicense("CppSQLite" "" "http://www.codeproject.com/Articles/6343/CppSQLite-C-Wrapper-for-SQLite" "${LICENSEFOLDER}/license_cpp_sqlite.txt")
-	AddLicense("EclipseJDT" "" "https://github.com/eclipse/eclipse.jdt.core" "${LICENSEFOLDER}/license_eclipse.txt")
+	AddLicense("Boost" "${Boost_VERSION}" "https://www.boost.org/" "${LICENSEFOLDER}/license_boost.txt")
+	AddLicense("Catch2" "${Catch2_VERSION}" "https://github.com/catchorg/Catch2" "${LICENSEFOLDER}/license_catch.txt")
+	AddLicense("Clang" "${LLVM_VERSION}" "https://clang.llvm.org/" "${LICENSEFOLDER}/license_clang.txt")
+	AddLicense("CppSQLite3" "${CppSQLite3_VERSION}" "https://www.codeproject.com/Articles/6343/CppSQLite-C-Wrapper-for-SQLite" "${LICENSEFOLDER}/license_cpp_sqlite.txt")
 	AddLicense("Gradle" "" "https://github.com/gradle/gradle" "${LICENSEFOLDER}/license_gradle.txt")
-	AddLicense("OpenSSL" "" "https://www.openssl.org/" "${LICENSEFOLDER}/license_openssl.txt")
-	AddLicense("Qt" "" "http://qt.io" "${LICENSEFOLDER}/license_qt.txt")
-	AddLicense("TinyXML" "" "https://sourceforge.net/projects/tinyxml/" "${LICENSEFOLDER}/license_tinyxml.txt")
+	AddLicense("JDT Core" "" "https://github.com/eclipse-jdt/eclipse.jdt.core" "${LICENSEFOLDER}/license_eclipse.txt")
+	# AddLicense("OpenSSL" "" "https://www.openssl.org/" "${LICENSEFOLDER}/license_openssl.txt")
+	AddLicense("SQLite" "${SQLite3_VERSION}" "https://www.sqlite.org/" "${LICENSEFOLDER}/license_sqlite.txt")
+	AddLicense("Qt" "${Qt6_VERSION}" "https://www.qt.io/" "${LICENSEFOLDER}/license_qt.txt")
+	AddLicense("TinyXML" "${tinyxml_VERSION}" "https://sourceforge.net/projects/tinyxml/" "${LICENSEFOLDER}/license_tinyxml.txt")
 
 	set(LICENSE_ARRAY "${LICENSE_ARRAY}\n")
 

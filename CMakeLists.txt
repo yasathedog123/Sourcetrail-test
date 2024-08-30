@@ -26,10 +26,6 @@ option(BUILD_UNIT_TESTS_PACKAGE      "Build the corresponding language unit test
 
 configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
 
-# Create license information:
-include(cmake/licenses.cmake)
-configureLicenseFile(src/lib_gui/licenses.h)
-
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
 	message(FATAL_ERROR "In-source-builds are strongly discouraged and not supported!")
@@ -125,35 +121,39 @@ message(STATUS "Found Qt ${Qt6_VERSION}")
 
 if (isVcpkgBuild)
 	find_package(unofficial-sqlite3 CONFIG REQUIRED)
-
+	if (NOT DEFINED SQLite3_VERSION)
+		# Use quotes to indicate a version literal:
+		set(SQLite3_VERSION "\"3.46.0#2\"")
+	endif()
 	add_library(External_lib_sqlite3 ALIAS unofficial::sqlite3::sqlite3)
 else()
 	find_package(SQLite3 REQUIRED)
-	message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
-
 	add_library(External_lib_sqlite3 ALIAS SQLite::SQLite3)
 endif()
+message(STATUS "Found SQLite3 ${SQLite3_VERSION}")
 
 # TinyXML ----------------------------------------------------------------------
 
 if (isVcpkgBuild)
 	find_package(tinyxml CONFIG REQUIRED)
-
+	if (NOT DEFINED tinyxml_VERSION)
+		# Use quotes to indicate a version literal:
+		set(tinyxml_VERSION "\"2.6.2#10\"")
+	endif()
 	add_library(External_lib_tinyxml ALIAS unofficial-tinyxml::unofficial-tinyxml)
 else()
 	if (UNIX)
 		find_package(PkgConfig REQUIRED)
 	endif()
-
 	pkg_check_modules(tinyxml tinyxml IMPORTED_TARGET REQUIRED)
-	message(STATUS "Found tinyxml ${tinyxml_VERSION}")
-
 	add_library(External_lib_tinyxml ALIAS PkgConfig::tinyxml)
 endif()
+message(STATUS "Found tinyxml ${tinyxml_VERSION}")
 
 # External Lib CppSQlite3  ------------------------------------------------------------------
 
 add_subdirectory(src/external)
+# message(STATUS "Using CppSQLite3 ${CppSQLite3_VERSION}")
 
 # Lib Utility ------------------------------------------------------------------
 
@@ -298,6 +298,10 @@ if (BUILD_UNIT_TESTS_PACKAGE)
 else()
 	message(STATUS "Building the unit tests will be skipped. You can enable building this target by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
 endif()
+
+# Create license information:
+include(cmake/licenses.cmake)
+configureLicenseFile(src/lib_gui/licenses.h)
 
 # Installing/Packaging ---------------------------------------------------------
 

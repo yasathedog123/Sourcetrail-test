@@ -77,43 +77,26 @@ $ cmake --build .
 To compile it under the current (K)ubuntu platform 24.04, "Noble Numbat", install the following packages:
 
 **General packages:**
-
-*CMake (3.28.3):*
-* cmake
-
-*Ninja (1.11.1):*
-* ninja-build
-
-*Boost (1.83.0):*
-* libboost1.83-all-dev
-
-*Qt (6.4.2):*
-* qt6-base-dev
-* qt6-svg-dev
-* qt6-5compat-dev
-
-*SQLite3 (3.45.1):*
-* libsqlite3-dev
-
-*TinyXml (2.6.2):*
-* libtinyxml-dev
+|Name|Version|Package|
+|----|-------|-------|
+|CMake|3.28.3|cmake  |
+|Ninja|1.11.1|ninja-build|
+|Boost|1.83.0|libboost1.83-all-dev|
+|Qt|6.4.2|qt6-base-dev, qt6-svg-dev, qt6-5compat-dev|
+|SQLite|3.45.1|libsqlite3-dev|
+|TinyXML|2.6.2|libtinyxml-dev|
 
 **C++ packages:**
-
-*Clang (18.1.3):*
-* clang-18
-* libclang-18-dev
-
-*Catch2 (3.4.0)*
-* catch2
+|Name|Version|Package|
+|----|-------|-------|
+|Clang|18.1.3|clang-18, libclang-18-dev|
+|Catch2|3.4.0|catch2|
 
 **Java packages:**
-
-*Maven (3.8.7)*
-* maven
-
-*OpenJDK (21.0.3)*
-* openjdk-21-jdk
+|Name|Version|Package|
+|----|-------|-------|
+|Maven|3.8.7|maven|
+|OpenJDK|21.0.3|openjdk-21-jdk|
 
 Prepare the build:
 ```
