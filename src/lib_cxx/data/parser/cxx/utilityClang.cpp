@@ -10,6 +10,7 @@
 #include "ParseLocation.h"
 #include "utilityString.h"
 
+using namespace std;
 using namespace clang;
 
 bool utility::isImplicit(const clang::Decl* d)
@@ -124,23 +125,17 @@ SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 	return symbolKind;
 }
 
-std::wstring utility::getFileNameOfFileEntry(const clang::FileEntry* entry)
+wstring utility::getFileNameOfFileEntry(const FileEntryRef &entry)
 {
-	std::wstring fileName;
-	if (entry != nullptr)
+	wstring fileName = decodeFromUtf8(entry.getFileEntry().tryGetRealPathName().str());
+	if (fileName.empty())
 	{
-		fileName = utility::decodeFromUtf8(entry->tryGetRealPathName().str());
-		if (fileName.empty())
-		{
-			fileName = utility::decodeFromUtf8(entry->getName().str());
-		}
-		else
-		{
-			fileName = FilePath(utility::decodeFromUtf8(entry->getName().str()))
-						   .getParentDirectory()
-						   .concatenate(FilePath(fileName).fileName())
-						   .wstr();
-		}
+		fileName = decodeFromUtf8(entry.getName().str());
+	}
+	else
+	{
+		fileName = FilePath(decodeFromUtf8(entry.getName().str())).getParentDirectory()
+			.concatenate(FilePath(fileName).fileName()).wstr();
 	}
 	return fileName;
 }

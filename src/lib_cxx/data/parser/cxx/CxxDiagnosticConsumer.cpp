@@ -9,6 +9,8 @@
 #include "utilityClang.h"
 #include "utilityString.h"
 
+using namespace clang;
+
 CxxDiagnosticConsumer::CxxDiagnosticConsumer(
 	clang::raw_ostream& os,
 	clang::DiagnosticOptions* diags,
@@ -81,9 +83,7 @@ void CxxDiagnosticConsumer::HandleDiagnostic(
 			}
 
 			clang::FileID clangFileId = sourceManager.getFileID(loc);
-			const clang::FileEntry* fileEntry = sourceManager.getFileEntryForID(clangFileId);
-
-			if (fileEntry != nullptr)
+			if (sourceManager.getFileEntryForID(clangFileId) != nullptr)
 			{
 				ParseLocation location = utility::getParseLocation(
 					loc, sourceManager, nullptr, m_canonicalFilePathCache);
@@ -94,10 +94,10 @@ void CxxDiagnosticConsumer::HandleDiagnostic(
 			}
 			else
 			{
-				fileEntry = sourceManager.getFileEntryForID(sourceManager.getMainFileID());
-				if (fileEntry != nullptr)
+				const OptionalFileEntryRef fileEntry = sourceManager.getFileEntryRefForID(sourceManager.getMainFileID());
+				if (fileEntry)
 				{
-					filePath = m_canonicalFilePathCache->getCanonicalFilePath(fileEntry);
+					filePath = m_canonicalFilePathCache->getCanonicalFilePath(*fileEntry);
 					fileId = m_client->recordFile(
 						filePath, false /*keeps the "indexed" state if the file already exists*/);
 					lineNumber = 1;

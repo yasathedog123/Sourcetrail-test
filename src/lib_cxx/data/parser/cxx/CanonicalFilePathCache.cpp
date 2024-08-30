@@ -5,6 +5,8 @@
 #include <clang/AST/ASTContext.h>
 #include <clang/Basic/FileManager.h>
 
+using namespace clang;
+
 CanonicalFilePathCache::CanonicalFilePathCache(std::shared_ptr<FileRegister> fileRegister)
 	: m_fileRegister(fileRegister)
 {
@@ -31,17 +33,17 @@ FilePath CanonicalFilePathCache::getCanonicalFilePath(
 
 	FilePath filePath;
 
-	const clang::FileEntry* fileEntry = sourceManager.getFileEntryForID(fileId);
-	if (fileEntry != nullptr)
+	const OptionalFileEntryRef fileEntry = sourceManager.getFileEntryRefForID(fileId);
+	if (fileEntry)
 	{
-		filePath = getCanonicalFilePath(fileEntry);
+		filePath = getCanonicalFilePath(*fileEntry);
 		m_fileIdMap.emplace(fileId, filePath);
 	}
 
 	return filePath;
 }
 
-FilePath CanonicalFilePathCache::getCanonicalFilePath(const clang::FileEntry* entry)
+FilePath CanonicalFilePathCache::getCanonicalFilePath(const clang::FileEntryRef &entry)
 {
 	return getCanonicalFilePath(utility::getFileNameOfFileEntry(entry));
 }
@@ -103,7 +105,7 @@ Id CanonicalFilePathCache::getFileSymbolId(const clang::FileID& fileId)
 	return 0;
 }
 
-Id CanonicalFilePathCache::getFileSymbolId(const clang::FileEntry* entry)
+Id CanonicalFilePathCache::getFileSymbolId(const clang::FileEntryRef &entry)
 {
 	return getFileSymbolId(utility::getFileNameOfFileEntry(entry));
 }
