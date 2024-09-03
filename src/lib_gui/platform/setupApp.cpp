@@ -27,29 +27,32 @@ Version setupAppDirectories(int  /*argc*/, char* argv[])
 
 	// Determine application directory (Can't use QCoreApplication::applicationDirPath here, because
 	// an instance of QCoreApplication doesn't exist yet!).
-	FilePath appPath = FilePath(argv[0]).getAbsolute().getParentDirectory().concatenate(L"/");
+	const FilePath appPath = FilePath(argv[0]).makeAbsolute().getParentDirectory().concatenate(L"/");
 	AppPath::setSharedDataDirectoryPath(appPath);
 	AppPath::setCxxIndexerDirectoryPath(appPath);
 
 	// Determine user directory:
-	FilePath userDataPath = FilePath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation).toStdWString() + L"/").getAbsolute();
-	UserPaths::setUserDataDirectoryPath(userDataPath);
+	const QString userDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/";
+	UserPaths::setUserDataDirectoryPath(FilePath(userDataLocation.toStdWString()).makeAbsolute());
 
 	// Create missing user directory and copy default configurations:
-	if (!userDataPath.exists()) {
-		FileSystem::createDirectories(userDataPath);
+	if (!UserPaths::getUserDataDirectoryPath().exists()) {
+		FileSystem::createDirectories(UserPaths::getUserDataDirectoryPath());
 
-		// This "copyFile" method does nothing if the copy destination already exist.
+		// Copy a default application settings file:
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"ApplicationSettings.xml"),
 			UserPaths::getAppSettingsFilePath());
 
-		// The GUI is a mess without a default 'window_settings.ini'!
-		// TODO (PMost): Get rid of the need for a default 'window_settings.ini'
+		// Copy a default windows settings file:
 		FileSystem::copyFile(ResourcePaths::getFallbackDirectoryPath().concatenate(L"window_settings.ini"),
 			UserPaths::getWindowSettingsFilePath());
 
+		// Copy the example/tutorial projects:
+		FileSystem::copyDirectory(appPath.getConcatenated(L"user").concatenate(L"projects"),
+			UserPaths::getUserDataDirectoryPath().concatenate(L"projects"));
+
 		// Add u+w permissions because the source files may be marked read-only in some Linux distros:
-		for (recursive_directory_iterator it(userDataPath.getPath()); it != recursive_directory_iterator(); ++it) {
+		for (recursive_directory_iterator it(UserPaths::getUserDataDirectoryPath().getPath()); it != recursive_directory_iterator(); ++it) {
 			perms currentPermissions = status(*it).permissions();
 			permissions(*it, currentPermissions | perms::owner_write);
 		}

@@ -242,6 +242,18 @@ bool FileSystem::copyFile(const FilePath& from, const FilePath& to)
 	return true;
 }
 
+bool FileSystem::copyDirectory(const FilePath &from, const FilePath &to)
+{
+	if (!from.recheckExists() || to.recheckExists())
+	{
+		return false;
+	}
+	
+	boost::filesystem::copy(from.getPath(), to.getPath(), boost::filesystem::copy_options::recursive);
+	to.recheckExists();
+	return true;
+}
+
 void FileSystem::createDirectories(const FilePath& path)
 {
 	boost::filesystem::create_directories(path.str());
@@ -255,24 +267,6 @@ std::vector<FilePath> FileSystem::getDirectSubDirectories(const FilePath& path)
 	if (path.exists() && path.isDirectory())
 	{
 		for (boost::filesystem::directory_iterator end, dir(path.str()); dir != end; dir++)
-		{
-			if (boost::filesystem::is_directory(dir->path()))
-			{
-				v.push_back(FilePath(dir->path().wstring()));
-			}
-		}
-	}
-
-	return v;
-}
-
-std::vector<FilePath> FileSystem::getRecursiveSubDirectories(const FilePath& path)
-{
-	std::vector<FilePath> v;
-
-	if (path.exists() && path.isDirectory())
-	{
-		for (boost::filesystem::recursive_directory_iterator end, dir(path.str()); dir != end; dir++)
 		{
 			if (boost::filesystem::is_directory(dir->path()))
 			{

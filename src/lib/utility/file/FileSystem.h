@@ -31,11 +31,14 @@ public:
 	static bool remove(const FilePath& path);
 	static bool rename(const FilePath& from, const FilePath& to);
 
+	/** This method does nothing if the copy destination already exist. */
 	static bool copyFile(const FilePath& from, const FilePath& to);
+
+	/** This method does nothing if the copy destination already exist. */
+	static bool copyDirectory(const FilePath &from, const FilePath &to);
 
 	static void createDirectories(const FilePath& path);
 	static std::vector<FilePath> getDirectSubDirectories(const FilePath& path);
-	static std::vector<FilePath> getRecursiveSubDirectories(const FilePath& path);
 };
 
 #endif	  // FILE_SYSTEM_H
