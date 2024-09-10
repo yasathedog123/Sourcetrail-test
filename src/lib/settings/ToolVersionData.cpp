@@ -23,7 +23,7 @@ namespace
 //
 // C++
 // /usr/bin/clang-18 -std=xxx empty.cpp
-// vcpkg_installed/custom-x64-linux-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
+// vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
 //
 // note: use 'c++98' or 'c++03' for 'ISO C++ 1998 with amendments' standard
 // note: use 'gnu++98' or 'gnu++03' for 'ISO C++ 1998 with amendments and GNU extensions' standard
@@ -69,7 +69,7 @@ const vector<wstring> releasedCppStandards = {
 
 // C
 // /usr/bin/clang-18 -std=xxx empty.c
-// vcpkg_installed/custom-x64-linux-static-md/tools/llvm/clang-18 -std=xxx empty.c
+// vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.c
 //
 // note: use 'c89', 'c90', or 'iso9899:1990' for 'ISO C 1990' standard
 // note: use 'iso9899:199409' for 'ISO C 1990 with amendment 1' standard
