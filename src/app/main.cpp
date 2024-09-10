@@ -44,10 +44,6 @@
 #	include "SourceGroupFactoryModulePython.h"
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
 
-#if BOOST_OS_WINDOWS
-	#include <windows.h>
-#endif
-
 void signalHandler(int  /*signum*/)
 {
 	std::cout << "interrupt indexing" << std::endl;
@@ -159,18 +155,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-#if BOOST_OS_WINDOWS
-		{
-			HWND consoleWnd = GetConsoleWindow();
-			DWORD dwProcessId;
-			GetWindowThreadProcessId(consoleWnd, &dwProcessId);
-			if (GetCurrentProcessId() == dwProcessId)
-			{
-				// Sourcetrail has not been started from console and thus has it's own console
-				ShowWindow(consoleWnd, SW_HIDE);
-			}
-		}
-#endif
 		QtApplication qtApp(argc, argv);
 
 		setupLogging();
