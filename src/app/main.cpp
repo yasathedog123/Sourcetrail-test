@@ -31,18 +31,22 @@
 #include "utilityQt.h"
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
-#	include "LanguagePackageCxx.h"
-#	include "SourceGroupFactoryModuleCxx.h"
+	#include "LanguagePackageCxx.h"
+	#include "SourceGroupFactoryModuleCxx.h"
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-#	include "LanguagePackageJava.h"
-#	include "SourceGroupFactoryModuleJava.h"
+	#include "LanguagePackageJava.h"
+	#include "SourceGroupFactoryModuleJava.h"
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-#	include "SourceGroupFactoryModulePython.h"
+	#include "SourceGroupFactoryModulePython.h"
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
+
+#if BOOST_OS_WINDOWS
+	#include <windows.h>
+#endif
 
 void signalHandler(int  /*signum*/)
 {
@@ -155,6 +159,24 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+#if BOOST_OS_WINDOWS
+		// Hide the console which Windows creates if Sourcetrail was not started from one:
+		if (HWND consoleWnd = GetConsoleWindow(); consoleWnd != 0) 
+		{
+			DWORD consoleOwnerProcessId;
+			if (GetWindowThreadProcessId(consoleWnd, &consoleOwnerProcessId) != 0) 
+			{
+				if (consoleOwnerProcessId == GetCurrentProcessId()) 
+				{
+					// Hiding will not work if the default terminal is *not* the 'Windows console host'
+					// as is the case for Windows 11. See https://github.com/petermost/Sourcetrail/issues/19
+					// for further details.
+
+					ShowWindow(consoleWnd, SW_HIDE);
+				}
+			}
+		}
+#endif
 		QtApplication qtApp(argc, argv);
 
 		setupLogging();
