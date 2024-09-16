@@ -1,5 +1,5 @@
 #include "QtWindowsTaskbarButton.h"
-#include <Os.h>
+#include <Platform.h>
 
 // Disable this code for now because of https://www.qt.io/blog/qt-extras-modules-in-qt-6#qwintaskbarbutton
 // It also mentions 2 bug reports:

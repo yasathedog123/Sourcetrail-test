@@ -128,7 +128,7 @@ QSize QtCodeArea::sizeHint() const
 	}
 
 	if (horizontalScrollBar()->minimum() != horizontalScrollBar()->maximum() &&
-		!utility::Os::isMac())
+		!utility::Platform::isMac())
 	{
 		height += horizontalScrollBar()->height();
 	}
@@ -236,7 +236,7 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 	int drawAreaBottom = event->rect().bottom() + 1;
 
 	if (horizontalScrollBar()->minimum() != horizontalScrollBar()->maximum() &&
-		!utility::Os::isMac() && drawAreaBottom > height() - horizontalScrollBar()->height())
+		!utility::Platform::isMac() && drawAreaBottom > height() - horizontalScrollBar()->height())
 	{
 		drawAreaBottom = height() - horizontalScrollBar()->height();
 	}
@@ -1131,7 +1131,7 @@ void QtCodeArea::createActions()
 	connect(m_copyAction, &QAction::triggered, this, &QPlainTextEdit::copy);
 
 	m_setIDECursorPositionAction = new QAction(tr("Show in IDE (Ctrl + Left Click)"), this);
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		m_setIDECursorPositionAction->setText(tr("Show in IDE (Cmd + Left Click)"));
 	}
 	m_setIDECursorPositionAction->setStatusTip(tr("Set the IDE Cursor to this code position"));

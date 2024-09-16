@@ -134,7 +134,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 	// Linux UI scale
 	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
-	if constexpr (utility::Os::isLinux())
+	if constexpr (utility::Platform::isLinux())
 	{
 		// screen
 		addTitle(QStringLiteral("SCREEN"), layout, row);
@@ -221,7 +221,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		row);
 
 	// graph zooming
-	QString modifierName = utility::Os::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
+	QString modifierName = utility::Platform::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 	m_graphZooming = addCheckBox(
 		QStringLiteral("Graph Zoom"),
 		QStringLiteral("Zoom graph on mouse wheel"),
@@ -335,13 +335,13 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		// jvm library path
 		m_javaPath = new QtLocationPicker(this);
 
-		if constexpr (Os::isWindows()) {
+		if constexpr (Platform::isWindows()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (jvm.dll)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/bin/server/jvm.dll"));
-		} else if constexpr (Os::isMac()) {
+		} else if constexpr (Platform::isMac()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.dylib)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.dylib"));
-		} else if constexpr (Os::isLinux()) {
+		} else if constexpr (Platform::isLinux()) {
 			m_javaPath->setFileFilter(QStringLiteral("JVM Library (libjvm.so)"));
 			m_javaPath->setPlaceholderText(QStringLiteral("<jre_path>/lib/server/libjvm.so"));
 		} else
@@ -402,10 +402,10 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		// maven path
 		m_mavenPath = new QtLocationPicker(this);
 
-		if constexpr (Os::isWindows()) {
+		if constexpr (Platform::isWindows()) {
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn.cmd)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<maven_path>/bin/mvn.cmd"));
-		} else if constexpr (Os::isLinux() || Os::isMac()) {
+		} else if constexpr (Platform::isLinux() || Platform::isMac()) {
 			m_mavenPath->setFileFilter(QStringLiteral("Maven command (mvn)"));
 			m_mavenPath->setPlaceholderText(QStringLiteral("<binarypath>/mvn"));
 		} else

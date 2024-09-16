@@ -66,7 +66,7 @@ void setupAppEnvironment(int  /*argc*/, char*  /*argv*/[])
 	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.
 
 	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
-	if constexpr(Os::isLinux()) {
+	if constexpr(Platform::isLinux()) {
 		// Set QT screen scaling factor
 		ApplicationSettings appSettings;
 		appSettings.load(UserPaths::getAppSettingsFilePath(), true);

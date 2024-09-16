@@ -188,7 +188,7 @@ std::shared_ptr<TextAccess> generateExpectedOutput(
 
 std::wstring getOutputFilename()
 {
-	if constexpr (Os::isWindows())
+	if constexpr (Platform::isWindows())
 		return L"output_windows.txt";
 	else
 		return L"output_unix.txt";
@@ -436,7 +436,7 @@ TEST_CASE("source gropup cxx c correct default standard")
 	wstring defaultCStandard = SourceGroupSettingsWithCStandard::getDefaultCStandard();
 	wstring defaultCppStandard = SourceGroupSettingsWithCppStandard::getDefaultCppStandard();
 
-	if constexpr (Os::isLinux()) {
+	if constexpr (Platform::isLinux()) {
 		REQUIRE(  defaultCStandard.substr(0, 3) == L"gnu");
 		REQUIRE(defaultCppStandard.substr(0, 5) == L"gnu++");
 	} else {
@@ -482,7 +482,7 @@ TEST_CASE("sourcegroup java empty generates expected output")
 
 TEST_CASE("sourcegroup java gradle generates expected output")
 {
-	if constexpr (utility::Os::isWindows()) {
+	if constexpr (utility::Platform::isWindows()) {
 		const std::wstring projectName = L"java_gradle";
 
 		ProjectSettings projectSettings;

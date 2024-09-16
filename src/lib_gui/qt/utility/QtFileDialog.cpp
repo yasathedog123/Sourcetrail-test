@@ -17,7 +17,7 @@ QStringList QtFileDialog::getFileNamesAndDirectories(QWidget* parent, const File
 	const QString dir = getDir(
 		QString::fromStdWString((path.isDirectory() ? path : path.getParentDirectory()).wstr()));
 
-	unique_ptr<QFileDialog> dialog = (utility::Os::isMac() ? make_unique<QFileDialog>(parent) : make_unique<QtFilesAndDirectoriesDialog>(parent));
+	unique_ptr<QFileDialog> dialog = (utility::Platform::isMac() ? make_unique<QFileDialog>(parent) : make_unique<QtFilesAndDirectoriesDialog>(parent));
 
 	if (!dir.isEmpty())
 	{
@@ -67,7 +67,7 @@ QString QtFileDialog::getOpenFileName(
 QString QtFileDialog::showSaveFileDialog(
 	QWidget* parent, const QString& title, const FilePath& directory, const QString& filter)
 {
-	if constexpr (utility::Os::isWindows() || utility::Os::isMac()) {
+	if constexpr (utility::Platform::isWindows() || utility::Platform::isMac()) {
 		return QFileDialog::getSaveFileName(
 			parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
 

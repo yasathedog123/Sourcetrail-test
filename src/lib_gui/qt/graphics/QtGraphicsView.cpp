@@ -39,7 +39,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	, m_focusHandler(focusHandler)
 	, m_zoomFactor(ApplicationSettings::getInstance()->getGraphZoomLevel())
 {
-	QString modifierName = utility::Os::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
+	QString modifierName = utility::Platform::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
@@ -55,7 +55,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_openInTabAction = new QAction(
 		QStringLiteral("Open in New Tab (Ctrl + Shift + Left Click)"), this);
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
 	}
 	m_openInTabAction->setStatusTip(QStringLiteral("Open this node in a new tab"));
@@ -81,7 +81,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_showInIDEAction = new QAction(
 		QStringLiteral("Show Definition in IDE (Ctrl + Left Click)"), this);
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		m_showInIDEAction->setText("Show Definition in IDE (Cmd + Left Click)");
 	}
 	m_showInIDEAction->setStatusTip(
@@ -92,7 +92,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 
 	m_showDefinitionAction = new QAction(
 		QStringLiteral("Show Definition (Ctrl + Alt + Left Click)"), this);
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		m_showDefinitionAction->setText("Show Definition (Cmd + Alt + Left Click)");
 	}
 	m_showDefinitionAction->setStatusTip(

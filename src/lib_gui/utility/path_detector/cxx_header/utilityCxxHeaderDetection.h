@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "ApplicationArchitectureType.h"
+#include "Platform.h"
 #include "FilePath.h"
 
 namespace utility

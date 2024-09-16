@@ -1,12 +1,10 @@
 #ifndef UTILITY_APP_H
 #define UTILITY_APP_H
 
-#include <boost/predef.h>
 #include <string>
 
-#include "ApplicationArchitectureType.h"
 #include "FilePath.h"
-#include <Os.h>
+#include <Platform.h>
 
 namespace utility
 {
@@ -34,18 +32,6 @@ ProcessOutput executeProcess(
 void killRunningProcesses();
 
 int getIdealThreadCount();
-
-constexpr ApplicationArchitectureType getApplicationArchitectureType()
-{
-	static_assert(BOOST_ARCH_X86_32 || BOOST_ARCH_X86_64, "Unknown architecture!");
-
-	if constexpr (BOOST_ARCH_X86_64)
-		return ApplicationArchitectureType::X86_64;
-	else if constexpr (BOOST_ARCH_X86_32)
-		return ApplicationArchitectureType::X86_32;
-	else
-		return ApplicationArchitectureType::UNKNOWN;
-}
 
 }
 

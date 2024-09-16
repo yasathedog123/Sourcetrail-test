@@ -55,7 +55,7 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 	m_firstSnippetTitleBar->hide();
 
 	m_lastSnippetScrollBar = new QScrollBar(Qt::Horizontal, m_scrollArea);
-	if constexpr (utility::Os::isMac())
+	if constexpr (utility::Platform::isMac())
 	{
 		// set style on scrollbar because it always has bright background by default
 		m_lastSnippetScrollBar->setStyleSheet(
@@ -601,7 +601,7 @@ void QtCodeFileList::updateLastSnippetScrollBar(QScrollBar* mirroredScrollBar)
 				mirroredScrollBar->height());
 			m_lastSnippetScrollBar->show();
 			
-			if constexpr (utility::Os::isMac())
+			if constexpr (utility::Platform::isMac())
 			{
 				// set style on scrollbar because it always has bright background by default
 				QString style = m_lastSnippetScrollBar->styleSheet();

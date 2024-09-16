@@ -52,7 +52,7 @@ void QtProjectWizardContentPathsHeaderSearchGlobal::save()
 
 bool QtProjectWizardContentPathsHeaderSearchGlobal::check()
 {
-	if constexpr (!utility::Os::isWindows())
+	if constexpr (!utility::Platform::isWindows())
 	{
 		std::vector<FilePath> paths;
 		QString compilerHeaderPaths;

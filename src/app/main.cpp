@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 {
 	Version version = setupAppDirectories(argc, argv);
 
-	if (utility::Os::isLinux() && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
+	if (utility::Platform::isLinux() && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}

@@ -87,7 +87,7 @@ QtKeyboardShortcuts::Shortcut::Shortcut(const QString& name, const QString& shor
 QtKeyboardShortcuts::Shortcut QtKeyboardShortcuts::Shortcut::defaultOrMac(
 	const QString& name, const QString& defaultShortcut, const QString& macShortcut)
 {
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		return {name, macShortcut};
 	} else {
 		return {name, defaultShortcut};
@@ -100,9 +100,9 @@ QtKeyboardShortcuts::Shortcut QtKeyboardShortcuts::Shortcut::winMacOrLinux(
 	const QString& macShortcut,
 	const QString& linuxShortcut)
 {
-	if constexpr (utility::Os::isWindows()) {
+	if constexpr (utility::Platform::isWindows()) {
 		return {name, winShortcut};
-	} else if constexpr (utility::Os::isMac()) {
+	} else if constexpr (utility::Platform::isMac()) {
 		return {name, macShortcut};
 	} else {
 		return {name, linuxShortcut};

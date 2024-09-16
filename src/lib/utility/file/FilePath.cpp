@@ -15,7 +15,7 @@ using namespace std::string_literals;
 
 char FilePath::getEnvironmentVariablePathSeparator()
 {
-	if constexpr (Os::isWindows())
+	if constexpr (Platform::isWindows())
 		return ';';
 	else
 		return ':';
@@ -23,7 +23,7 @@ char FilePath::getEnvironmentVariablePathSeparator()
 
 wstring FilePath::getExecutableExtension()
 {
-	if constexpr (Os::isWindows())
+	if constexpr (Platform::isWindows())
 		return L".exe"s;
 	else
 		return L""s;

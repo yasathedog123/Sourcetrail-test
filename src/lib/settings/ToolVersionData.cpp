@@ -1,5 +1,5 @@
 #include "ToolVersionData.h"
-#include "Os.h"
+#include "Platform.h"
 #include "language_packages.h"
 #include "utility.h"
 
@@ -110,7 +110,7 @@ const vector<wstring> releasedCStandards = {
 
 wstring ClangVersionData::getLatestCppStandard()
 {
-	if constexpr (Os::isLinux())
+	if constexpr (Platform::isLinux())
 		return releasedCppStandards[1];
 	else
 		return releasedCppStandards[0];
@@ -123,7 +123,7 @@ vector<wstring> ClangVersionData::getAvailableCppStandards()
 
 wstring ClangVersionData::getLatestCStandard()
 {
-	if constexpr (Os::isLinux())
+	if constexpr (Platform::isLinux())
 		return releasedCStandards[1];
 	else
 		return releasedCStandards[0];

@@ -90,7 +90,7 @@ TEST_CASE("find all source files")
 
 TEST_CASE("find file infos ignore symlinks")
 {
-	if constexpr (!utility::Os::isWindows()) {
+	if constexpr (!utility::Platform::isWindows()) {
 		std::vector<FilePath> directoryPaths;
 		directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
 
@@ -106,7 +106,7 @@ TEST_CASE("find file infos ignore symlinks")
 
 TEST_CASE("find file infos follow symlinks")
 {
-	if constexpr (!utility::Os::isWindows()) {
+	if constexpr (!utility::Platform::isWindows()) {
 		std::vector<FilePath> directoryPaths;
 		directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
 
@@ -140,7 +140,7 @@ TEST_CASE("find file infos follow symlinks")
 
 TEST_CASE("find symlinked directories")
 {
-	if constexpr (!utility::Os::isWindows()) {
+	if constexpr (!utility::Platform::isWindows()) {
 		std::vector<FilePath> directoryPaths;
 		directoryPaths.push_back(FilePath("./data/FileSystemTestSuite/src"));
 

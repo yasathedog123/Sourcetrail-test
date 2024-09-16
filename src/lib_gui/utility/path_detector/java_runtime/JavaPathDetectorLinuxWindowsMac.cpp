@@ -17,11 +17,11 @@ FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath)
 	// - The place holder hints in QtProjectWizardContentPreferences.cpp
 	// - The documentation in DOCUMENTATION.md
 
-	if constexpr (Os::isLinux())
+	if constexpr (Platform::isLinux())
 		relativeJvmLibPath = L"/../lib/server/libjvm.so";
-	else if constexpr (Os::isWindows())
+	else if constexpr (Platform::isWindows())
 		relativeJvmLibPath = L"/./server/jvm.dll";
-	else if constexpr (Os::isMac())
+	else if constexpr (Platform::isMac())
 		relativeJvmLibPath = L"/../lib/server/libjvm.dylib";
 
 	FilePath jvmLibPath = javaExecutablePath.getParentDirectory().concatenate(relativeJvmLibPath);

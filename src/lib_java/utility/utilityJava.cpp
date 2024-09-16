@@ -19,7 +19,7 @@ namespace
 
 constexpr const char *getClassPathSeparator()
 {
-	if constexpr (utility::Os::isWindows())
+	if constexpr (utility::Platform::isWindows())
 		return ";";
 	else
 		return ":";

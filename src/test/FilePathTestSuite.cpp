@@ -170,7 +170,7 @@ TEST_CASE("file_path_equals_absolute_and_canonical_paths")
 
 TEST_CASE("file_path_canonical_removes_symlinks")
 {
-	if constexpr (!utility::Os::isWindows()) {
+	if constexpr (!utility::Platform::isWindows()) {
 		const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
 		const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
 
@@ -181,7 +181,7 @@ TEST_CASE("file_path_canonical_removes_symlinks")
 
 TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
 {
-	if constexpr (utility::Os::isWindows()) {
+	if constexpr (utility::Platform::isWindows()) {
 		const FilePath pathB(L"data/FilePathTestSuite/b.cc");
 		const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
 

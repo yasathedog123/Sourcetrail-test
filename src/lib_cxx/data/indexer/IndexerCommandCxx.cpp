@@ -75,7 +75,7 @@ std::vector<std::wstring> IndexerCommandCxx::getCompilerFlagsForSystemHeaderSear
 	compilerFlags.reserve(systemHeaderSearchPaths.size() * 2);
 
 	// *Prepend* clang system includes on windows:
-	if constexpr (utility::Os::isWindows()) {
+	if constexpr (utility::Platform::isWindows()) {
 		compilerFlags.push_back(L"-isystem");
 		compilerFlags.push_back(ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr());
 	}
@@ -87,7 +87,7 @@ std::vector<std::wstring> IndexerCommandCxx::getCompilerFlagsForSystemHeaderSear
 	}
 
 	// *Append* clang system includes on non-windows:
-	if constexpr (!utility::Os::isWindows()) {
+	if constexpr (!utility::Platform::isWindows()) {
 		compilerFlags.push_back(L"-isystem");
 		compilerFlags.push_back(ResourcePaths::getCxxCompilerHeaderDirectoryPath().wstr());
 	}

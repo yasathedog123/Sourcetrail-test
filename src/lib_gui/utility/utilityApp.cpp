@@ -24,14 +24,13 @@ namespace utility
 {
 std::mutex s_runningProcessesMutex;
 std::set<std::shared_ptr<boost::process::child>> s_runningProcesses;
-}	 // namespace utility
 
-std::string utility::getDocumentationLink()
+std::string getDocumentationLink()
 {
 	return "https://github.com/petermost/Sourcetrail/blob/master/DOCUMENTATION.md";
 }
 
-std::wstring utility::searchPath(const std::wstring& bin, bool& ok)
+std::wstring searchPath(const std::wstring& bin, bool& ok)
 {
 	ok = false;
 	std::wstring r = boost::process::search_path(bin).generic_wstring();
@@ -43,7 +42,7 @@ std::wstring utility::searchPath(const std::wstring& bin, bool& ok)
 	return bin;
 }
 
-std::wstring utility::searchPath(const std::wstring& bin)
+std::wstring searchPath(const std::wstring& bin)
 {
 	bool ok;
 	return searchPath(bin, ok);
@@ -66,7 +65,7 @@ bool safely_wait_for(boost::process::child& process, const std::chrono::millisec
 }
 }	 // namespace
 
-utility::ProcessOutput utility::executeProcess(
+ProcessOutput executeProcess(
 	const std::wstring& command,
 	const std::vector<std::wstring>& arguments,
 	const FilePath& workingDirectory,
@@ -146,7 +145,7 @@ utility::ProcessOutput utility::executeProcess(
 			{
 				logBuffer += text;
 				const bool isEndOfLine = (logBuffer.back() == '\n');
-				const std::vector<std::string> lines = utility::splitToVector(logBuffer, "\n");
+				const std::vector<std::string> lines = splitToVector(logBuffer, "\n");
 				for (size_t i = 0; i < lines.size() - (isEndOfLine ? 0 : 1); i++)
 				{
 					LOG_INFO_BARE("Process output: " + lines[i]);
@@ -205,7 +204,7 @@ utility::ProcessOutput utility::executeProcess(
 
 		if (logProcessOutput)
 		{
-			for (const std::string& line: utility::splitToVector(logBuffer, "\n"))
+			for (const std::string& line: splitToVector(logBuffer, "\n"))
 			{
 				LOG_INFO_BARE("Process output: " + line);
 			}
@@ -216,7 +215,7 @@ utility::ProcessOutput utility::executeProcess(
 	catch (const boost::process::process_error& e)
 	{
 		ProcessOutput ret;
-		ret.error = utility::decodeFromUtf8(e.code().message());
+		ret.error = decodeFromUtf8(e.code().message());
 		ret.exitCode = e.code().value();
 		LOG_ERROR_BARE(L"Process error: " + ret.error);
 
@@ -224,12 +223,12 @@ utility::ProcessOutput utility::executeProcess(
 	}
 
 	ProcessOutput ret;
-	ret.output = utility::trim(utility::decodeFromUtf8(output));
+	ret.output = trim(decodeFromUtf8(output));
 	ret.exitCode = exitCode;
 	return ret;
 }
 
-void utility::killRunningProcesses()
+void killRunningProcesses()
 {
 	std::lock_guard<std::mutex> lock(s_runningProcessesMutex);
 	for (std::shared_ptr<boost::process::child> process: s_runningProcesses)
@@ -238,15 +237,17 @@ void utility::killRunningProcesses()
 	}
 }
 
-int utility::getIdealThreadCount()
+int getIdealThreadCount()
 {
 	int threadCount = QThread::idealThreadCount();
-	if constexpr (Os::isWindows())
+	if constexpr (Platform::isWindows())
 	{
 		threadCount -= 1;
 	}
 	return std::max(1, threadCount);
 }
+
+}	 // namespace utility
 
 /* Not referenced anywhere!
 enum class OsType
@@ -257,14 +258,14 @@ enum class OsType
 	WINDOWS
 };
 
-std::string utility::getOsTypeString()
+std::string getOsTypeString()
 {
 	// WARNING: Don't change these string. The server API relies on them.
-	if constexpr (Os::isWindows())
+	if constexpr (Platform::isWindows())
 		return "windows";
-	else if constexpr (Os::isMac())
+	else if constexpr (Platform::isMac())
 		return "macOS";
-	else if constexpr (Os::isLinux())
+	else if constexpr (Platform::isLinux())
 		return "linux";
 	else
 		return "unknown";

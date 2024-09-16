@@ -126,7 +126,7 @@ QtMainWindow::QtMainWindow()
 
 	refreshStyle();
 
-	if constexpr (!utility::Os::isMac())
+	if constexpr (!utility::Platform::isMac())
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
 		app->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
@@ -451,7 +451,7 @@ void QtMainWindow::keyPressEvent(QKeyEvent* event)
 		break;
 
 	case Qt::Key_F4:
-		if constexpr (utility::Os::isWindows())
+		if constexpr (utility::Platform::isWindows())
 		{
 			if (event->modifiers() & Qt::ControlModifier)
 			{
@@ -868,7 +868,7 @@ void QtMainWindow::setupEditMenu()
 	menuBar()->addMenu(menu);
 
 	menu->addAction(tr("&Refresh"), QKeySequence::Refresh, this, &QtMainWindow::refresh);
-	if constexpr (utility::Os::isWindows())
+	if constexpr (utility::Platform::isWindows())
 	{
 		menu->addAction(
 			tr("&Full Refresh"),
@@ -956,7 +956,7 @@ void QtMainWindow::setupViewMenu()
 	menu->addAction(
 		tr("Close Tab"), QKeySequence(Qt::CTRL | Qt::Key_W), this, &QtMainWindow::closeTab);
 
-	if constexpr (utility::Os::isMac())
+	if constexpr (utility::Platform::isMac())
 	{
 		menu->addAction(
 			tr("Select Next Tab"), QKeySequence(Qt::META | Qt::Key_Tab), this, &QtMainWindow::nextTab);

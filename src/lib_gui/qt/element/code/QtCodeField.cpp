@@ -101,7 +101,7 @@ QtCodeField::QtCodeField(
 
 	m_openInTabAction = new QAction(
 		QStringLiteral("Open in New Tab (Ctrl + Shift + Left Click)"), this);
-	if constexpr (utility::Os::isMac()) {
+	if constexpr (utility::Platform::isMac()) {
 		m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
 	}
 	m_openInTabAction->setStatusTip(QStringLiteral("Opens the node in a new tab"));

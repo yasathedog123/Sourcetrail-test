@@ -590,15 +590,12 @@ add_library(Sourcetrail_lib
 	utility/text/TextAccess.cpp
 	utility/text/TextAccess.h
 
-	utility/Os.cpp
-	utility/Os.h
-
-	utility/ApplicationArchitectureType.h
 	utility/ConfigManager.cpp
 	utility/ConfigManager.h
 	utility/LowMemoryStringMap.h
 	utility/OrderedCache.h
-
+	utility/Platform.cpp
+	utility/Platform.h
 	utility/Property.h
 	utility/ScopedFunctor.cpp
 	utility/ScopedFunctor.h
