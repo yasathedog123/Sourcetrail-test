@@ -11,9 +11,9 @@ namespace utility
 {
 std::vector<std::wstring> getCxxHeaderPaths(const std::string& compilerName);
 
-std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType architectureType);
-FilePath getWindowsSdkRootPathUsingRegistry(
-	ApplicationArchitectureType architectureType, const std::string& sdkVersion);
+std::vector<FilePath> getWindowsSdkHeaderSearchPaths(Platform::Architecture architecture);
+
+FilePath getWindowsSdkRootPathUsingRegistry(Platform::Architecture architecture, const std::string& sdkVersion);
 }	 // namespace utility
 
 #endif	  // UTILITY_CXX_HEADER_DETECTION_H

@@ -28,12 +28,11 @@ public:
 	void unregisterSharedMemory(const std::string& sharedMemoryName);
 
 private:
-	static std::string getMemoryName();
 	void update();
 
-	static std::string s_memoryNamePrefix;
-	static std::string s_instancesKeyName;
-	static std::string s_timeStampsKeyName;
+	static const std::string s_memoryName;
+	static const std::string s_instancesKeyName;
+	static const std::string s_timeStampsKeyName;
 
 	static const size_t s_updateIntervalSeconds;
 	static const size_t s_deleteThresholdSeconds;

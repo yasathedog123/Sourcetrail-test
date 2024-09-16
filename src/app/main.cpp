@@ -102,10 +102,7 @@ int main(int argc, char* argv[])
 		std::cout << "ERROR: Please run Sourcetrail via the Sourcetrail.sh script!" << std::endl;
 	}
 
-	MessageStatus(
-		std::wstring(L"Starting Sourcetrail ") +
-		(utility::getApplicationArchitectureType() == ApplicationArchitectureType::X86_32 ? L"32" : L"64") +
-		L" bit, " + L"version " + version.toDisplayWString())
+	MessageStatus(std::wstring(L"Starting Sourcetrail version ") + version.toDisplayWString())
 		.dispatch();
 
 	commandline::CommandLineParser commandLineParser(version.toDisplayString());
@@ -161,12 +158,12 @@ int main(int argc, char* argv[])
 	{
 #if BOOST_OS_WINDOWS
 		// Hide the console which Windows creates if Sourcetrail was not started from one:
-		if (HWND consoleWnd = GetConsoleWindow(); consoleWnd != 0) 
+		if (HWND consoleWnd = GetConsoleWindow(); consoleWnd != 0)
 		{
 			DWORD consoleOwnerProcessId;
-			if (GetWindowThreadProcessId(consoleWnd, &consoleOwnerProcessId) != 0) 
+			if (GetWindowThreadProcessId(consoleWnd, &consoleOwnerProcessId) != 0)
 			{
-				if (consoleOwnerProcessId == GetCurrentProcessId()) 
+				if (consoleOwnerProcessId == GetCurrentProcessId())
 				{
 					// Hiding will not work if the default terminal is *not* the 'Windows console host'
 					// as is the case for Windows 11. See https://github.com/petermost/Sourcetrail/issues/19

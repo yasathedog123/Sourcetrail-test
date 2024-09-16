@@ -9,6 +9,7 @@
 #include "utilityCxxHeaderDetection.h"
 
 using namespace std;
+using namespace utility;
 
 CxxVs15ToLatestHeaderPathDetector::CxxVs15ToLatestHeaderPathDetector(const wstring &versionRange)
 	: PathDetector(utility::encodeToUtf8(getVsWhereProperty(versionRange, L"displayName")))
@@ -49,11 +50,11 @@ std::vector<FilePath> CxxVs15ToLatestHeaderPathDetector::doGetPaths() const
 	if (!headerSearchPaths.empty())
 	{
 		std::vector<FilePath> windowsSdkHeaderSearchPaths = utility::getWindowsSdkHeaderSearchPaths(
-			ApplicationArchitectureType::X86_32);
+			Platform::Architecture::X86_32);
 		if (windowsSdkHeaderSearchPaths.empty())
 		{
 			windowsSdkHeaderSearchPaths = utility::getWindowsSdkHeaderSearchPaths(
-				ApplicationArchitectureType::X86_64);
+				Platform::Architecture::X86_64);
 		}
 		utility::append(headerSearchPaths, windowsSdkHeaderSearchPaths);
 	}

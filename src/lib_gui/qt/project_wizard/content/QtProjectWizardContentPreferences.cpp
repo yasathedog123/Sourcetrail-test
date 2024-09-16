@@ -347,8 +347,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		} else
 			LOG_WARNING("No placeholders and filters set for Java path selection");
 
-		const std::string javaArchitectureString = utility::getApplicationArchitectureType() ==
-				ApplicationArchitectureType::X86_32 ? "32 Bit" : "64 Bit";
+		const std::string javaArchitectureString = utility::Platform::getArchitectureName();
 
 		addLabelAndWidget(
 			("Java Path (" + javaArchitectureString + ")").c_str(), m_javaPath, layout, row);

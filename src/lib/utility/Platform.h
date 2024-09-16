@@ -4,17 +4,8 @@
 #include <boost/predef.h>
 #include <string>
 
-enum class ApplicationArchitectureType
-{
-	UNKNOWN,
-	X86_32,
-	X86_64
-};
-
 namespace utility
 {
-
-ApplicationArchitectureType getApplicationArchitectureType();
 
 class Platform final
 {
@@ -35,6 +26,14 @@ class Platform final
 		}
 
 		static std::string getName();
+
+		enum class Architecture
+		{
+			X86_32,
+			X86_64
+		};
+
+		static std::string getArchitectureName();
 };
 
 }

@@ -34,7 +34,7 @@ std::vector<std::wstring> getCxxHeaderPaths(const std::string& compilerName)
 	return paths;
 }
 
-std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType architectureType)
+std::vector<FilePath> getWindowsSdkHeaderSearchPaths(Platform::Architecture architecture)
 {
 	std::vector<FilePath> headerSearchPaths;
 
@@ -48,7 +48,7 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType
 	for (size_t i = 0; i < windowsSdkVersions.size(); i++)
 	{
 		const FilePath sdkPath = getWindowsSdkRootPathUsingRegistry(
-			architectureType, windowsSdkVersions[i]);
+			architecture, windowsSdkVersions[i]);
 		if (sdkPath.exists())
 		{
 			const FilePath sdkIncludePath = sdkPath.getConcatenated(L"include/");
@@ -74,7 +74,7 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType
 		}
 	}
 	{
-		const FilePath sdkPath = getWindowsSdkRootPathUsingRegistry(architectureType, "v10.0");
+		const FilePath sdkPath = getWindowsSdkRootPathUsingRegistry(architecture, "v10.0");
 		if (sdkPath.exists())
 		{
 			for (const FilePath& versionPath:
@@ -93,11 +93,10 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(ApplicationArchitectureType
 	return headerSearchPaths;
 }
 
-FilePath getWindowsSdkRootPathUsingRegistry(
-	ApplicationArchitectureType architectureType, const std::string& sdkVersion)
+FilePath getWindowsSdkRootPathUsingRegistry(Platform::Architecture architecture, const std::string& sdkVersion)
 {
 	QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\");
-	if (architectureType == ApplicationArchitectureType::X86_32)
+	if (architecture == Platform::Architecture::X86_32)
 	{
 		key += QStringLiteral("Wow6432Node\\");
 	}

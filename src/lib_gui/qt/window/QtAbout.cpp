@@ -9,7 +9,6 @@
 #include "ResourcePaths.h"
 #include "SqliteIndexStorage.h"
 #include "Version.h"
-#include "utilityApp.h"
 #include "utilityQt.h"
 
 using namespace utility;
@@ -48,9 +47,7 @@ void QtAbout::setupAbout()
 	windowLayout->addSpacing(10);
 
 	{
-		QLabel* versionLabel = new QLabel(("Version " + Version::getApplicationVersion().toDisplayString() + " - " +
-			(getApplicationArchitectureType() == ApplicationArchitectureType::X86_32 ? "32"s : "64"s) + " bit").c_str(),
-			this);
+		QLabel* versionLabel = new QLabel(("Version " + Version::getApplicationVersion().toDisplayString()).c_str(), this);
 		windowLayout->addWidget(versionLabel, 0, Qt::Alignment(Qt::AlignmentFlag::AlignHCenter));
 	}
 

@@ -16,7 +16,7 @@ public:
 	};
 
 	CxxVs10To14HeaderPathDetector(
-		VisualStudioType type, bool isExpress, ApplicationArchitectureType architecture);
+		VisualStudioType type, bool isExpress, utility::Platform::Architecture architecture);
 
 private:
 	static int visualStudioTypeToVersion(const VisualStudioType t);
@@ -28,7 +28,7 @@ private:
 
 	const int m_version;
 	const bool m_isExpress;
-	const ApplicationArchitectureType m_architecture;
+	const utility::Platform::Architecture m_architecture;
 };
 
 #endif	  // CXX_VS_10_TO_14_HEADER_PATH_DETECTOR_H
