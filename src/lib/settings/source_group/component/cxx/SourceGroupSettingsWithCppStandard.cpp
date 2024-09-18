@@ -2,16 +2,16 @@
 
 #include "ConfigManager.h"
 
-#include <ToolVersionData.h>
+#include <ToolVersionSupport.h>
 
 std::wstring SourceGroupSettingsWithCppStandard::getDefaultCppStandard()
 {
-	return ClangVersionData::getLatestCppStandard();
+	return ClangVersionSupport::getLatestCppStandard();
 }
 
 std::vector<std::wstring> SourceGroupSettingsWithCppStandard::getAvailableCppStandards()
 {
-	return ClangVersionData::getAvailableCppStandards();
+	return ClangVersionSupport::getAvailableCppStandards();
 }
 
 std::wstring SourceGroupSettingsWithCppStandard::getCppStandard() const

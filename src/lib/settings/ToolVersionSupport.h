@@ -4,10 +4,12 @@
 #include <string>
 #include <vector>
 
-class ToolVersionData {
+// This is an attempt to centralize all the version information which is most likely to change:
+
+class ToolVersionSupport { // Just a 'marker' interface
 };
 
-class ClangVersionData : public ToolVersionData {
+class ClangVersionSupport final : public ToolVersionSupport {
 	public:
 		static std::wstring getLatestCppStandard();
 		static std::vector<std::wstring> getAvailableCppStandards();
@@ -16,9 +18,14 @@ class ClangVersionData : public ToolVersionData {
 		static std::vector<std::wstring> getAvailableCStandards();
 };
 
-class VisualStudioVersionData : public ToolVersionData {
+class VisualStudioVersionSupport final : public ToolVersionSupport {
 	public:
 		static std::vector<std::wstring> getVersionRanges();
+};
+
+class WindowsSdkVersionSupport final : public ToolVersionSupport {
+	public:
+		static std::vector<std::string> getVersions();
 };
 
 #endif // TOOLVERSIONDATA_H

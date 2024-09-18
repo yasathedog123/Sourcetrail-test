@@ -4,6 +4,7 @@
 #include <QSysInfo>
 
 #include "FileSystem.h"
+#include "ToolVersionSupport.h"
 #include "utilityApp.h"
 #include "utilityString.h"
 
@@ -11,6 +12,31 @@ using namespace std::string_literals;
 
 namespace utility
 {
+
+namespace
+{
+FilePath getWindowsSdkRootPathUsingRegistry(Platform::Architecture architecture, const std::string& sdkVersion)
+{
+	QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\");
+	if (architecture == Platform::Architecture::X86_32)
+	{
+		key += QStringLiteral("Wow6432Node\\");
+	}
+	key += QStringLiteral("Microsoft\\Microsoft SDKs\\Windows\\") + sdkVersion.c_str();
+
+	QSettings expressKey(key, QSettings::NativeFormat);	  // NativeFormat means from Registry on Windows.
+	QString value = expressKey.value(QStringLiteral("InstallationFolder")).toString();
+
+	FilePath path(value.toStdWString());
+	if (path.exists())
+	{
+		return path;
+	}
+	return FilePath();
+}
+
+}
+
 std::vector<std::wstring> getCxxHeaderPaths(const std::string& compilerName)
 {
 	std::vector<std::wstring> paths;
@@ -38,12 +64,7 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(Platform::Architecture arch
 {
 	std::vector<FilePath> headerSearchPaths;
 
-	std::vector<std::string> windowsSdkVersions;
-	windowsSdkVersions.push_back("v8.1A");
-	windowsSdkVersions.push_back("v8.1");
-	windowsSdkVersions.push_back("v8.0A");
-	windowsSdkVersions.push_back("v7.1A");
-	windowsSdkVersions.push_back("v7.0A");
+	std::vector<std::string> windowsSdkVersions = WindowsSdkVersionSupport::getVersions();
 
 	for (size_t i = 0; i < windowsSdkVersions.size(); i++)
 	{
@@ -93,25 +114,4 @@ std::vector<FilePath> getWindowsSdkHeaderSearchPaths(Platform::Architecture arch
 	return headerSearchPaths;
 }
 
-FilePath getWindowsSdkRootPathUsingRegistry(Platform::Architecture architecture, const std::string& sdkVersion)
-{
-	QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\");
-	if (architecture == Platform::Architecture::X86_32)
-	{
-		key += QStringLiteral("Wow6432Node\\");
-	}
-	key += QStringLiteral("Microsoft\\Microsoft SDKs\\Windows\\") + sdkVersion.c_str();
-
-	QSettings expressKey(
-		key, QSettings::NativeFormat);	  // NativeFormat means from Registry on Windows.
-	QString value = expressKey.value(QStringLiteral("InstallationFolder")).toString();
-
-	FilePath path(value.toStdWString());
-	if (path.exists())
-	{
-		return path;
-	}
-
-	return FilePath();
-}
 }	 // namespace utility

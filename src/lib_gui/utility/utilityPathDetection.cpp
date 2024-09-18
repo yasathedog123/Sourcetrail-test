@@ -9,7 +9,7 @@
 #	include "CxxHeaderPathDetector.h"
 #	include "CxxVs10To14HeaderPathDetector.h"
 #	include "CxxVs15ToLatestHeaderPathDetector.h"
-#	include "ToolVersionData.h"
+#	include "ToolVersionSupport.h"
 #endif
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
@@ -64,7 +64,7 @@ std::shared_ptr<CombinedPathDetector> utility::getCxxVsHeaderPathDetector()
 	}
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	for (const wstring &versionRange : VisualStudioVersionData::getVersionRanges())
+	for (const wstring &versionRange : VisualStudioVersionSupport::getVersionRanges())
 	{
 		combinedDetector->addDetector(make_shared<CxxVs15ToLatestHeaderPathDetector>(versionRange));
 	}

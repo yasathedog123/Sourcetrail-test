@@ -15,7 +15,7 @@
 
 #include "TestFileRegister.h"
 #include "TestStorage.h"
-#include "ToolVersionData.h"
+#include "ToolVersionSupport.h"
 
 using namespace std;
 using namespace std::string_literals;
@@ -39,7 +39,7 @@ std::shared_ptr<TestStorage> parseCode(const std::string &code, const std::vecto
 	parser.buildIndex(
 		L"input.cc",
 		TextAccess::createFromString(code),
-		utility::concat(compilerFlags, L"-std="s + ClangVersionData::getLatestCppStandard()));
+		utility::concat(compilerFlags, L"-std="s + ClangVersionSupport::getLatestCppStandard()));
 
 	return TestStorage::create(storage);
 }
