@@ -34,6 +34,7 @@ class Platform final
 		};
 
 		static std::string getArchitectureName();
+		static std::string getArchitectureName(Architecture architecture);
 };
 
 }

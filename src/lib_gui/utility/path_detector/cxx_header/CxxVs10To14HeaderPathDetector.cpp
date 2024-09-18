@@ -14,8 +14,7 @@ using namespace utility;
 using namespace std::string_literals;
 
 CxxVs10To14HeaderPathDetector::CxxVs10To14HeaderPathDetector(VisualStudioType type, bool isExpress, Platform::Architecture architecture)
-	: PathDetector(visualStudioTypeToString(type) + (isExpress ? " Express" : "") +
-		  (architecture == Platform::Architecture::X86_64 ? " 64 Bit" : ""))
+	: PathDetector(visualStudioTypeToString(type) + (isExpress ? " Express" : " ") + Platform::getArchitectureName(architecture))
 	, m_version(visualStudioTypeToVersion(type))
 	, m_isExpress(isExpress)
 	, m_architecture(architecture)
