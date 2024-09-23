@@ -101,6 +101,7 @@
 				"enable-rtti"
 			]
 		},
-		"catch2"
+		"catch2",
+		"gtest"
 	]
 }

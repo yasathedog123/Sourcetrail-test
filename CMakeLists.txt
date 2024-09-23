@@ -185,6 +185,10 @@ else()
 endif()
 message(STATUS "Found tinyxml ${tinyxml_VERSION}")
 
+# AidKit  -----------------------------------------------------------------------------------
+
+add_subdirectory(src/lib_aidkit)
+
 # External Lib CppSQlite3  ------------------------------------------------------------------
 
 add_subdirectory(src/external)
@@ -323,12 +327,16 @@ add_subdirectory(src/app)
 # Test ----------------------------------------------------------------------
 
 if (BUILD_UNIT_TESTS_PACKAGE)
+	include(CTest)
+
+	find_package(GTest CONFIG REQUIRED)
+	message(STATUS "Found GTest ${GTest_VERSION}")
+	include(GoogleTest)
+	add_subdirectory(src/test_aidkit)
+
 	find_package(Catch2 3.4 CONFIG REQUIRED)
 	message(STATUS "Found Catch2 ${Catch2_VERSION}")
-
-	include(CTest)
 	include(Catch)
-
 	add_subdirectory(src/test)
 else()
 	message(STATUS "Building the unit tests will be skipped. You can enable building this target by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")

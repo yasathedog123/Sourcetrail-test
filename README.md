@@ -90,13 +90,18 @@ To compile it under the current (K)ubuntu platform 24.04, "Noble Numbat", instal
 |Name|Version|Package|
 |----|-------|-------|
 |Clang|18.1.3|clang-18, libclang-18-dev|
-|Catch2|3.4.0|catch2|
 
 **Java packages:**
 |Name|Version|Package|
 |----|-------|-------|
 |Maven|3.8.7|maven|
 |OpenJDK|21.0.3|openjdk-21-jdk|
+
+**Unit test packages:**
+|Name|Version|Package|
+|----|-------|-------|
+|Catch2|3.4.0|catch2|
+|GoogleTest|1.14.0|libgtest-dev|
 
 Prepare the build:
 ```

@@ -764,6 +764,8 @@ target_include_directories(Sourcetrail_lib
 
 target_link_libraries(Sourcetrail_lib
 	PUBLIC
+		AidKit_lib
+
 		Sourcetrail_lib_gui
 		Sourcetrail_lib_utility
 
