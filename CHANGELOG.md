@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 2024.9.23
+* GUI: Try to hide the external console window on Windows. See ["The console window is not hidden under Windows 11"](https://github.com/petermost/Sourcetrail/issues/19) for additional information.
+* GUI: Add the 'Hack' font.
+* Fix: Copy the tutorial project files on initial run.
+
 #### 2024.8.2
 * GUI: Remove `qt.conf` which seems to improve the menu font rendering under Windows
 
