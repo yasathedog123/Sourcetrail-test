@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace utility;
+using namespace boost::chrono;
 
 CxxVs15ToLatestHeaderPathDetector::CxxVs15ToLatestHeaderPathDetector(const wstring &versionRange)
 	: PathDetector(utility::encodeToUtf8(getVsWhereProperty(versionRange, L"displayName")))
@@ -75,9 +76,7 @@ std::wstring CxxVs15ToLatestHeaderPathDetector::getVsWhereProperty(const std::ws
 	{
 		const utility::ProcessOutput out = utility::executeProcess(expandedPaths.front().wstr(),
 			{ L"-version", versionRange, L"-property", propertyName },
-			FilePath(),
-			false,
-			10000);
+			FilePath(), false, milliseconds(10000));
 
 		if (out.exitCode == 0)
 			propertyValue = out.output;

@@ -1,24 +1,29 @@
 #include "utilityApp.h"
 
-#include <chrono>
+#include <algorithm>
 #include <mutex>
 #include <set>
 
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/read.hpp>
+#include <boost/chrono.hpp>
 #include <boost/process.hpp>
 #include <boost/process/async_pipe.hpp>
 #include <boost/process/child.hpp>
 #include <boost/process/io.hpp>
 #include <boost/process/search_path.hpp>
 #include <boost/process/start_dir.hpp>
+#include <boost/thread.hpp>
 
 #include <QThread>
 
 #include "ScopedFunctor.h"
 #include "logging.h"
 #include "utilityString.h"
+
+using namespace boost;
+using namespace boost::chrono;
 
 namespace utility
 {
@@ -50,28 +55,26 @@ std::wstring searchPath(const std::wstring& bin)
 
 namespace
 {
-bool safely_wait_for(boost::process::child& process, const std::chrono::milliseconds& rel_time)
+bool wait_for_process(boost::process::child *process, milliseconds timeout)
 {
-	// This wrapper around boost::process::wait_for handles the following edge case:
-	// Calling wait_for on an already exitted process will wait for the entire timeout.
-	if (process.running())
+	// This function used to call 'process::child::wait_for()' which issued the warning "wait_for is unreliable".
+	// See these tickets for further information:
+	// https://github.com/klemens-morgenstern/boost-process/issues/99
+	// https://github.com/klemens-morgenstern/boost-process/issues/112
+
+	constexpr milliseconds POLL_INTERVAL(100);
+
+	while (process->running() && timeout > milliseconds::zero())
 	{
-		return process.wait_for(rel_time);
+		this_thread::sleep_for(POLL_INTERVAL);
+		timeout -= std::min(timeout, POLL_INTERVAL);
 	}
-	else
-	{
-		return true;	// The process exitted
-	}
+	return process->running();
 }
 }	 // namespace
 
-ProcessOutput executeProcess(
-	const std::wstring& command,
-	const std::vector<std::wstring>& arguments,
-	const FilePath& workingDirectory,
-	const bool waitUntilNoOutput,
-	const int timeout,
-	bool logProcessOutput)
+ProcessOutput executeProcess(const std::wstring& command, const std::vector<std::wstring>& arguments, const FilePath& workingDirectory,
+	const bool waitUntilNoOutput, const milliseconds &timeout, bool logProcessOutput)
 {
 	std::string output;
 	int exitCode = 255;
@@ -168,18 +171,16 @@ ProcessOutput executeProcess(
 		boost::asio::async_read(ap, stdOutBuffer, onStdOut);
 		ios.run();
 
-		if (timeout > 0)
+		if (timeout != INFINITE_TIMEOUT)
 		{
 			if (waitUntilNoOutput)
 			{
-				while (!safely_wait_for(*process, std::chrono::milliseconds(timeout)))
+				while (!wait_for_process(process.get(), timeout))
 				{
 					if (!outputReceived)
 					{
-						LOG_WARNING(
-							"Canceling process because it did not generate any output during the "
-							"last " +
-							std::to_string(timeout / 1000) + " seconds.");
+						LOG_WARNING("Canceling process because it did not generate any output during the "
+							"last " + boost::chrono::to_string(duration_cast<seconds>(timeout)) + " seconds.");
 						process->terminate();
 						break;
 					}
@@ -188,11 +189,10 @@ ProcessOutput executeProcess(
 			}
 			else
 			{
-				if (!safely_wait_for(*process, std::chrono::milliseconds(timeout)))
+				if (!wait_for_process(process.get(), timeout))
 				{
-					LOG_WARNING(
-						"Canceling process because it timed out after " +
-						std::to_string(timeout / 1000) + " seconds.");
+					LOG_WARNING("Canceling process because it timed out after " +
+						boost::chrono::to_string(duration_cast<seconds>(timeout)) + " seconds.");
 					process->terminate();
 				}
 			}

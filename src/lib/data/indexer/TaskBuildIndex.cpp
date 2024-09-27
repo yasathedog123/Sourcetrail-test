@@ -13,6 +13,8 @@
 #include "UserPaths.h"
 #include "utilityApp.h"
 
+using namespace utility;
+
 TaskBuildIndex::TaskBuildIndex(
 	size_t processCount,
 	std::shared_ptr<StorageProvider> storageProvider,
@@ -24,9 +26,9 @@ TaskBuildIndex::TaskBuildIndex(
 	, m_appUUID(appUUID)
 	, m_multiProcessIndexing(multiProcessIndexing)
 	, m_interprocessIndexingStatusManager(appUUID, 0, true)
-	, 
+	,
 	 m_processCount(processCount)
-	 
+
 {
 }
 
@@ -201,7 +203,7 @@ void TaskBuildIndex::runIndexerProcess(int processId, const std::wstring& logFil
 	while ((!m_indexerCommandQueueStopped || result != 0) && !m_interrupted)
 	{
 		result = utility::executeProcess(
-					 indexerProcessPath.wstr(), commandArguments, FilePath(), false, -1)
+					 indexerProcessPath.wstr(), commandArguments, FilePath(), false, INFINITE_TIMEOUT)
 					 .exitCode;
 
 		LOG_INFO_STREAM(<< "Indexer process " << processId << " returned with " + std::to_string(result));

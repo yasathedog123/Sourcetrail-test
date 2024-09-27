@@ -21,6 +21,8 @@
 #include "utilityFile.h"
 #include "utilityString.h"
 
+using namespace utility;
+
 void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& storage)
 {
 	std::vector<Id> unsolvedLocationIds;
@@ -254,7 +256,7 @@ TaskExecuteCustomCommands::TaskExecuteCustomCommands(
 	, m_indexerThreadCount(indexerThreadCount)
 	, m_projectDirectory(projectDirectory)
 	, m_indexerCommandCount(m_indexerCommandProvider->size())
-	 
+
 {
 }
 
@@ -477,7 +479,7 @@ void TaskExecuteCustomCommands::runIndexerCommand(
 
 		LOG_INFO("Starting to index");
 		const utility::ProcessOutput out = utility::executeProcess(
-			command, arguments, m_projectDirectory, false, -1, true);
+			command, arguments, m_projectDirectory, false, INFINITE_TIMEOUT, true);
 		LOG_INFO("Finished indexing");
 
 		if (storage)
