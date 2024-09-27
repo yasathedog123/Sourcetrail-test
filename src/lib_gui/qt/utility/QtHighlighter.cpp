@@ -17,77 +17,48 @@
 #include "tracing.h"
 #include "utility.h"
 
+using namespace std;
+
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::COMMENT("comment");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::DIRECTIVE("directive");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::FUNCTION("function");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::KEYWORD("keyword");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::NUMBER("number");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::QUOTATION("quotation");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::TEXT("text");
+const QtHighlighter::HighlightType QtHighlighter::HighlightType::TYPE("type");
+
 std::map<std::wstring, std::vector<QtHighlighter::HighlightingRule>> QtHighlighter::s_highlightingRules;
 std::map<QtHighlighter::HighlightType, QTextCharFormat> QtHighlighter::s_charFormats;
 
-std::string QtHighlighter::highlightTypeToString(QtHighlighter::HighlightType type)
+namespace
 {
-	switch (type)
-	{
-	case HighlightType::COMMENT:
-		return "comment";
-	case HighlightType::DIRECTIVE:
-		return "directive";
-	case HighlightType::FUNCTION:
-		return "function";
-	case HighlightType::KEYWORD:
-		return "keyword";
-	case HighlightType::NUMBER:
-		return "number";
-	case HighlightType::QUOTATION:
-		return "quotation";
-	case HighlightType::TEXT:
-		return "text";
-	case HighlightType::TYPE:
-		return "type";
-	}
-	return "text";
+
+string highlightTypeToString(QtHighlighter::HighlightType type)
+{
+	return string(type.name());
 }
 
-QtHighlighter::HighlightType QtHighlighter::highlightTypeFromString(const std::string& typeStr)
+QtHighlighter::HighlightType highlightTypeFromString(const string &typeStr)
 {
-	const std::array<HighlightType, 8> types = {
-		HighlightType::COMMENT,
-		HighlightType::DIRECTIVE,
-		HighlightType::FUNCTION,
-		HighlightType::KEYWORD,
-		HighlightType::NUMBER,
-		HighlightType::QUOTATION,
-		HighlightType::TEXT,
-		HighlightType::TYPE};
+	vector<QtHighlighter::HighlightType> foundEnums = QtHighlighter::HighlightType::find(typeStr);
 
-	for (HighlightType type: types)
-	{
-		if (typeStr == highlightTypeToString(type))
-		{
-			return type;
-		}
-	}
+	return (!foundEnums.empty()) ? foundEnums.front() : QtHighlighter::HighlightType::TEXT;
+}
 
-	return HighlightType::TEXT;
 }
 
 void QtHighlighter::loadHighlightingRules()
 {
 	ColorScheme* scheme = ColorScheme::getInstance().get();
 
-	const std::array<HighlightType, 8> types = {
-		HighlightType::COMMENT,
-		HighlightType::DIRECTIVE,
-		HighlightType::FUNCTION,
-		HighlightType::KEYWORD,
-		HighlightType::NUMBER,
-		HighlightType::QUOTATION,
-		HighlightType::TEXT,
-		HighlightType::TYPE};
-
 	s_charFormats.clear();
-	for (HighlightType type: types)
+	HighlightType::for_each([&](const HighlightType &type)
 	{
 		QTextCharFormat format;
 		format.setForeground(QColor(scheme->getSyntaxColor(highlightTypeToString(type)).c_str()));
 		s_charFormats.emplace(type, format);
-	}
+	});
 
 	for (const FilePath& path: FileSystem::getFilePathsFromDirectory(
 			 ResourcePaths::getSyntaxHighlightingRulesDirectoryPath(), {L".rules"}))
@@ -449,7 +420,7 @@ QtHighlighter::HighlightingRule::HighlightingRule(
 {
 }
 
-bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightType, int, int>>& ranges) 
+bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightType, int, int>>& ranges)
 {
 	for (const std::tuple<HighlightType, int, int>& range: ranges)
 	{
@@ -463,7 +434,7 @@ bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightTyp
 }
 
 std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::getRangesForRule(
-	const QTextBlock& block, const HighlightingRule& rule) 
+	const QTextBlock& block, const HighlightingRule& rule)
 {
 	const int pos = block.position();
 	const QString text = block.text();

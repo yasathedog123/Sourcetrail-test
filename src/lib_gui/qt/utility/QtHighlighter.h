@@ -4,26 +4,29 @@
 #include <QRegExp>
 #include <QTextCharFormat>
 
+#include <enum_class.hpp>
+
 class QTextBlock;
 class QTextDocument;
 
 class QtHighlighter
 {
 public:
-	enum class HighlightType
+	class HighlightType final : public aidkit::enum_class<HighlightType>
 	{
-		COMMENT,
-		DIRECTIVE,
-		FUNCTION,
-		KEYWORD,
-		NUMBER,
-		QUOTATION,
-		TEXT,
-		TYPE
-	};
+	public:
+		static const HighlightType COMMENT;
+		static const HighlightType DIRECTIVE;
+		static const HighlightType FUNCTION;
+		static const HighlightType KEYWORD;
+		static const HighlightType NUMBER;
+		static const HighlightType QUOTATION;
+		static const HighlightType TEXT;
+		static const HighlightType TYPE;
 
-	static std::string highlightTypeToString(HighlightType type);
-	static HighlightType highlightTypeFromString(const std::string& typeStr);
+	private:
+		using enum_class::enum_class;
+	};
 
 	static void loadHighlightingRules();
 	static void clearHighlightingRules();
