@@ -32,12 +32,12 @@ template<typename T, typename Char = char, typename Int = int>
 
 			Int value() const noexcept
 			{
-				return value_;
+				return m_value;
 			}
 
 			std::basic_string_view<Char> name() const noexcept
 			{
-				return name_;
+				return m_name;
 			}
 
 			// We only define the equal and less-then operator because if the other ones are needed then do:
@@ -84,7 +84,7 @@ template<typename T, typename Char = char, typename Int = int>
 
 			static void for_each(const std::function<void (const T &)> &function)
 			{
-				std::for_each(get_container().cbegin(), get_container().cend(), [&](const T *t)
+				std::for_each(s_enums.cbegin(), s_enums.cend(), [&](const T *t)
 				{
 					function(*t);
 				});
@@ -92,7 +92,7 @@ template<typename T, typename Char = char, typename Int = int>
 
 		protected:
 			enum_class()
-				: enum_class(get_next_value(), EMPTY_NAME)
+				: enum_class(EMPTY_NAME)
 			{
 			}
 
@@ -102,39 +102,28 @@ template<typename T, typename Char = char, typename Int = int>
 			}
 
 			template <std::size_t SIZE>
-				constexpr enum_class(const Char (&name)[SIZE])
-					: enum_class(get_next_value(), name)
+				enum_class(const Char (&name)[SIZE])
+					: enum_class(s_enums.empty() ? 0 : s_enums.back()->m_value + 1, name)
 				{
 				}
 
 			template <std::size_t SIZE>
 				enum_class(Int value, const Char (&name)[SIZE])
-					: value_(value), name_(name, SIZE - 1)
+					: m_value(value), m_name(name, SIZE - 1)
 				{
-					get_container().push_back(static_cast<const T *>(this));
+					s_enums.push_back(static_cast<const T *>(this));
 				}
 
 		private:
-			static const Char EMPTY_NAME[];
+			static constexpr Char EMPTY_NAME[] = { 0 };
 
-			static Int get_next_value()
-			{
-				return get_container().empty() ? 0 : get_container().back()->value_ + 1;
-			}
+            static constinit std::vector<const T *> s_enums;
 
-			static std::vector<const T *> &get_container()
-			{
-				// Use a function level static container so we don't run into the "static initialization order fiasco"
-				static std::vector<const T *> s_values;
-
-				return s_values;
-			}
-
-			Int value_;
-			std::basic_string_view<Char> name_;
+			Int m_value;
+			std::basic_string_view<Char> m_name;
 	};
 
 template <typename T, typename Char, typename Int>
-	const Char enum_class<T, Char, Int>::EMPTY_NAME[] = { 0 };
+    constinit std::vector<const T *> enum_class<T, Char, Int>::s_enums;
 
 }
