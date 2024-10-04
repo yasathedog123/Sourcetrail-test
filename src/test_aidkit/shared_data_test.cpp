@@ -16,7 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include <gtest/gtest.h>
-#include <shared_data.hpp>
+#include <aidkit/shared_data.hpp>
 #include <string>
 #include <vector>
 

@@ -1,9 +1,9 @@
 add_library(AidKit_lib
-	enum_class.hpp
-	enum_class.cpp
+	aidkit/enum_class.hpp
+	aidkit/enum_class.cpp
 
-	shared_data.hpp
-	shared_data.cpp
+	aidkit/shared_data.hpp
+	aidkit/shared_data.cpp
 )
 setDefaultTargetOptions(AidKit_lib)
 

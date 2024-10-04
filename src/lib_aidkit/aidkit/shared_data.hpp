@@ -21,18 +21,76 @@
 
 namespace aidkit {
 
-template <typename T, typename Mutex>
-	class shared_data_ptr;
+template <typename T, typename Mutex = std::mutex>
+	class shared_data_ptr {
+		public:
+			shared_data_ptr(T *d, Mutex *m) noexcept
+				: m_data(d), m_mutex(m)
+			{
+				m_mutex->lock();
+			}
 
-template <typename T, typename Mutex>
-	class const_shared_data_ptr;
+			~shared_data_ptr() noexcept
+			{
+				m_mutex->unlock();
+			}
+
+			T *operator->() noexcept
+			{
+				return m_data;
+			}
+
+			T &operator*() noexcept
+			{
+				return *m_data;
+			}
+
+			shared_data_ptr(const shared_data_ptr &) = delete;
+			shared_data_ptr &operator=(const shared_data_ptr &) = delete;
+
+		private:
+			T *m_data;
+			mutable Mutex *m_mutex;
+	};
+
+template <typename T, typename Mutex = std::mutex>
+	class const_shared_data_ptr {
+		public:
+			const_shared_data_ptr(const T *d, Mutex *m) noexcept
+				: m_data(d), m_mutex(m)
+			{
+				m_mutex->lock();
+			}
+
+			~const_shared_data_ptr() noexcept
+			{
+				m_mutex->unlock();
+			}
+
+			const T *operator->() const noexcept
+			{
+				return m_data;
+			}
+
+			const T &operator*() const noexcept
+			{
+				return *m_data;
+			}
+
+			const_shared_data_ptr(const const_shared_data_ptr &) = delete;
+			const_shared_data_ptr &operator=(const const_shared_data_ptr &) = delete;
+
+		private:
+			const T *m_data;
+			mutable Mutex *m_mutex;
+	};
 
 template <typename T, typename Mutex = std::mutex>
 	class shared_data {
 		public:
 			template <typename... Args>
 				shared_data(Args &&... args)
-					: data_(std::forward<Args>(args)...)
+					: m_data(std::forward<Args>(args)...)
 				{
 				}
 
@@ -41,92 +99,29 @@ template <typename T, typename Mutex = std::mutex>
 
 			shared_data_ptr<T, Mutex> lock()
 			{
-				return shared_data_ptr(&data_, &mutex_);
+				return shared_data_ptr(&m_data, &m_mutex);
 			}
 
 			const_shared_data_ptr<T, Mutex> lock() const
 			{
-				return const_shared_data_ptr(&data_, &mutex_);
+				return const_shared_data_ptr(&m_data, &m_mutex);
 			}
 
 		private:
-			T data_;
-			mutable Mutex mutex_;
-	};
-
-template <typename T, typename Mutex = std::mutex>
-	class shared_data_ptr {
-		public:
-			shared_data_ptr(T *d, Mutex *m) noexcept
-				: data_(d), mutex_(m)
-			{
-				mutex_->lock();
-			}
-
-			~shared_data_ptr() noexcept
-			{
-				mutex_->unlock();
-			}
-
-			T *operator->() noexcept
-			{
-				return data_;
-			}
-
-			T &operator*() noexcept
-			{
-				return *data_;
-			}
-
-			shared_data_ptr(const shared_data_ptr &) = delete;
-			shared_data_ptr &operator=(const shared_data_ptr &) = delete;
-
-		private:
-			T *data_;
-			mutable Mutex *mutex_;
+			T m_data;
+			mutable Mutex m_mutex;
 	};
 
 // Provide class template argument deduction guide (CTAD) to silence the warning:
 // "'shared_data_ptr' may not intend to support class template argument deduction [-Wctad-maybe-unsupported]"
 
-template <typename T, typename Mutex>
-	shared_data_ptr(shared_data<T, Mutex>) -> shared_data_ptr<T, Mutex>;
-
-template <typename T, typename Mutex = std::mutex>
-	class const_shared_data_ptr {
-		public:
-			const_shared_data_ptr(const T *d, Mutex *m) noexcept
-				: data_(d), mutex_(m)
-			{
-				mutex_->lock();
-			}
-
-			~const_shared_data_ptr() noexcept
-			{
-				mutex_->unlock();
-			}
-
-			const T *operator->() const noexcept
-			{
-				return data_;
-			}
-
-			const T &operator*() const noexcept
-			{
-				return *data_;
-			}
-
-			const_shared_data_ptr(const const_shared_data_ptr &) = delete;
-			const_shared_data_ptr &operator=(const const_shared_data_ptr &) = delete;
-
-		private:
-			const T *data_;
-			mutable Mutex *mutex_;
-	};
+// template <typename T, typename Mutex>
+// 	shared_data_ptr(shared_data<T, Mutex>) -> shared_data_ptr<T, Mutex>;
 
 // Provide class template argument deduction guide (CTAD) to silence the warning:
 // "'const_shared_data_ptr' may not intend to support class template argument deduction [-Wctad-maybe-unsupported]"
 
-template <typename T, typename Mutex>
-	const_shared_data_ptr(shared_data<T, Mutex>) -> const_shared_data_ptr<T, Mutex>;
+// template <typename T, typename Mutex>
+// 	const_shared_data_ptr(shared_data<T, Mutex>) -> const_shared_data_ptr<T, Mutex>;
+
 }

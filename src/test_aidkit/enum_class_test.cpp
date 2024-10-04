@@ -16,7 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include <gtest/gtest.h>
-#include <enum_class.hpp>
+#include <aidkit/enum_class.hpp>
 
 using namespace std;
 using namespace aidkit;
