@@ -82,7 +82,7 @@ void QtHighlighter::loadHighlightingRules()
 
 		std::vector<HighlightingRule> rules;
 
-		for (QJsonValueRef value: doc.array())
+		for (QJsonArray docArray = doc.array(); QJsonValueRef value: docArray)
 		{
 			if (!value.isObject())
 			{
@@ -448,7 +448,7 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::g
 		const int length = expression.matchedLength();
 		if (expression.capturedTexts().size() > 1)
 		{
-			const QString cap = expression.capturedTexts()[1];
+			const QString cap = expression.capturedTexts().at(1);
 			const int start = text.indexOf(cap, index);
 			ranges.push_back(std::make_tuple(rule.type, pos + start, pos + start + cap.length()));
 		}

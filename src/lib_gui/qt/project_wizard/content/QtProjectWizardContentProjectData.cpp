@@ -149,9 +149,10 @@ bool QtProjectWizardContentProjectData::check()
 
 void QtProjectWizardContentProjectData::onProjectNameEdited(QString text)
 {
+	static const QRegularExpression regex(QStringLiteral("[^A-Za-z0-9_.-]"));
+
 	const int cursorPosition = m_projectName->cursorPosition();
 
-	QRegularExpression regex(QStringLiteral("[^A-Za-z0-9_.-]"));
 	text.replace(regex, QStringLiteral("_"));
 
 	m_projectName->setText(text);

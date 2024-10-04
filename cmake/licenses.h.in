@@ -4,26 +4,18 @@
 // This is a generated file, DO NOT EDIT!
 
 struct LicenseInfo {
-	const char* name;
-	const char* version;
-	const char* url;
-	const char* license;
-
-	LicenseInfo(const char* name, const char* version, const char* url, const char* license)
-	    : name(name)
-	    , version(version)
-	    , url(url)
-	    , license(license)
-	{}
-
+	const char* name = nullptr;
+	const char* version = nullptr;
+	const char* url = nullptr;
+	const char* license = nullptr;
 };
 
 // License Textfiles
 @LICENSES@
 
-static const LicenseInfo licenseApp = @LICENSE_APP@;
+static inline const LicenseInfo licenseApp = @LICENSE_APP@;
 
-static const LicenseInfo licenses3rdParties[] = {
+static inline const LicenseInfo licenses3rdParties[] = {
 @LICENSE_ARRAY@
 };
 

@@ -25,12 +25,12 @@ function(AddLicense softwareName softwareVersion softwareURL licenseFile)
 
         ReadLicense(${licenseFile} ${softwareVariableName}_license)
         set(LICENSES ${LICENSES} PARENT_SCOPE)
-        set(LICENSE_ARRAY "${LICENSE_ARRAY}\n\tLicenseInfo(\"${softwareName}\", \"${softwareVersion}\", \"${softwareURL}\", ${softwareVariableName}_license)," PARENT_SCOPE)
+        set(LICENSE_ARRAY "${LICENSE_ARRAY}\n\t{ \"${softwareName}\", \"${softwareVersion}\", \"${softwareURL}\", ${softwareVariableName}_license }," PARENT_SCOPE)
 endfunction(AddLicense)
 
 function(configureLicenseFile outputFile)
 	ReadLicense(${CMAKE_SOURCE_DIR}/LICENSE.txt Sourcetrail_license)
-	set(LICENSE_APP "LicenseInfo(\"Sourcetrail\", \"${Sourcetrail_VERSION}\", \"https://github.com/petermost/Sourcetrail\", Sourcetrail_license)")
+	set(LICENSE_APP "{ \"Sourcetrail\", \"${Sourcetrail_VERSION}\", \"https://github.com/petermost/Sourcetrail\", Sourcetrail_license }")
 
 	AddLicense("Boost" "${Boost_VERSION}" "https://www.boost.org/" "${LICENSEFOLDER}/license_boost.txt")
 	AddLicense("Catch2" "${Catch2_VERSION}" "https://github.com/catchorg/Catch2" "${LICENSEFOLDER}/license_catch.txt")
