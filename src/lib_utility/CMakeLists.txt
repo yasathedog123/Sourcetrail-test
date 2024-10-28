@@ -16,4 +16,5 @@ target_link_libraries(Sourcetrail_lib_utility
 		Boost::locale
 		Boost::date_time
 		Qt6::Core5Compat
+		Qt6::Core
 )

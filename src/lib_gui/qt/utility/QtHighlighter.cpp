@@ -3,7 +3,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <QTextBlock>
 #include <QTextCursor>
@@ -101,7 +100,7 @@ void QtHighlighter::loadHighlightingRules()
 			{
 				if (pattern.isString())
 				{
-					rules.push_back(HighlightingRule(type, QRegExp(pattern.toString()), priority));
+					rules.push_back(HighlightingRule(type, QRegularExpression(pattern.toString()), priority));
 				}
 			}
 
@@ -109,9 +108,9 @@ void QtHighlighter::loadHighlightingRules()
 			if (!range.empty())
 			{
 				rules.push_back(HighlightingRule(
-					type, QRegExp(range.value("start").toString()), priority, true));
+					type, QRegularExpression(range.value("start").toString()), priority, true));
 				rules.push_back(
-					HighlightingRule(type, QRegExp(range.value("end").toString()), priority, true));
+					HighlightingRule(type, QRegularExpression(range.value("end").toString()), priority, true));
 			}
 		}
 
@@ -239,17 +238,17 @@ void QtHighlighter::highlightRange(int startLine, int endLine)
 
 				if (rule.priority)
 				{
-					formatBlockIfInRange(it, rule.type, &m_singleLineRanges);
+					formatBlockIfInRange(it, rule.type, m_singleLineRanges);
 				}
 				else
 				{
-					formatBlockForRule(it, rule, &m_singleLineRanges);
+					formatBlockForRule(it, rule, m_singleLineRanges);
 				}
 			}
 
 			if (m_multiLineRanges.size())
 			{
-				formatBlockIfInRange(it, &m_multiLineRanges);
+				formatBlockIfInRange(it, m_multiLineRanges);
 			}
 		}
 		index++;
@@ -305,8 +304,8 @@ void QtHighlighter::createRanges(QTextDocument* doc, const std::vector<Highlight
 		std::map<std::pair<int, int>, size_t> sortedRangesToIndex;
 		for (size_t i = 0; i < m_singleLineRanges.size(); i++)
 		{
-			const std::tuple<HighlightType, int, int>& range = m_singleLineRanges[i];
-			sortedRangesToIndex.emplace(std::make_pair(std::get<1>(range), std::get<2>(range)), i);
+			const HighlightingRange& range = m_singleLineRanges[i];
+			sortedRangesToIndex.emplace(pair(range.start, range.end), i);
 		}
 
 		std::set<size_t> indicesToErase;
@@ -323,21 +322,19 @@ void QtHighlighter::createRanges(QTextDocument* doc, const std::vector<Highlight
 			}
 		}
 
-		for (std::set<size_t>::const_reverse_iterator it = indicesToErase.rbegin();
-			 it != indicesToErase.rend();
-			 it++)
+		for (auto it = indicesToErase.rbegin(); it != indicesToErase.rend(); it++)
 		{
 			m_singleLineRanges.erase(m_singleLineRanges.begin() + *it);
 		}
 	}
 
-	m_multiLineRanges = createMultiLineRanges(doc, &m_singleLineRanges);
+	m_multiLineRanges = createMultiLineRanges(doc, m_singleLineRanges);
 }
 
-std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::createMultiLineRanges(
-	QTextDocument* doc, std::vector<std::tuple<HighlightType, int, int>>* ranges)
+std::vector<QtHighlighter::HighlightingRange> QtHighlighter::createMultiLineRanges(
+	QTextDocument* doc, const std::vector<HighlightingRange> &ranges)
 {
-	std::vector<std::tuple<HighlightType, int, int>> multiLineRanges;
+	std::vector<HighlightingRange> multiLineRanges;
 
 	const HighlightingRule* startRule = nullptr;
 
@@ -361,13 +358,13 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::c
 	return multiLineRanges;
 }
 
-std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::createMultiLineRangesForRules(
+std::vector<QtHighlighter::HighlightingRange> QtHighlighter::createMultiLineRangesForRules(
 	QTextDocument* doc,
-	std::vector<std::tuple<HighlightType, int, int>>* ranges,
+	const std::vector<HighlightingRange> &ranges,
 	const HighlightingRule* startRule,
 	const HighlightingRule* endRule)
 {
-	std::vector<std::tuple<HighlightType, int, int>> multiLineRanges;
+	std::vector<HighlightingRange> multiLineRanges;
 
 	QTextCursor cursorStart(doc);
 	QTextCursor cursorEnd(doc);
@@ -376,13 +373,13 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::c
 	{
 		while (true)
 		{
-			cursorStart = document()->find(QRegularExpression(startRule->pattern.pattern()), cursorStart);
+			cursorStart = document()->find(startRule->pattern, cursorStart);
 			if (cursorStart.isNull())
 			{
 				break;
 			}
 
-			if (!isInRange(cursorStart.selectionEnd() - 1, *ranges))
+			if (!isInRange(cursorStart.selectionEnd() - 1, ranges))
 			{
 				break;
 			}
@@ -397,14 +394,14 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::c
 			break;
 		}
 
-		cursorEnd = document()->find(QRegularExpression(endRule->pattern.pattern()), cursorStart);
+		cursorEnd = document()->find(endRule->pattern, cursorStart);
 		if (cursorEnd.isNull())
 		{
 			break;
 		}
 
 		multiLineRanges.emplace_back(
-			std::make_tuple(startRule->type, cursorStart.selectionStart(), cursorEnd.position()));
+			HighlightingRange(startRule->type, cursorStart.selectionStart(), cursorEnd.position()));
 
 		cursorStart = cursorEnd;
 	}
@@ -412,27 +409,25 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::c
 	return multiLineRanges;
 }
 
-QtHighlighter::HighlightingRule::HighlightingRule() = default;
-
 QtHighlighter::HighlightingRule::HighlightingRule(
-	HighlightType type, const QRegExp& regExp, bool priority, bool multiLine)
+	HighlightType type, const QRegularExpression& regExp, bool priority, bool multiLine)
 	: type(type), pattern(regExp), priority(priority), multiLine(multiLine)
 {
 }
 
-bool QtHighlighter::isInRange(int pos, const std::vector<std::tuple<HighlightType, int, int>>& ranges)
+bool QtHighlighter::isInRange(int pos, const std::vector<HighlightingRange> &ranges)
 {
-	for (const std::tuple<HighlightType, int, int>& range: ranges)
+	for (const HighlightingRange& range: ranges)
 	{
-		if (pos >= std::get<1>(range) && pos <= std::get<2>(range))
+		if (pos >= range.start && pos <= range.end)
 		{
 			return true;
 		}
 	}
-
 	return false;
 }
 
+/* Previous version with QRegExp:
 std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::getRangesForRule(
 	const QTextBlock& block, const HighlightingRule& rule)
 {
@@ -458,13 +453,33 @@ std::vector<std::tuple<QtHighlighter::HighlightType, int, int>> QtHighlighter::g
 		}
 		index = expression.indexIn(block.text(), index + length);
 	}
+	return ranges;
+}
+*/
 
+std::vector<QtHighlighter::HighlightingRange> QtHighlighter::getRangesForRule(const QTextBlock& block,
+	const HighlightingRule& rule)
+{
+	const int pos = block.position();
+	const QString text = block.text();
+	std::vector<HighlightingRange> ranges;
+
+	for (const QRegularExpressionMatch &match : rule.pattern.globalMatch(text)) {
+		int index = match.capturedStart();
+		int length = match.capturedLength();
+
+		if (match.capturedTexts().size() > 1) {
+			const QString cap = match.capturedTexts().at(1);
+			const int start = text.indexOf(cap, index);
+			ranges.push_back(HighlightingRange(rule.type, pos + start, pos + start + cap.length()));
+		} else
+			ranges.push_back(HighlightingRange(rule.type, pos + index, pos + index + length));
+	}
 	return ranges;
 }
 
-void QtHighlighter::formatBlockForRule(
-	const QTextBlock& block,
-	const HighlightingRule& rule,
+/* Previous version with QRegExp:
+void QtHighlighter::formatBlockForRule(const QTextBlock& block, const HighlightingRule& rule,
 	std::vector<std::tuple<HighlightType, int, int>>* ranges)
 {
 	if (s_charFormats.find(rule.type) == s_charFormats.end())
@@ -490,11 +505,29 @@ void QtHighlighter::formatBlockForRule(
 		index = expression.indexIn(block.text(), index + length);
 	}
 }
+*/
+
+void QtHighlighter::formatBlockForRule( const QTextBlock& block, const HighlightingRule& rule,
+	const std::vector<HighlightingRange> &ranges)
+{
+	if (s_charFormats.find(rule.type) == s_charFormats.end())
+		return;
+
+	const QTextCharFormat& format = s_charFormats.find(rule.type)->second;
+
+	int pos = block.position();
+	for (const QRegularExpressionMatch &match : rule.pattern.globalMatch(block.text())) {
+		int index = match.capturedStart();
+		int length = match.capturedLength();
+		if (!isInRange(pos + index, ranges))
+			applyFormat(pos + index, pos + index + length, format);
+	}
+}
 
 void QtHighlighter::formatBlockIfInRange(
 	const QTextBlock& block,
 	HighlightType type,
-	std::vector<std::tuple<HighlightType, int, int>>* ranges)
+	const std::vector<HighlightingRange> &ranges)
 {
 	int startPos = block.position();
 	int endPos = startPos + block.length() - 1;
@@ -506,12 +539,12 @@ void QtHighlighter::formatBlockIfInRange(
 
 	const QTextCharFormat& format = s_charFormats.find(type)->second;
 
-	for (auto range: *ranges)
+	for (auto range: ranges)
 	{
-		if (type == std::get<0>(range))
+		if (type == range.type)
 		{
-			int start = std::max(std::get<1>(range), startPos);
-			int end = std::min(std::get<2>(range), endPos);
+			int start = std::max(range.start, startPos);
+			int end = std::min(range.end, endPos);
 
 			if (start <= end)
 			{
@@ -522,14 +555,14 @@ void QtHighlighter::formatBlockIfInRange(
 }
 
 void QtHighlighter::formatBlockIfInRange(
-	const QTextBlock& block, std::vector<std::tuple<HighlightType, int, int>>* ranges)
+	const QTextBlock& block, const std::vector<HighlightingRange> &ranges)
 {
 	int startPos = block.position();
 	int endPos = startPos + block.length() - 1;
 
-	for (auto range: *ranges)
+	for (auto range: ranges)
 	{
-		HighlightType type = std::get<0>(range);
+		HighlightType type = range.type;
 		if (s_charFormats.find(type) == s_charFormats.end())
 		{
 			continue;
@@ -537,8 +570,8 @@ void QtHighlighter::formatBlockIfInRange(
 
 		const QTextCharFormat& format = s_charFormats.find(type)->second;
 
-		int start = std::max(std::get<1>(range), startPos);
-		int end = std::min(std::get<2>(range), endPos);
+		int start = std::max(range.start, startPos);
+		int end = std::min(range.end, endPos);
 
 		if (start <= end)
 		{

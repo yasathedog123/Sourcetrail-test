@@ -2,7 +2,7 @@
 
 #include <QFileDialog>
 #include <QListView>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QTreeView>
 
 #include "ApplicationSettings.h"
@@ -67,52 +67,28 @@ QString QtFileDialog::getOpenFileName(
 QString QtFileDialog::showSaveFileDialog(
 	QWidget* parent, const QString& title, const FilePath& directory, const QString& filter)
 {
-	if constexpr (utility::Platform::isWindows() || utility::Platform::isMac()) {
-		return QFileDialog::getSaveFileName(
-			parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
+	// Workaround for: "QFileDialog::getSaveFileName() does not append the file extension of the selected filter (QWidget-based, non-native)"
+	// https://bugreports.qt.io/browse/QTBUG-27186
 
-	} else {
-		// Workaround for:
-		// "QFileDialog::getSaveFileName() does not append the file extension of the selected filter (QWidget-based, non-native)"
-		// https://bugreports.qt.io/browse/QTBUG-27186
+	QFileDialog dialog(parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
 
-		QFileDialog dialog(parent, title, getDir(QString::fromStdWString(directory.wstr())), filter);
+	if (dialog.exec() == QDialog::Accepted) {
+		QString selectedFileName = dialog.selectedFiles().constFirst();
+		QFileInfo fileInfo(selectedFileName);
 
-		if (parent)
-		{
-			dialog.setWindowModality(Qt::WindowModal);
-		}
-
-		QRegExp filter_regex(QStringLiteral("(?:^\\*\\.(?!.*\\()|\\(\\*\\.)(\\w+)"));
-		QStringList filters = filter.split(QStringLiteral(";;"));
-
-		if (!filters.isEmpty())
-		{
-			dialog.setNameFilters(filters);
-		}
-
-		dialog.setAcceptMode(QFileDialog::AcceptSave);
-
-		if (dialog.exec() == QDialog::Accepted)
-		{
-			QString file_name = dialog.selectedFiles().constFirst();
-			QFileInfo info(file_name);
-
-			if (info.suffix().isEmpty() && !dialog.selectedNameFilter().isEmpty())
-			{
-				if (filter_regex.indexIn(dialog.selectedNameFilter()) != -1)
-				{
-					QString extension = filter_regex.cap(1);
-					file_name += QStringLiteral(".") + extension;
-				}
+		if (fileInfo.suffix().isEmpty() && !dialog.selectedNameFilter().isEmpty()) {
+			QRegularExpression filterRegEx(QStringLiteral("(?:^\\*\\.(?!.*\\()|\\(\\*\\.)(\\w+)"));
+			QRegularExpressionMatch filterMatch = filterRegEx.match(dialog.selectedNameFilter());
+			if (filterMatch.hasMatch()) {
+				QString extension = filterMatch.captured(1);
+				selectedFileName += QStringLiteral(".") + extension;
 			}
-			return file_name;
 		}
-		else
-		{
-			return QString();
-		}
-	}
+		return selectedFileName;
+	} else
+		return QString();
 }
 
 QString QtFileDialog::getDir(QString dir)
