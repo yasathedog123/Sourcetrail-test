@@ -8,12 +8,11 @@
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/chrono.hpp>
-#include <boost/process.hpp>
-#include <boost/process/async_pipe.hpp>
-#include <boost/process/child.hpp>
-#include <boost/process/io.hpp>
-#include <boost/process/search_path.hpp>
-#include <boost/process/start_dir.hpp>
+#if BOOST_VERSION >= 108600
+	#include <boost/process/v1.hpp>
+#else
+	#include <boost/process.hpp>
+#endif
 #include <boost/thread.hpp>
 
 #include <QThread>

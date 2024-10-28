@@ -61,11 +61,6 @@ private:
 		HighlightType type = HighlightType::TEXT;
 		int start = 0;
 		int end = 0;
-
-		bool operator == (const HighlightingRange &other) const
-		{
-			return type == other.type && start == other.start && end == other.end;
-		}
 	};
 
 	void createRanges(QTextDocument* doc, const std::vector<HighlightingRule>& quotationRules);
