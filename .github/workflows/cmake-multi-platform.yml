@@ -4,3 +4,10 @@ name: Sourcetrail on multiple platforms
 
 on:
   workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - run: echo "Success"
+    
