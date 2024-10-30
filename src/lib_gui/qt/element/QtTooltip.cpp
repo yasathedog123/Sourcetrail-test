@@ -46,7 +46,7 @@ void QtTooltip::setTooltipInfo(const TooltipInfo& info)
 		const TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
 
 		QtCodeField* field = new QtCodeField(
-			1, codec.encode(snippet.code), snippet.locationFile, false);
+			1, codec.encode(snippet.code), snippet.locationFile);
 
 		QSize size = field->sizeHint() + QSize(15, 5);
 		if (size.width() > maxWidth)

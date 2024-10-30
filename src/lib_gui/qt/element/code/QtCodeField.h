@@ -25,7 +25,6 @@ public:
 		size_t startLineNumber,
 		const std::string& code,
 		std::shared_ptr<SourceLocationFile> locationFile,
-		bool convertLocationsOnDemand = true,
 		QWidget* parent = nullptr);
 
 	~QtCodeField() override;
@@ -132,7 +131,6 @@ private:
 	static std::string s_focusColor;
 
 	void createLineLengthCache();
-	void createMultibyteCharacterLocationCache(const QString& code);
 	int getColumnCorrectedForMultibyteCharacters(int line, int column) const;
 
 	const size_t m_startLineNumber;

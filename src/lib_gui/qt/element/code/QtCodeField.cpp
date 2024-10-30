@@ -13,14 +13,13 @@
 #include "MessageActivateTokenIds.h"
 #include "MessageTabOpenWith.h"
 #include "MessageTooltipShow.h"
+#include "Platform.h"
 #include "QtContextMenu.h"
 #include "QtHighlighter.h"
 #include "SourceLocation.h"
 #include "SourceLocationFile.h"
-#include "TextCodec.h"
 #include "tracing.h"
 #include "utility.h"
-#include "utilityApp.h"
 
 std::vector<QtCodeField::AnnotationColor> QtCodeField::s_annotationColors;
 std::string QtCodeField::s_focusColor;
@@ -35,14 +34,11 @@ QtCodeField::QtCodeField(
 	size_t startLineNumber,
 	const std::string& code,
 	std::shared_ptr<SourceLocationFile> locationFile,
-	bool convertLocationsOnDemand,
 	QWidget* parent)
 	: QPlainTextEdit(parent)
 	, m_startLineNumber(startLineNumber)
 	, m_code(code)
 {
-	TRACE();
-
 	setObjectName(QStringLiteral("code_area"));
 	setReadOnly(true);
 	setFrameStyle(QFrame::NoFrame);
@@ -68,23 +64,7 @@ QtCodeField::QtCodeField(
 		}
 	}
 
-	TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
-	if (convertLocationsOnDemand && codec.isValid())
-	{
-		QString convertedDisplayCode = QString::fromStdWString(codec.decode(displayCode));
-		setPlainText(convertedDisplayCode);
-		if (displayCode.size() != size_t(convertedDisplayCode.length()))
-		{
-			LOG_INFO(
-				"Converting displayed code to " + codec.getName() +
-				" resulted in offset of source locations. Correcting this now.");
-			createMultibyteCharacterLocationCache(convertedDisplayCode);
-		}
-	}
-	else
-	{
-		setPlainText(displayCode.c_str());
-	}
+	setPlainText(displayCode.c_str());
 
 	createLineLengthCache();
 
@@ -862,27 +842,6 @@ void QtCodeField::createLineLengthCache()
 	{
 		m_lineLengths.push_back(it.length());
 		m_endTextEditPosition += it.length();
-	}
-}
-
-void QtCodeField::createMultibyteCharacterLocationCache(const QString& code)
-{
-	m_multibyteCharacterLocations.clear();
-	QTextCodec* codec = QTextCodec::codecForName(
-		ApplicationSettings::getInstance()->getTextEncoding().c_str());
-
-	for (const QString& line: code.split(QStringLiteral("\n")))
-	{
-		std::vector<std::pair<int, int>> columnsToOffsets;
-		for (int i = 0; i < line.size(); i++)
-		{
-			if (line[i].unicode() > 127)
-			{
-				int ss = codec->fromUnicode(line[i]).size();
-				columnsToOffsets.push_back(std::make_pair(i, ss));
-			}
-		}
-		m_multibyteCharacterLocations.push_back(columnsToOffsets);
 	}
 }
 
