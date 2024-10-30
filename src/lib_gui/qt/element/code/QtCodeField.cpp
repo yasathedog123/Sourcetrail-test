@@ -3,7 +3,6 @@
 #include <QAction>
 #include <QPainter>
 #include <QTextBlock>
-#include <QTextCodec>
 #include <QWindow>
 
 #include "ApplicationSettings.h"

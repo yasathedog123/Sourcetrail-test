@@ -5,13 +5,13 @@
 #include <QFontComboBox>
 #include <QLabel>
 #include <QLineEdit>
-#include <QTextCodec>
 #include <QTimer>
 
 #include "ApplicationSettings.h"
 #include "FileLogger.h"
 #include "FileSystem.h"
 #include "MessageSwitchColorScheme.h"
+#include "TextCodec.h"
 #include "ResourcePaths.h"
 #include "logging.h"
 #include "utility.h"
@@ -82,11 +82,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 	// text encoding
 	m_textEncoding = addComboBox(QStringLiteral("Text Encoding"), QLatin1String(""), layout, row);
-	for (int mib: QTextCodec::availableMibs())
-	{
-		if (QTextCodec *codec = QTextCodec::codecForMib(mib); codec != nullptr)
-			m_textEncoding->addItem(codec->name());
-	}
+	m_textEncoding->addItems(TextCodec::availableMibCodecs());
 
 	// color scheme
 	m_colorSchemes = addComboBox(QStringLiteral("Color Scheme"), QLatin1String(""), layout, row);
