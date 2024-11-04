@@ -4,10 +4,9 @@
 #include <memory>
 #include <string>
 
-#include <QByteArray>
+#include <QStringDecoder>
+#include <QStringEncoder>
 #include <QStringList>
-#include <QTextDecoder>
-#include <QTextEncoder>
 
 class TextCodec
 {
@@ -19,12 +18,12 @@ public:
 	std::wstring decode(const std::string& unicodeString) const;
 	std::string encode(const std::wstring& string) const;
 
-	static QStringList availableMibCodecs();
+	static QStringList availableCodecs();
 
 private:
 	std::string m_name;
-	std::unique_ptr<QTextDecoder> m_decoder;
-	std::unique_ptr<QTextEncoder> m_encoder;
+	std::unique_ptr<QStringDecoder> m_decoder;
+	std::unique_ptr<QStringEncoder> m_encoder;
 };
 
 #endif	  // TEXT_CODEC_H
