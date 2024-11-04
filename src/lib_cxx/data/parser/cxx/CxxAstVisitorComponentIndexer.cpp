@@ -450,7 +450,7 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 				}
 			}
 		}
-		// findNonTrivialDestructorCalls(d);
+		findNonTrivialDestructorCalls(d);
 	}
 }
 
@@ -487,12 +487,9 @@ void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const Function
 			{
 				for (auto ref : block->refs())
 				{
-					// It should not be necessary to special-case 'CFGBaseDtor'. But as of Clang/LLVM 17.0.2,
-					// 'CFGImplicitDtor::getDestructorDecl' is simply missing the implementation of
-					// that case. See CFG.cpp(5320):
-					// case CFGElement::BaseDtor:
-					//     // Not yet supported.
-					//     return nullptr;
+					// It should not be necessary to special-case 'CFGBaseDtor'. But 'CFGImplicitDtor::getDestructorDecl' 
+					// is simply missing the implementation of that case. See 
+					// https://github.com/llvm/llvm-project/blob/c949500d519085a4e5b93928b14ca766a353ad73/clang/lib/Analysis/CFG.cpp#L5354
 					if (optional<CFGBaseDtor> baseDtor = ref->getAs<CFGBaseDtor>())
 					{
 						const CXXBaseSpecifier *baseSpec = baseDtor->getBaseSpecifier();
