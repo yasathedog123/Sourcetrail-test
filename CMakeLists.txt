@@ -148,7 +148,7 @@ target_compile_definitions(External_lib_boost
 set (QT_MIN_VERSION "6.4.2")
 set (QT_MIN_VERSION_HEX 0x060402)
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-	Widgets PrintSupport Network Svg Core5Compat
+	Widgets PrintSupport Network Svg
 )
 message(STATUS "Found Qt ${Qt6_VERSION}")
 
@@ -248,18 +248,18 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	add_library(External_lib_clang INTERFACE)
 	target_compile_definitions(External_lib_clang
 		INTERFACE
-		${LLVM_DEFINITIONS}
+			${LLVM_DEFINITIONS}
 	)
-target_include_directories(External_lib_clang SYSTEM
+	target_include_directories(External_lib_clang SYSTEM
 		INTERFACE
-		${LLVM_INCLUDE_DIRS}
+			${LLVM_INCLUDE_DIRS}
 	)
-llvm_map_components_to_libnames(REQ_LLVM_LIBS
+	llvm_map_components_to_libnames(REQ_LLVM_LIBS
 		${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
 	)
-target_link_libraries(External_lib_clang
+	target_link_libraries(External_lib_clang
 		INTERFACE
-		clangASTMatchers
+			clangASTMatchers
 			clangFrontend
 			clangSerialization
 			clangDriver

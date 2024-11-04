@@ -85,13 +85,6 @@
 				"zstd"
 			]
 		},
-		{
-			"name": "qt5compat",
-			"default-features": false,
-			"features": [
-				"textcodec"
-			]
-		},
 
 		{
 			"name": "llvm",
