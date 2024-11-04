@@ -82,7 +82,7 @@ To compile it under the current (K)ubuntu platform 24.04, "Noble Numbat", instal
 |CMake|3.28.3|cmake  |
 |Ninja|1.11.1|ninja-build|
 |Boost|1.83.0|libboost1.83-all-dev|
-|Qt|6.4.2|qt6-base-dev, qt6-svg-dev, qt6-5compat-dev|
+|Qt|6.4.2|qt6-base-dev, qt6-svg-dev|
 |SQLite|3.45.1|libsqlite3-dev|
 |TinyXML|2.6.2|libtinyxml-dev|
 
