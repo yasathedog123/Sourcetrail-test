@@ -114,15 +114,16 @@ if (isVcpkgBuild)
 	set(Boost_NO_SYSTEM_PATHS ON)
 endif()
 
-find_package(Boost 1.83 CONFIG REQUIRED COMPONENTS
-	# compiled libraries:
-	system program_options filesystem date_time locale
-
-	# 'header-only' libraries which can't be found with find_package:
-	# interprocess uuid asio process predef dll
-
-	# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
-	# for a list of compiled libraries.
+find_package(Boost 1.83 CONFIG REQUIRED 
+	COMPONENTS
+		# compiled libraries:
+		system program_options filesystem date_time locale
+	
+		# 'header-only' libraries which can't be found with find_package:
+		# interprocess uuid asio process predef dll
+	
+		# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
+		# for a list of compiled libraries.
 )
 message(STATUS "Found Boost ${Boost_VERSION}")
 
@@ -130,7 +131,7 @@ add_library(External_lib_boost INTERFACE)
 
 target_compile_definitions(External_lib_boost
 	INTERFACE
-	# Fix "Boost-uuid should link against bcrypt on windows"
+		# Fix "Boost-uuid should link against bcrypt on windows"
 		# (https://github.com/microsoft/vcpkg/issues/4481)
 		BOOST_UUID_FORCE_AUTO_LINK
 
@@ -147,8 +148,9 @@ target_compile_definitions(External_lib_boost
 
 set (QT_MIN_VERSION "6.4.2")
 set (QT_MIN_VERSION_HEX 0x060402)
-find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-	Widgets PrintSupport Network Svg
+find_package(Qt6 ${QT_MIN_VERSION} REQUIRED 
+	COMPONENTS
+		Widgets PrintSupport Network Svg
 )
 message(STATUS "Found Qt ${Qt6_VERSION}")
 
@@ -217,12 +219,11 @@ add_subdirectory(src/lib)
 if (NOT isVcpkgBuild)
 	set_target_properties(Sourcetrail_lib
 		PROPERTIES
-		LINK_INTERFACE_MULTIPLICITY 3
+			LINK_INTERFACE_MULTIPLICITY 3
 	)
-
-set_target_properties(Sourcetrail_lib_gui
+	set_target_properties(Sourcetrail_lib_gui
 		PROPERTIES
-		LINK_INTERFACE_MULTIPLICITY 3
+			LINK_INTERFACE_MULTIPLICITY 3
 	)
 endif()
 
@@ -278,8 +279,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 			${REQ_LLVM_LIBS}
 	)
-
-add_subdirectory(src/lib_cxx)
+	add_subdirectory(src/lib_cxx)
 else()
 	message(STATUS "Building the Cxx indexer will be skipped. You can enable building this target by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
 endif()

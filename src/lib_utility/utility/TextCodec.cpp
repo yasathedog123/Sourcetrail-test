@@ -39,18 +39,18 @@ string TextCodec::getName() const
 
 wstring TextCodec::decode(const string &str) const
 {
-	if (m_decoder)
-		static_cast<QString>(m_decoder->decode(str.c_str())).toStdWString();
-
-	return QString::fromStdString(str).toStdWString();
+	if (m_decoder && m_decoder->isValid())
+		return static_cast<QString>(m_decoder->decode(str.c_str())).toStdWString();
+	else
+		return QString::fromStdString(str).toStdWString();
 }
 
 string TextCodec::encode(const wstring &str) const
 {
-	if (m_encoder)
-		static_cast<QByteArray>(m_encoder->encode(QString::fromStdWString(str))).toStdString();
-
-	return QString::fromStdWString(str).toStdString();
+	if (m_encoder && m_encoder->isValid())
+		return static_cast<QByteArray>(m_encoder->encode(QString::fromStdWString(str))).toStdString();
+	else
+		return QString::fromStdWString(str).toStdString();
 }
 
 QStringList TextCodec::availableCodecs()
