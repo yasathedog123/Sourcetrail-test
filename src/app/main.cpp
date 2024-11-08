@@ -48,6 +48,25 @@
 	#include <windows.h>
 #endif
 
+void closeConsoleWindow()
+{
+#if BOOST_OS_WINDOWS
+	// Hide the console which Windows creates if Sourcetrail was not started from one:
+	if (HWND consoleWnd = GetConsoleWindow(); consoleWnd != nullptr) {
+		DWORD consoleOwnerProcessId;
+		if (GetWindowThreadProcessId(consoleWnd, &consoleOwnerProcessId) != 0) {
+			if (consoleOwnerProcessId == GetCurrentProcessId()) {
+				// Hiding will not work if the default terminal is *not* the 'Windows console host'
+				// as is the case for Windows 11. See https://github.com/petermost/Sourcetrail/issues/19
+				// for further details.
+
+				ShowWindow(consoleWnd, SW_HIDE);
+			}
+		}
+	}
+#endif
+}
+
 void signalHandler(int  /*signum*/)
 {
 	std::cout << "interrupt indexing" << std::endl;
@@ -156,24 +175,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-#if BOOST_OS_WINDOWS
-		// Hide the console which Windows creates if Sourcetrail was not started from one:
-		if (HWND consoleWnd = GetConsoleWindow(); consoleWnd != 0)
-		{
-			DWORD consoleOwnerProcessId;
-			if (GetWindowThreadProcessId(consoleWnd, &consoleOwnerProcessId) != 0)
-			{
-				if (consoleOwnerProcessId == GetCurrentProcessId())
-				{
-					// Hiding will not work if the default terminal is *not* the 'Windows console host'
-					// as is the case for Windows 11. See https://github.com/petermost/Sourcetrail/issues/19
-					// for further details.
-
-					ShowWindow(consoleWnd, SW_HIDE);
-				}
-			}
-		}
-#endif
 		QtApplication qtApp(argc, argv);
 
 		setupLogging();
@@ -184,7 +185,11 @@ int main(int argc, char* argv[])
 		Application::createInstance(version, &viewFactory, &networkFactory);
 		ScopedFunctor f([]() { Application::destroyInstance(); });
 
-		ApplicationSettingsPrefiller::prefillPaths(ApplicationSettings::getInstance().get());
+		auto applicationSettings = ApplicationSettings::getInstance();
+		ApplicationSettingsPrefiller::prefillPaths(applicationSettings.get());
+		if (!applicationSettings->getLoggingEnabled())
+			closeConsoleWindow();
+
 		addLanguagePackages();
 
 		utility::loadFontsFromDirectory(ResourcePaths::getFontsDirectoryPath(), L".otf");
