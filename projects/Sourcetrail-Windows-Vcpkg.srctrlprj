@@ -14,7 +14,6 @@
                 <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtGui</header_search_path>
                 <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtSvg</header_search_path>
                 <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtNetwork</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtCore5Compat</header_search_path>
                 <header_search_path>${JAVA_HOME}/include</header_search_path>
                 <header_search_path>${JAVA_HOME}/include/win32</header_search_path>
             </header_search_paths>
