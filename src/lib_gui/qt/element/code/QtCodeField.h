@@ -6,9 +6,9 @@
 
 #include <QPlainTextEdit>
 
+#include "Id.h"
 #include "FilePath.h"
 #include "LocationType.h"
-#include "types.h"
 
 class QtHighlighter;
 class SourceLocation;
@@ -25,6 +25,7 @@ public:
 		size_t startLineNumber,
 		const std::string& code,
 		std::shared_ptr<SourceLocationFile> locationFile,
+		bool convertLocationsOnDemand,
 		QWidget* parent = nullptr);
 
 	~QtCodeField() override;
@@ -131,6 +132,7 @@ private:
 	static std::string s_focusColor;
 
 	void createLineLengthCache();
+	void createMultibyteCharacterLocationCache(const QString& code);
 	int getColumnCorrectedForMultibyteCharacters(int line, int column) const;
 
 	const size_t m_startLineNumber;

@@ -598,7 +598,7 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getFullTextSearchLo
 		return collection;
 	}
 
-	const TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
+	TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
 	{
 		std::lock_guard<std::mutex> lock(m_fullTextSearchMutex);
 
@@ -2730,7 +2730,7 @@ std::set<Id> PersistentStorage::getReferenced(
 }
 
 std::set<Id> PersistentStorage::getReferencing(
-	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap) 
+	const std::set<Id>& ids, std::unordered_map<Id, std::set<Id>> idToReferencingIdMap)
 {
 	std::set<Id> referencingIds;
 

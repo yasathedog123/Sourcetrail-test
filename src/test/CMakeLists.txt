@@ -40,6 +40,7 @@ add_executable(Sourcetrail_test
 	StorageTestSuite.cpp
 	TaskSchedulerTestSuite.cpp
 	TextAccessTestSuite.cpp
+	TextCodecTestSuite.cpp
 	UtilityGradleTestSuite.cpp
 	UtilityMavenTestSuite.cpp
 	UtilityStringTestSuite.cpp

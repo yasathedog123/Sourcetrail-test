@@ -1,14 +1,13 @@
 #include "TextCodec.h"
 
 #include <array>
-#include <optional>
 
 using namespace std;
 
 namespace
 {
 
-const array s_encodings = {
+constexpr array AVAILABLE_ENCODINGS = {
 	QStringConverter::Encoding::Utf8,
 	QStringConverter::Encoding::Utf16,
 	QStringConverter::Encoding::Utf16LE,
@@ -22,43 +21,53 @@ const array s_encodings = {
 
 }
 
+QStringList TextCodec::availableCodecs()
+{
+	QStringList availableCodecs;
+
+	for (const QStringConverter::Encoding encoding : AVAILABLE_ENCODINGS)
+		availableCodecs += QStringConverter::nameForEncoding(encoding);
+
+	return availableCodecs;
+}
+
 TextCodec::TextCodec(const string &name)
 	: m_name(name)
+	, m_decoder(m_name.c_str())
+	, m_encoder(m_name.c_str())
 {
-	optional<QStringConverter::Encoding> encoding = QStringConverter::encodingForName(m_name.c_str());
-	if (encoding) {
-		m_decoder = make_unique<QStringDecoder>(*encoding);
-		m_encoder = make_unique<QStringEncoder>(*encoding);
-	}
+}
+
+wstring TextCodec::decode(const string &str)
+{
+	if (m_decoder.isValid())
+		return static_cast<QString>(m_decoder.decode(str.c_str())).toStdWString();
+	else
+		return QString::fromStdString(str).toStdWString();
+}
+
+string TextCodec::encode(const wstring &str)
+{
+	if (m_encoder.isValid())
+		return static_cast<QByteArray>(m_encoder.encode(QString::fromStdWString(str))).toStdString();
+	else
+		return QString::fromStdWString(str).toStdString();
+}
+
+int TextCodec::encodedSize(const QString &str)
+{
+	if (m_encoder.isValid())
+		return static_cast<QByteArray>(m_encoder.encode(str)).size();
+	else
+		return str.toUtf8().size();
+}
+
+bool TextCodec::isValid() const
+{
+	return m_decoder.isValid() && m_encoder.isValid();
 }
 
 string TextCodec::getName() const
 {
 	return m_name;
-}
-
-wstring TextCodec::decode(const string &str) const
-{
-	if (m_decoder && m_decoder->isValid())
-		return static_cast<QString>(m_decoder->decode(str.c_str())).toStdWString();
-	else
-		return QString::fromStdString(str).toStdWString();
-}
-
-string TextCodec::encode(const wstring &str) const
-{
-	if (m_encoder && m_encoder->isValid())
-		return static_cast<QByteArray>(m_encoder->encode(QString::fromStdWString(str))).toStdString();
-	else
-		return QString::fromStdWString(str).toStdString();
-}
-
-QStringList TextCodec::availableCodecs()
-{
-	QStringList availableCodecs;
-	
-	for (const QStringConverter::Encoding encoding : s_encodings)
-		availableCodecs += QStringConverter::nameForEncoding(encoding);
-
-	return availableCodecs;
 }

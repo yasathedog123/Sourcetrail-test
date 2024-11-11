@@ -41,7 +41,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2024.9.23)
+project(Sourcetrail VERSION 2024.11.11)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -216,16 +216,14 @@ add_subdirectory(src/lib)
 # Resolve cyclic dependencies between Sourcetrail_lib and Sourcetrail_lib_gui:
 #
 
-if (NOT isVcpkgBuild)
-	set_target_properties(Sourcetrail_lib
-		PROPERTIES
-			LINK_INTERFACE_MULTIPLICITY 3
-	)
-	set_target_properties(Sourcetrail_lib_gui
-		PROPERTIES
-			LINK_INTERFACE_MULTIPLICITY 3
-	)
-endif()
+set_target_properties(Sourcetrail_lib
+	PROPERTIES
+		LINK_INTERFACE_MULTIPLICITY 3
+)
+set_target_properties(Sourcetrail_lib_gui
+	PROPERTIES
+		LINK_INTERFACE_MULTIPLICITY 3
+)
 
 # Lib Cxx ----------------------------------------------------------------------
 

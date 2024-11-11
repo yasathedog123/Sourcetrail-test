@@ -1,7 +1,6 @@
 #ifndef TEXT_CODEC_H
 #define TEXT_CODEC_H
 
-#include <memory>
 #include <string>
 
 #include <QStringDecoder>
@@ -11,19 +10,22 @@
 class TextCodec
 {
 public:
+	static QStringList availableCodecs();
+
 	TextCodec(const std::string& name);
 
+	std::wstring decode(const std::string &str);
+	std::string encode(const std::wstring &str);
+
+	int encodedSize(const QString &str);
+
+	bool isValid() const;
 	std::string getName() const;
-
-	std::wstring decode(const std::string& unicodeString) const;
-	std::string encode(const std::wstring& string) const;
-
-	static QStringList availableCodecs();
 
 private:
 	std::string m_name;
-	std::unique_ptr<QStringDecoder> m_decoder;
-	std::unique_ptr<QStringEncoder> m_encoder;
+	QStringDecoder m_decoder;
+	QStringEncoder m_encoder;
 };
 
 #endif	  // TEXT_CODEC_H
