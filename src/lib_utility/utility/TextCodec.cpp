@@ -18,6 +18,7 @@ constexpr array AVAILABLE_ENCODINGS = {
 	QStringConverter::Encoding::Latin1,
 	QStringConverter::Encoding::System
 };
+static_assert(AVAILABLE_ENCODINGS.size() == QStringConverter::Encoding::LastEncoding + 1, "Encoding missing");
 
 }
 
