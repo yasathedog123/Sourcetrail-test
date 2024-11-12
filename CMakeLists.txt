@@ -279,7 +279,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	)
 	add_subdirectory(src/lib_cxx)
 else()
-	message(STATUS "Building the Cxx indexer will be skipped. You can enable building this target by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
+	message(STATUS "Building the C++ indexer is disabled. You can enable it by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
 endif()
 
 # Lib Java ---------------------------------------------------------------------
@@ -299,7 +299,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 	add_subdirectory(src/lib_java)
 else()
-	message(STATUS "Building the Java indexer will be skipped. You can enable building this target by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
+	message(STATUS "Building the Java indexer is disabled. You can enable it by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
 endif()
 
 # Lib Python -------------------------------------------------------------------
@@ -311,7 +311,7 @@ if (BUILD_PYTHON_LANGUAGE_PACKAGE)
 
 	add_subdirectory(src/lib_python)
 else()
-	message(STATUS "Building the Python indexer will be skipped. You can enable building this target by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")
+	message(STATUS "Building the Python indexer is disabled. You can enable it by setting 'BUILD_PYTHON_LANGUAGE_PACKAGE' to 'ON'.")
 endif()
 
 # Indexer App ------------------------------------------------------------------
@@ -337,7 +337,11 @@ if (BUILD_UNIT_TESTS_PACKAGE)
 	include(Catch)
 	add_subdirectory(src/test)
 else()
-	message(STATUS "Building the unit tests will be skipped. You can enable building this target by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
+	message(STATUS "Building the Unit tests is disabled. You can enable them by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
+endif()
+
+if (NOT BUILD_CXX_LANGUAGE_PACKAGE AND NOT BUILD_JAVA_LANGUAGE_PACKAGE AND NOT BUILD_PYTHON_LANGUAGE_PACKAGE)
+	message(WARNING "All language indexers are disabled! Only the GUI will be build.")
 endif()
 
 # Create license information:
