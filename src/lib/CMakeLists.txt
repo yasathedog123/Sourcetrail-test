@@ -589,6 +589,8 @@ add_library(Sourcetrail_lib
 
 	utility/text/TextAccess.cpp
 	utility/text/TextAccess.h
+	utility/text/TextCodec.cpp
+	utility/text/TextCodec.h
 
 	utility/ConfigManager.cpp
 	utility/ConfigManager.h
@@ -613,6 +615,8 @@ add_library(Sourcetrail_lib
 	utility/utility.cpp
 	utility/utility.h
 
+	utility/utilityString.cpp
+	utility/utilityString.h
 	utility/utilityUuid.cpp
 	utility/utilityUuid.h
 	utility/utilityXml.cpp
@@ -767,7 +771,6 @@ target_link_libraries(Sourcetrail_lib
 		AidKit_lib
 
 		Sourcetrail_lib_gui
-		Sourcetrail_lib_utility
 
 		$<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:Sourcetrail_lib_cxx>
 		$<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:Sourcetrail_lib_java>
@@ -777,10 +780,12 @@ target_link_libraries(Sourcetrail_lib
 		External_lib_cppsqlite3
 		External_lib_boost
 
-		Boost::headers
-		Boost::system
-		Boost::program_options
+		Boost::date_time
 		Boost::filesystem
+		Boost::headers
+		Boost::locale
+		Boost::program_options
+		Boost::system
 )
 
 if (UNIX)

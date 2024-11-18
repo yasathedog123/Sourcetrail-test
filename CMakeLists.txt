@@ -196,10 +196,6 @@ add_subdirectory(src/lib_aidkit)
 add_subdirectory(src/external)
 # message(STATUS "Using CppSQLite3 ${CppSQLite3_VERSION}")
 
-# Lib Utility ------------------------------------------------------------------
-
-add_subdirectory(src/lib_utility)
-
 # Lib Gui ----------------------------------------------------------------------
 
 add_subdirectory(src/lib_gui)
@@ -341,7 +337,7 @@ else()
 endif()
 
 if (NOT BUILD_CXX_LANGUAGE_PACKAGE AND NOT BUILD_JAVA_LANGUAGE_PACKAGE AND NOT BUILD_PYTHON_LANGUAGE_PACKAGE)
-	message(WARNING "All language indexers are disabled! Only the GUI will be build.")
+	message(WARNING "Building ONLY the GUI, because all language indexers are disabled!")
 endif()
 
 # Create license information:
