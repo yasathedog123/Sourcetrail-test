@@ -220,7 +220,14 @@ void QtMainWindow::overrideView(View* view)
 	QDockWidget* dock = nullptr;
 	for (const DockWidget& dockWidget: m_dockWidgets)
 	{
-		if (dockWidget.widget->windowTitle() == name)
+		// For unknown reason, the widget window title begins with an '&' (accelerator?), but none of
+		// the views are created with one, so it is not clear whether this is related to:
+		// https://bugreports.qt.io/browse/QTBUG-86407
+		// "Accelerators in QDockWidget titles are displayed incorrectly in some styles":
+		//
+		// This workaround ensures that the views are at least found, but if the user enables 'Show Title Bars'
+		// then the '&' is still shown!
+		if (dockWidget.widget->windowTitle().contains(name))
 		{
 			dock = dockWidget.widget;
 			break;
