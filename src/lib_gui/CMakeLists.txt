@@ -265,6 +265,8 @@ add_library(Sourcetrail_lib_gui
 	qt/window/QtIndexingStartDialog.h
 	qt/window/QtKeyboardShortcuts.cpp
 	qt/window/QtKeyboardShortcuts.h
+	qt/window/QtKeySequences.cpp
+	qt/window/QtKeySequences.h
 	qt/window/QtKnownProgressDialog.cpp
 	qt/window/QtKnownProgressDialog.h
 	qt/window/QtLicenseWindow.cpp

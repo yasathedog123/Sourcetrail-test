@@ -11,6 +11,7 @@
 #include "FileLogger.h"
 #include "FileSystem.h"
 #include "MessageSwitchColorScheme.h"
+#include "QtKeySequences.h"
 #include "TextCodec.h"
 #include "ResourcePaths.h"
 #include "logging.h"
@@ -217,12 +218,11 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		row);
 
 	// graph zooming
-	QString modifierName = utility::Platform::isMac() ? QStringLiteral("Cmd") : QStringLiteral("Ctrl");
 	m_graphZooming = addCheckBox(
-		QStringLiteral("Graph Zoom"),
-		QStringLiteral("Zoom graph on mouse wheel"),
-		QStringLiteral("<p>Enable graph zoom using mouse wheel only, instead of using ") +
-			modifierName + QStringLiteral(" + Mouse Wheel.</p>"),
+		tr("Graph Zoom"),
+		tr("Zoom graph on mouse wheel"),
+		tr("<p>Enable graph zoom using mouse wheel only, instead of using %1/%2.</p>")
+			.arg(toString(QtKeySequences::zoomInWithMouse())).arg(toString(QtKeySequences::zoomOutWithMouse())),
 		layout,
 		row);
 

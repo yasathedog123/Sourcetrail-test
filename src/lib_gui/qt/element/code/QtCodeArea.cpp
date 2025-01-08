@@ -24,13 +24,14 @@
 #include "MessageFocusOut.h"
 #include "MessageMoveIDECursor.h"
 #include "MessageShowError.h"
+#include "Platform.h"
 #include "QtCodeNavigator.h"
 #include "QtContextMenu.h"
+#include "QtKeySequences.h"
 #include "SourceLocationFile.h"
 #include "TextCodec.h"
 #include "compatibilityQt.h"
 #include "utility.h"
-#include "utilityApp.h"
 #include "utilityQt.h"
 #include "utilityString.h"
 
@@ -1130,12 +1131,8 @@ void QtCodeArea::createActions()
 	m_copyAction->setEnabled(false);
 	connect(m_copyAction, &QAction::triggered, this, &QPlainTextEdit::copy);
 
-	m_setIDECursorPositionAction = new QAction(tr("Show in IDE (Ctrl + Left Click)"), this);
-	if constexpr (utility::Platform::isMac()) {
-		m_setIDECursorPositionAction->setText(tr("Show in IDE (Cmd + Left Click)"));
-	}
+	m_setIDECursorPositionAction = new QAction(tr("Show in IDE (%1)").arg(toString(QtKeySequences::showInIDEWithMouse())), this);
 	m_setIDECursorPositionAction->setStatusTip(tr("Set the IDE Cursor to this code position"));
 	m_setIDECursorPositionAction->setToolTip(tr("Set the IDE Cursor to this code position"));
-	connect(
-		m_setIDECursorPositionAction, &QAction::triggered, this, &QtCodeArea::setIDECursorPosition);
+	connect(m_setIDECursorPositionAction, &QAction::triggered, this, &QtCodeArea::setIDECursorPosition);
 }

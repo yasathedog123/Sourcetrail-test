@@ -12,9 +12,9 @@
 #include "MessageActivateTokenIds.h"
 #include "MessageTabOpenWith.h"
 #include "MessageTooltipShow.h"
-#include "Platform.h"
 #include "QtContextMenu.h"
 #include "QtHighlighter.h"
+#include "QtKeySequences.h"
 #include "SourceLocation.h"
 #include "SourceLocationFile.h"
 #include "TextCodec.h"
@@ -98,13 +98,9 @@ QtCodeField::QtCodeField(
 	setFont(font);
 	setTabStopDistance(appSettings->getCodeTabWidth() * fontMetrics().boundingRect('9').width());
 
-	m_openInTabAction = new QAction(
-		QStringLiteral("Open in New Tab (Ctrl + Shift + Left Click)"), this);
-	if constexpr (utility::Platform::isMac()) {
-		m_openInTabAction->setText(QStringLiteral("Open in New Tab (Cmd + Shift + Left Click)"));
-	}
-	m_openInTabAction->setStatusTip(QStringLiteral("Opens the node in a new tab"));
-	m_openInTabAction->setToolTip(QStringLiteral("Opens the node in a new tab"));
+	m_openInTabAction = new QAction(tr("Open in New Tab (%1)").arg(toString(QtKeySequences::openInNewTabWithMouse())), this);
+	m_openInTabAction->setStatusTip(tr("Opens the node in a new tab"));
+	m_openInTabAction->setToolTip(tr("Opens the node in a new tab"));
 	m_openInTabAction->setEnabled(false);
 	connect(m_openInTabAction, &QAction::triggered, this, &QtCodeField::openInTab);
 }
