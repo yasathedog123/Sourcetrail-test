@@ -16,6 +16,8 @@
 #	include "TestStorage.h"
 #	include "utilityApp.h"
 
+using namespace utility;
+
 namespace
 {
 void deleteAllContents(const FilePath& tempPath)
@@ -79,7 +81,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code)
 			true);
 
 		const utility::ProcessOutput out = utility::executeProcess(
-			indexerCommand->getCommand(), indexerCommand->getArguments(), rootPath, false, -1, true);
+			indexerCommand->getCommand(), indexerCommand->getArguments(), rootPath, false, INFINITE_TIMEOUT, true);
 
 		if (!out.error.empty())
 		{

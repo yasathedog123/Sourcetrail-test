@@ -5,6 +5,8 @@
 #include "utilityApp.h"
 #include "utilityFile.h"
 
+using namespace boost::chrono;
+
 QtProjectWizardContentPathPythonEnvironment::QtProjectWizardContentPathPythonEnvironment(
 	std::shared_ptr<SourceGroupSettingsPythonEmpty> settings, QtProjectWizardWindow* window)
 	: QtProjectWizardContentPath(window), m_settings(settings)
@@ -71,7 +73,7 @@ void QtProjectWizardContentPathPythonEnvironment::onTextChanged(const QString& t
 					 .wstr()},
 				FilePath(),
 				false,
-				5000);
+				milliseconds(5000));
 			m_onQtThread([=, this]() {
 				if (out.exitCode == 0)
 				{
