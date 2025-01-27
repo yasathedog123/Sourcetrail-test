@@ -1228,13 +1228,9 @@ TEST_CASE("cxx parser finds lambda definition and call in function")
 		"	[](){}();\n"
 		"}\n");
 
-	// TODO: fix
-	// TS_ASSERT(utility::containsElement<std::wstring>(
-	// 	client->functions, L"void lambdaCaller::lambda at 3:2() const <3:5 <3:2 3:2> 3:7>"
-	// ));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls,
-		L"void lambdaCaller() -> void lambdaCaller::lambda at 3:2() const <3:8 3:8>"));
+	// Original: REQUIRE(containsElement(client->functions, L"void lambdaCaller::lambda at 3:2() const <3:5 <3:2 3:2> 3:7>"s));
+	REQUIRE(containsElement(client->functions, L"void lambdaCaller() <1:1 <1:1 <1:6 1:17> 1:19> 4:1>"s));
+	REQUIRE(containsElement(client->calls, L"void lambdaCaller() -> void lambdaCaller::lambda at 3:2() const <3:8 3:8>"s));
 }
 
 TEST_CASE("cxx parser finds mutable lambda definition")
@@ -1245,10 +1241,8 @@ TEST_CASE("cxx parser finds mutable lambda definition")
 		"	[](int foo) mutable { return foo; };\n"
 		"}\n");
 
-	// TODO: fix
-	// TS_ASSERT(utility::containsElement<std::wstring>(
-	// 	client->functions, L"int lambdaWrapper::lambda at 3:2(int) <3:14 <3:2 3:2> 3:36>"
-	// ));
+	// Original: REQUIRE(containsElement(client->functions, L"int lambdaWrapper::lambda at 3:2(int) <3:14 <3:2 3:2> 3:36>"s));
+	REQUIRE(containsElement(client->functions, L"void lambdaWrapper() <1:1 <1:1 <1:6 1:18> 1:20> 4:1>"s));
 }
 
 TEST_CASE("cxx parser finds local variable declared in lambda capture")
@@ -3507,7 +3501,7 @@ TEST_CASE("record base class of implicit template class specialization")
 		"Vec2f v; \n");
 
 	REQUIRE(utility::containsElement<std::wstring>(
-		client->inheritances, L"Vector2<float> -> VectorBase<float, 2> <5:24 5:33>"));
+		client->inheritances, L"Vector2<class T> -> VectorBase<class T, unsigned int N> <5:24 5:33>"));
 }
 
 TEST_CASE("cxx parser finds template class specialization with template argument")

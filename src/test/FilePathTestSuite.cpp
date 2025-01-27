@@ -168,26 +168,24 @@ TEST_CASE("file_path_equals_absolute_and_canonical_paths")
 	REQUIRE(path.getAbsolute() == path.getCanonical());
 }
 
-TEST_CASE("file_path_canonical_removes_symlinks")
+TEST_CASE("file_path_canonical_removes_symlinks", LINUX_TAG)
 {
-	if constexpr (!utility::Platform::isWindows()) {
-		const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
-		const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
+	// Fails under Windows, because it doesn't handle symlinks correctly.
 
-		REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
-	} else
-		SKIP_TEST("Windows doesn't handle symlinks correctly.");
+	const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
+	const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
+
+	REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
 }
 
-TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
+TEST_CASE("file_path_compares_paths_with_posix_and_windows_format", WINDOWS_TAG)
 {
-	if constexpr (utility::Platform::isWindows()) {
-		const FilePath pathB(L"data/FilePathTestSuite/b.cc");
-		const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
+	// Fails under Linux, because comparing '/' and '\\' doesn't work there.
 
-		REQUIRE(pathB == pathB2);
-	} else
-		SKIP_TEST("Comparing '/' and '\\' on Non-Windows doesn't work.");
+	const FilePath pathB(L"data/FilePathTestSuite/b.cc");
+	const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
+
+	REQUIRE(pathB == pathB2);
 }
 
 TEST_CASE("file_path_differs_for_different_existing_files")

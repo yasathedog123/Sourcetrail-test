@@ -7,7 +7,6 @@
 #	include <fstream>
 
 #	include "ApplicationSettings.h"
-#	include "FileRegister.h"
 #	include "IndexerCommandJava.h"
 #	include "JavaEnvironmentFactory.h"
 #	include "JavaParser.h"
@@ -15,7 +14,6 @@
 #	include "TestStorage.h"
 #	include "TextAccess.h"
 #	include "TimeStamp.h"
-#	include "utility.h"
 #	include "utilityJava.h"
 #	include "utilityPathDetection.h"
 #	include "utilityString.h"
@@ -73,13 +71,10 @@ void processSourceFile(
 	}
 	else
 	{
-		std::shared_ptr<TextAccess> expectedOutput = TextAccess::createFromFile(
-			expectedOutputFilePath);
-		REQUIRE_MESSAGE(
-			("Output does not match the expected line count for file " + sourceFilePath.str() +
-			 " in project " + projectName + ".")
-				.c_str(),
+		std::shared_ptr<TextAccess> expectedOutput = TextAccess::createFromFile(expectedOutputFilePath);
+		REQUIRE_MESSAGE(("Output does not match the expected line count for file " + sourceFilePath.str() + " in project " + projectName + ".").c_str(),
 			expectedOutput->getLineCount() == output->getLineCount());
+
 		if (expectedOutput->getLineCount() == output->getLineCount())
 		{
 			for (unsigned int i = 1; i <= expectedOutput->getLineCount(); i++)
@@ -129,7 +124,7 @@ TEST_CASE("java sample parser can setup environment factory")
 	REQUIRE(JavaEnvironmentFactory::getInstance().use_count() >= 1);
 }
 
-TEST_CASE("index javasymbolsolver 0 6 0 project")
+TEST_CASE("index javasymbolsolver 0 6 0 project", JAVA_TAG)
 {
 	const std::vector<FilePath>& classpath = {
 		FilePath(L"data/JavaIndexSampleProjectsTestSuite/JavaSymbolSolver060/lib/guava-21.0.jar")

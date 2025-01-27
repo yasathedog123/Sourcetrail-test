@@ -19,7 +19,7 @@ static std::shared_ptr<PathDetector> getMavenPathDetector()
 
 TEST_CASE("maven path detector is working")
 {
-	getMavenPathDetector();
+	REQUIRE(getMavenPathDetector() != nullptr);
 }
 
 TEST_CASE("maven wrapper detects source directories of simple projects")

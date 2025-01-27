@@ -32,86 +32,81 @@ void cleanup()
 
 }
 
-TEST_CASE("gradle wrapper detects source directories of simple projects")
+TEST_CASE("gradle wrapper detects source directories of simple projects", JAVA_TAG WINDOWS_TAG)
 {
-	if constexpr (Platform::isWindows()) {
-		std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), false);
+	// TODO (PMost): Why does it fail under Linux?
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/main/java").makeAbsolute()));
+	std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), false);
 
-		REQUIRE(!utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
-	} else
-		FAIL("TODO: Why does it fail under Linux?");
+	REQUIRE(utility::containsElement<FilePath>(
+		result,
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/main/java").makeAbsolute()));
 
+	REQUIRE(!utility::containsElement<FilePath>(
+		result,
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
 }
 
-TEST_CASE("gradle wrapper detects source and test directories of simple projects")
+TEST_CASE("gradle wrapper detects source and test directories of simple projects", JAVA_TAG WINDOWS_TAG)
 {
-	if constexpr (Platform::isWindows()) {
-		std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), true);
+	// TODO (PMost): Why does it fail under Linux?
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/main/java").makeAbsolute()));
+	std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), true);
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
-	} else
-		FAIL("TODO: Why does it fail under Linux?");
+	REQUIRE(utility::containsElement<FilePath>(
+		result,
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/main/java").makeAbsolute()));
+
+	REQUIRE(utility::containsElement<FilePath>(
+		result,
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
 }
 
-TEST_CASE("gradle wrapper detects source dependencies of simple projects")
+TEST_CASE("gradle wrapper detects source dependencies of simple projects", JAVA_TAG WINDOWS_TAG)
 {
-	if constexpr (Platform::isWindows()) {
-		std::vector<std::wstring> requiredDependencies = {L"joda-time-2.2.jar"};
+	// TODO (PMost): Why does it fail under Linux?
 
-		cleanup();
-		REQUIRE(utility::gradleCopyDependencies(
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"),
-			tmpFolder.makeAbsolute(),
-			false));
+	std::vector<std::wstring> requiredDependencies = {L"joda-time-2.2.jar"};
 
-		const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
+	cleanup();
+	REQUIRE(utility::gradleCopyDependencies(
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"),
+		tmpFolder.makeAbsolute(),
+		false));
 
-		for (const std::wstring &requiredDependency: requiredDependencies)
-		{
-			REQUIRE(utility::containsElement(
-				copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));
-		}
-		cleanup();
-	} else
-		FAIL("TODO: Why does it fail under Linux?");
+	const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
+
+	for (const std::wstring &requiredDependency: requiredDependencies)
+	{
+		REQUIRE(utility::containsElement(
+			copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));
+	}
+	cleanup();
 }
 
-TEST_CASE("gradle wrapper detects source and test dependencies of simple projects")
+TEST_CASE("gradle wrapper detects source and test dependencies of simple projects", JAVA_TAG WINDOWS_TAG)
 {
-	if constexpr (Platform::isWindows()) {
-		std::vector<std::wstring> requiredDependencies = {
-			L"joda-time-2.2.jar", L"hamcrest-core-1.3.jar", L"junit-4.12.jar"};
+	// TODO (PMost): Why does it fail under Linux?
 
-		cleanup();
-		REQUIRE(utility::gradleCopyDependencies(
-			FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"),
-			tmpFolder.makeAbsolute(),
-			true));
+	std::vector<std::wstring> requiredDependencies = {
+		L"joda-time-2.2.jar", L"hamcrest-core-1.3.jar", L"junit-4.12.jar"};
 
-		const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
+	cleanup();
+	REQUIRE(utility::gradleCopyDependencies(
+		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"),
+		tmpFolder.makeAbsolute(),
+		true));
 
-		for (const std::wstring &requiredDependency: requiredDependencies)
-		{
-			REQUIRE(utility::containsElement(
-				copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));
-		}
-		cleanup();
-	} else
-		FAIL("TODO: Why does it fail under Linux?");
+	const std::vector<FilePath> copiedDependencies = FileSystem::getFilePathsFromDirectory(tmpFolder);
+
+	for (const std::wstring &requiredDependency: requiredDependencies)
+	{
+		REQUIRE(utility::containsElement(
+			copiedDependencies, tmpFolder.getConcatenated(requiredDependency)));
+	}
+	cleanup();
 }
 
 #endif

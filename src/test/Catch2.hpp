@@ -13,9 +13,6 @@ namespace Catch2
 	using Catch::EventListenerBase;
 }
 
-#define SKIP_TEST(reason) \
-	SKIP("Skipping Test: " reason)
-
 #define REQUIRE_MESSAGE(msg, cond) \
 	do \
 	{ \
@@ -24,3 +21,13 @@ namespace Catch2
 	} while ((void)0, 0)
 
 #endif
+
+// Tags for tests which can only run when Catch2 has been configured with 'CATCH_CONFIG_NO_POSIX_SIGNALS'
+// and/or 'CATCH_CONFIG_NO_WINDOWS_SEH' which is only true for the Vcpkg-Build:
+#define JAVA_TAG "[Java]"
+
+// Tags for tests which run only successfully under Linux:
+#define LINUX_TAG "[Linux]"
+
+// Tags for tests which run only successfully under Windows:
+#define WINDOWS_TAG "[Windows]"

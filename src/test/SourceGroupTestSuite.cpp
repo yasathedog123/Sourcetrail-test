@@ -449,7 +449,7 @@ TEST_CASE("source gropup cxx c correct default standard")
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 
-TEST_CASE("sourcegroup java empty generates expected output")
+TEST_CASE("sourcegroup java empty generates expected output", JAVA_TAG)
 {
 	const std::wstring projectName = L"java_empty";
 
@@ -480,42 +480,41 @@ TEST_CASE("sourcegroup java empty generates expected output")
 	applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
 }
 
-TEST_CASE("sourcegroup java gradle generates expected output")
+TEST_CASE("sourcegroup java gradle generates expected output", JAVA_TAG WINDOWS_TAG)
 {
-	if constexpr (utility::Platform::isWindows()) {
-		const std::wstring projectName = L"java_gradle";
+	// TODO (PMost): Why does it fail under Linux?
 
-		ProjectSettings projectSettings;
-		projectSettings.setProjectFilePath(L"non_existent_project", getInputDirectoryPath(projectName));
+	const std::wstring projectName = L"java_gradle";
 
-		std::shared_ptr<SourceGroupSettingsJavaGradle> sourceGroupSettings =
-			std::make_shared<SourceGroupSettingsJavaGradle>("fake_id", &projectSettings);
-		sourceGroupSettings->setSourceExtensions({L".java"});
-		sourceGroupSettings->setExcludeFilterStrings({L"**/HelloWorld.java"});
-		sourceGroupSettings->setJavaStandard({L"10"});
-		sourceGroupSettings->setGradleProjectFilePath(
-			{getInputDirectoryPath(projectName).concatenate(L"build.gradle")});
-		sourceGroupSettings->setShouldIndexGradleTests(true);
+	ProjectSettings projectSettings;
+	projectSettings.setProjectFilePath(L"non_existent_project", getInputDirectoryPath(projectName));
 
-		std::shared_ptr<ApplicationSettings> applicationSettings = ApplicationSettings::getInstance();
+	std::shared_ptr<SourceGroupSettingsJavaGradle> sourceGroupSettings =
+		std::make_shared<SourceGroupSettingsJavaGradle>("fake_id", &projectSettings);
+	sourceGroupSettings->setSourceExtensions({L".java"});
+	sourceGroupSettings->setExcludeFilterStrings({L"**/HelloWorld.java"});
+	sourceGroupSettings->setJavaStandard({L"10"});
+	sourceGroupSettings->setGradleProjectFilePath(
+		{getInputDirectoryPath(projectName).concatenate(L"build.gradle")});
+	sourceGroupSettings->setShouldIndexGradleTests(true);
 
-		const FilePath storedAppPath = AppPath::getSharedDataDirectoryPath();
-		AppPath::setSharedDataDirectoryPath(storedAppPath.getConcatenated(L"../app").makeAbsolute());
+	std::shared_ptr<ApplicationSettings> applicationSettings = ApplicationSettings::getInstance();
 
-		std::vector<FilePath> storedJreSystemLibraryPaths =
-			applicationSettings->getJreSystemLibraryPaths();
-		applicationSettings->setJreSystemLibraryPaths({FilePath(L"test/jre/system/library/path.jar")});
+	const FilePath storedAppPath = AppPath::getSharedDataDirectoryPath();
+	AppPath::setSharedDataDirectoryPath(storedAppPath.getConcatenated(L"../app").makeAbsolute());
 
-		generateAndCompareExpectedOutput(
-			projectName, std::make_shared<SourceGroupJavaGradle>(sourceGroupSettings));
+	std::vector<FilePath> storedJreSystemLibraryPaths =
+		applicationSettings->getJreSystemLibraryPaths();
+	applicationSettings->setJreSystemLibraryPaths({FilePath(L"test/jre/system/library/path.jar")});
 
-		applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
-		AppPath::setSharedDataDirectoryPath(storedAppPath);
-	} else
-		FAIL("TODO: Why does it fail under Linux?");
+	generateAndCompareExpectedOutput(
+		projectName, std::make_shared<SourceGroupJavaGradle>(sourceGroupSettings));
+
+	applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
+	AppPath::setSharedDataDirectoryPath(storedAppPath);
 }
 
-TEST_CASE("sourcegroup java maven generates expected output")
+TEST_CASE("sourcegroup java maven generates expected output", JAVA_TAG)
 {
 	std::vector<FilePath> mavenPaths = utility::getMavenExecutablePathDetector()->getPaths();
 
