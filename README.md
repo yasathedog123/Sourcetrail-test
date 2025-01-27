@@ -3,10 +3,13 @@
 Sourcetrail is a free and open-source cross-platform source explorer that helps you get productive on unfamiliar source code. It is:
 * free
 * working offline
-* operating on Windows, macOS and Linux
+* operating on Linux, Windows (and macOS)
 * supporting C, C++ and Java
 * offering an SDK ([SourcetrailDB](https://github.com/CoatiSoftware/SourcetrailDB)) to write custom language extensions
 
+# 🆕 Binary Releases
+
+Binary releases are available for [sponsors](https://github.com/sponsors/petermost).
 
 
 ## __Links__
