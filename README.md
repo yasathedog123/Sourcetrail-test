@@ -63,7 +63,7 @@ Prepare the build:
 $ cd Sourcetrail
 $ cmake --preset vcpkg-ninja-release
 ```
-Note that the initial compilation of the vcpkg packages (especially LLVM) will take a **long** time! On my machine (AMD Ryzen 7 3700X) the compilation takes about 3 hours!
+Note that the initial compilation of the vcpkg packages (especially LLVM) will take a **long** time! Depending on your machine, it probably will take about 2 to 3 hours!
 
 Build:
 ```
@@ -72,39 +72,19 @@ $ cmake --build .
 ```
 
 
-
 ## System build
 
 ### Linux
 
-To compile it under the current (K)ubuntu platform 24.04, "Noble Numbat", install the following packages:
+To compile it under (K)ubuntu 24.10, "Oracular Oriole", install the following packages:
 
-**General packages:**
-|Name|Version|Package|
-|----|-------|-------|
-|CMake|3.28.3|cmake  |
-|Ninja|1.11.1|ninja-build|
-|Boost|1.83.0|libboost1.83-all-dev|
-|Qt|6.4.2|qt6-base-dev, qt6-svg-dev|
-|SQLite|3.45.1|libsqlite3-dev|
-|TinyXML|2.6.2|libtinyxml-dev|
+**General packages:** cmake, ninja-build, libboost1.83-all-dev, qt6-base-dev, qt6-svg-dev, libsqlite3-dev, libtinyxml-dev
 
-**C++ packages:**
-|Name|Version|Package|
-|----|-------|-------|
-|Clang|18.1.3|clang-18, libclang-18-dev|
+**C++ packages:** clang-19, libclang-19-dev
 
-**Java packages:**
-|Name|Version|Package|
-|----|-------|-------|
-|Maven|3.8.7|maven|
-|OpenJDK|21.0.3|openjdk-21-jdk|
+**Java packages:** maven, openjdk-23-jdk
 
-**Unit test packages:**
-|Name|Version|Package|
-|----|-------|-------|
-|Catch2|3.4.0|catch2|
-|GoogleTest|1.14.0|libgtest-dev|
+**Unit test packages:** catch2, libgtest-dev
 
 Prepare the build:
 ```
@@ -121,3 +101,14 @@ $ cmake --build .
 ### Windows
 It's probably also possible to build with pre-installed libraries, like the original build instructions describe, but I didn't/don't test it.
 
+### Used/Supported libraries: ###
+|Name|System|Vcpkg| 
+|----|------|-----|
+|Clang|19.1.1|18.1.6|
+|Qt|6.6.2|6.8.1|
+|Boost|1.83.0|1.86.0|
+|SQLite3|3.46.1|3.47.2|
+|TinyXML|2.6.2|2.6.2|
+|OpenJDK|23.0.1|23.0.1|
+|Catch2|3.4.0|3.8.0|
+|GTest|1.15.2|1.15.2|

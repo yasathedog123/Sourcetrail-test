@@ -41,7 +41,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.1.8)
+project(Sourcetrail VERSION 2025.1.28)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -69,6 +69,8 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 
 # Prepare Data ----------------------------------------------------------------
 
@@ -160,7 +162,7 @@ if (isVcpkgBuild)
 	find_package(unofficial-sqlite3 CONFIG REQUIRED)
 	if (NOT DEFINED SQLite3_VERSION)
 		# Use quotes to indicate a version literal:
-		set(SQLite3_VERSION "\"3.46.0#2\"")
+		set(SQLite3_VERSION "\"3.47.2\"")
 	endif()
 	add_library(External_lib_sqlite3 ALIAS unofficial::sqlite3::sqlite3)
 else()
@@ -175,7 +177,7 @@ if (isVcpkgBuild)
 	find_package(tinyxml CONFIG REQUIRED)
 	if (NOT DEFINED tinyxml_VERSION)
 		# Use quotes to indicate a version literal:
-		set(tinyxml_VERSION "\"2.6.2#10\"")
+		set(tinyxml_VERSION "\"2.6.2\"")
 	endif()
 	add_library(External_lib_tinyxml ALIAS unofficial-tinyxml::unofficial-tinyxml)
 else()
@@ -227,8 +229,13 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	# Clang:
 
-	find_package(Clang 18.1...<19.0 REQUIRED)
+	find_package(Clang REQUIRED) # Version range 18...<20 didnt' work
 	message(STATUS "Found LLVM ${LLVM_VERSION}")
+	
+	# Check for the supported versions:
+	if (NOT (${LLVM_VERSION} VERSION_GREATER_EQUAL 18 OR ${LLVM_VERSION} VERSION_LESS_EQUAL 19))
+		message(FATAL_ERROR "Only Clang 18/19 are supported!")
+	endif()
 
 	if (isVcpkgBuild)
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")

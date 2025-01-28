@@ -218,7 +218,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 			}
 			else if (functionDecl->isFunctionTemplateSpecialization())
 			{
-				if (const clang::TemplateArgumentList* templateArgumentList = 
+				if (const clang::TemplateArgumentList* templateArgumentList =
 					functionDecl->getTemplateSpecializationArgs())
 				{
 					for (unsigned i = 0; i < templateArgumentList->size(); i++)
@@ -316,7 +316,11 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 			clang::isa<clang::NamespaceDecl>(declaration) &&
 			clang::dyn_cast<clang::NamespaceDecl>(declaration)->isAnonymousNamespace())
 		{
+#if LLVM_VERSION_MAJOR >= 19
+			declaration = clang::dyn_cast<clang::NamespaceDecl>(declaration)->getFirstDecl();
+#else
 			declaration = clang::dyn_cast<clang::NamespaceDecl>(declaration)->getOriginalNamespace();
+#endif
 			return std::make_unique<CxxDeclName>(getNameForAnonymousSymbol(L"namespace", declaration));
 		}
 		else if (clang::isa<clang::EnumDecl>(declaration) && declNameString.empty())

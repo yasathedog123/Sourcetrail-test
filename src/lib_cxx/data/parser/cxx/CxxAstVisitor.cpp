@@ -5,13 +5,11 @@
 
 #include "CanonicalFilePathCache.h"
 #include "CxxDeclNameResolver.h"
-#include "CxxTypeNameResolver.h"
 #include "IndexerStateInfo.h"
 #include "ParseLocation.h"
 #include "ParserClient.h"
 #include "logging.h"
 #include "utilityClang.h"
-#include "utilityString.h"
 
 CxxAstVisitor::CxxAstVisitor(
 	clang::ASTContext* astContext,
@@ -78,7 +76,7 @@ bool CxxAstVisitor::shouldVisitImplicitCode() const
 	return m_implicitCodeComponent.shouldVisitImplicitCode();
 }
 
-bool CxxAstVisitor::shouldHandleTypeLoc(const clang::TypeLoc& tl) 
+bool CxxAstVisitor::shouldHandleTypeLoc(const clang::TypeLoc& tl)
 {
 	return tl.getAs<clang::TagTypeLoc>() ||
 		tl.getAs<clang::TypedefTypeLoc>() ||
@@ -267,7 +265,11 @@ bool CxxAstVisitor::TraverseTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d)
 	if (d->hasDefaultArgument() && !d->defaultArgumentWasInherited())
 	{
 		FOREACH_COMPONENT(beginTraverseTemplateDefaultArgumentLoc());
+#if LLVM_VERSION_MAJOR >= 19
+		TraverseTypeLoc(d->getDefaultArgument().getTypeSourceInfo()->getTypeLoc());
+#else
 		TraverseTypeLoc(d->getDefaultArgumentInfo()->getTypeLoc());
+#endif
 		FOREACH_COMPONENT(endTraverseTemplateDefaultArgumentLoc());
 	}
 
@@ -393,6 +395,18 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 
 	if (ReturnValue)
 	{
+#if LLVM_VERSION_MAJOR >= 19
+		if (const clang::ASTTemplateArgumentListInfo *TALI = D->getTemplateArgsAsWritten())
+		{
+			for (const clang::TemplateArgumentLoc &TAL : TALI->arguments())
+			{
+				if (!TraverseTemplateArgumentLoc(TAL))
+				{
+					ReturnValue = false;
+				}
+			}
+		}
+#else
 		if (clang::TypeSourceInfo* TSI = D->getTypeAsWritten())
 		{
 			// clang::TypeLoc::TypeLocClass ccccc = TSI->getTypeLoc().getTypeLocClass();
@@ -409,6 +423,7 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 				}
 			}
 		}
+#endif
 	}
 
 	if (ReturnValue)

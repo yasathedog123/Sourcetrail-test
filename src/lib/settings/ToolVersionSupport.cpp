@@ -17,14 +17,14 @@ namespace
 // versions in the system build and the vcpkg build!
 //
 // From llvm-config.h:
-// #define LLVM_VERSION_MAJOR 16
-// #define LLVM_VERSION_MAJOR 17
 // #define LLVM_VERSION_MAJOR 18
+// #define LLVM_VERSION_MAJOR 19
 //
 // C++
-// /usr/bin/clang-18 -std=xxx empty.cpp
+// /usr/bin/clang-19 -std=xxx empty.cpp
 // vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
 //
+// Released standards:
 // note: use 'c++98' or 'c++03' for 'ISO C++ 1998 with amendments' standard
 // note: use 'gnu++98' or 'gnu++03' for 'ISO C++ 1998 with amendments and GNU extensions' standard
 // note: use 'c++11' for 'ISO C++ 2011 with amendments' standard
@@ -37,29 +37,16 @@ namespace
 // note: use 'gnu++20' for 'ISO C++ 2020 DIS with GNU extensions' standard
 // note: use 'c++23' for 'ISO C++ 2023 DIS' standard
 // note: use 'gnu++23' for 'ISO C++ 2023 DIS with GNU extensions' standard
+//
+// Draft standards:
 // note: use 'c++2c' or 'c++26' for 'Working draft for C++2c' standard
 // note: use 'gnu++2c' or 'gnu++26' for 'Working draft for C++2c with GNU extensions' standard
-
-vector<wstring> getDraftCppStandards()
-{
-	const vector<wstring> draftCppStandards = {
-		#ifdef LLVM_VERSION_MAJOR
-			#if LLVM_VERSION_MAJOR == 18
-				L"c++2c"s, L"c++26"s,
-				L"gnu++2c"s, L"gnu++26"s,
-			#else
-				#error Unhandled LLVM version!
-			#endif
-		#endif
-	};
-	return draftCppStandards;
-}
 
 vector<wstring> getReleasedCppStandards()
 {
 	const vector<wstring> releasedCppStandards = {
 		#ifdef LLVM_VERSION_MAJOR
-			#if LLVM_VERSION_MAJOR == 18
+			#if LLVM_VERSION_MAJOR >= 18
 				L"c++23"s, L"gnu++23"s,
 				L"c++20"s, L"gnu++20"s,
 				L"c++17"s, L"gnu++17"s,
@@ -67,18 +54,30 @@ vector<wstring> getReleasedCppStandards()
 				L"c++11"s, L"gnu++11"s,
 				L"c++03"s, L"gnu++03"s,
 				L"c++98"s, L"gnu++98"s,
-			#else
-				#error Unhandled LLVM version!
 			#endif
 		#endif
 	};
 	return releasedCppStandards;
 }
 
+vector<wstring> getDraftCppStandards()
+{
+	const vector<wstring> draftCppStandards = {
+		#ifdef LLVM_VERSION_MAJOR
+			#if LLVM_VERSION_MAJOR >= 18
+				L"c++2c"s, L"c++26"s,
+				L"gnu++2c"s, L"gnu++26"s,
+			#endif
+		#endif
+	};
+	return draftCppStandards;
+}
+
 // C
-// /usr/bin/clang-18 -std=xxx empty.c
+// /usr/bin/clang-19 -std=xxx empty.c
 // vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.c
 //
+// Released standards:
 // note: use 'c89', 'c90', or 'iso9899:1990' for 'ISO C 1990' standard
 // note: use 'iso9899:199409' for 'ISO C 1990 with amendment 1' standard
 // note: use 'gnu89' or 'gnu90' for 'ISO C 1990 with GNU extensions' standard
@@ -88,38 +87,41 @@ vector<wstring> getReleasedCppStandards()
 // note: use 'gnu11' for 'ISO C 2011 with GNU extensions' standard
 // note: use 'c17', 'iso9899:2017', 'c18', or 'iso9899:2018' for 'ISO C 2017' standard
 // note: use 'gnu17' or 'gnu18' for 'ISO C 2017 with GNU extensions' standard
+//
+// Draft standards:
 // note: use 'c23' for 'Working Draft for ISO C23' standard
 // note: use 'gnu23' for 'Working Draft for ISO C23 with GNU extensions' standard
-
-vector<wstring> getDraftCStandards()
-{
-	const vector<wstring> draftCStandards = {
-		#ifdef LLVM_VERSION_MAJOR
-			#if LLVM_VERSION_MAJOR == 18
-				L"c23"s, L"gnu23"s
-			#else
-				#error Unhandled LLVM Version!
-			#endif
-		#endif
-	};
-	return draftCStandards;
-}
+// note: use 'c2y' for 'Working Draft for ISO C2y' standard
+// note: use 'gnu2y' for 'Working Draft for ISO C2y with GNU extensions' standard
 
 vector<wstring> getReleasedCStandards()
 {
 	const vector<wstring> releasedCStandards = {
 		#ifdef LLVM_VERSION_MAJOR
-			#if LLVM_VERSION_MAJOR == 18
+			#if LLVM_VERSION_MAJOR >= 18
 				L"c17"s, L"gnu17"s,
 				L"c11"s, L"gnu11"s,
 				L"c99"s, L"gnu99"s,
 				L"c89"s, L"gnu89"s,
-			#else
-				#error Unhandled LLVM Version!
 			#endif
 		#endif
 	};
 	return releasedCStandards;
+}
+
+vector<wstring> getDraftCStandards()
+{
+	const vector<wstring> draftCStandards = {
+		#ifdef LLVM_VERSION_MAJOR
+			#if LLVM_VERSION_MAJOR == 18 || LLVM_VERSION_MAJOR == 19
+				L"c23"s, L"gnu23"s
+			#endif
+			#if LLVM_VERSION_MAJOR >= 19
+				L"c2y"s, L"gnu2y"s
+			#endif
+		#endif
+	};
+	return draftCStandards;
 }
 
 }
@@ -165,9 +167,8 @@ vector<wstring> ClangVersionSupport::getAvailableCStandards()
 vector<wstring> VisualStudioVersionSupport::getVersionRanges()
 {
 	// Version table: https://github.com/microsoft/vswhere/wiki/Versions#release-versions
-
+	// Sorted from newest to oldest:
 	const vector<wstring> releasedVisualStudioVersionRanges = {
-		// Sorted from newest to oldest:
 		L"[17.0, 18.0)"s, // 2022
 		L"[16.0, 17.0)"s, // 2019
 		L"[15.0, 16.0)"s  // 2017
