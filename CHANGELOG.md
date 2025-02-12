@@ -1,5 +1,11 @@
 ### Changelog
 
+#### 2025.1.28
+* Logic: Add support for Clang 19.
+* Logic: Re-enable detection of non-trivial destructor calls.
+* Build: Replace/Remove last Qt5 dependency.
+* Fix: Keep the console window open when logging is enabled.
+
 #### 2024.9.23
 * GUI: Try to hide the external console window on Windows. See ["The console window is not hidden under Windows 11"](https://github.com/petermost/Sourcetrail/issues/19) for additional information.
 * GUI: Add the 'Hack' font.
