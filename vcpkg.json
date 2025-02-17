@@ -66,6 +66,7 @@
 				"brotli",
 				"concurrent",
 				"default-features",
+				"dnslookup",
 				"doubleconversion",
 				"freetype",
 				"gui",
@@ -77,9 +78,9 @@
 				"openssl",
 				"pcre2",
 				"png",
+				"sql",
 				"sql-psql",
 				"sql-sqlite",
-				"sql",
 				"thread",
 				"widgets",
 				"zstd"
