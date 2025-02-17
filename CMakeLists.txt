@@ -9,8 +9,11 @@ else()
 	set(isVcpkgBuild FALSE)
 endif()
 
+# Prevent:
+# - Printing of package usages
+# - Rebuilding vcpkg packages after a compiler update
 if (isVcpkgBuild)
-	set(VCPKG_INSTALL_OPTIONS "--no-print-usage")
+	set(VCPKG_INSTALL_OPTIONS "--no-print-usage;--x-abi-tools-use-exact-versions")
 endif()
 
 # Make the build type available as a compiler variable:
