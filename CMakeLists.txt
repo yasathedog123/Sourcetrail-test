@@ -9,6 +9,10 @@ else()
 	set(isVcpkgBuild FALSE)
 endif()
 
+if (isVcpkgBuild)
+	set(VCPKG_INSTALL_OPTIONS "--no-print-usage")
+endif()
+
 # Make the build type available as a compiler variable:
 if (isVcpkgBuild)
 	add_compile_definitions(IS_VCPKG_BUILD=1)
@@ -41,7 +45,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.2.16)
+project(Sourcetrail VERSION 2025.2.17)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -116,7 +120,10 @@ if (isVcpkgBuild)
 	set(Boost_NO_SYSTEM_PATHS ON)
 endif()
 
-find_package(Boost 1.83 CONFIG REQUIRED 
+set(BOOST_MIN_VERSION 1.83)
+set(BOOST_MAX_VERSION 1.87)
+
+find_package(Boost CONFIG REQUIRED 
 	COMPONENTS
 		# compiled libraries:
 		system program_options filesystem date_time locale
@@ -127,7 +134,8 @@ find_package(Boost 1.83 CONFIG REQUIRED
 		# See https://github.com/Kitware/CMake/blob/master/Modules/FindBoost.cmake#L1409
 		# for a list of compiled libraries.
 )
-message(STATUS "Found Boost ${Boost_VERSION}")
+message(STATUS "Found Boost ${Boost_VERSION}: ${Boost_INCLUDE_DIRS}")
+checkVersionRange("Boost" ${Boost_VERSION} ${BOOST_MIN_VERSION} ${BOOST_MAX_VERSION})
 
 add_library(External_lib_boost INTERFACE)
 
@@ -150,7 +158,7 @@ target_compile_definitions(External_lib_boost
 
 set (QT_MIN_VERSION "6.4.2")
 set (QT_MIN_VERSION_HEX 0x060402)
-find_package(Qt6 ${QT_MIN_VERSION} REQUIRED 
+find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED 
 	COMPONENTS
 		Widgets PrintSupport Network Svg
 )
@@ -229,13 +237,12 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	# Clang:
 
-	find_package(Clang REQUIRED) # Version range 18...<20 didnt' work
-	message(STATUS "Found LLVM ${LLVM_VERSION}")
+	set(CLANG_MIN_VERSION 18)
+	set(CLANG_MAX_VERSION 20)
 	
-	# Check for the supported versions:
-	if (NOT (${LLVM_VERSION} VERSION_GREATER_EQUAL 18 OR ${LLVM_VERSION} VERSION_LESS_EQUAL 19))
-		message(FATAL_ERROR "Only Clang 18/19 are supported!")
-	endif()
+	find_package(Clang CONFIG REQUIRED) # Minimum version and/or version range xx...<yy doesn't work.
+	message(STATUS "Found LLVM ${LLVM_VERSION}: ${LLVM_INCLUDE_DIRS}")
+	checkVersionRange("Clang" ${LLVM_VERSION} ${CLANG_MIN_VERSION} ${CLANG_MAX_VERSION})
 
 	if (isVcpkgBuild)
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")
@@ -248,6 +255,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
 
 	add_library(External_lib_clang INTERFACE)
+	
 	target_compile_definitions(External_lib_clang
 		INTERFACE
 			${LLVM_DEFINITIONS}
@@ -298,7 +306,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 
 	# Maven:
 	find_program(MVN_COMMAND NAMES "mvn" REQUIRED)
-	message(STATUS "Found Maven ${MVN_COMMAND}")
+	message(STATUS "Found Maven: ${MVN_COMMAND}")
 
 	add_subdirectory(src/lib_java)
 else()
