@@ -13,7 +13,11 @@ endif()
 # - Printing of package usages
 # - Rebuilding vcpkg packages after a compiler update
 if (isVcpkgBuild)
-	set(VCPKG_INSTALL_OPTIONS "--no-print-usage;--x-abi-tools-use-exact-versions")
+	set(VCPKG_INSTALL_OPTIONS
+		--x-abi-tools-use-exact-versions
+		--clean-after-build
+		--no-print-usage
+	)
 endif()
 
 # Make the build type available as a compiler variable:
@@ -48,7 +52,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.2.17)
+project(Sourcetrail VERSION 2025.2.18)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -238,7 +242,8 @@ set_target_properties(Sourcetrail_lib_gui
 
 if (BUILD_CXX_LANGUAGE_PACKAGE)
 
-	# Clang:
+	# Integrate LLVM/TibTooling. 
+	# For further details see https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
 
 	set(CLANG_MIN_VERSION 18)
 	set(CLANG_MAX_VERSION 20)
@@ -247,31 +252,32 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	message(STATUS "Found LLVM ${LLVM_VERSION}: ${LLVM_INCLUDE_DIRS}")
 	checkVersionRange("Clang" ${LLVM_VERSION} ${CLANG_MIN_VERSION} ${CLANG_MAX_VERSION})
 
-	if (isVcpkgBuild)
-		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")
-	else()
-		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
-	endif()
-	set(headerTargetDir "app/data/cxx/include/")
-
-	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
-	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
-
 	add_library(External_lib_clang INTERFACE)
 	
+	separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 	target_compile_definitions(External_lib_clang
 		INTERFACE
-			${LLVM_DEFINITIONS}
+			${LLVM_DEFINITIONS_LIST}
 	)
 	target_include_directories(External_lib_clang SYSTEM
 		INTERFACE
 			${LLVM_INCLUDE_DIRS}
+			${CLANG_INCLUDE_DIRS}
 	)
-	llvm_map_components_to_libnames(REQ_LLVM_LIBS
-		${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
-	)
-	target_link_libraries(External_lib_clang
-		INTERFACE
+	
+	# 'LLVM_LINK_LLVM_DYLIB' is set when LLVM/Clang have been build into seperate single libraries.
+	# Apparently this means for LLVM 'libLLVM' and for Clang 'libclang-cpp'.
+	# For further details see https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
+	
+	if (LLVM_LINK_LLVM_DYLIB) # Should be CLANG_LINK_CLANG_DYLIB in future LLVM releases?
+		set(LLVM_LIBRARIES LLVM)
+		set(CLANG_LIBRARIES clang-cpp)
+	else()
+		llvm_map_components_to_libnames(LLVM_LIBRARIES
+			${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
+		)
+		# LibTooling libraries:
+		set(CLANG_LIBRARIES
 			clangASTMatchers
 			clangFrontend
 			clangSerialization
@@ -288,9 +294,26 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 			clangAST
 			clangLex
 			clangBasic
-
-			${REQ_LLVM_LIBS}
+		)
+	endif()
+		
+	target_link_libraries(External_lib_clang
+		INTERFACE
+			${LLVM_LIBRARIES}
+			${CLANG_LIBRARIES}
 	)
+	
+	# Copy required headers:
+	if (isVcpkgBuild)
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/lib/clang/${LLVM_VERSION_MAJOR}/include/")
+	else()
+		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
+	endif()
+	set(headerTargetDir "app/data/cxx/include/")
+
+	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
+	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
+	
 	add_subdirectory(src/lib_cxx)
 else()
 	message(STATUS "Building the C++ indexer is disabled. You can enable it by setting 'BUILD_CXX_LANGUAGE_PACKAGE' to 'ON'.")
