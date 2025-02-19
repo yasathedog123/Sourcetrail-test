@@ -342,9 +342,11 @@ endif()
 # Lib Python -------------------------------------------------------------------
 
 if (BUILD_PYTHON_LANGUAGE_PACKAGE)
+	message(WARNING "Python indexer is in a prototype state!")
+	
 	# Bash:
 	find_program(BASH_COMMAND NAMES "bash" REQUIRED)
-	message(STATUS "Found Bash ${BASH_COMMAND}")
+	message(STATUS "Found Bash: ${BASH_COMMAND}")
 
 	add_subdirectory(src/lib_python)
 else()
