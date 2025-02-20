@@ -4,11 +4,12 @@
 #include <QLabel>
 
 #include "SourceGroupSettingsWithJavaStandard.h"
+#include "ToolVersionSupport.h"
 
 QtProjectWizardContentJavaStandard::QtProjectWizardContentJavaStandard(
 	std::shared_ptr<SourceGroupSettingsWithJavaStandard> sourceGroupSettings,
 	QtProjectWizardWindow* window)
-	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings) 
+	: QtProjectWizardContent(window), m_sourceGroupSettings(sourceGroupSettings)
 {
 }
 
@@ -27,7 +28,7 @@ void QtProjectWizardContentJavaStandard::load()
 
 	if (m_sourceGroupSettings)
 	{
-		std::vector<std::wstring> standards = m_sourceGroupSettings->getAvailableJavaStandards();
+		std::vector<std::wstring> standards = EclipseVersionSupport::getAvailableJavaStandards();
 		for (size_t i = 0; i < standards.size(); i++)
 		{
 			m_standard->insertItem(static_cast<int>(i), QString::fromStdWString(standards[i]));

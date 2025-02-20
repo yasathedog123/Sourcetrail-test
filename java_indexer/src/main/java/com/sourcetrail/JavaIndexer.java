@@ -60,24 +60,20 @@ public class JavaIndexer
 
 			ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
 
-			parser.setResolveBindings(
-				true);	  // solve "bindings" like the declaration of the type used in a var decl
-			parser.setKind(
-				ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
-			parser.setBindingsRecovery(
-				true);	  // also return bindings that are not resolved completely
+			parser.setResolveBindings(true);	  // solve "bindings" like the declaration of the type used in a var decl
+			parser.setKind(ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
+			parser.setBindingsRecovery(true);	  // also return bindings that are not resolved completely
 			parser.setStatementsRecovery(true);
 
 			{
-				String convertedLanguageStandard = convertLanguageStandard(languageStandard);
-				astVisitorClient.logInfo("using language standard " + convertedLanguageStandard);
+				astVisitorClient.logInfo("using language standard " + languageStandard);
 
 				Hashtable<String, String> options = JavaCore.getOptions();
 				options.put(JavaCore.COMPILER_PB_ENABLE_PREVIEW_FEATURES, JavaCore.DISABLED);
 				options.put(JavaCore.COMPILER_PB_REPORT_PREVIEW_FEATURES, JavaCore.IGNORE);
-				options.put(JavaCore.COMPILER_SOURCE, convertedLanguageStandard);
-				options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, convertedLanguageStandard);
-				options.put(JavaCore.COMPILER_COMPLIANCE, convertedLanguageStandard);
+				options.put(JavaCore.COMPILER_SOURCE, languageStandard);
+				options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, languageStandard);
+				options.put(JavaCore.COMPILER_COMPLIANCE, languageStandard);
 				parser.setCompilerOptions(options);
 			}
 
@@ -180,55 +176,6 @@ public class JavaIndexer
 	public static void clearCaches()
 	{
 		Runtime.getRuntime().gc();
-	}
-
-	private static String convertLanguageStandard(String s)
-	{
-		// Must be in sync with 'SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards'
-		switch (s)
-		{
-		case "1":
-			return JavaCore.VERSION_1_1;
-		case "2":
-			return JavaCore.VERSION_1_2;
-		case "3":
-			return JavaCore.VERSION_1_3;
-		case "4":
-			return JavaCore.VERSION_1_4;
-		case "5":
-			return JavaCore.VERSION_1_5;
-		case "6":
-			return JavaCore.VERSION_1_6;
-		case "7":
-			return JavaCore.VERSION_1_7;
-		case "8":
-			return JavaCore.VERSION_1_8;
-		case "9":
-			return JavaCore.VERSION_9;
-		case "10":
-			return JavaCore.VERSION_10;
-		case "11":
-			return JavaCore.VERSION_11;
-		case "12":
-			return JavaCore.VERSION_12;
-		case "13":
-			return JavaCore.VERSION_13;
-		case "14":
-			return JavaCore.VERSION_14;
-		case "15":
-			return JavaCore.VERSION_15;
-		case "16":
-			return JavaCore.VERSION_16;
-		case "17":
-			return JavaCore.VERSION_17;
-		case "18":
-			return JavaCore.VERSION_18;
-		case "19":
-			return JavaCore.VERSION_19;
-		case "20":
-		default:
-			return JavaCore.VERSION_20;
-		}
 	}
 
 	private static File extractClassesJarFileFromAarFile(

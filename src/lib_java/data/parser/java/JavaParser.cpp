@@ -11,6 +11,7 @@
 #include "TextAccess.h"
 #include "utilityJava.h"
 #include "utilityString.h"
+#include "ToolVersionSupport.h"
 
 void JavaParser::clearCaches()
 {
@@ -105,7 +106,7 @@ void JavaParser::buildIndex(std::shared_ptr<IndexerCommandJava> indexerCommand)
 
 void JavaParser::buildIndex(const FilePath& filePath, std::shared_ptr<TextAccess> textAccess)
 {
-	buildIndex(filePath, L"12", "", textAccess);
+	buildIndex(filePath, EclipseVersionSupport::getLatestJavaStandard(), "", textAccess);
 }
 
 void JavaParser::buildIndex(

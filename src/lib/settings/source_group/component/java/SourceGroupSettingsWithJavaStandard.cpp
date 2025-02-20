@@ -1,17 +1,13 @@
 #include "SourceGroupSettingsWithJavaStandard.h"
 
-#include "ProjectSettings.h"
-
-std::wstring SourceGroupSettingsWithJavaStandard::getDefaultJavaStandardStatic()
-{
-	return L"15";
-}
+#include "ConfigManager.h"
+#include "ToolVersionSupport.h"
 
 std::wstring SourceGroupSettingsWithJavaStandard::getJavaStandard() const
 {
 	if (m_javaStandard.empty())
 	{
-		return getDefaultJavaStandard();
+		return EclipseVersionSupport::getLatestJavaStandard();
 	}
 	return m_javaStandard;
 }
@@ -19,33 +15,6 @@ std::wstring SourceGroupSettingsWithJavaStandard::getJavaStandard() const
 void SourceGroupSettingsWithJavaStandard::setJavaStandard(const std::wstring& standard)
 {
 	m_javaStandard = standard;
-}
-
-std::vector<std::wstring> SourceGroupSettingsWithJavaStandard::getAvailableJavaStandards() 
-{
-	// Must be in sync with 'JavaIndexer.convertLanguageStandard'.
-	return {
-		L"20",
-		L"19",
-		L"18",
-		L"17",
-		L"16",
-		L"15",
-		L"14",
-		L"13",
-		L"12",
-		L"11",
-		L"10",
-		L"9",
-		L"8",
-		L"7",
-		L"6",
-		L"5",
-		L"4",
-		L"3",
-		L"2",
-		L"1"
-	};
 }
 
 bool SourceGroupSettingsWithJavaStandard::equals(const SourceGroupSettingsBase* other) const
@@ -66,7 +35,3 @@ void SourceGroupSettingsWithJavaStandard::save(ConfigManager* config, const std:
 	config->setValue(key + "/java_standard", getJavaStandard());
 }
 
-std::wstring SourceGroupSettingsWithJavaStandard::getDefaultJavaStandard() 
-{
-	return getDefaultJavaStandardStatic();
-}

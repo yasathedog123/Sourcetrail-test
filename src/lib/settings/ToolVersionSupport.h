@@ -1,5 +1,5 @@
-#ifndef TOOLVERSIONDATA_H
-#define TOOLVERSIONDATA_H
+#ifndef TOOLVERSIONSUPPORT_H
+#define TOOLVERSIONSUPPORT_H
 
 #include <string>
 #include <vector>
@@ -18,6 +18,12 @@ class ClangVersionSupport final : public ToolVersionSupport {
 		static std::vector<std::wstring> getAvailableCStandards();
 };
 
+class EclipseVersionSupport final : public ToolVersionSupport {
+	public:
+		static std::wstring getLatestJavaStandard();
+		static std::vector<std::wstring> getAvailableJavaStandards();
+};
+
 class VisualStudioVersionSupport final : public ToolVersionSupport {
 	public:
 		static std::vector<std::wstring> getVersionRanges();
@@ -28,4 +34,4 @@ class WindowsSdkVersionSupport final : public ToolVersionSupport {
 		static std::vector<std::string> getVersions();
 };
 
-#endif // TOOLVERSIONDATA_H
+#endif

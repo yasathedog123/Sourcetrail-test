@@ -322,13 +322,13 @@ endif()
 # Lib Java ---------------------------------------------------------------------
 
 if (BUILD_JAVA_LANGUAGE_PACKAGE)
-	# Java:
-	find_package(Java 1.8 REQUIRED)
-	message(STATUS "Found Java ${Java_VERSION}")
+	# Java (Latest LTS version):
+	find_package(Java 21 REQUIRED)
+	message(STATUS "Found Java ${Java_VERSION}: ${Java_JAVAC_EXECUTABLE}")
 
 	# JNI:
 	find_package(JNI REQUIRED)
-	message(STATUS "Found JNI ${JNI_VERSION}")
+	message(STATUS "Found JNI ${JNI_VERSION}: ${JNI_INCLUDE_DIRS}")
 
 	# Maven:
 	find_program(MVN_COMMAND NAMES "mvn" REQUIRED)

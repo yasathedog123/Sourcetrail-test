@@ -160,6 +160,49 @@ vector<wstring> ClangVersionSupport::getAvailableCStandards()
 
 ///////////////////////////////////////////////////////////////////////////////
 //
+// Eclipse version support:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+wstring EclipseVersionSupport::getLatestJavaStandard()
+{
+	return getAvailableJavaStandards()[0];
+}
+
+vector<wstring> EclipseVersionSupport::getAvailableJavaStandards()
+{
+	// See org.eclipse.jdt.core.JavaCore for the VERSION_?? values
+	// https://github.com/eclipse-jdt/eclipse.jdt.core/blob/master/org.eclipse.jdt.core/model/org/eclipse/jdt/core/JavaCore.java
+	const vector<wstring> availableStandards = {
+		L"23",  // VERSION_23 = "23"
+		L"22",  // VERSION_22 = "22"
+		L"21",  // VERSION_21 = "21"
+		L"20",  // VERSION_20 = "20"
+		L"19",  // VERSION_19 = "19"
+		L"18",  // VERSION_18 = "18"
+		L"17",  // VERSION_17 = "17"
+		L"16",  // VERSION_16 = "16"
+		L"15",  // VERSION_15 = "15"
+		L"14",  // VERSION_14 = "14"
+		L"13",  // VERSION_13 = "13"
+		L"12",  // VERSION_12 = "12"
+		L"11",  // VERSION_11 = "11"
+		L"10",  // VERSION_10 = "10"
+		L"9",   // VERSION_9 = "9"
+		L"1.8", // VERSION_1_8 = "1.8"
+		L"1.7", // VERSION_1_7 = "1.7"
+		L"1.6", // VERSION_1_6 = "1.6"
+		L"1.5", // VERSION_1_5 = "1.5"
+		L"1.4", // VERSION_1_4 = "1.4"
+		L"1.3", // VERSION_1_3 = "1.3"
+		L"1.2", // VERSION_1_2 = "1.2"
+		L"1.1"  // VERSION_1_1 = "1.1"
+	};
+	return availableStandards;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
 // Visual Studio version support:
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -196,3 +239,4 @@ vector<string> WindowsSdkVersionSupport::getVersions()
 	};
 	return sdkVersions;
 }
+
