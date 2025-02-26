@@ -5,7 +5,7 @@
 #include <set>
 
 #include <boost/asio/buffer.hpp>
-#include <boost/asio/io_service.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/chrono.hpp>
 #if BOOST_VERSION >= 108600
@@ -79,7 +79,7 @@ ProcessOutput executeProcess(const std::wstring& command, const std::vector<std:
 	int exitCode = 255;
 	try
 	{
-		boost::asio::io_service ios;
+		boost::asio::io_context ios;
 		boost::process::async_pipe ap(ios);
 
 		std::shared_ptr<boost::process::child> process;
