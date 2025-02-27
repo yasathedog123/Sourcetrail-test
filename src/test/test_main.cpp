@@ -2,12 +2,12 @@
 #include <iostream>
 
 #include "ApplicationSettings.h"
+#include "Platform.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
 #include <AppPath.h>
 #include <UserPaths.h>
 #include <setupApp.h>
-#include "Platform.h"
 
 #include "Catch2.hpp"
 
@@ -24,10 +24,9 @@ struct EventListener : Catch2::EventListenerBase
 
 	void testRunStarting(const Catch::TestRunInfo& ) override
 	{
-		setupAppDirectories(s_argc, s_argv);
-
-		// The tests assume an empty shared data directory, so unset it:
-		AppPath::setSharedDataDirectoryPath(FilePath());
+		FilePath appPath = FilePath(s_argv[0]).getCanonical().getParentDirectory().getParentDirectory().getConcatenated(L"app");
+		cout << "Setting 'app' directory to " << appPath.str() << endl;
+		setupAppDirectories(appPath);
 
 		FilePath settingsFilePath = UserPaths::getAppSettingsFilePath();
 		cout << "Loading settings from " << settingsFilePath.str() << endl;
@@ -41,19 +40,13 @@ struct EventListener : Catch2::EventListenerBase
 			if (!paths.empty())
 			{
 				ApplicationSettings::getInstance()->setJavaPath(paths.front());
-				cout << "Java path written to settings: "
-						  << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
+				cout << "Java path written to settings: " << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
 			}
 			else
-			{
 				cout << "no Java" << endl;
-			}
 		}
 		else
-		{
-			cout << "Java path read from settings: "
-					  << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
-		}
+			cout << "Java path read from settings: " << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
 #endif
 	}
 };
@@ -68,14 +61,13 @@ int main(int argc, char* argv[])
 	EventListener::s_argc = argc;
 	EventListener::s_argv = argv;
 
-	// Workaround for "Unable to configure working directory in CMake/Catch"
-	// https://github.com/catchorg/Catch2/issues/2249
-	// Set the 'working directory' manually:
-
-	path workingDirectory = absolute(path(argv[0])).parent_path();
-	cout << "Set working directory to '" << workingDirectory << "'" << endl;
+	// Set the 'working directory' manually, as a workaround for "Unable to configure working directory 
+	// in CMake/Catch" (https://github.com/catchorg/Catch2/issues/2249)
+	path workingDirectory = canonical(path(argv[0])).parent_path();
+	
+	// If something is printed to the screen, then this will lead to a failure in 'catch_discover_tests()'!
+	// cout << "Set working directory to '" << workingDirectory << "'" << endl;
 	current_path(workingDirectory);
 
 	return Catch::Session().run( argc, argv );
 }
-

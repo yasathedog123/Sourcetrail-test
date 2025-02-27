@@ -5,7 +5,7 @@
 
 #include "FileSystem.h"
 #include "utility.h"
-#include "utilityApp.h"
+#include "Platform.h"
 
 namespace
 {
@@ -88,9 +88,9 @@ TEST_CASE("find all source files")
 	REQUIRE(sourceFiles.size() == 8);
 }
 
-TEST_CASE("find file infos ignore symlinks", LINUX_TAG)
+TEST_CASE("find file infos ignore symlinks")
 {
-	// Fails under Windows, because it doesn't handle symlinks correctly.
+	ASSERT_SYMLINK_PLATFORM();
 
 	std::vector<FilePath> directoryPaths;
 	directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
@@ -103,9 +103,9 @@ TEST_CASE("find file infos ignore symlinks", LINUX_TAG)
 	REQUIRE(isInFileInfos(files, L"./data/FileSystemTestSuite/src/test.h"));
 }
 
-TEST_CASE("find file infos follow symlinks", LINUX_TAG)
+TEST_CASE("find file infos follow symlinks")
 {
-	// Fails under Windows, because it doesn't handle symlinks correctly.
+	ASSERT_SYMLINK_PLATFORM();
 
 	std::vector<FilePath> directoryPaths;
 	directoryPaths.push_back(FilePath(L"./data/FileSystemTestSuite/src"));
@@ -136,9 +136,9 @@ TEST_CASE("find file infos follow symlinks", LINUX_TAG)
 		L"./data/FileSystemTestSuite/src/Settings/src/test.h"));
 }
 
-TEST_CASE("find symlinked directories", LINUX_TAG)
+TEST_CASE("find symlinked directories")
 {
-	// Fails under Windows, because it doesn't handle symlinks correctly.
+	ASSERT_SYMLINK_PLATFORM();
 
 	std::vector<FilePath> directoryPaths;
 	directoryPaths.push_back(FilePath("./data/FileSystemTestSuite/src"));

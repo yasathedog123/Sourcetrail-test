@@ -32,10 +32,8 @@ void cleanup()
 
 }
 
-TEST_CASE("gradle wrapper detects source directories of simple projects", JAVA_TAG WINDOWS_TAG)
+TEST_CASE("gradle wrapper detects source directories of simple projects", JAVA_TAG)
 {
-	// TODO (PMost): Why does it fail under Linux?
-
 	std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
 		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), false);
 
@@ -48,10 +46,8 @@ TEST_CASE("gradle wrapper detects source directories of simple projects", JAVA_T
 		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
 }
 
-TEST_CASE("gradle wrapper detects source and test directories of simple projects", JAVA_TAG WINDOWS_TAG)
+TEST_CASE("gradle wrapper detects source and test directories of simple projects", JAVA_TAG)
 {
-	// TODO (PMost): Why does it fail under Linux?
-
 	std::vector<FilePath> result = utility::gradleGetAllSourceDirectories(
 		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project"), true);
 
@@ -64,10 +60,8 @@ TEST_CASE("gradle wrapper detects source and test directories of simple projects
 		FilePath(L"data/UtilityGradleTestSuite/simple_gradle_project/src/test/java").makeAbsolute()));
 }
 
-TEST_CASE("gradle wrapper detects source dependencies of simple projects", JAVA_TAG WINDOWS_TAG)
+TEST_CASE("gradle wrapper detects source dependencies of simple projects", JAVA_TAG)
 {
-	// TODO (PMost): Why does it fail under Linux?
-
 	std::vector<std::wstring> requiredDependencies = {L"joda-time-2.2.jar"};
 
 	cleanup();
@@ -86,10 +80,8 @@ TEST_CASE("gradle wrapper detects source dependencies of simple projects", JAVA_
 	cleanup();
 }
 
-TEST_CASE("gradle wrapper detects source and test dependencies of simple projects", JAVA_TAG WINDOWS_TAG)
+TEST_CASE("gradle wrapper detects source and test dependencies of simple projects", JAVA_TAG)
 {
-	// TODO (PMost): Why does it fail under Linux?
-
 	std::vector<std::wstring> requiredDependencies = {
 		L"joda-time-2.2.jar", L"hamcrest-core-1.3.jar", L"junit-4.12.jar"};
 

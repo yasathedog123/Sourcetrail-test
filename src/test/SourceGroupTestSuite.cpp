@@ -9,12 +9,12 @@
 #include "ApplicationSettings.h"
 #include "FileSystem.h"
 #include "IndexerCommandCustom.h"
+#include "Platform.h"
 #include "ProjectSettings.h"
 #include "SourceGroupCustomCommand.h"
 #include "SourceGroupSettingsCustomCommand.h"
 #include "TextAccess.h"
 #include "Version.h"
-#include "utilityApp.h"
 #include "utilityPathDetection.h"
 #include "utilityString.h"
 
@@ -47,6 +47,25 @@ using namespace utility;
 namespace
 {
 const bool updateExpectedOutput = false;
+
+// Some tests assume that the shared data directory is empty. Make it easier to clear/reset it
+// with a RAII wrapper:
+class SharedDataDirectorySwitcher {
+public:
+	SharedDataDirectorySwitcher(const FilePath &newDirectory)
+	{
+		m_oldDirectory = AppPath::getSharedDataDirectoryPath();
+		
+		AppPath::setSharedDataDirectoryPath(newDirectory);
+	}
+	
+	~SharedDataDirectorySwitcher()
+	{
+		AppPath::setSharedDataDirectoryPath(m_oldDirectory);
+	}
+private:
+	FilePath m_oldDirectory;
+};
 
 static FilePath getInputDirectoryPath(const std::wstring& projectName)
 {
@@ -268,6 +287,8 @@ TEST_CASE("can create application instance")
 #if BUILD_CXX_LANGUAGE_PACKAGE
 TEST_CASE("source group cxx c empty generates expected output")
 {
+	SharedDataDirectorySwitcher sharedDataDirectorySwitcher((FilePath()));
+
 	const std::wstring projectName = L"cxx_c_empty";
 
 	ProjectSettings projectSettings;
@@ -307,6 +328,8 @@ TEST_CASE("source group cxx c empty generates expected output")
 
 TEST_CASE("source group cxx cpp empty generates expected output")
 {
+	SharedDataDirectorySwitcher sharedDataDirectorySwitcher((FilePath()));
+	
 	const std::wstring projectName = L"cxx_cpp_empty";
 
 	ProjectSettings projectSettings;
@@ -346,6 +369,8 @@ TEST_CASE("source group cxx cpp empty generates expected output")
 
 TEST_CASE("source group cxx codeblocks generates expected output")
 {
+	SharedDataDirectorySwitcher sharedDataDirectorySwitcher((FilePath()));
+
 	const std::wstring projectName = L"cxx_codeblocks";
 	const FilePath cbpPath = getInputDirectoryPath(projectName).concatenate(L"project.cbp");
 	const FilePath sourceCbpPath =
@@ -399,6 +424,8 @@ TEST_CASE("source group cxx codeblocks generates expected output")
 
 TEST_CASE("source group cxx cdb generates expected output")
 {
+	SharedDataDirectorySwitcher sharedDataDirectorySwitcher((FilePath()));
+
 	const std::wstring projectName = L"cxx_cdb";
 
 	ProjectSettings projectSettings;
@@ -480,10 +507,8 @@ TEST_CASE("sourcegroup java empty generates expected output", JAVA_TAG)
 	applicationSettings->setJreSystemLibraryPaths(storedJreSystemLibraryPaths);
 }
 
-TEST_CASE("sourcegroup java gradle generates expected output", JAVA_TAG WINDOWS_TAG)
+TEST_CASE("sourcegroup java gradle generates expected output", JAVA_TAG)
 {
-	// TODO (PMost): Why does it fail under Linux?
-
 	const std::wstring projectName = L"java_gradle";
 
 	ProjectSettings projectSettings;

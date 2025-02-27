@@ -52,7 +52,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.2.18)
+project(Sourcetrail VERSION 2025.2.27)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)

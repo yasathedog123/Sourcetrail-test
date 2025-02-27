@@ -114,7 +114,7 @@ void addLanguagePackages()
 
 int main(int argc, char* argv[])
 {
-	Version version = setupAppDirectories(argc, argv);
+	Version version = setupAppDirectories(FilePath(argv[0]).getCanonical().getParentDirectory());
 
 	if (utility::Platform::isLinux() && std::getenv("SOURCETRAIL_VIA_SCRIPT") == nullptr)
 	{

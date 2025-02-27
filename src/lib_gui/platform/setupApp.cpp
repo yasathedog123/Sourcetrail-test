@@ -1,3 +1,5 @@
+#include "setupApp.h"
+
 #include <AppPath.h>
 #include <ApplicationSettings.h>
 #include <FilePath.h>
@@ -18,21 +20,28 @@ using namespace utility;
 using namespace boost::system;
 using namespace boost::filesystem;
 
-Version setupAppDirectories(int  /*argc*/, char* argv[])
+Version setupAppDirectories(const FilePath &appPath)
 {
 	QCoreApplication::setApplicationName(QStringLiteral("Sourcetrail"));
 
 	Version version(PRODUCT_VERSION_MAJOR, PRODUCT_VERSION_MINOR, PRODUCT_VERSION_PATCH);
 	QCoreApplication::setApplicationVersion(QString::fromStdString(version.toDisplayString()));
 
-	// Determine application directory (Can't use QCoreApplication::applicationDirPath here, because
-	// an instance of QCoreApplication doesn't exist yet!).
-	const FilePath appPath = FilePath(argv[0]).makeAbsolute().getParentDirectory().concatenate(L"/");
+	// Note: This functions is called from main in 'main.cpp' *AND* the main in 'test_main.cpp'. 
+	// If the appPath is incorrect then most of the Java tests will fail because the 
+	// 'app/data/java/lib/java-indexer.jar' will not be found!
 	AppPath::setSharedDataDirectoryPath(appPath);
 	AppPath::setCxxIndexerDirectoryPath(appPath);
 
+	setupUserDirectory(appPath);
+	
+	return version;
+}
+
+void setupUserDirectory(const FilePath &appPath)
+{
 	// Determine user directory:
-	const QString userDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/";
+	QString userDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/";
 	UserPaths::setUserDataDirectoryPath(FilePath(userDataLocation.toStdWString()).makeAbsolute());
 
 	// Create missing user directory and copy default configurations:
@@ -57,13 +66,12 @@ Version setupAppDirectories(int  /*argc*/, char* argv[])
 			permissions(*it, currentPermissions | perms::owner_write);
 		}
 	}
-	return version;
 }
 
 void setupAppEnvironment(int  /*argc*/, char*  /*argv*/[])
 {
-	// setupPlatform will be called after setupApp, so UserPaths::setUserDataDirectoryPath has been
-	// initialized and UserPaths::getAppSettingsFilePath will return the correct path.
+	// This function will be called after setupAppDirectories, so UserPaths::setUserDataDirectoryPath 
+	// has been initialized and UserPaths::getAppSettingsFilePath will return the correct path.
 
 	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
 	if constexpr(Platform::isLinux()) {

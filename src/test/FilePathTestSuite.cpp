@@ -1,7 +1,7 @@
 #include "Catch2.hpp"
 
 #include "FilePath.h"
-#include "utilityApp.h"
+#include "Platform.h"
 
 TEST_CASE("file_path_gets_created_empty")
 {
@@ -168,26 +168,26 @@ TEST_CASE("file_path_equals_absolute_and_canonical_paths")
 	REQUIRE(path.getAbsolute() == path.getCanonical());
 }
 
-TEST_CASE("file_path_canonical_removes_symlinks", LINUX_TAG)
+TEST_CASE("file_path_canonical_removes_symlinks")
 {
-	// Fails under Windows, because it doesn't handle symlinks correctly.
-
+	ASSERT_SYMLINK_PLATFORM();
+	
 	const FilePath pathA(L"data/FilePathTestSuite/parent/target/d.cpp");
 	const FilePath pathB(L"data/FilePathTestSuite/target/d.cpp");
-
+	
 	REQUIRE(pathB.getAbsolute() == pathA.getCanonical());
 }
 
-TEST_CASE("file_path_compares_paths_with_posix_and_windows_format", WINDOWS_TAG)
+TEST_CASE("file_path_compares_paths_with_posix_and_windows_format")
 {
-	// Fails under Linux, because comparing '/' and '\\' doesn't work there.
-
+	ASSERT_BACKSLASH_PLATFORM();
+		
 	const FilePath pathB(L"data/FilePathTestSuite/b.cc");
 	const FilePath pathB2(L"data\\FilePathTestSuite\\b.cc");
-
+	
 	REQUIRE(pathB == pathB2);
 }
-
+	
 TEST_CASE("file_path_differs_for_different_existing_files")
 {
 	const FilePath pathA(L"data/FilePathTestSuite/a.cpp");

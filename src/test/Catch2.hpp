@@ -23,11 +23,14 @@ namespace Catch2
 #endif
 
 // Tags for tests which can only run when Catch2 has been configured with 'CATCH_CONFIG_NO_POSIX_SIGNALS'
-// and/or 'CATCH_CONFIG_NO_WINDOWS_SEH' which is only true for the Vcpkg-Build:
+// and/or 'CATCH_CONFIG_NO_WINDOWS_SEH' which is only true for the Vcpkg-Build. In the System-Build
+// these tests can then be filtered with 'Sourcetrail_test ~[Java]'.
 #define JAVA_TAG "[Java]"
 
-// Tags for tests which run only successfully under Linux:
-#define LINUX_TAG "[Linux]"
+#define ASSERT_SYMLINK_PLATFORM() \
+	if constexpr (utility::Platform::isWindows()) \
+		SKIP("Windows doesn't handle symlinks correctly.")
 
-// Tags for tests which run only successfully under Windows:
-#define WINDOWS_TAG "[Windows]"
+#define ASSERT_BACKSLASH_PLATFORM() \
+	if constexpr (!utility::Platform::isWindows()) \
+		SKIP("Comparing '/' and '\\' on Non-Windows doesn't work.")
