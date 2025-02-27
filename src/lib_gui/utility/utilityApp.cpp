@@ -79,8 +79,8 @@ ProcessOutput executeProcess(const std::wstring& command, const std::vector<std:
 	int exitCode = 255;
 	try
 	{
-		boost::asio::io_context ios;
-		boost::process::async_pipe ap(ios);
+		boost::asio::io_context ctx;
+		boost::process::async_pipe ap(ctx);
 
 		std::shared_ptr<boost::process::child> process;
 
@@ -168,7 +168,7 @@ ProcessOutput executeProcess(const std::wstring& command, const std::vector<std:
 		};
 
 		boost::asio::async_read(ap, stdOutBuffer, onStdOut);
-		ios.run();
+		ctx.run();
 
 		if (timeout != INFINITE_TIMEOUT)
 		{
