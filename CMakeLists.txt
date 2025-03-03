@@ -9,14 +9,17 @@ else()
 	set(isVcpkgBuild FALSE)
 endif()
 
-# Prevent:
-# - Printing of package usages
-# - Rebuilding vcpkg packages after a compiler update
 if (isVcpkgBuild)
 	set(VCPKG_INSTALL_OPTIONS
-		--x-abi-tools-use-exact-versions
-		--clean-after-build
+		# Don't print package usages:
 		--no-print-usage
+
+		# Prevent rebuilding after a compiler update:		
+		--x-abi-tools-use-exact-versions
+		
+		# Clean everything except sources:
+		--clean-downloads-after-build
+		--clean-packages-after-build
 	)
 endif()
 
@@ -52,7 +55,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.2.27)
+project(Sourcetrail VERSION 2025.3.3)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -148,17 +151,29 @@ add_library(External_lib_boost INTERFACE)
 
 target_compile_definitions(External_lib_boost
 	INTERFACE
+		# Try to detect deprecations early:
+		#BOOST_ASIO_NO_DEPRECATED
+		#BOOST_PROCESS_NO_DEPRECATED
+		
+		# Use the same linking approach on all platforms:
+		#BOOST_ALL_NO_LIB
+		
 		# Fix "Boost-uuid should link against bcrypt on windows"
 		# (https://github.com/microsoft/vcpkg/issues/4481)
 		BOOST_UUID_FORCE_AUTO_LINK
 
 		# If boost::filesystem gets replaced with std::filesystem, then this symbol must be defined:
 		#BOOST_DLL_USE_STD_FS
+)
 
-		# Trying to add the definition to the boost target like this:
-		# target_compile_definitions(Boost::uuid PUBLIC BOOST_UUID_FORCE_AUTO_LINK)
-		# leads to the error:
-		# "Cannot specify compile definitions for target "Boost::uuid" which is not built by this project."
+target_link_libraries(External_lib_boost
+	INTERFACE
+		Boost::date_time
+		Boost::filesystem
+		Boost::headers
+		Boost::locale
+		Boost::program_options
+		Boost::system
 )
 
 # Qt ---------------------------------------------------------------------------
@@ -170,6 +185,28 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED
 		Widgets PrintSupport Network Svg
 )
 message(STATUS "Found Qt ${Qt6_VERSION}")
+
+add_library(External_lib_qt INTERFACE)
+
+# Enable warnings for deprecated APIs:
+if (${Qt6_VERSION} VERSION_GREATER_EQUAL 6.5)
+	target_compile_definitions(External_lib_qt
+		INTERFACE
+			QT_WARN_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX}
+	)
+else()
+	target_compile_definitions(External_lib_qt
+		INTERFACE
+			QT_DEPRECATED_WARNINGS_SINCE=${QT_MIN_VERSION_HEX}
+	)
+endif()
+
+target_link_libraries(External_lib_qt
+	INTERFACE
+		Qt6::Widgets
+		Qt6::Network
+		Qt6::Svg
+)
 
 # SQLite3 ----------------------------------------------------------------------
 
@@ -242,7 +279,7 @@ set_target_properties(Sourcetrail_lib_gui
 
 if (BUILD_CXX_LANGUAGE_PACKAGE)
 
-	# Integrate LLVM/TibTooling. 
+	# Integrate LLVM/LibTooling. 
 	# For further details see https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
 
 	set(CLANG_MIN_VERSION 18)
@@ -376,7 +413,7 @@ if (BUILD_UNIT_TESTS_PACKAGE)
 	include(Catch)
 	add_subdirectory(src/test)
 else()
-	message(STATUS "Building the Unit tests is disabled. You can enable them by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
+	message(STATUS "Building the tests is disabled. You can enable them by setting 'BUILD_UNIT_TESTS_PACKAGE' to 'ON'.")
 endif()
 
 if (NOT BUILD_CXX_LANGUAGE_PACKAGE AND NOT BUILD_JAVA_LANGUAGE_PACKAGE AND NOT BUILD_PYTHON_LANGUAGE_PACKAGE)

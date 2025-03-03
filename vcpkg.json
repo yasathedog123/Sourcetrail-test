@@ -29,7 +29,6 @@
 			"features": [
 				"brotli",
 				"concurrent",
-				"default-features",
 				"dnslookup",
 				"doubleconversion",
 				"egl",

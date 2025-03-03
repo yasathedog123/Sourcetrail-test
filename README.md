@@ -99,16 +99,35 @@ $ cmake --build .
 ```
 
 ### Windows
-It's probably also possible to build with pre-installed libraries, like the original build instructions describe, but I didn't/don't test it.
+It's probably also possible to build with pre-installed libraries, like the original build instructions describe, but it's untested and unsupported.
 
 ### Used/Supported libraries: ###
-|Name|System|Vcpkg| 
+
+**C++**
+
+|Name|System|Vcpkg|Notes| 
+|----|------|-----|-----|
+|Clang|19.1.1|18.1.6|C++23 Support|
+
+**Java**
+
+|Name|System/Vcpkg|Notes|
+|----|------------|-----|
+|Eclipse JDT|3.40|Java 23 Support|
+|Maven|Locally installed version|
+|Gradle|8.12|
+
+**Miscellaneous**
+
+|Name|System|Vcpkg|
 |----|------|-----|
-|Clang|19.1.1|18.1.6|
-|Qt|6.6.2|6.8.1|
+|Qt|6.6.2|6.8.2|
 |Boost|1.83.0|1.86.0|
 |SQLite3|3.46.1|3.47.2|
 |TinyXML|2.6.2|2.6.2|
-|OpenJDK|23.0.1|23.0.1|
+
+**Tests**
+|Name|System|Vcpkg|
+|----|------|-----|
 |Catch2|3.4.0|3.8.0|
 |GTest|1.15.2|1.15.2|

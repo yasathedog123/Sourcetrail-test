@@ -1,10 +1,14 @@
 ### Changelog
 
+#### 2025.3.3
+* Java: Add support for Eclipse JDT 3.40 (Java 23)
+* Java: Update Gradle support to 8.12
+
 #### 2025.1.28
-* Logic: Add support for Clang 19.
-* Logic: Re-enable detection of non-trivial destructor calls.
-* Build: Replace/Remove last Qt5 dependency.
+* C/C++: Add support for Clang 19 (C++23).
+* C/C++: Re-enable detection of non-trivial destructor calls.
 * Fix: Keep the console window open when logging is enabled.
+* Framework: Replace/Remove last Qt5 dependency.
 
 #### 2024.9.23
 * GUI: Try to hide the external console window on Windows. See ["The console window is not hidden under Windows 11"](https://github.com/petermost/Sourcetrail/issues/19) for additional information.

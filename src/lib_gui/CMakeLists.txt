@@ -312,24 +312,12 @@ add_library(Sourcetrail_lib_gui
 setDefaultTargetOptions(Sourcetrail_lib_gui)
 
 # Instruct CMake to run moc automatically when needed.
+# Setting these properties on 'External_lib_qt' doesn't work
 set_target_properties(Sourcetrail_lib_gui
 	PROPERTIES
 		AUTOMOC ON
 		AUTORCC ON
 )
-
-# Enable warnings for deprecated APIs:
-if (${Qt6_VERSION} VERSION_GREATER_EQUAL 6.5)
-	target_compile_definitions(Sourcetrail_lib_gui
-		PUBLIC
-			QT_WARN_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX}
-	)
-else()
-	target_compile_definitions(Sourcetrail_lib_gui
-		PUBLIC
-			QT_DEPRECATED_WARNINGS_SINCE=${QT_MIN_VERSION_HEX}
-	)
-endif()
 
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
@@ -473,8 +461,5 @@ target_include_directories(Sourcetrail_lib_gui
 target_link_libraries(Sourcetrail_lib_gui
 	PUBLIC
 		Sourcetrail_lib
-
-		Qt6::Widgets
-		Qt6::Network
-		Qt6::Svg
+		External_lib_qt
 )

@@ -86,7 +86,7 @@
 		<repository>
 			<id>gradle-repository</id>
 			<name>gradle-repository</name>
-			<url>https://repo.gradle.org/gradle/libs-releases-local</url>
+			<url>https://repo.gradle.org/gradle/libs-releases</url>
 		</repository>
 	</repositories>
 
@@ -94,7 +94,7 @@
 		<dependency>
 			<groupId>org.gradle</groupId>
 			<artifactId>gradle-tooling-api</artifactId>
-			<version>7.3-20210825160000+0000</version>
+			<version>8.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
@@ -180,13 +180,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.12.0-RC2</version>
+			<version>5.12.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.12.0-RC2</version>
+			<version>5.12.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

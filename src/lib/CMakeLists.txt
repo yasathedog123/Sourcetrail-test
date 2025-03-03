@@ -779,13 +779,6 @@ target_link_libraries(Sourcetrail_lib
 		External_lib_tinyxml
 		External_lib_cppsqlite3
 		External_lib_boost
-
-		Boost::date_time
-		Boost::filesystem
-		Boost::headers
-		Boost::locale
-		Boost::program_options
-		Boost::system
 )
 
 if (UNIX)
