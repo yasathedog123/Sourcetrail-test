@@ -60,7 +60,7 @@ template<typename T, typename Char = char, typename Int = int>
 			{
 				std::vector<T> foundEnums;
 
-				for_each([&](const T &other)
+				enum_class::for_each([&](const T &other)
 				{
 					if (name == other.name())
 						foundEnums.push_back(other);
@@ -72,7 +72,7 @@ template<typename T, typename Char = char, typename Int = int>
 			{
 				std::vector<T> foundEnums;
 
-				for_each([&](const T &other)
+				enum_class::for_each([&](const T &other)
 				{
 					if (value == other.value())
 						foundEnums.push_back(other);
@@ -84,7 +84,7 @@ template<typename T, typename Char = char, typename Int = int>
 
 			static void for_each(const std::function<void (const T &)> &function)
 			{
-				std::for_each(s_enums.cbegin(), s_enums.cend(), [&](const T *t)
+                std::for_each(enums().cbegin(), enums().cend(), [&](const T *t)
 				{
 					function(*t);
 				});
@@ -103,7 +103,7 @@ template<typename T, typename Char = char, typename Int = int>
 
 			template <std::size_t SIZE>
 				enum_class(const Char (&name)[SIZE])
-					: enum_class(s_enums.empty() ? 0 : s_enums.back()->m_value + 1, name)
+                : enum_class(enums().empty() ? 0 : enums().back()->m_value + 1, name)
 				{
 				}
 
@@ -111,19 +111,22 @@ template<typename T, typename Char = char, typename Int = int>
 				enum_class(Int value, const Char (&name)[SIZE])
 					: m_value(value), m_name(name, SIZE - 1)
 				{
-					s_enums.push_back(static_cast<const T *>(this));
+					enums().push_back(static_cast<const T *>(this));
 				}
 
 		private:
 			static constexpr Char EMPTY_NAME[] = { 0 };
-
-            static constinit std::vector<const T *> s_enums;
+            
+            static std::vector<const T *> &enums()
+            {
+                // Use a function level static container so we don't run into the "static initialization order fiasco"
+                static std::vector<const T *> s_enums;
+                
+                return s_enums;
+            }
 
 			Int m_value;
 			std::basic_string_view<Char> m_name;
 	};
-
-template <typename T, typename Char, typename Int>
-    constinit std::vector<const T *> enum_class<T, Char, Int>::s_enums;
 
 }
