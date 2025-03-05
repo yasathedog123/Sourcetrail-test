@@ -122,7 +122,7 @@ It's probably also possible to build with pre-installed libraries, like the orig
 |Name|System|Vcpkg|
 |----|------|-----|
 |Qt|6.6.2|6.8.2|
-|Boost|1.83.0|1.86.0|
+|Boost|1.83.0|1.87.0|
 |SQLite3|3.46.1|3.47.2|
 |TinyXML|2.6.2|2.6.2|
 
@@ -130,4 +130,4 @@ It's probably also possible to build with pre-installed libraries, like the orig
 |Name|System|Vcpkg|
 |----|------|-----|
 |Catch2|3.4.0|3.8.0|
-|GTest|1.15.2|1.15.2|
+|GTest|1.15.2|1.16.0|
