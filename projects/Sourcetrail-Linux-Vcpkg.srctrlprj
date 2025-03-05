@@ -20,7 +20,6 @@
             <indexed_header_paths>
                 <indexed_header_path>..</indexed_header_path>
                 <indexed_header_path>../../build/vcpkg-ninja-debug</indexed_header_path>
-                <indexed_header_path>${JAVA_HOME}/include</indexed_header_path>
             </indexed_header_paths>
             <name>C/C++ from Compilation Database</name>
             <pch_flags>
