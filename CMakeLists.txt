@@ -178,8 +178,8 @@ target_link_libraries(External_lib_boost
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION "6.4.2")
-set (QT_MIN_VERSION_HEX 0x060402)
+set (QT_MIN_VERSION "6.6.2")
+set (QT_MIN_VERSION_HEX 0x060602)
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED 
 	COMPONENTS
 		Widgets PrintSupport Network Svg
