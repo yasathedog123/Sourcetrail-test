@@ -228,10 +228,7 @@ void QtMainWindow::overrideView(View* view)
 		// This workaround ensures that the views are at least found, but if the user enables 'Show Title Bars'
 		// then the '&' is still shown!
 		QString title = dockWidget.widget->windowTitle();
-		if (title.startsWith('&'))
-			title.removeFirst();
-
-		if (title == name)
+		if (title == name || (title.startsWith('&') && title.endsWith(name)))
 		{
 			dock = dockWidget.widget;
 			break;
