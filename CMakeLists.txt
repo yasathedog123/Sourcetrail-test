@@ -97,27 +97,34 @@ if (isMultiConfigGenerator)
 		file(COPY "bin/test/data/" DESTINATION "${CONFIGURATION_TYPE}/test/data/")
 	endforeach()
 else()
-	message(STATUS "Copying: ${CMAKE_SOURCE_DIR}/bin/app/ -> ${CMAKE_BINARY_DIR}/app/")
-	file(COPY "${CMAKE_SOURCE_DIR}/bin/app/" DESTINATION "${CMAKE_BINARY_DIR}/app/")
+	set(appDataSourceDir "${CMAKE_SOURCE_DIR}/bin/app/")
+	set(appDataTargetDir "${CMAKE_BINARY_DIR}/app/")
+	
+	message(STATUS "Copying: ${appDataSourceDir} -> ${appDataTargetDir}")
+	file(COPY "${appDataSourceDir}" DESTINATION "${appDataTargetDir}")
 
 	if (BUILD_UNIT_TESTS_PACKAGE)
-		# The test data contain symlinked files and directories which are used/tested from
-		# 'FilePathTestSuite' and 'FileSystemTestSuite'. CMake, as of this writing (2024-02-23),
-		# doesn't copy symlinks correctly (https://gitlab.kitware.com/cmake/cmake/-/issues/14609)
-		# at least under Windows, but under Linux it seems to copy correctly. But it seems
-		# that Windows also doesn't handle symlinks very well and this is probably the reason why
-		# the orignal developers had disabled the tests for Windows.
-
-		message(STATUS "Copying: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
-		file(COPY "${CMAKE_SOURCE_DIR}/bin/test/data/" DESTINATION "${CMAKE_BINARY_DIR}/test/data/")
-
-		#[[ In case symlinking the test data is better, then here is the code for it, but be aware that
-		the temporary test files will then show up in the version control!
-
-		message(STATUS "Linking: ${CMAKE_SOURCE_DIR}/bin/test/data/ -> ${CMAKE_BINARY_DIR}/test/data")
-		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/test")
-		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/bin/test/data/" "${CMAKE_BINARY_DIR}/test/data" SYMBOLIC)
-		]]
+		# The test data contains symlinked files and directories which are used from 'FilePathTestSuite' 
+		# and 'FileSystemTestSuite'. CMake, as of this writing (2025-03-07), doesn't copy symlinks 
+		# correctly (https://gitlab.kitware.com/cmake/cmake/-/issues/14609). 
+		# It depends on the underlying platform.
+		
+		set(testDataSourceDir "${CMAKE_SOURCE_DIR}/bin/test/data/")
+		set(testDataTargetParentDir "${CMAKE_BINARY_DIR}/test/")
+		set(testDataTargetDir "${testDataTargetParentDir}data") # Without a '/' at the end!
+		
+		if (UNIX)
+			# Under Linux the symlinks are copied correctly, so copy the data:
+			message(STATUS "Copying: ${testDataSourceDir} -> ${testDataTargetDir}")
+			file(COPY "${testDataSourceDir}" DESTINATION "${testDataTargetDir}")
+		else()
+			# Under Windows the symlinks are *not* copied correctly (results in invalid files), so 
+			# symlink the data.
+			# Note: Temporary test files will show up in version control!
+			message(STATUS "Linking: ${testDataSourceDir} -> ${testDataTargetDir}")
+			file(MAKE_DIRECTORY "${testDataTargetParentDir}")
+			file(CREATE_LINK "${testDataSourceDir}" "${testDataTargetDir}" SYMBOLIC)
+		endif()
 	endif()
 endif()
 
@@ -291,10 +298,10 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 
 	add_library(External_lib_clang INTERFACE)
 	
-	separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
+	separate_arguments(llvmDefinitions NATIVE_COMMAND ${LLVM_DEFINITIONS})
 	target_compile_definitions(External_lib_clang
 		INTERFACE
-			${LLVM_DEFINITIONS_LIST}
+			${llvmDefinitions}
 	)
 	target_include_directories(External_lib_clang SYSTEM
 		INTERFACE
@@ -307,14 +314,14 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	# For further details see https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
 	
 	if (LLVM_LINK_LLVM_DYLIB) # Should be CLANG_LINK_CLANG_DYLIB in future LLVM releases?
-		set(LLVM_LIBRARIES LLVM)
-		set(CLANG_LIBRARIES clang-cpp)
+		set(llvmLibraries LLVM)
+		set(clangLibraries clang-cpp)
 	else()
-		llvm_map_components_to_libnames(LLVM_LIBRARIES
+		llvm_map_components_to_libnames(llvmLibraries
 			${LLVM_TARGETS_TO_BUILD} support core libdriver passes option
 		)
 		# LibTooling libraries:
-		set(CLANG_LIBRARIES
+		set(clangLibraries
 			clangASTMatchers
 			clangFrontend
 			clangSerialization
@@ -336,8 +343,8 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 		
 	target_link_libraries(External_lib_clang
 		INTERFACE
-			${LLVM_LIBRARIES}
-			${CLANG_LIBRARIES}
+			${llvmLibraries}
+			${clangLibraries}
 	)
 	
 	# Copy required headers:
@@ -346,7 +353,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	else()
 		set(headerSourceDir "${LLVM_TOOLS_BINARY_DIR}/../lib/clang/${LLVM_VERSION_MAJOR}/include/")
 	endif()
-	set(headerTargetDir "app/data/cxx/include/")
+	set(headerTargetDir "${CMAKE_BINARY_DIR}/app/data/cxx/include/")
 
 	message(STATUS "Copying LLVM header: ${headerSourceDir} -> ${headerTargetDir}")
 	file(COPY "${headerSourceDir}" DESTINATION "${headerTargetDir}")
