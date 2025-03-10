@@ -379,6 +379,7 @@ if (BUILD_JAVA_LANGUAGE_PACKAGE)
 	message(STATUS "Found Maven: ${MVN_COMMAND}")
 
 	add_subdirectory(src/lib_java)
+	add_subdirectory(java_indexer)
 else()
 	message(STATUS "Building the Java indexer is disabled. You can enable it by setting 'BUILD_JAVA_LANGUAGE_PACKAGE' to 'ON'.")
 endif()

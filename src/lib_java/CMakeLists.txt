@@ -48,25 +48,3 @@ target_link_libraries(Sourcetrail_lib_java
 		Sourcetrail_lib
 		JNI::JNI
 )
-
-#
-# Maven build (java-indexer.jar)
-#
-set(jarDirectory "${CMAKE_BINARY_DIR}/app/data/java/lib/")
-
-if (NOT CMAKE_VERBOSE_MAKEFILE)
-	set(quietSwitch "--quiet")
-endif()
-
-if (NOT BUILD_UNIT_TESTS_PACKAGE)
-	set(skipTestsSwitch "-Dmaven.test.skip=true")
-endif()
-
-
-add_custom_target(Sourcetrail_lib_jar ALL
-	COMMAND ${CMAKE_COMMAND} -E echo "[Maven]: Building Java indexer to: ${jarDirectory}"
-	
-	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/java_indexer/"
-	COMMAND "${MVN_COMMAND}" package ${quietSwitch} ${skipTestsSwitch} "-Dsourcetrail.jar.directory=${jarDirectory}"
-	BYPRODUCTS "./target/java-indexer.jar"
-)
