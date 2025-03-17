@@ -133,8 +133,7 @@ void TaskBuildIndex::doExit(std::shared_ptr<Blackboard> blackboard)
 	if (!crashedFiles.empty())
 	{
 		std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
-		std::shared_ptr<ParserClientImpl> parserClient = std::make_shared<ParserClientImpl>(
-			storage.get());
+		std::shared_ptr<ParserClientImpl> parserClient = std::make_shared<ParserClientImpl>(storage);
 
 		for (const FilePath& path: crashedFiles)
 		{

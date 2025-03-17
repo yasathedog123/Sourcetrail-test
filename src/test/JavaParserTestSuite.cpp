@@ -27,8 +27,7 @@ std::shared_ptr<TestStorage> parseCode(std::string code, bool /*logErrors*/ = tr
 	setupJavaEnvironmentFactory();
 
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
-	JavaParser parser(
-		std::make_shared<ParserClientImpl>(storage.get()), std::make_shared<IndexerStateInfo>());
+	JavaParser parser(std::make_shared<ParserClientImpl>(storage), std::make_shared<IndexerStateInfo>());
 	parser.buildIndex(FilePath(L"input.java"), TextAccess::createFromString(code));
 
 	return TestStorage::create(storage);

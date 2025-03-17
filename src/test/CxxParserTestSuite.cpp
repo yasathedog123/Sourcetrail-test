@@ -33,7 +33,7 @@ std::shared_ptr<TestStorage> parseCode(const std::string &code, const std::vecto
 {
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
 	CxxParser parser(
-		std::make_shared<ParserClientImpl>(storage.get()),
+		std::make_shared<ParserClientImpl>(storage),
 		std::make_shared<TestFileRegister>(),
 		std::make_shared<IndexerStateInfo>());
 	parser.buildIndex(
@@ -4036,7 +4036,7 @@ TEST_CASE("cxx parser parses multiple files")
 
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
 	CxxParser parser(
-		std::make_shared<ParserClientImpl>(storage.get()),
+		std::make_shared<ParserClientImpl>(storage),
 		std::make_shared<TestFileRegister>(),
 		std::make_shared<IndexerStateInfo>());
 

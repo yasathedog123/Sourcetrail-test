@@ -1,10 +1,111 @@
 #include "ParserClientImpl.h"
 
 #include "Edge.h"
-#include "Node.h"
+#include "NodeKind.h"
 #include "ParseLocation.h"
 
-ParserClientImpl::ParserClientImpl(IntermediateStorage* const storage): m_storage(storage) {}
+namespace
+{
+
+NodeKind symbolKindToNodeKind(SymbolKind symbolKind) 
+{
+	switch (symbolKind)
+	{
+		case SYMBOL_ANNOTATION:
+			return NODE_ANNOTATION;
+		case SYMBOL_BUILTIN_TYPE:
+			return NODE_BUILTIN_TYPE;
+		case SYMBOL_CLASS:
+			return NODE_CLASS;
+		case SYMBOL_ENUM:
+			return NODE_ENUM;
+		case SYMBOL_ENUM_CONSTANT:
+			return NODE_ENUM_CONSTANT;
+		case SYMBOL_FIELD:
+			return NODE_FIELD;
+		case SYMBOL_FUNCTION:
+			return NODE_FUNCTION;
+		case SYMBOL_GLOBAL_VARIABLE:
+			return NODE_GLOBAL_VARIABLE;
+		case SYMBOL_INTERFACE:
+			return NODE_INTERFACE;
+		case SYMBOL_MACRO:
+			return NODE_MACRO;
+		case SYMBOL_METHOD:
+			return NODE_METHOD;
+		case SYMBOL_MODULE:
+			return NODE_MODULE;
+		case SYMBOL_NAMESPACE:
+			return NODE_NAMESPACE;
+		case SYMBOL_PACKAGE:
+			return NODE_PACKAGE;
+		case SYMBOL_STRUCT:
+			return NODE_STRUCT;
+		case SYMBOL_TYPEDEF:
+			return NODE_TYPEDEF;
+		case SYMBOL_TYPE_PARAMETER:
+			return NODE_TYPE_PARAMETER;
+		case SYMBOL_UNION:
+			return NODE_UNION;
+		default:
+			break;
+	}
+	return NODE_SYMBOL;
+}
+
+Edge::EdgeType referenceKindToEdgeType(ReferenceKind referenceKind) 
+{
+	switch (referenceKind)
+	{
+		case REFERENCE_TYPE_USAGE:
+			return Edge::EDGE_TYPE_USAGE;
+		case REFERENCE_USAGE:
+			return Edge::EDGE_USAGE;
+		case REFERENCE_CALL:
+			return Edge::EDGE_CALL;
+		case REFERENCE_INHERITANCE:
+			return Edge::EDGE_INHERITANCE;
+		case REFERENCE_OVERRIDE:
+			return Edge::EDGE_OVERRIDE;
+		case REFERENCE_TYPE_ARGUMENT:
+			return Edge::EDGE_TYPE_ARGUMENT;
+		case REFERENCE_TEMPLATE_SPECIALIZATION:
+			return Edge::EDGE_TEMPLATE_SPECIALIZATION;
+		case REFERENCE_INCLUDE:
+			return Edge::EDGE_INCLUDE;
+		case REFERENCE_IMPORT:
+			return Edge::EDGE_IMPORT;
+		case REFERENCE_MACRO_USAGE:
+			return Edge::EDGE_MACRO_USAGE;
+		case REFERENCE_ANNOTATION_USAGE:
+			return Edge::EDGE_ANNOTATION_USAGE;
+		default:
+			break;
+	}
+	return Edge::EDGE_UNDEFINED;
+}
+
+LocationType parseLocationTypeToLocationType(ParseLocationType type) 
+{
+	switch (type)
+	{
+		case ParseLocationType::TOKEN:
+			return LOCATION_TOKEN;
+		case ParseLocationType::SCOPE:
+			return LOCATION_SCOPE;
+		case ParseLocationType::SIGNATURE:
+			return LOCATION_SIGNATURE;
+		case ParseLocationType::QUALIFIER:
+			return LOCATION_QUALIFIER;
+		case ParseLocationType::LOCAL:
+			return LOCATION_LOCAL_SYMBOL;
+	}
+	return LOCATION_TOKEN;
+}
+
+}
+
+ParserClientImpl::ParserClientImpl(std::shared_ptr<IntermediateStorage> storage): m_storage(storage) {}
 
 Id ParserClientImpl::recordFile(const FilePath& filePath, bool indexed)
 {
@@ -103,101 +204,6 @@ bool ParserClientImpl::hasContent() const
 	return m_storage->getByteSize(1) > 0;
 }
 
-NodeKind ParserClientImpl::symbolKindToNodeKind(SymbolKind symbolKind) 
-{
-	switch (symbolKind)
-	{
-	case SYMBOL_ANNOTATION:
-		return NODE_ANNOTATION;
-	case SYMBOL_BUILTIN_TYPE:
-		return NODE_BUILTIN_TYPE;
-	case SYMBOL_CLASS:
-		return NODE_CLASS;
-	case SYMBOL_ENUM:
-		return NODE_ENUM;
-	case SYMBOL_ENUM_CONSTANT:
-		return NODE_ENUM_CONSTANT;
-	case SYMBOL_FIELD:
-		return NODE_FIELD;
-	case SYMBOL_FUNCTION:
-		return NODE_FUNCTION;
-	case SYMBOL_GLOBAL_VARIABLE:
-		return NODE_GLOBAL_VARIABLE;
-	case SYMBOL_INTERFACE:
-		return NODE_INTERFACE;
-	case SYMBOL_MACRO:
-		return NODE_MACRO;
-	case SYMBOL_METHOD:
-		return NODE_METHOD;
-	case SYMBOL_MODULE:
-		return NODE_MODULE;
-	case SYMBOL_NAMESPACE:
-		return NODE_NAMESPACE;
-	case SYMBOL_PACKAGE:
-		return NODE_PACKAGE;
-	case SYMBOL_STRUCT:
-		return NODE_STRUCT;
-	case SYMBOL_TYPEDEF:
-		return NODE_TYPEDEF;
-	case SYMBOL_TYPE_PARAMETER:
-		return NODE_TYPE_PARAMETER;
-	case SYMBOL_UNION:
-		return NODE_UNION;
-	default:
-		break;
-	}
-	return NODE_SYMBOL;
-}
-
-Edge::EdgeType ParserClientImpl::referenceKindToEdgeType(ReferenceKind referenceKind) 
-{
-	switch (referenceKind)
-	{
-	case REFERENCE_TYPE_USAGE:
-		return Edge::EDGE_TYPE_USAGE;
-	case REFERENCE_USAGE:
-		return Edge::EDGE_USAGE;
-	case REFERENCE_CALL:
-		return Edge::EDGE_CALL;
-	case REFERENCE_INHERITANCE:
-		return Edge::EDGE_INHERITANCE;
-	case REFERENCE_OVERRIDE:
-		return Edge::EDGE_OVERRIDE;
-	case REFERENCE_TYPE_ARGUMENT:
-		return Edge::EDGE_TYPE_ARGUMENT;
-	case REFERENCE_TEMPLATE_SPECIALIZATION:
-		return Edge::EDGE_TEMPLATE_SPECIALIZATION;
-	case REFERENCE_INCLUDE:
-		return Edge::EDGE_INCLUDE;
-	case REFERENCE_IMPORT:
-		return Edge::EDGE_IMPORT;
-	case REFERENCE_MACRO_USAGE:
-		return Edge::EDGE_MACRO_USAGE;
-	case REFERENCE_ANNOTATION_USAGE:
-		return Edge::EDGE_ANNOTATION_USAGE;
-	default:
-		break;
-	}
-	return Edge::EDGE_UNDEFINED;
-}
-
-LocationType ParserClientImpl::parseLocationTypeToLocationType(ParseLocationType type) 
-{
-	switch (type)
-	{
-	case ParseLocationType::TOKEN:
-		return LOCATION_TOKEN;
-	case ParseLocationType::SCOPE:
-		return LOCATION_SCOPE;
-	case ParseLocationType::SIGNATURE:
-		return LOCATION_SIGNATURE;
-	case ParseLocationType::QUALIFIER:
-		return LOCATION_QUALIFIER;
-	case ParseLocationType::LOCAL:
-		return LOCATION_LOCAL_SYMBOL;
-	}
-	return LOCATION_TOKEN;
-}
 
 Id ParserClientImpl::addNodeHierarchy(const NameHierarchy& nameHierarchy)
 {

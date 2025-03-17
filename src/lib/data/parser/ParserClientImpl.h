@@ -1,18 +1,17 @@
 #ifndef PARSER_CLIENT_IMPL_H
 #define PARSER_CLIENT_IMPL_H
 
-#include <set>
-
 #include "DefinitionKind.h"
 #include "IntermediateStorage.h"
 #include "LocationType.h"
-#include "Node.h"
 #include "ParserClient.h"
+
+#include <memory>
 
 class ParserClientImpl: public ParserClient
 {
 public:
-	ParserClientImpl(IntermediateStorage* const storage);
+	ParserClientImpl(std::shared_ptr<IntermediateStorage> storage);
 
 	Id recordFile(const FilePath& filePath, bool indexed) override;
 	void recordFileLanguage(Id fileId, const std::wstring& languageIdentifier) override;
@@ -42,10 +41,6 @@ public:
 	bool hasContent() const override;
 
 private:
-	static NodeKind symbolKindToNodeKind(SymbolKind symbolType);
-	static Edge::EdgeType referenceKindToEdgeType(ReferenceKind referenceKind);
-	static LocationType parseLocationTypeToLocationType(ParseLocationType type);
-
 	void addAccess(Id nodeId, AccessKind access);
 
 	Id addNodeHierarchy(const NameHierarchy& nameHierarchy);
@@ -54,7 +49,7 @@ private:
 
 	void addSourceLocation(Id elementId, const ParseLocation& location, LocationType type);
 
-	IntermediateStorage* const m_storage;
+	std::shared_ptr<IntermediateStorage> m_storage;
 	std::map<std::wstring, Id> m_fileIdMap;
 };
 

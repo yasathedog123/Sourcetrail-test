@@ -68,8 +68,7 @@ std::shared_ptr<Task> createBuildPchTask(
 			}
 
 			std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
-			std::shared_ptr<ParserClientImpl> client = std::make_shared<ParserClientImpl>(
-				storage.get());
+			std::shared_ptr<ParserClientImpl> client = std::make_shared<ParserClientImpl>(storage);
 
 			std::shared_ptr<FileRegister> fileRegister = std::make_shared<FileRegister>(
 				pchInputFilePath, std::set<FilePath> {pchInputFilePath}, std::set<FilePathFilter> {});

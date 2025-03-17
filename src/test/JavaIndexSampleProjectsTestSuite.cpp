@@ -4,19 +4,20 @@
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 
-#	include <fstream>
+#include <fstream>
 
-#	include "ApplicationSettings.h"
-#	include "IndexerCommandJava.h"
-#	include "JavaEnvironmentFactory.h"
-#	include "JavaParser.h"
-#	include "ParserClientImpl.h"
-#	include "TestStorage.h"
-#	include "TextAccess.h"
-#	include "TimeStamp.h"
-#	include "utilityJava.h"
-#	include "utilityPathDetection.h"
-#	include "utilityString.h"
+#include "ApplicationSettings.h"
+#include "IndexerCommandJava.h"
+#include "JavaEnvironmentFactory.h"
+#include "JavaParser.h"
+#include "ParserClientImpl.h"
+#include "TestStorage.h"
+#include "TextAccess.h"
+#include "TimeStamp.h"
+#include "ToolVersionSupport.h"
+#include "utilityJava.h"
+#include "utilityPathDetection.h"
+#include "utilityString.h"
 
 namespace
 {
@@ -35,10 +36,9 @@ std::shared_ptr<TextAccess> parseCode(
 	const std::vector<FilePath>& classpath)
 {
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
-	JavaParser parser(
-		std::make_shared<ParserClientImpl>(storage.get()), std::make_shared<IndexerStateInfo>());
+	JavaParser parser(std::make_shared<ParserClientImpl>(storage), std::make_shared<IndexerStateInfo>());
 	std::shared_ptr<IndexerCommandJava> command = std::make_shared<IndexerCommandJava>(
-		sourceFilePath, L"12", classpath);
+		sourceFilePath, EclipseVersionSupport::getLatestJavaStandard(), classpath);
 
 	TimeStamp startTime = TimeStamp::now();
 	parser.buildIndex(command);
