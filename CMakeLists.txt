@@ -161,6 +161,7 @@ target_compile_definitions(External_lib_boost
 		# Try to detect deprecations early:
 		#BOOST_ASIO_NO_DEPRECATED
 		#BOOST_PROCESS_NO_DEPRECATED
+		#BOOST_FILESYSTEM_NO_DEPRECATED
 		
 		# Use the same linking approach on all platforms:
 		#BOOST_ALL_NO_LIB
@@ -185,8 +186,9 @@ target_link_libraries(External_lib_boost
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION "6.6.2")
-set (QT_MIN_VERSION_HEX 0x060602)
+set (QT_MIN_VERSION 6.6.2)
+set (QT_MAX_VERSION_HEX 0x060802)
+
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED 
 	COMPONENTS
 		Widgets PrintSupport Network Svg
@@ -196,17 +198,16 @@ message(STATUS "Found Qt ${Qt6_VERSION}")
 add_library(External_lib_qt INTERFACE)
 
 # Enable warnings for deprecated APIs:
-if (${Qt6_VERSION} VERSION_GREATER_EQUAL 6.5)
-	target_compile_definitions(External_lib_qt
-		INTERFACE
-			QT_WARN_DEPRECATED_UP_TO=${QT_MIN_VERSION_HEX}
-	)
-else()
-	target_compile_definitions(External_lib_qt
-		INTERFACE
-			QT_DEPRECATED_WARNINGS_SINCE=${QT_MIN_VERSION_HEX}
-	)
-endif()
+target_compile_definitions(External_lib_qt
+	INTERFACE
+		QT_DISABLE_DEPRECATED_UP_TO=${QT_MAX_VERSION_HEX}
+		# QT_ENABLE_STRICT_MODE_UP_TO=${QT_MAX_VERSION_HEX}
+		QT_NO_FOREACH
+		QT_NO_NARROWING_CONVERSIONS_IN_CONNECT
+		QT_NO_QASCONST
+		QT_USE_NODISCARD_FILE_OPEN
+		QT_NO_QSNPRINTF
+)
 
 target_link_libraries(External_lib_qt
 	INTERFACE

@@ -85,7 +85,7 @@ void QtPathListBox::makeRelativeIfShorter(FilePath& path) const
 
 void QtPathListBox::dropEvent(QDropEvent* event)
 {
-	foreach (QUrl url, event->mimeData()->urls())
+	for (const QUrl &url : event->mimeData()->urls())
 	{
 		FilePath path(url.toLocalFile().toStdWString());
 		makeRelativeIfShorter(path);

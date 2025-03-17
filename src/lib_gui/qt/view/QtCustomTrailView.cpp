@@ -102,7 +102,7 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 
 		connect(
 			options,
-			QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
+			qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked),
 			[this, searchBoxToContainer](QAbstractButton* button) {
 				searchBoxToContainer->setEnabled(button == m_optionTo);
 			});

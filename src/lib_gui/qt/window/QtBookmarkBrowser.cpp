@@ -65,7 +65,7 @@ void QtBookmarkBrowser::setupBookmarkBrowser()
 
 		connect(
 			m_filterComboBox,
-			QOverload<int>::of(&QComboBox::currentIndexChanged),
+			qOverload<int>(&QComboBox::currentIndexChanged),
 			this,
 			&QtBookmarkBrowser::filterOrOrderChanged);
 
@@ -91,7 +91,7 @@ void QtBookmarkBrowser::setupBookmarkBrowser()
 
 		connect(
 			m_orderComboBox,
-			QOverload<int>::of(&QComboBox::currentIndexChanged),
+			qOverload<int>(&QComboBox::currentIndexChanged),
 			this,
 			&QtBookmarkBrowser::filterOrOrderChanged);
 	}

@@ -338,7 +338,7 @@ QCheckBox* QtErrorView::createFilterCheckbox(const QString& name, bool checked, 
 
 	connect(
 		checkbox,
-		&QCheckBox::stateChanged,
+		&QCheckBox::checkStateChanged,
 		this,
 		qOverload<int>(&QtErrorView::errorFilterChanged));
 

@@ -251,7 +251,7 @@ void copyNewFilesFromDirectory(const QString& src, const QString& dst)
 		return;
 	}
 
-	foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+	for (const QString &d : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 	{
 		QString dst_path = dst + QDir::separator() + d;
 
@@ -259,7 +259,7 @@ void copyNewFilesFromDirectory(const QString& src, const QString& dst)
 		copyNewFilesFromDirectory(src + QDir::separator() + d, dst_path);
 	}
 
-	foreach (QString f, dir.entryList(QDir::Files))
+	for (const QString &f : dir.entryList(QDir::Files))
 	{
 		if (!QFile::exists(dst + QDir::separator() + f))
 		{

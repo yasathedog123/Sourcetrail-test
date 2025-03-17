@@ -396,7 +396,7 @@ void QtMainWindow::updateBookmarksMenu(const std::vector<std::shared_ptr<Bookmar
 
 void QtMainWindow::setContentEnabled(bool enabled)
 {
-	foreach (QAction* action, menuBar()->actions())
+	for (QAction* action : menuBar()->actions())
 	{
 		action->setEnabled(enabled);
 	}
