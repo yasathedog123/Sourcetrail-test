@@ -83,7 +83,7 @@ std::vector<FilePath> CxxVs10To14HeaderPathDetector::doGetPaths() const
 FilePath CxxVs10To14HeaderPathDetector::getVsInstallPathUsingRegistry() const
 {
 	QString key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\";
-	if (m_architecture == Platform::Architecture::X86_32)
+	if (m_architecture == Platform::Architecture::BITS_32)
 	{
 		key += "Wow6432Node\\";
 	}

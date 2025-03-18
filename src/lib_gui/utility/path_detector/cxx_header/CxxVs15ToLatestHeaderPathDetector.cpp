@@ -51,11 +51,11 @@ std::vector<FilePath> CxxVs15ToLatestHeaderPathDetector::doGetPaths() const
 	if (!headerSearchPaths.empty())
 	{
 		std::vector<FilePath> windowsSdkHeaderSearchPaths = utility::getWindowsSdkHeaderSearchPaths(
-			Platform::Architecture::X86_32);
+			Platform::Architecture::BITS_32);
 		if (windowsSdkHeaderSearchPaths.empty())
 		{
 			windowsSdkHeaderSearchPaths = utility::getWindowsSdkHeaderSearchPaths(
-				Platform::Architecture::X86_64);
+				Platform::Architecture::BITS_64);
 		}
 		utility::append(headerSearchPaths, windowsSdkHeaderSearchPaths);
 	}

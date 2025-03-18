@@ -27,6 +27,7 @@ add_executable(Sourcetrail_test
 	MatrixDynamicBaseTestSuite.cpp
 	MessageQueueTestSuite.cpp
 	NetworkProtocolHelperTestSuite.cpp
+	PlatformTestSuite.cpp
 	PythonIndexerTestSuite.cpp
 	RefreshInfoGeneratorTestSuite.cpp
 	SearchIndexTestSuite.cpp

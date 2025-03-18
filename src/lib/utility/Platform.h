@@ -29,10 +29,11 @@ class Platform final
 
 		enum class Architecture
 		{
-			X86_32,
-			X86_64
+			BITS_32,
+			BITS_64
 		};
-
+		
+		static Architecture getArchitecture();
 		static std::string getArchitectureName();
 		static std::string getArchitectureName(Architecture architecture);
 };

@@ -5,11 +5,9 @@ namespace utility
 using namespace std;
 using namespace std::string_literals;
 
-static_assert(BOOST_ARCH_X86_32 || BOOST_ARCH_X86_64, "Unknown architecture!");
+// Can't use BOOST_ARCH_WORD_BITS_32/BOOST_ARCH_WORD_BITS_64 because they are *both* defined!
+static_assert(BOOST_ARCH_WORD_BITS == 32 || BOOST_ARCH_WORD_BITS == 64, "Unknown architecture!");
 static_assert(BOOST_OS_WINDOWS || BOOST_OS_MACOS || BOOST_OS_LINUX, "Unknown operating system!");
-
-static constexpr char X86_32_NAME[] = "32 Bit";
-static constexpr char X86_64_NAME[] = "64 Bit";
 
 string Platform::getName()
 {
@@ -21,22 +19,30 @@ string Platform::getName()
 		return "Mac"s;
 }
 
+Platform::Architecture Platform::getArchitecture()
+{
+	if constexpr (BOOST_ARCH_WORD_BITS == 32)
+		return Architecture::BITS_32;
+	else if constexpr (BOOST_ARCH_WORD_BITS == 64)
+		return Architecture::BITS_64;
+}
+
 string Platform::getArchitectureName()
 {
-	if constexpr (BOOST_ARCH_X86_64)
-		return X86_32_NAME;
-	else if constexpr (BOOST_ARCH_X86_32)
-		return X86_64_NAME;
+	return getArchitectureName(getArchitecture());
 }
 
 string Platform::getArchitectureName(Architecture architecture)
 {
-	if (architecture == Architecture::X86_32)
-		return X86_32_NAME;
-	else if (architecture == Architecture::X86_64)
-		return X86_64_NAME;
-	else
-		return "";
+	switch (architecture)
+	{
+		case Architecture::BITS_32:
+			return "32 Bit"s;
+		case Architecture::BITS_64:
+			return "64 Bit"s;
+		default:
+			return ""s;
+	}
 }
 
 }

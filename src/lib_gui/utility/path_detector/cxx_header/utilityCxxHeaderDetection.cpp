@@ -18,7 +18,7 @@ namespace
 FilePath getWindowsSdkRootPathUsingRegistry(Platform::Architecture architecture, const std::string& sdkVersion)
 {
 	QString key = QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\");
-	if (architecture == Platform::Architecture::X86_32)
+	if (architecture == Platform::Architecture::BITS_32)
 	{
 		key += QStringLiteral("Wow6432Node\\");
 	}
