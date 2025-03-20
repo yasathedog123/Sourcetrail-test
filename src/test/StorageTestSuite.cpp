@@ -65,11 +65,7 @@ TEST_CASE("storage saves file")
 	std::wstring filePath = L"path/to/test.h";
 
 	std::shared_ptr<IntermediateStorage> intermediateStorage = std::make_shared<IntermediateStorage>();
-	Id id = intermediateStorage
-				->addNode(StorageNodeData(
-					nodeKindToInt(NODE_FILE),
-					NameHierarchy::serialize(NameHierarchy(filePath, NAME_DELIMITER_FILE))))
-				.first;
+	Id id = intermediateStorage->addNode(StorageNodeData(NODE_FILE, NameHierarchy::serialize(NameHierarchy(filePath, NAME_DELIMITER_FILE)))).first;
 	intermediateStorage->addFile(StorageFile(id, filePath, L"someLanguage", "someTime", true, true));
 
 	storage.inject(intermediateStorage.get());
@@ -85,8 +81,7 @@ TEST_CASE("storage saves node")
 	TestStorage storage;
 
 	std::shared_ptr<IntermediateStorage> intermediateStorage = std::make_shared<IntermediateStorage>();
-	intermediateStorage->addNode(
-		StorageNodeData(nodeKindToInt(NODE_TYPEDEF), NameHierarchy::serialize(a)));
+	intermediateStorage->addNode(StorageNodeData(NODE_TYPEDEF, NameHierarchy::serialize(a)));
 
 	storage.inject(intermediateStorage.get());
 
@@ -105,16 +100,12 @@ TEST_CASE("storage saves field as member")
 
 	std::shared_ptr<IntermediateStorage> intermediateStorage = std::make_shared<IntermediateStorage>();
 
-	Id aId = intermediateStorage
-				 ->addNode(StorageNodeData(nodeKindToInt(NODE_STRUCT), NameHierarchy::serialize(a)))
-				 .first;
+	Id aId = intermediateStorage->addNode(StorageNodeData(NODE_STRUCT, NameHierarchy::serialize(a))).first;
 	intermediateStorage->addSymbol(StorageSymbol(aId, DEFINITION_EXPLICIT));
 
-	Id bId = intermediateStorage
-				 ->addNode(StorageNodeData(nodeKindToInt(NODE_FIELD), NameHierarchy::serialize(b)))
-				 .first;
+	Id bId = intermediateStorage->addNode(StorageNodeData(NODE_FIELD, NameHierarchy::serialize(b))).first;
 	intermediateStorage->addSymbol(StorageSymbol(bId, DEFINITION_EXPLICIT));
-	intermediateStorage->addEdge(StorageEdgeData(Edge::typeToInt(Edge::EDGE_MEMBER), aId, bId));
+	intermediateStorage->addEdge(StorageEdgeData(Edge::EDGE_MEMBER, aId, bId));
 
 	storage.inject(intermediateStorage.get());
 	bool foundEdge = false;
@@ -124,7 +115,7 @@ TEST_CASE("storage saves field as member")
 	for (auto edge: storage.getStorageEdges())
 	{
 		if (edge.sourceNodeId == sourceId && edge.targetNodeId == targetId &&
-			edge.type == Edge::typeToInt(Edge::EDGE_MEMBER))
+			edge.type == Edge::EDGE_MEMBER)
 		{
 			foundEdge = true;
 		}

@@ -11,7 +11,6 @@
 #include "StorageOccurrence.h"
 #include "StorageSourceLocation.h"
 #include "StorageSymbol.h"
-#include "types.h"
 #include "utilityString.h"
 
 // macro creating SharedStorageType from StorageType
@@ -42,13 +41,13 @@ CONVERT_STORAGE_TYPE_TO_SHARED_TYPE(StorageComponentAccess, SharedStorageCompone
 struct SharedStorageNode
 {
 	SharedStorageNode(
-		Id id, int type, const std::string& serializedName, SharedMemory::Allocator* allocator)
+		Id id, NodeKind type, const std::string& serializedName, SharedMemory::Allocator* allocator)
 		: id(id), type(type), serializedName(serializedName.c_str(), allocator)
 	{
 	}
 
 	Id id;
-	int type;
+	NodeKind type;
 	SharedMemory::String serializedName;
 };
 

@@ -60,7 +60,7 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 
 		for (Id elementId: elementIds)
 		{
-			switch (intToLocationType(location.type))
+			switch (location.type)
 			{
 			case LOCATION_TOKEN:
 				if (elementId)
@@ -113,7 +113,7 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 	{
 		nodesMap.emplace(node.id, node);
 
-		if (intToNodeKind(node.type) == NODE_FILE)
+		if (node.type == NODE_FILE)
 		{
 			fileIdMap.insert(node.id);
 		}
@@ -139,11 +139,10 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 			auto accessIt = accessMap.find(node.id);
 			if (accessIt != accessMap.end())
 			{
-				if (intToAccessKind(accessIt->second.type) != ACCESS_TEMPLATE_PARAMETER &&
-					intToAccessKind(accessIt->second.type) != ACCESS_TYPE_PARAMETER)
+				if (accessIt->second.type != ACCESS_TEMPLATE_PARAMETER &&
+					accessIt->second.type != ACCESS_TYPE_PARAMETER)
 				{
-					nameStr = accessKindToString(intToAccessKind(accessIt->second.type)) +
-							  L' ' + nameStr;
+					nameStr = accessKindToString(accessIt->second.type) + L' ' + nameStr;
 				}
 			}
 
@@ -303,9 +302,9 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 	return testStorage;
 }
 
-std::wstring TestStorage::nodeTypeToString(int nodeType)
+std::wstring TestStorage::nodeTypeToString(NodeKind nodeType)
 {
-	switch (intToNodeKind(nodeType))
+	switch (nodeType)
 	{
 	case NODE_BUILTIN_TYPE:
 		return L"SYMBOL_BUILTIN_TYPE";
@@ -347,9 +346,9 @@ std::wstring TestStorage::nodeTypeToString(int nodeType)
 	return L"SYMBOL_NON_INDEXED";
 }
 
-std::wstring TestStorage::edgeTypeToString(int edgeType)
+std::wstring TestStorage::edgeTypeToString(Edge::EdgeType edgeType)
 {
-	switch (Edge::intToType(edgeType))
+	switch (edgeType)
 	{
 	case Edge::EDGE_TYPE_USAGE:
 		return L"REFERENCE_TYPE_USAGE";
@@ -379,9 +378,9 @@ std::wstring TestStorage::edgeTypeToString(int edgeType)
 	return L"REFERENCE_UNDEFINED";
 }
 
-std::vector<std::wstring> *TestStorage::getBinForNodeType(int nodeType)
+std::vector<std::wstring> *TestStorage::getBinForNodeType(NodeKind nodeType)
 {
-	switch (intToNodeKind(nodeType))
+	switch (nodeType)
 	{
 	case NODE_PACKAGE:
 		return &packages;
@@ -425,9 +424,9 @@ std::vector<std::wstring> *TestStorage::getBinForNodeType(int nodeType)
 	return nullptr;
 }
 
-std::vector<std::wstring> *TestStorage::getBinForEdgeType(int edgeType)
+std::vector<std::wstring> *TestStorage::getBinForEdgeType(Edge::EdgeType edgeType)
 {
-	switch (Edge::intToType(edgeType))
+	switch (edgeType)
 	{
 	case Edge::EDGE_TYPE_USAGE:
 		return &typeUses;

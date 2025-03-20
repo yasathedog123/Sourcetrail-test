@@ -1,11 +1,7 @@
 #include "NodeKind.h"
 
-int nodeKindToInt(NodeKind kind)
-{
-	return kind;
-}
-
-NodeKind intToNodeKind(int value)
+template<>
+NodeKind intToEnum(int value)
 {
 	switch (value)
 	{
@@ -50,7 +46,6 @@ NodeKind intToNodeKind(int value)
 	case NODE_UNION:
 		return NODE_UNION;
 	}
-
 	return NODE_SYMBOL;
 }
 
@@ -58,12 +53,16 @@ std::string getReadableNodeKindString(NodeKind kind)
 {
 	switch (kind)
 	{
+	case NODE_UNDEFINED:
+		return "";
+		
 	case NODE_SYMBOL:
 		return "symbol";
 	case NODE_BUILTIN_TYPE:
 		return "built-in type";
 	case NODE_TYPE:
 		return "type";
+		
 	case NODE_MODULE:
 		return "module";
 	case NODE_NAMESPACE:
@@ -94,6 +93,7 @@ std::string getReadableNodeKindString(NodeKind kind)
 		return "typedef";
 	case NODE_TYPE_PARAMETER:
 		return "type parameter";
+		
 	case NODE_FILE:
 		return "file";
 	case NODE_MACRO:
@@ -101,7 +101,6 @@ std::string getReadableNodeKindString(NodeKind kind)
 	case NODE_UNION:
 		return "union";
 	}
-
 	return "";
 }
 
@@ -113,9 +112,9 @@ std::wstring getReadableNodeKindWString(NodeKind kind)
 
 NodeKind getNodeKindForReadableNodeKindString(const std::wstring& str)
 {
-	for (NodeKindMask mask = 1; mask <= NODE_MAX_VALUE; mask *= 2)
+	for (NodeKindMask mask = 1; mask <= NODE_KIND_MAX_VALUE; mask *= 2)
 	{
-		NodeKind kind = intToNodeKind(mask);
+		NodeKind kind = intToEnum<NodeKind>(mask);
 		if (getReadableNodeKindWString(kind) == str)
 		{
 			return kind;

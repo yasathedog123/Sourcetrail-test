@@ -130,7 +130,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 
 	// Linux UI scale
-	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
+	// TODO (petermost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
 	if constexpr (utility::Platform::isLinux())
 	{
 		// screen

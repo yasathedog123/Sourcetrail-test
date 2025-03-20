@@ -200,10 +200,7 @@ void BookmarkController::activateBookmark(const std::shared_ptr<Bookmark> bookma
 				{
 					MessageActivateNodes(activeNodeId).dispatch();
 				}
-
-				MessageActivateEdge(
-					firstEdgeId, Edge::intToType(storageEdge.type), sourceName, targetName)
-					.dispatch();
+				MessageActivateEdge(firstEdgeId, storageEdge.type, sourceName, targetName).dispatch();
 			}
 			else
 			{

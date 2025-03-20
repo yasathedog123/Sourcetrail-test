@@ -39,7 +39,7 @@ std::shared_ptr<Target> Target::create(const TiXmlElement* element)
 				if (optionElement->QueryIntAttribute("projectCompilerOptionsRelation", &value) ==
 					TIXML_SUCCESS)
 				{
-					target->m_projectCompilerOptionsRelation = intToTargetRelationType(value);
+					target->m_projectCompilerOptionsRelation = intToEnum<TargetRelationType>(value);
 				}
 			}
 			{
@@ -47,7 +47,7 @@ std::shared_ptr<Target> Target::create(const TiXmlElement* element)
 				if (optionElement->QueryIntAttribute("projectIncludeDirsRelation", &value) ==
 					TIXML_SUCCESS)
 				{
-					target->m_projectIncludeDirsRelation = intToTargetRelationType(value);
+					target->m_projectIncludeDirsRelation = intToEnum<TargetRelationType>(value);
 				}
 			}
 

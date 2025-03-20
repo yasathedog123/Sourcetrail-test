@@ -1,7 +1,6 @@
 #include "IntermediateStorage.h"
 
 #include "LocationType.h"
-#include "utility.h"
 
 IntermediateStorage::IntermediateStorage(): m_nextId(1) {}
 
@@ -101,7 +100,7 @@ void IntermediateStorage::setFilesWithErrorsIncomplete()
 	std::set<Id> errorFileIds;
 	for (const StorageSourceLocation& location: m_sourceLocations)
 	{
-		if (location.type == locationTypeToInt(LOCATION_ERROR))
+		if (location.type == LOCATION_ERROR)
 		{
 			errorFileIds.insert(location.fileNodeId);
 		}
@@ -147,7 +146,7 @@ std::vector<Id> IntermediateStorage::addNodes(const std::vector<StorageNode>& no
 	return nodeIds;
 }
 
-void IntermediateStorage::setNodeType(Id nodeId, int nodeType)
+void IntermediateStorage::setNodeType(Id nodeId, NodeKind nodeType)
 {
 	auto it = m_nodeIdIndex.find(nodeId);
 	if (it != m_nodeIdIndex.end() && m_nodes[it->second].type < nodeType)

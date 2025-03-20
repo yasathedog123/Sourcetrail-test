@@ -28,9 +28,8 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 	std::vector<Id> unsolvedLocationIds;
 	for (const StorageSourceLocation location: storage.getStorageSourceLocations())
 	{
-		if (intToLocationType(location.type) ==
-			LOCATION_UNSOLVED)	  // FIXME: this doesn't catch unsolved qualifiers -> convert
-								  // Qualifier location type to qualifier edge
+		// FIXME: this doesn't catch unsolved qualifiers -> convert Qualifier location type to qualifier edge
+		if (location.type == LOCATION_UNSOLVED)
 		{
 			unsolvedLocationIds.push_back(location.id);
 		}
@@ -172,9 +171,9 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 							const StorageEdge edge = storage.getEdgeById(elementId);
 							if (edge.id != 0)	 // for node elements this condition will fail
 							{
-								if (Edge::intToType(edge.type) == Edge::EDGE_INHERITANCE)
+								if (edge.type == Edge::EDGE_INHERITANCE)
 								{
-									if (intToNodeKind(targetNode.type) == NODE_CLASS)
+									if (targetNode.type == NODE_CLASS)
 									{
 										const NameHierarchy chileName =
 											storage.getNameHierarchyForNodeId(edge.sourceNodeId);
@@ -219,7 +218,7 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 		{
 			storage.addElementComponent(StorageElementComponent(
 				ambiguousEdgeIds[i],
-				elementComponentKindToInt(ElementComponentKind::IS_AMBIGUOUS),
+				ELEMENT_COMPONENT_IS_AMBIGUOUS,
 				L""));
 			storage.addOccurrence(
 				StorageOccurrence(ambiguousEdgeIds[i], dataToInsert[i].sourceLocationId));

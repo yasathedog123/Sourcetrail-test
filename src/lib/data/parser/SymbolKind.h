@@ -1,8 +1,13 @@
 #ifndef SYMBOL_KIND_H
 #define SYMBOL_KIND_H
 
+#include "utilityEnum.h"
+
+// these values need to be the same as SymbolKind in Java code
 enum SymbolKind
-{	 // these values need to be the same as SymbolKind in Java code
+{	 
+	SYMBOL_UNDEFINED = 0,
+	
 	SYMBOL_ANNOTATION = 1,
 	SYMBOL_BUILTIN_TYPE = 2,
 	SYMBOL_CLASS = 3,
@@ -21,10 +26,9 @@ enum SymbolKind
 	SYMBOL_TYPEDEF = 16,
 	SYMBOL_TYPE_PARAMETER = 17,
 	SYMBOL_UNION = 18,
-	SYMBOL_KIND_MAX = 19
 };
 
-SymbolKind intToSymbolKind(int v);
-int symbolKindToInt(SymbolKind t);
+template <>
+SymbolKind intToEnum(int value);
 
 #endif	  // SYMBOL_KIND_H

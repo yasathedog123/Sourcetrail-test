@@ -73,7 +73,7 @@ void setupAppEnvironment(int  /*argc*/, char*  /*argv*/[])
 	// This function will be called after setupAppDirectories, so UserPaths::setUserDataDirectoryPath 
 	// has been initialized and UserPaths::getAppSettingsFilePath will return the correct path.
 
-	// TODO (PMost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
+	// TODO (petermost): Check https://doc.qt.io/qt-6/highdpi.html#environment-variable-reference
 	if constexpr(Platform::isLinux()) {
 		// Set QT screen scaling factor
 		ApplicationSettings appSettings;

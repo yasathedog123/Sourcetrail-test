@@ -1,12 +1,16 @@
 #ifndef NODE_KIND_H
 #define NODE_KIND_H
 
+#include "utilityEnum.h"
+
 #include <string>
 
 typedef int NodeKindMask;
 
 enum NodeKind : NodeKindMask
-{	 // make sure that the value of 0x0 is not used here because it doesn't work for bitmasking.
+{
+	NODE_UNDEFINED = 0,
+
 	NODE_SYMBOL = 1 << 0,
 	NODE_TYPE = 1 << 1,
 	NODE_BUILTIN_TYPE = 1 << 2,
@@ -30,12 +34,12 @@ enum NodeKind : NodeKindMask
 	NODE_FILE = 1 << 18,
 	NODE_MACRO = 1 << 19,
 	NODE_UNION = 1 << 20,
-
-	NODE_MAX_VALUE = NODE_UNION
 };
 
-int nodeKindToInt(NodeKind kind);
-NodeKind intToNodeKind(int value);
+constexpr NodeKind NODE_KIND_MAX_VALUE = NODE_UNION;
+
+template<>
+NodeKind intToEnum(int value);
 
 std::string getReadableNodeKindString(NodeKind kind);
 std::wstring getReadableNodeKindWString(NodeKind kind);

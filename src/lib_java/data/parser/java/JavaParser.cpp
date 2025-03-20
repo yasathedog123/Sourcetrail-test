@@ -7,7 +7,6 @@
 #include "ParseLocation.h"
 #include "ParserClient.h"
 #include "ReferenceKind.h"
-#include "ResourcePaths.h"
 #include "TextAccess.h"
 #include "utilityJava.h"
 #include "utilityString.h"
@@ -173,9 +172,9 @@ void JavaParser::doLogError(jstring jError)
 void JavaParser::doRecordSymbol(jstring jSymbolName, jint jSymbolKind, jint jAccess, jint jDefinitionKind)
 {
 	Id symbolId = getOrCreateSymbolId(jSymbolName);
-	m_client->recordSymbolKind(symbolId, intToSymbolKind(jSymbolKind));
-	m_client->recordAccessKind(symbolId, intToAccessKind(jAccess));
-	m_client->recordDefinitionKind(symbolId, intToDefinitionKind(jDefinitionKind));
+	m_client->recordSymbolKind(symbolId, intToEnum<SymbolKind>(jSymbolKind));
+	m_client->recordAccessKind(symbolId, intToEnum<AccessKind>(jAccess));
+	m_client->recordDefinitionKind(symbolId, intToEnum<DefinitionKind>(jDefinitionKind));
 }
 
 void JavaParser::doRecordSymbolWithLocation(
@@ -189,13 +188,13 @@ void JavaParser::doRecordSymbolWithLocation(
 	jint jDefinitionKind)
 {
 	Id symbolId = getOrCreateSymbolId(jSymbolName);
-	m_client->recordSymbolKind(symbolId, intToSymbolKind(jSymbolKind));
+	m_client->recordSymbolKind(symbolId, intToEnum<SymbolKind>(jSymbolKind));
 	m_client->recordLocation(
 		symbolId,
 		ParseLocation(m_currentFileId, beginLine, beginColumn, endLine, endColumn),
 		ParseLocationType::TOKEN);
-	m_client->recordAccessKind(symbolId, intToAccessKind(jAccess));
-	m_client->recordDefinitionKind(symbolId, intToDefinitionKind(jDefinitionKind));
+	m_client->recordAccessKind(symbolId, intToEnum<AccessKind>(jAccess));
+	m_client->recordDefinitionKind(symbolId, intToEnum<DefinitionKind>(jDefinitionKind));
 }
 
 void JavaParser::doRecordSymbolWithLocationAndScope(
@@ -213,7 +212,7 @@ void JavaParser::doRecordSymbolWithLocationAndScope(
 	jint jDefinitionKind)
 {
 	Id symbolId = getOrCreateSymbolId(jSymbolName);
-	m_client->recordSymbolKind(symbolId, intToSymbolKind(jSymbolKind));
+	m_client->recordSymbolKind(symbolId, intToEnum<SymbolKind>(jSymbolKind));
 	m_client->recordLocation(
 		symbolId,
 		ParseLocation(m_currentFileId, beginLine, beginColumn, endLine, endColumn),
@@ -222,8 +221,8 @@ void JavaParser::doRecordSymbolWithLocationAndScope(
 		symbolId,
 		ParseLocation(m_currentFileId, scopeBeginLine, scopeBeginColumn, scopeEndLine, scopeEndColumn),
 		ParseLocationType::SCOPE);
-	m_client->recordAccessKind(symbolId, intToAccessKind(jAccess));
-	m_client->recordDefinitionKind(symbolId, intToDefinitionKind(jDefinitionKind));
+	m_client->recordAccessKind(symbolId, intToEnum<AccessKind>(jAccess));
+	m_client->recordDefinitionKind(symbolId, intToEnum<DefinitionKind>(jDefinitionKind));
 }
 
 void JavaParser::doRecordSymbolWithLocationAndScopeAndSignature(
@@ -245,7 +244,7 @@ void JavaParser::doRecordSymbolWithLocationAndScopeAndSignature(
 	jint jDefinitionKind)
 {
 	Id symbolId = getOrCreateSymbolId(jSymbolName);
-	m_client->recordSymbolKind(symbolId, intToSymbolKind(jSymbolKind));
+	m_client->recordSymbolKind(symbolId, intToEnum<SymbolKind>(jSymbolKind));
 	m_client->recordLocation(
 		symbolId,
 		ParseLocation(m_currentFileId, beginLine, beginColumn, endLine, endColumn),
@@ -259,8 +258,8 @@ void JavaParser::doRecordSymbolWithLocationAndScopeAndSignature(
 		ParseLocation(
 			m_currentFileId, signatureBeginLine, signatureBeginColumn, signatureEndLine, signatureEndColumn),
 		ParseLocationType::SIGNATURE);
-	m_client->recordAccessKind(symbolId, intToAccessKind(jAccess));
-	m_client->recordDefinitionKind(symbolId, intToDefinitionKind(jDefinitionKind));
+	m_client->recordAccessKind(symbolId, intToEnum<AccessKind>(jAccess));
+	m_client->recordDefinitionKind(symbolId, intToEnum<DefinitionKind>(jDefinitionKind));
 }
 
 void JavaParser::doRecordReference(
@@ -273,7 +272,7 @@ void JavaParser::doRecordReference(
 	jint endColumn)
 {
 	m_client->recordReference(
-		intToReferenceKind(jReferenceKind),
+		intToEnum<ReferenceKind>(jReferenceKind),
 		getOrCreateSymbolId(jReferencedName),
 		getOrCreateSymbolId(jContextName),
 		ParseLocation(m_currentFileId, beginLine, beginColumn, endLine, endColumn));

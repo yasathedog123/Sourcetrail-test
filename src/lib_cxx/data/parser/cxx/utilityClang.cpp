@@ -90,9 +90,10 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 	case TagTypeKind::Enum:
 		return SYMBOL_ENUM;
 	case TagTypeKind::Interface:
-		return SYMBOL_KIND_MAX;
+		// TODO (petermost): Is this correct or should 'SYMBOL_INTERFACE' be returned?
+		return SYMBOL_UNDEFINED;
 	default:
-		return SYMBOL_KIND_MAX;
+		return SYMBOL_UNDEFINED;
 	}
 }
 
@@ -108,7 +109,7 @@ bool utility::isParameter(const clang::ValueDecl *d)
 
 SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 {
-	SymbolKind symbolKind = SYMBOL_KIND_MAX;
+	SymbolKind symbolKind = SYMBOL_UNDEFINED;
 
 	if (d->getParentFunctionOrMethod() == nullptr)
 	{

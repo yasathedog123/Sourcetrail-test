@@ -1,8 +1,9 @@
 #include "ReferenceKind.h"
 
-ReferenceKind intToReferenceKind(int v)
+template <>
+ReferenceKind intToEnum(int value)
 {
-	switch (v)
+	switch (value)
 	{
 	case REFERENCE_TYPE_USAGE:
 		return REFERENCE_TYPE_USAGE;
@@ -28,9 +29,4 @@ ReferenceKind intToReferenceKind(int v)
 		return REFERENCE_ANNOTATION_USAGE;
 	}
 	return REFERENCE_UNDEFINED;
-}
-
-int referenceKindToInt(ReferenceKind t)
-{
-	return t;
 }

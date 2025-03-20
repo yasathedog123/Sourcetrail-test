@@ -1,6 +1,8 @@
 #ifndef LOCATION_TYPE_H
 #define LOCATION_TYPE_H
 
+#include "utilityEnum.h"
+
 enum LocationType
 {
 	LOCATION_TOKEN = 0,
@@ -15,7 +17,7 @@ enum LocationType
 	LOCATION_UNSOLVED = 9
 };
 
-int locationTypeToInt(LocationType type);
-LocationType intToLocationType(int value);
+template <>
+LocationType intToEnum(int value);
 
 #endif	  // LOCATION_TYPE_H

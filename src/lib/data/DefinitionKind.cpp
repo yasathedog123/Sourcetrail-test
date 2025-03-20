@@ -1,11 +1,7 @@
 #include "DefinitionKind.h"
 
-int definitionKindToInt(DefinitionKind definitionKind)
-{
-	return definitionKind;
-}
-
-DefinitionKind intToDefinitionKind(int definitionKind)
+template<>
+DefinitionKind intToEnum(int definitionKind)
 {
 	switch (definitionKind)
 	{

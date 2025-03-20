@@ -63,7 +63,7 @@ void CxxAstVisitorComponentIndexer::beginTraverseNestedNameSpecifierLoc(
 	case clang::NestedNameSpecifier::TypeSpecWithTemplate:
 		if (const clang::CXXRecordDecl* recordDecl = loc.getNestedNameSpecifier()->getAsRecordDecl())
 		{
-			SymbolKind symbolKind = SYMBOL_KIND_MAX;
+			SymbolKind symbolKind = SYMBOL_UNDEFINED;
 			if (recordDecl->isClass())
 			{
 				symbolKind = SYMBOL_CLASS;
@@ -77,7 +77,7 @@ void CxxAstVisitorComponentIndexer::beginTraverseNestedNameSpecifierLoc(
 				symbolKind = SYMBOL_UNION;
 			}
 
-			if (symbolKind != SYMBOL_KIND_MAX)
+			if (symbolKind != SYMBOL_UNDEFINED)
 			{
 				const Id symbolId = getOrCreateSymbolId(recordDecl);
 				m_client->recordSymbolKind(symbolId, symbolKind);

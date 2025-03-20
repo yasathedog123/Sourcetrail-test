@@ -126,14 +126,14 @@ Id ParserClientImpl::recordSymbol(const NameHierarchy& symbolName)
 
 void ParserClientImpl::recordSymbolKind(Id symbolId, SymbolKind symbolKind)
 {
-	m_storage->setNodeType(symbolId, nodeKindToInt(symbolKindToNodeKind(symbolKind)));
+	m_storage->setNodeType(symbolId, symbolKindToNodeKind(symbolKind));
 }
 
 void ParserClientImpl::recordAccessKind(Id symbolId, AccessKind accessKind)
 {
 	if (accessKind != ACCESS_NONE)
 	{
-		m_storage->addComponentAccess(StorageComponentAccess(symbolId, accessKindToInt(accessKind)));
+		m_storage->addComponentAccess(StorageComponentAccess(symbolId, accessKind));
 	}
 }
 
@@ -141,7 +141,7 @@ void ParserClientImpl::recordDefinitionKind(Id symbolId, DefinitionKind definiti
 {
 	if (definitionKind != DEFINITION_NONE)
 	{
-		m_storage->addSymbol(StorageSymbol(symbolId, definitionKindToInt(definitionKind)));
+		m_storage->addSymbol(StorageSymbol(symbolId, definitionKind));
 	}
 }
 
@@ -180,7 +180,7 @@ void ParserClientImpl::recordComment(const ParseLocation& location)
 		location.startColumnNumber,
 		location.endLineNumber,
 		location.endColumnNumber,
-		locationTypeToInt(LOCATION_COMMENT)));
+		LOCATION_COMMENT));
 }
 
 void ParserClientImpl::recordError(
@@ -211,8 +211,8 @@ Id ParserClientImpl::addNodeHierarchy(const NameHierarchy& nameHierarchy)
 	Id firstNodeId = 0;
 	for (size_t i = nameHierarchy.size(); i > 0; i--)
 	{
-		std::pair<Id, bool> ret = m_storage->addNode(StorageNodeData(
-			nodeKindToInt(NODE_SYMBOL), NameHierarchy::serializeRange(nameHierarchy, 0, i)));
+		std::pair<Id, bool> ret = m_storage->addNode(StorageNodeData(NODE_SYMBOL, 
+			NameHierarchy::serializeRange(nameHierarchy, 0, i)));
 
 		if (!firstNodeId)
 		{
@@ -245,13 +245,13 @@ Id ParserClientImpl::addFileName(const FilePath& filePath)
 	}
 
 	const Id fileId = addNodeHierarchy(NameHierarchy(file, NAME_DELIMITER_FILE));
-	m_storage->setNodeType(fileId, nodeKindToInt(NODE_FILE));
+	m_storage->setNodeType(fileId, NODE_FILE);
 
 	m_fileIdMap.emplace(file, fileId);
 	return fileId;
 }
 
-Id ParserClientImpl::addEdge(int type, Id sourceId, Id targetId)
+Id ParserClientImpl::addEdge(Edge::EdgeType type, Id sourceId, Id targetId)
 {
 	if (sourceId && targetId)
 	{
@@ -273,7 +273,7 @@ void ParserClientImpl::addSourceLocation(Id elementId, const ParseLocation& loca
 		location.startColumnNumber,
 		location.endLineNumber,
 		location.endColumnNumber,
-		locationTypeToInt(type)));
+		type));
 
 	m_storage->addOccurrence(StorageOccurrence(elementId, sourceLocationId));
 }

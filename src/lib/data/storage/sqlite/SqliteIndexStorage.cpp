@@ -1,8 +1,5 @@
 #include "SqliteIndexStorage.h"
 
-#include <sstream>
-#include <unordered_map>
-
 #include "FileSystem.h"
 #include "LocationType.h"
 #include "SourceLocationCollection.h"
@@ -786,7 +783,7 @@ StorageNode SqliteIndexStorage::getNodeBySerializedName(const std::wstring& seri
 
 		if (id != 0 && type != -1)
 		{
-			return StorageNode(id, type, utility::decodeFromUtf8(name));
+			return StorageNode(id, intToEnum<NodeKind>(type), utility::decodeFromUtf8(name));
 		}
 	}
 
@@ -795,18 +792,18 @@ StorageNode SqliteIndexStorage::getNodeBySerializedName(const std::wstring& seri
 	return StorageNode();
 }
 
-std::vector<int> SqliteIndexStorage::getAvailableNodeTypes() const
+std::vector<NodeKind> SqliteIndexStorage::getAvailableNodeTypes() const
 {
 	CppSQLite3Query q = executeQuery("SELECT DISTINCT type FROM node;");
 
-	std::vector<int> types;
+	std::vector<NodeKind> types;
 
 	while (!q.eof())
 	{
 		const int type = q.getIntField(0, -1);
 		if (type != -1)
 		{
-			types.push_back(type);
+			types.push_back(intToEnum<NodeKind>(type));
 		}
 
 		q.nextRow();
@@ -815,18 +812,18 @@ std::vector<int> SqliteIndexStorage::getAvailableNodeTypes() const
 	return types;
 }
 
-std::vector<int> SqliteIndexStorage::getAvailableEdgeTypes() const
+std::vector<Edge::EdgeType> SqliteIndexStorage::getAvailableEdgeTypes() const
 {
 	CppSQLite3Query q = executeQuery("SELECT DISTINCT type FROM edge;");
 
-	std::vector<int> types;
+	std::vector<Edge::EdgeType> types;
 
 	while (!q.eof())
 	{
 		const int type = q.getIntField(0, -1);
 		if (type != -1)
 		{
-			types.push_back(type);
+			types.push_back(intToEnum<Edge::EdgeType>(type));
 		}
 
 		q.nextRow();
@@ -893,7 +890,7 @@ void SqliteIndexStorage::setFileCompleteIfNoError(Id fileId, const std::wstring&
 {
 	bool fileHasErrors = doGetFirst<StorageSourceLocation>(
 							 "WHERE file_node_id == " + to_string(fileId) +
-							 " AND type == " + std::to_string(locationTypeToInt(LOCATION_ERROR)))
+							 " AND type == " + std::to_string(LOCATION_ERROR))
 							 .id != 0;
 	if (fileHasErrors != complete)
 	{
@@ -947,7 +944,7 @@ std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsForFil
 		auto it = sourceLocationIdToElementIds.find(location.id);
 
 		ret->addSourceLocation(
-			intToLocationType(location.type),
+			location.type,
 			location.id,
 			it != sourceLocationIdToElementIds.end() ? it->second : std::vector<Id>(),
 			location.startLine,
@@ -972,7 +969,7 @@ std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsOfType
 	const FilePath& filePath, LocationType type) const
 {
 	return getSourceLocationsForFile(
-		filePath, "AND type == " + std::to_string(locationTypeToInt(type)));
+		filePath, "AND type == " + std::to_string(type));
 }
 
 std::shared_ptr<SourceLocationCollection> SqliteIndexStorage::getSourceLocationsForElementIds(
@@ -1010,7 +1007,7 @@ std::shared_ptr<SourceLocationCollection> SqliteIndexStorage::getSourceLocations
 			endLineNumber != -1 && endColNumber != -1 && type != -1)
 		{
 			ret->addSourceLocation(
-				intToLocationType(type),
+				intToEnum<LocationType>(type),
 				id,
 				sourceLocationIdToElementIds[id],
 				FilePath(utility::decodeFromUtf8(filePath)),
@@ -1462,7 +1459,7 @@ void SqliteIndexStorage::forEach<StorageEdge>(
 
 		if (id != 0 && type != -1)
 		{
-			func(StorageEdge(id, type, sourceId, targetId));
+			func(StorageEdge(id, intToEnum<Edge::EdgeType>(type), sourceId, targetId));
 		}
 
 		q.nextRow();
@@ -1483,7 +1480,7 @@ void SqliteIndexStorage::forEach<StorageNode>(
 
 		if (id != 0 && type != -1)
 		{
-			func(StorageNode(id, type, utility::decodeFromUtf8(serializedName)));
+			func(StorageNode(id, intToEnum<NodeKind>(type), utility::decodeFromUtf8(serializedName)));
 		}
 
 		q.nextRow();
@@ -1503,7 +1500,7 @@ void SqliteIndexStorage::forEach<StorageSymbol>(
 
 		if (id != 0)
 		{
-			func(StorageSymbol(id, definitionKind));
+			func(StorageSymbol(id, intToEnum<DefinitionKind>(definitionKind)));
 		}
 
 		q.nextRow();
@@ -1582,8 +1579,8 @@ void SqliteIndexStorage::forEach<StorageSourceLocation>(
 		if (id != 0 && fileNodeId != 0 && startLineNumber != -1 && startColNumber != -1 &&
 			endLineNumber != -1 && endColNumber != -1 && type != -1)
 		{
-			func(StorageSourceLocation(
-				id, fileNodeId, startLineNumber, startColNumber, endLineNumber, endColNumber, type));
+			func(StorageSourceLocation(id, fileNodeId, startLineNumber, startColNumber, endLineNumber, 
+				endColNumber, intToEnum<LocationType>(type)));
 		}
 
 		q.nextRow();
@@ -1624,7 +1621,7 @@ void SqliteIndexStorage::forEach<StorageComponentAccess>(
 
 		if (nodeId != 0 && type != -1)
 		{
-			func(StorageComponentAccess(nodeId, type));
+			func(StorageComponentAccess(nodeId, intToEnum<AccessKind>(type)));
 		}
 
 		q.nextRow();
@@ -1646,7 +1643,7 @@ void SqliteIndexStorage::forEach<StorageElementComponent>(
 
 		if (elementId != 0 && type != -1)
 		{
-			func(StorageElementComponent(elementId, type, utility::decodeFromUtf8(data)));
+			func(StorageElementComponent(elementId, intToEnum<ElementComponentKind>(type), utility::decodeFromUtf8(data)));
 		}
 
 		q.nextRow();

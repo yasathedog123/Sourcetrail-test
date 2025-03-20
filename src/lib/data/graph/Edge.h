@@ -1,10 +1,10 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#include <memory>
 #include <string>
 
 #include "Token.h"
+#include "utilityEnum.h"
 
 class Node;
 
@@ -15,6 +15,7 @@ public:
 	enum EdgeType : TypeMask
 	{
 		EDGE_UNDEFINED = 0,
+		
 		EDGE_MEMBER = 1 << 0,
 		EDGE_TYPE_USAGE = 1 << 1,
 		EDGE_USAGE = 1 << 2,
@@ -28,12 +29,9 @@ public:
 		EDGE_BUNDLED_EDGES = 1 << 10,
 		EDGE_MACRO_USAGE = 1 << 11,
 		EDGE_ANNOTATION_USAGE = 1 << 12,
-
-		EDGE_MAX_VALUE = EDGE_ANNOTATION_USAGE
 	};
-
-	static int typeToInt(EdgeType type);
-	static EdgeType intToType(int value);
+	static constexpr EdgeType EDGE_TYPE_MAX_VALUE = EDGE_ANNOTATION_USAGE;
+	
 
 	static const TypeMask LAYOUT_VERTICAL = EDGE_INHERITANCE | EDGE_OVERRIDE |
 		EDGE_TEMPLATE_SPECIALIZATION;
@@ -63,15 +61,14 @@ public:
 	std::wstring getAsString() const;
 
 private:
-	void operator=(const Node&);
-
-	bool checkType() const;
-
 	const EdgeType m_type;
 
 	Node* const m_from;
 	Node* const m_to;
 };
+
+template <>
+Edge::EdgeType intToEnum(int value);
 
 std::wostream& operator<<(std::wostream& ostream, const Edge& edge);
 

@@ -1,8 +1,9 @@
 #include "SymbolKind.h"
 
-SymbolKind intToSymbolKind(int v)
+template <>
+SymbolKind intToEnum(int value)
 {
-	switch (v)
+	switch (value)
 	{
 	case SYMBOL_ANNOTATION:
 		return SYMBOL_ANNOTATION;
@@ -41,10 +42,5 @@ SymbolKind intToSymbolKind(int v)
 	case SYMBOL_UNION:
 		return SYMBOL_UNION;
 	}
-	return SYMBOL_KIND_MAX;
-}
-
-int symbolKindToInt(SymbolKind t)
-{
-	return t;
+	return SYMBOL_UNDEFINED;
 }

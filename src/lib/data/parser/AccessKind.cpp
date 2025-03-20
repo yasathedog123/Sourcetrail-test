@@ -1,8 +1,9 @@
 #include "AccessKind.h"
 
-AccessKind intToAccessKind(int v)
+template <>
+AccessKind intToEnum(int value)
 {
-	switch (v)
+	switch (value)
 	{
 	case ACCESS_PUBLIC:
 		return ACCESS_PUBLIC;
@@ -18,11 +19,6 @@ AccessKind intToAccessKind(int v)
 		return ACCESS_TYPE_PARAMETER;
 	}
 	return ACCESS_NONE;
-}
-
-int accessKindToInt(AccessKind t)
-{
-	return t;
 }
 
 std::wstring accessKindToString(AccessKind t)

@@ -1,6 +1,8 @@
 #ifndef REFERENCE_KIND_H
 #define REFERENCE_KIND_H
 
+#include "utilityEnum.h"
+
 enum ReferenceKind
 {	 // these values need to be the same as ReferenceKind in Java code
 	REFERENCE_UNDEFINED = 0,
@@ -17,7 +19,7 @@ enum ReferenceKind
 	REFERENCE_ANNOTATION_USAGE = 11
 };
 
-ReferenceKind intToReferenceKind(int v);
-int referenceKindToInt(ReferenceKind t);
+template <>
+ReferenceKind intToEnum(int value);
 
 #endif	  // REFERENCE_KIND_H

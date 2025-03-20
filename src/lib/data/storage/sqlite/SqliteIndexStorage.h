@@ -100,9 +100,9 @@ public:
 
 	StorageNode getNodeById(Id id) const;
 	StorageNode getNodeBySerializedName(const std::wstring& serializedName) const;
-
-	std::vector<int> getAvailableNodeTypes() const;
-	std::vector<int> getAvailableEdgeTypes() const;
+	
+	std::vector<NodeKind> getAvailableNodeTypes() const;
+	std::vector<Edge::EdgeType> getAvailableEdgeTypes() const;
 
 	StorageFile getFileByPath(const std::wstring& filePath) const;
 
@@ -170,8 +170,8 @@ public:
 		forEach("", func);
 	}
 
-	template <typename StorageType>
-	void forEachOfType(int type, std::function<void(StorageType&&)> func) const
+	template <typename StorageType, typename T>
+	void forEachOfType(T type, std::function<void(StorageType&&)> func) const
 	{
 		forEach("WHERE type == " + std::to_string(type), func);
 	}

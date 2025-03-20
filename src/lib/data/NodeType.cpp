@@ -45,7 +45,7 @@ NodeKind NodeType::getKind() const
 Id NodeType::getId() const
 {
 	// TODO: add id in constructor and return it here
-	return nodeKindToInt(m_kind);
+	return m_kind;
 }
 
 bool NodeType::isFile() const

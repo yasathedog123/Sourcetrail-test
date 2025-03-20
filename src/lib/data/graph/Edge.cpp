@@ -7,44 +7,39 @@
 #include "logging.h"
 #include "utilityString.h"
 
-int Edge::typeToInt(EdgeType type)
-{
-	return type;
-}
-
-Edge::EdgeType Edge::intToType(int value)
+template <>
+Edge::EdgeType intToEnum(int value)
 {
 	switch (value)
 	{
-	case EDGE_MEMBER:
-		return EDGE_MEMBER;
-	case EDGE_TYPE_USAGE:
-		return EDGE_TYPE_USAGE;
-	case EDGE_USAGE:
-		return EDGE_USAGE;
-	case EDGE_CALL:
-		return EDGE_CALL;
-	case EDGE_INHERITANCE:
-		return EDGE_INHERITANCE;
-	case EDGE_OVERRIDE:
-		return EDGE_OVERRIDE;
-	case EDGE_TYPE_ARGUMENT:
-		return EDGE_TYPE_ARGUMENT;
-	case EDGE_TEMPLATE_SPECIALIZATION:
-		return EDGE_TEMPLATE_SPECIALIZATION;
-	case EDGE_INCLUDE:
-		return EDGE_INCLUDE;
-	case EDGE_IMPORT:
-		return EDGE_IMPORT;
-	case EDGE_BUNDLED_EDGES:
-		return EDGE_BUNDLED_EDGES;
-	case EDGE_MACRO_USAGE:
-		return EDGE_MACRO_USAGE;
-	case EDGE_ANNOTATION_USAGE:
-		return EDGE_ANNOTATION_USAGE;
+		case Edge::EDGE_MEMBER:
+			return Edge::EDGE_MEMBER;
+		case Edge::EDGE_TYPE_USAGE:
+			return Edge::EDGE_TYPE_USAGE;
+		case Edge::EDGE_USAGE:
+			return Edge::EDGE_USAGE;
+		case Edge::EDGE_CALL:
+			return Edge::EDGE_CALL;
+		case Edge::EDGE_INHERITANCE:
+			return Edge::EDGE_INHERITANCE;
+		case Edge::EDGE_OVERRIDE:
+			return Edge::EDGE_OVERRIDE;
+		case Edge::EDGE_TYPE_ARGUMENT:
+			return Edge::EDGE_TYPE_ARGUMENT;
+		case Edge::EDGE_TEMPLATE_SPECIALIZATION:
+			return Edge::EDGE_TEMPLATE_SPECIALIZATION;
+		case Edge::EDGE_INCLUDE:
+			return Edge::EDGE_INCLUDE;
+		case Edge::EDGE_IMPORT:
+			return Edge::EDGE_IMPORT;
+		case Edge::EDGE_BUNDLED_EDGES:
+			return Edge::EDGE_BUNDLED_EDGES;
+		case Edge::EDGE_MACRO_USAGE:
+			return Edge::EDGE_MACRO_USAGE;
+		case Edge::EDGE_ANNOTATION_USAGE:
+			return Edge::EDGE_ANNOTATION_USAGE;
 	}
-
-	return EDGE_UNDEFINED;
+	return Edge::EDGE_UNDEFINED;
 }
 
 Edge::Edge(Id id, EdgeType type, Node* from, Node* to)
@@ -152,9 +147,9 @@ std::wstring Edge::getReadableTypeString(EdgeType type)
 
 Edge::EdgeType Edge::getTypeForReadableTypeString(const std::wstring& str)
 {
-	for (TypeMask mask = 1; mask <= EDGE_MAX_VALUE; mask *= 2)
+	for (TypeMask mask = 1; mask <= EDGE_TYPE_MAX_VALUE; mask *= 2)
 	{
-		EdgeType type = intToType(mask);
+		EdgeType type = intToEnum<EdgeType>(mask);
 		if (getReadableTypeString(type) == str)
 		{
 			return type;

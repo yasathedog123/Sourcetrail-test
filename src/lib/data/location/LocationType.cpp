@@ -1,11 +1,7 @@
 #include "LocationType.h"
 
-int locationTypeToInt(LocationType type)
-{
-	return type;
-}
-
-LocationType intToLocationType(int value)
+template <>
+LocationType intToEnum(int value)
 {
 	switch (value)
 	{

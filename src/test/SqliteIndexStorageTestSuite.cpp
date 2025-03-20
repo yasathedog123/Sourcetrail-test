@@ -11,7 +11,7 @@ TEST_CASE("storage adds node successfully")
 		SqliteIndexStorage storage(databasePath);
 		storage.setup();
 		storage.beginTransaction();
-		storage.addNode(StorageNodeData(0, L"a"));
+		storage.addNode(StorageNodeData(NODE_UNDEFINED, L"a"));
 		storage.commitTransaction();
 		nodeCount = storage.getNodeCount();
 	}
@@ -28,7 +28,7 @@ TEST_CASE("storage removes node successfully")
 		SqliteIndexStorage storage(databasePath);
 		storage.setup();
 		storage.beginTransaction();
-		Id nodeId = storage.addNode(StorageNodeData(0, L"a"));
+		Id nodeId = storage.addNode(StorageNodeData(NODE_UNDEFINED, L"a"));
 		storage.removeElement(nodeId);
 		storage.commitTransaction();
 		nodeCount = storage.getNodeCount();
@@ -46,9 +46,9 @@ TEST_CASE("storage adds edge successfully")
 		SqliteIndexStorage storage(databasePath);
 		storage.setup();
 		storage.beginTransaction();
-		Id sourceNodeId = storage.addNode(StorageNodeData(0, L"a"));
-		Id targetNodeId = storage.addNode(StorageNodeData(0, L"b"));
-		storage.addEdge(StorageEdgeData(0, sourceNodeId, targetNodeId));
+		Id sourceNodeId = storage.addNode(StorageNodeData(NODE_UNDEFINED, L"a"));
+		Id targetNodeId = storage.addNode(StorageNodeData(NODE_UNDEFINED, L"b"));
+		storage.addEdge(StorageEdgeData(Edge::EDGE_UNDEFINED, sourceNodeId, targetNodeId));
 		storage.commitTransaction();
 		edgeCount = storage.getEdgeCount();
 	}
@@ -65,9 +65,9 @@ TEST_CASE("storage removes edge successfully")
 		SqliteIndexStorage storage(databasePath);
 		storage.setup();
 		storage.beginTransaction();
-		Id sourceNodeId = storage.addNode(StorageNodeData(0, L"a"));
-		Id targetNodeId = storage.addNode(StorageNodeData(0, L"b"));
-		Id edgeId = storage.addEdge(StorageEdgeData(0, sourceNodeId, targetNodeId));
+		Id sourceNodeId = storage.addNode(StorageNodeData(NODE_UNDEFINED, L"a"));
+		Id targetNodeId = storage.addNode(StorageNodeData(NODE_UNDEFINED, L"b"));
+		Id edgeId = storage.addEdge(StorageEdgeData(Edge::EDGE_UNDEFINED, sourceNodeId, targetNodeId));
 		storage.removeElement(edgeId);
 		storage.commitTransaction();
 		edgeCount = storage.getEdgeCount();

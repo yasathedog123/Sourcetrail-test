@@ -232,7 +232,7 @@ void CodeController::handleMessage(MessageActivateTokens* message)
 		for (const SearchMatch& match: message->getSearchMatches())
 		{
 			status += L"Activate \"" + match.name + L"\": ";
-			// TODO (PMost): MSVC warns about unreachable code
+			// TODO (petermost): MSVC warns about unreachable code
 			break;
 		}
 

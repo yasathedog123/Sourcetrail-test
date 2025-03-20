@@ -45,7 +45,7 @@ private:
 
 	Id addNodeHierarchy(const NameHierarchy& nameHierarchy);
 	Id addFileName(const FilePath& filePath);
-	Id addEdge(int type, Id sourceId, Id targetId);
+	Id addEdge(Edge::EdgeType type, Id sourceId, Id targetId);
 
 	void addSourceLocation(Id elementId, const ParseLocation& location, LocationType type);
 

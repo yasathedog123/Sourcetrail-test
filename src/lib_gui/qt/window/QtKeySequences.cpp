@@ -8,7 +8,7 @@
 // - Those functions returning String/QList<QString> are only meant for informational purposes,
 //   like tooltips or the shortcut table. They are not meant to initialize QActions!
 //
-// TODO (PMost): Replace hardcoded key event handling with comparisons i.e.:
+// TODO (petermost): Replace hardcoded key event handling with comparisons i.e.:
 // if (event == QtKeySequences::back()
 //     ...
 

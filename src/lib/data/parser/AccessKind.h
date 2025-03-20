@@ -1,10 +1,13 @@
 #ifndef ACCESS_KIND_H
 #define ACCESS_KIND_H
 
+#include "utilityEnum.h"
+
 #include <string>
 
+// these values need to be the same as AccessKind in Java code
 enum AccessKind
-{	 // these values need to be the same as AccessKind in Java code
+{	 
 	ACCESS_NONE = 0,
 	ACCESS_PUBLIC = 1,
 	ACCESS_PROTECTED = 2,
@@ -14,8 +17,9 @@ enum AccessKind
 	ACCESS_TYPE_PARAMETER = 6
 };
 
-AccessKind intToAccessKind(int v);
-int accessKindToInt(AccessKind t);
+template <>
+AccessKind intToEnum(int value);
+
 std::wstring accessKindToString(AccessKind t);
 
 #endif	  // ACCESS_KIND_H

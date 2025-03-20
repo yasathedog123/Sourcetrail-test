@@ -56,14 +56,14 @@ public:
 	std::vector<std::string> m_lines;
 
 private:
-	static std::wstring nodeTypeToString(int nodeType);
-	static std::wstring edgeTypeToString(int edgeType);
+	static std::wstring nodeTypeToString(NodeKind nodeType);
+	static std::wstring edgeTypeToString(Edge::EdgeType edgeType);
 	static std::wstring addLocationStr(const std::wstring& locationStr, const StorageSourceLocation& loc);
 	static std::wstring addFileName(const std::wstring& locationStr, const FilePath& filePath);
 	static bool containsLocation(const StorageSourceLocation& out, const StorageSourceLocation& in);
-
-	std::vector<std::wstring>* getBinForNodeType(int nodeType);
-	std::vector<std::wstring>* getBinForEdgeType(int edgeType);
+	
+	std::vector<std::wstring>* getBinForNodeType(NodeKind nodeType);
+	std::vector<std::wstring>* getBinForEdgeType(Edge::EdgeType edgeType);
 	void addLine(const std::wstring& message);
 };
 

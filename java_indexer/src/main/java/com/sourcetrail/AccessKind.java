@@ -2,7 +2,8 @@ package com.sourcetrail;
 
 import org.eclipse.jdt.core.dom.Modifier;
 
-public enum AccessKind {	// these values need to be the same as AccesKind in C++ code
+// these values need to be the same as AccesKind in C++ code
+public enum AccessKind {
 	NONE(0),
 	PUBLIC(1),
 	PROTECTED(2),
