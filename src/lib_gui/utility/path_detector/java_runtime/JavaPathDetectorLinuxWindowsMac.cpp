@@ -4,6 +4,7 @@
 #include "utilityApp.h"
 
 using namespace std;
+using namespace string_literals;
 using namespace utility;
 
 namespace
@@ -18,11 +19,11 @@ FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath)
 	// - The documentation in DOCUMENTATION.md
 
 	if constexpr (Platform::isLinux())
-		relativeJvmLibPath = L"/../lib/server/libjvm.so";
+		relativeJvmLibPath = L"/../lib/server/libjvm.so"s;
 	else if constexpr (Platform::isWindows())
-		relativeJvmLibPath = L"/./server/jvm.dll";
+		relativeJvmLibPath = L"/./server/jvm.dll"s;
 	else if constexpr (Platform::isMac())
-		relativeJvmLibPath = L"/../lib/server/libjvm.dylib";
+		relativeJvmLibPath = L"/../lib/server/libjvm.dylib"s;
 
 	FilePath jvmLibPath = javaExecutablePath.getParentDirectory().concatenate(relativeJvmLibPath);
 	if (jvmLibPath.exists())
@@ -34,7 +35,7 @@ FilePath getFilePathRelativeToJavaExecutable(const FilePath& javaExecutablePath)
 FilePath getJavaInPath()
 {
 	bool ok;
-	FilePath javaPath(searchPath(L"java", ok));
+	FilePath javaPath(searchPath(L"java"s, ok));
 	if (ok && !javaPath.empty() && javaPath.exists())
 	{
 		return javaPath;
@@ -52,7 +53,7 @@ FilePath getJavaInJavaHome()
 	}
 
 	FilePath javaPath(p);
-	javaPath.concatenate(FilePath("/bin/java"));
+	javaPath.concatenate(FilePath("/bin/java"s));
 	if (!javaPath.empty() && javaPath.exists())
 	{
 		return javaPath;

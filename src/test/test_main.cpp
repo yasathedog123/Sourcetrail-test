@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "ApplicationSettings.h"
-#include "Platform.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
 #include <AppPath.h>
@@ -35,15 +34,14 @@ struct EventListener : Catch2::EventListenerBase
 #if BUILD_JAVA_LANGUAGE_PACKAGE
 		if (ApplicationSettings::getInstance()->getJavaPath().empty())
 		{
-			shared_ptr<PathDetector> pathDetector = utility::getJavaRuntimePathDetector();
-			const vector<FilePath> paths = pathDetector->getPaths();
-			if (!paths.empty())
+			vector<FilePath> javaPaths = utility::getJavaRuntimePathDetector()->getPaths();
+			if (!javaPaths.empty())
 			{
-				ApplicationSettings::getInstance()->setJavaPath(paths.front());
+				ApplicationSettings::getInstance()->setJavaPath(javaPaths.front());
 				cout << "Java path written to settings: " << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
 			}
 			else
-				cout << "no Java" << endl;
+				cout << "Java path not found in settings or PATH/JAVA_HOME environment variable!" << endl;
 		}
 		else
 			cout << "Java path read from settings: " << ApplicationSettings::getInstance()->getJavaPath().str() << endl;
