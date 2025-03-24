@@ -7,7 +7,7 @@ Sourcetrail is a free and open-source cross-platform source explorer that helps 
 * supporting C, C++ and Java
 * offering an SDK ([SourcetrailDB](https://github.com/CoatiSoftware/SourcetrailDB)) to write custom language extensions
 
-# 🆕 Binary Releases
+# :star: Binary Releases
 
 Binary releases are available for [sponsors](https://github.com/sponsors/petermost).
 
@@ -51,19 +51,27 @@ git pull --recurse-submodules
 
 
 ## Vcpkg Build
-
-* In order to build the **java_indexer** additional software must be installed which are not provided by vcpkg:
+Depending on the platform and the selected indexer, additional software/packages must be installed.
+* **Java Indexer:**
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
-* **Linux:** Because **Qt6** is build from source, additional packages are needed. Install these packages with `script/install-qt6-dependencies.sh`.
-* **Windows:** The build must be done in a **"x64 Native Tools Command Prompt for VS 2022"**.
+* **Linux:** 
+    * **Qt6:** Install additional packages with `script/install-qt6-dependencies.sh`.
+* **Windows:**
+    * [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/) 
+* **macOS:**
+  * [Xcode](https://developer.apple.com/xcode/)
+  * libtools, autoconf, autoconf-archive, automake, patchelf, ninja
 
-Prepare the build:
+Prepare the build in a terminal or command prompt ("x64 Native Tools Command Prompt"):
 ```
 $ cd Sourcetrail
 $ cmake --preset vcpkg-ninja-release
 ```
-Note that the initial compilation of the vcpkg packages (especially LLVM) will take a **long** time! Depending on your machine, it probably will take about 2 to 3 hours!
+Note that the initial compilation of the vcpkg packages (especially LLVM) will take a **long** time!
+
+> [!TIP]
+> Download a [binary release](#star-binary-releases).
 
 Build:
 ```
@@ -99,7 +107,10 @@ $ cmake --build .
 ```
 
 ### Windows
-It's probably also possible to build with pre-installed libraries, like the original build instructions describe, but it's untested and unsupported.
+System build is not tested and therefore not supported.
+
+### macOS
+System build is not tested and therefore not supported.
 
 ### Used/Supported libraries: ###
 
