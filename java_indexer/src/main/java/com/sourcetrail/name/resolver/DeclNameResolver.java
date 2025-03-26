@@ -305,7 +305,7 @@ public class DeclNameResolver extends NameResolver
 	public DeclName getDeclName(AnonymousClassDeclaration decl)
 	{
 		Position pos = Utility.getRange(decl, m_compilationUnit).begin;
-		return DeclName.anonymousClass(m_currentFile, pos.line, pos.column);
+		return DeclName.anonymousClass(m_currentFile, pos.line(), pos.column());
 	}
 
 

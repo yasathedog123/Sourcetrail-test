@@ -92,7 +92,7 @@ TEST_CASE("java parser finds anotation member declaration", JAVA_TAG)
 		client->fields, L"public int SampleAnnotation.value <3:13 3:17>"));
 }
 
-TEST_CASE("java parser finds class declaration in defaut package", JAVA_TAG)
+TEST_CASE("java parser finds class declaration in default package", JAVA_TAG)
 {
 	std::shared_ptr<TestStorage> client = parseCode(
 		"public class A\n"
@@ -103,7 +103,7 @@ TEST_CASE("java parser finds class declaration in defaut package", JAVA_TAG)
 		utility::containsElement<std::wstring>(client->classes, L"public A <1:1 <1:14 1:14> 3:1>"));
 }
 
-TEST_CASE("java parser finds interface declaration in defaut package", JAVA_TAG)
+TEST_CASE("java parser finds interface declaration in default package", JAVA_TAG)
 {
 	std::shared_ptr<TestStorage> client = parseCode(
 		"public interface A\n"

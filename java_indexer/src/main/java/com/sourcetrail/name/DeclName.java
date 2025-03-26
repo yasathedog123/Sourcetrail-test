@@ -46,7 +46,7 @@ public class DeclName implements SymbolName
 	public static DeclName scope(File fileContext, Position begin)
 	{
 		DeclName declName = new DeclName(
-			fileContext.getName() + "<" + begin.line + ":" + begin.column + ">");
+			fileContext.getName() + "<" + begin.line() + ":" + begin.column() + ">");
 		return declName;
 	}
 

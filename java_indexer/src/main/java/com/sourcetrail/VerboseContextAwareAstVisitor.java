@@ -18,8 +18,8 @@ public class VerboseContextAwareAstVisitor extends ContextAwareAstVisitor
 	{
 		Range range = getRange(node);
 		m_client.logInfo(
-			indentation + node.getClass().toString() + "[" + range.begin.line + ":" +
-			range.begin.column + "|" + range.end.line + ":" + range.end.column + "]");
+			indentation + node.getClass().toString() + "[" + range.begin.line() + ":" +
+			range.begin.column() + "|" + range.end.line() + ":" + range.end.column() + "]");
 		indentation += "| ";
 	}
 
