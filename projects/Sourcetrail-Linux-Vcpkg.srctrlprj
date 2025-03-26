@@ -7,13 +7,13 @@
             </build_file_path>
             <header_search_paths>
                 <header_search_path>../src/external/sqlite</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtCore</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtWidgets</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtGui</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtSvg</header_search_path>
-                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/custom-x64-static-md/include/Qt6/QtNetwork</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6/QtCore</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6/QtWidgets</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6/QtGui</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6/QtSvg</header_search_path>
+                <header_search_path>../../build/vcpkg-ninja-debug/vcpkg_installed/x64-arm64-linux-windows-osx-static-md/include/Qt6/QtNetwork</header_search_path>
                 <header_search_path>${JAVA_HOME}/include</header_search_path>
                 <header_search_path>${JAVA_HOME}/include/linux</header_search_path>
             </header_search_paths>

@@ -22,7 +22,7 @@ namespace
 //
 // C++
 // /usr/bin/clang-19 -std=xxx empty.cpp
-// vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
+// vcpkg_installed/x64-arm64-linux-windows-osx-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
 //
 // Released standards:
 // note: use 'c++98' or 'c++03' for 'ISO C++ 1998 with amendments' standard
@@ -75,7 +75,7 @@ vector<wstring> getDraftCppStandards()
 
 // C
 // /usr/bin/clang-19 -std=xxx empty.c
-// vcpkg_installed/custom-x64-static-md/tools/llvm/clang-18 -std=xxx empty.c
+// vcpkg_installed/x64-arm64-linux-windows-osx-static-md/tools/llvm/clang-18 -std=xxx empty.c
 //
 // Released standards:
 // note: use 'c89', 'c90', or 'iso9899:1990' for 'ISO C 1990' standard
