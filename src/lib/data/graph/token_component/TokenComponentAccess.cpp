@@ -4,19 +4,19 @@ std::wstring TokenComponentAccess::getAccessString(AccessKind access)
 {
 	switch (access)
 	{
-	case ACCESS_NONE:
+	case AccessKind::NONE:
 		break;
-	case ACCESS_PUBLIC:
+	case AccessKind::PUBLIC:
 		return L"public";
-	case ACCESS_PROTECTED:
+	case AccessKind::PROTECTED:
 		return L"protected";
-	case ACCESS_PRIVATE:
+	case AccessKind::PRIVATE:
 		return L"private";
-	case ACCESS_DEFAULT:
+	case AccessKind::DEFAULT:
 		return L"default";
-	case ACCESS_TEMPLATE_PARAMETER:
+	case AccessKind::TEMPLATE_PARAMETER:
 		return L"template parameter";
-	case ACCESS_TYPE_PARAMETER:
+	case AccessKind::TYPE_PARAMETER:
 		return L"type parameter";
 	}
 	return L"";

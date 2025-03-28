@@ -139,8 +139,8 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 			auto accessIt = accessMap.find(node.id);
 			if (accessIt != accessMap.end())
 			{
-				if (accessIt->second.type != ACCESS_TEMPLATE_PARAMETER &&
-					accessIt->second.type != ACCESS_TYPE_PARAMETER)
+				if (accessIt->second.type != AccessKind::TEMPLATE_PARAMETER &&
+					accessIt->second.type != AccessKind::TYPE_PARAMETER)
 				{
 					nameStr = accessKindToString(accessIt->second.type) + L' ' + nameStr;
 				}

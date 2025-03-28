@@ -454,7 +454,7 @@ public:
 	bool hasParent = true;
 
 	// AccessNode
-	AccessKind accessKind = ACCESS_NONE;
+	AccessKind accessKind = AccessKind::NONE;
 
 	// ExpandToggleNode
 	size_t invisibleSubNodeCount = 0;

@@ -6,15 +6,15 @@
 #include <string>
 
 // these values need to be the same as AccessKind in Java code
-enum AccessKind
+enum class AccessKind
 {	 
-	ACCESS_NONE = 0,
-	ACCESS_PUBLIC = 1,
-	ACCESS_PROTECTED = 2,
-	ACCESS_PRIVATE = 3,
-	ACCESS_DEFAULT = 4,
-	ACCESS_TEMPLATE_PARAMETER = 5,
-	ACCESS_TYPE_PARAMETER = 6
+	NONE = 0,
+	PUBLIC = 1,
+	PROTECTED = 2,
+	PRIVATE = 3,
+	DEFAULT = 4,
+	TEMPLATE_PARAMETER = 5,
+	TYPE_PARAMETER = 6
 };
 
 template <>

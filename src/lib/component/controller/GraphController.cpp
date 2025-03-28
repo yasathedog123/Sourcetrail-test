@@ -748,7 +748,7 @@ std::vector<std::shared_ptr<DummyNode>> GraphController::createDummyNodeTopDown(
 
 	node->forEachChildNode([&result, &ancestorId, this](Node* child) {
 		DummyNode* parent = nullptr;
-		AccessKind accessKind = ACCESS_NONE;
+		AccessKind accessKind = AccessKind::NONE;
 
 		TokenComponentAccess* access = child->getComponent<TokenComponentAccess>();
 		if (access)
@@ -989,7 +989,7 @@ bool GraphController::setNodeVisibilityRecursiveBottomUp(DummyNode* node, bool n
 		}
 	}
 
-	if (node->isAccessNode() && node->accessKind == ACCESS_NONE && node->childVisible)
+	if (node->isAccessNode() && node->accessKind == AccessKind::NONE && node->childVisible)
 	{
 		node->visible = true;
 	}
@@ -1010,7 +1010,7 @@ void GraphController::setNodeVisibilityRecursiveTopDown(DummyNode* node, bool pa
 	}
 
 	if ((node->isGraphNode() && node->isExpanded()) ||
-		(node->isAccessNode() && (node->accessKind == ACCESS_NONE || parentExpanded)))
+		(node->isAccessNode() && (node->accessKind == AccessKind::NONE || parentExpanded)))
 	{
 		for (const std::shared_ptr<DummyNode>& subNode: node->subNodes)
 		{
@@ -2416,8 +2416,8 @@ void GraphController::createLegendGraph()
 		return graph->createEdge(++id, type, from, to);
 	};
 
-	auto addMember = [&id, &graph](Node* from, Node* to, AccessKind access = ACCESS_NONE) {
-		if (access != ACCESS_NONE)
+	auto addMember = [&id, &graph](Node* from, Node* to, AccessKind access = AccessKind::NONE) {
+		if (access != AccessKind::NONE)
 		{
 			to->addComponent(std::make_shared<TokenComponentAccess>(access));
 		}
@@ -2470,8 +2470,8 @@ void GraphController::createLegendGraph()
 		Node* publicMethod = addNode(NODE_METHOD, L"public method", Vec2i());
 		Node* privateField = addNode(NODE_FIELD, L"private field", Vec2i());
 
-		addMember(main, publicMethod, ACCESS_PUBLIC);
-		addMember(main, privateField, ACCESS_PRIVATE);
+		addMember(main, publicMethod, AccessKind::PUBLIC);
+		addMember(main, privateField, AccessKind::PRIVATE);
 
 		y += 480;
 		x += 10;
@@ -2537,14 +2537,14 @@ void GraphController::createLegendGraph()
 		Node* privateField = addNode(NODE_FIELD, L"private field", Vec2i());
 		Node* defaultField = addNode(NODE_FIELD, L"default field", Vec2i());
 
-		addMember(typeNode, publicMethod, ACCESS_PUBLIC);
-		addMember(typeNode, publicField, ACCESS_PUBLIC);
-		addMember(typeNode, protectedMethod, ACCESS_PROTECTED);
-		addMember(typeNode, protectedField, ACCESS_PROTECTED);
-		addMember(typeNode, privateMethod, ACCESS_PRIVATE);
-		addMember(typeNode, privateField, ACCESS_PRIVATE);
-		addMember(typeNode, defaultMethod, ACCESS_DEFAULT);
-		addMember(typeNode, defaultField, ACCESS_DEFAULT);
+		addMember(typeNode, publicMethod, AccessKind::PUBLIC);
+		addMember(typeNode, publicField, AccessKind::PUBLIC);
+		addMember(typeNode, protectedMethod, AccessKind::PROTECTED);
+		addMember(typeNode, protectedField, AccessKind::PROTECTED);
+		addMember(typeNode, privateMethod, AccessKind::PRIVATE);
+		addMember(typeNode, privateField, AccessKind::PRIVATE);
+		addMember(typeNode, defaultMethod, AccessKind::DEFAULT);
+		addMember(typeNode, defaultField, AccessKind::DEFAULT);
 
 		y -= 15;
 		i += 9;
@@ -2566,7 +2566,7 @@ void GraphController::createLegendGraph()
 		Node* genericNode = addNode(
 			NODE_TYPE, L"JavaGenericType<ParameterType>", Vec2i(x, y + dy * ++i));
 		Node* genericParameterNode = addNode(NODE_TYPE_PARAMETER, L"ParameterType", Vec2i());
-		addMember(genericNode, genericParameterNode, ACCESS_TYPE_PARAMETER);
+		addMember(genericNode, genericParameterNode, AccessKind::TYPE_PARAMETER);
 		i += 2;
 
 		y += 10;
@@ -2679,8 +2679,8 @@ void GraphController::createLegendGraph()
 			Node* derived = addNode(NODE_CLASS, L"Derived Class", Vec2i(x, y + dy * i));
 			Node* baseMethod = addNode(NODE_METHOD, L"method", Vec2i());
 			Node* derivedMethod = addNode(NODE_METHOD, L"method", Vec2i());
-			addMember(base, baseMethod, ACCESS_PUBLIC);
-			addMember(derived, derivedMethod, ACCESS_PUBLIC);
+			addMember(base, baseMethod, AccessKind::PUBLIC);
+			addMember(derived, derivedMethod, AccessKind::PUBLIC);
 			addEdge(Edge::EDGE_OVERRIDE, derivedMethod, baseMethod);
 			i += 2;
 		}

@@ -23,20 +23,20 @@ QtGraphNodeAccess::QtGraphNodeAccess(AccessKind accessKind)
 	std::wstring iconFileName;
 	switch (m_accessKind)
 	{
-	case ACCESS_PUBLIC:
+	case AccessKind::PUBLIC:
 		iconFileName = L"public";
 		break;
-	case ACCESS_PROTECTED:
+	case AccessKind::PROTECTED:
 		iconFileName = L"protected";
 		break;
-	case ACCESS_PRIVATE:
+	case AccessKind::PRIVATE:
 		iconFileName = L"private";
 		break;
-	case ACCESS_DEFAULT:
+	case AccessKind::DEFAULT:
 		iconFileName = L"default";
 		break;
-	case ACCESS_TEMPLATE_PARAMETER:
-	case ACCESS_TYPE_PARAMETER:
+	case AccessKind::TEMPLATE_PARAMETER:
+	case AccessKind::TYPE_PARAMETER:
 		iconFileName = L"template";
 		break;
 	default:

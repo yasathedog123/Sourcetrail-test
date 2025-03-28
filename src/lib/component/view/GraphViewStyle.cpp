@@ -256,24 +256,24 @@ GraphViewStyle::NodeMargins GraphViewStyle::getMarginsOfAccessNode(AccessKind ac
 
 	switch (access)
 	{
-	case ACCESS_NONE:
+	case AccessKind::NONE:
 		margins.top = 10;
 		margins.minWidth = 30;
 		break;
-	case ACCESS_PUBLIC:
+	case AccessKind::PUBLIC:
 		margins.minWidth = 57;
 		break;
-	case ACCESS_PROTECTED:
+	case AccessKind::PROTECTED:
 		margins.minWidth = 78;
 		break;
-	case ACCESS_PRIVATE:
+	case AccessKind::PRIVATE:
 		margins.minWidth = 62;
 		break;
-	case ACCESS_DEFAULT:
+	case AccessKind::DEFAULT:
 		margins.minWidth = 62;
 		break;
-	case ACCESS_TEMPLATE_PARAMETER:
-	case ACCESS_TYPE_PARAMETER:
+	case AccessKind::TEMPLATE_PARAMETER:
+	case AccessKind::TYPE_PARAMETER:
 		margins.minWidth = 133;
 		break;
 	}

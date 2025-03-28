@@ -1,43 +1,47 @@
 #include "AccessKind.h"
 
+#include <iterator>
+
+using namespace std;
+
+namespace
+{
+
+const AccessKind ACCESS_KINDS[] = {
+	AccessKind::NONE,
+	AccessKind::PUBLIC,
+	AccessKind::PROTECTED,
+	AccessKind::PRIVATE,
+	AccessKind::DEFAULT,
+	AccessKind::TEMPLATE_PARAMETER,
+	AccessKind::TYPE_PARAMETER
+};
+
+}
+
 template <>
 AccessKind intToEnum(int value)
 {
-	switch (value)
-	{
-	case ACCESS_PUBLIC:
-		return ACCESS_PUBLIC;
-	case ACCESS_PROTECTED:
-		return ACCESS_PROTECTED;
-	case ACCESS_PRIVATE:
-		return ACCESS_PRIVATE;
-	case ACCESS_DEFAULT:
-		return ACCESS_DEFAULT;
-	case ACCESS_TEMPLATE_PARAMETER:
-		return ACCESS_TEMPLATE_PARAMETER;
-	case ACCESS_TYPE_PARAMETER:
-		return ACCESS_TYPE_PARAMETER;
-	}
-	return ACCESS_NONE;
+	return findEnum(value, begin(ACCESS_KINDS), end(ACCESS_KINDS), AccessKind::NONE);
 }
 
 std::wstring accessKindToString(AccessKind t)
 {
 	switch (t)
 	{
-	case ACCESS_NONE:
+	case AccessKind::NONE:
 		return L"";
-	case ACCESS_PUBLIC:
+	case AccessKind::PUBLIC:
 		return L"public";
-	case ACCESS_PROTECTED:
+	case AccessKind::PROTECTED:
 		return L"protected";
-	case ACCESS_PRIVATE:
+	case AccessKind::PRIVATE:
 		return L"private";
-	case ACCESS_DEFAULT:
+	case AccessKind::DEFAULT:
 		return L"default";
-	case ACCESS_TEMPLATE_PARAMETER:
+	case AccessKind::TEMPLATE_PARAMETER:
 		return L"template parameter";
-	case ACCESS_TYPE_PARAMETER:
+	case AccessKind::TYPE_PARAMETER:
 		return L"type parameter";
 	}
 	return L"";

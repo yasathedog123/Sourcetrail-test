@@ -65,15 +65,15 @@ AccessKind utility::convertAccessSpecifier(clang::AccessSpecifier access)
 	switch (access)
 	{
 	case clang::AS_public:
-		return ACCESS_PUBLIC;
+		return AccessKind::PUBLIC;
 	case clang::AS_protected:
-		return ACCESS_PROTECTED;
+		return AccessKind::PROTECTED;
 	case clang::AS_private:
-		return ACCESS_PRIVATE;
+		return AccessKind::PRIVATE;
 	case clang::AS_none:
-		return ACCESS_NONE;
+		return AccessKind::NONE;
 	default:
-		return ACCESS_NONE;
+		return AccessKind::NONE;
 	}
 }
 

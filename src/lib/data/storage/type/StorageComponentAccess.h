@@ -6,7 +6,7 @@
 
 struct StorageComponentAccess
 {
-	StorageComponentAccess(): nodeId(0), type(ACCESS_NONE) {}
+	StorageComponentAccess(): nodeId(0), type(AccessKind::NONE) {}
 
 	StorageComponentAccess(Id nodeId, AccessKind type): nodeId(nodeId), type(type) {}
 

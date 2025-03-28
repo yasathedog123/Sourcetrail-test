@@ -133,7 +133,7 @@ void ParserClientImpl::recordSymbolKind(Id symbolId, SymbolKind symbolKind)
 
 void ParserClientImpl::recordAccessKind(Id symbolId, AccessKind accessKind)
 {
-	if (accessKind != ACCESS_NONE)
+	if (accessKind != AccessKind::NONE)
 	{
 		m_storage->addComponentAccess(StorageComponentAccess(symbolId, accessKind));
 	}

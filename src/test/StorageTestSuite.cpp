@@ -129,7 +129,7 @@ TEST_CASE("storage saves method static")
 	// Id id = storage.onMethodParsed(
 	//	validLocation(1),
 	//	ParseFunction(typeUsage("void"), createNameHierarchy("isMethod"), parameters("bool"), true),
-	//	ParserClient::ACCESS_NONE,
+	//	ParserClient::AccessKind::NONE,
 	//	ParserClient::ABSTRACTION_NONE,
 	//	validLocation(4)
 	//);
