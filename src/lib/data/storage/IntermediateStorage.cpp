@@ -100,7 +100,7 @@ void IntermediateStorage::setFilesWithErrorsIncomplete()
 	std::set<Id> errorFileIds;
 	for (const StorageSourceLocation& location: m_sourceLocations)
 	{
-		if (location.type == LOCATION_ERROR)
+		if (location.type == LocationType::ERROR)
 		{
 			errorFileIds.insert(location.fileNodeId);
 		}

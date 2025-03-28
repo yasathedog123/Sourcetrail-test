@@ -42,7 +42,7 @@ public:
 		std::vector<Id> activeTokenIds;
 		std::vector<Id> activeLocationIds;
 		std::vector<Id> activeLocalSymbolIds;
-		LocationType activeLocalSymbolType = LOCATION_TOKEN;
+		LocationType activeLocalSymbolType = LocationType::TOKEN;
 		std::vector<Id> currentActiveLocalLocationIds;
 
 		std::vector<ErrorInfo> errorInfos;

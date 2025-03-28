@@ -62,43 +62,43 @@ std::shared_ptr<TestStorage> TestStorage::create(std::shared_ptr<const Storage> 
 		{
 			switch (location.type)
 			{
-			case LOCATION_TOKEN:
+			case LocationType::TOKEN:
 				if (elementId)
 				{
 					tokenLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_SCOPE:
+			case LocationType::SCOPE:
 				if (elementId)
 				{
 					scopeLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_QUALIFIER:
+			case LocationType::QUALIFIER:
 				if (elementId)
 				{
 					qualifierLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_LOCAL_SYMBOL:
+			case LocationType::LOCAL_SYMBOL:
 				if (elementId)
 				{
 					localSymbolLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_SIGNATURE:
+			case LocationType::SIGNATURE:
 				if (elementId)
 				{
 					signatureLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_ERROR:
+			case LocationType::ERROR:
 				if (elementId)
 				{
 					errorLocationMap.emplace(elementId, location);
 				}
 				break;
-			case LOCATION_COMMENT:
+			case LocationType::COMMENT:
 				commentLocations.emplace_back(location);
 				break;
 			default:

@@ -87,7 +87,7 @@ void CodeController::handleMessage(MessageActivateLocalSymbols* message)
 {
 	createLocalReferences(utility::toSet(message->symbolIds));
 	m_codeParams.activeLocalSymbolIds = message->symbolIds;
-	m_codeParams.activeLocalSymbolType = LOCATION_LOCAL_SYMBOL;
+	m_codeParams.activeLocalSymbolType = LocationType::LOCAL_SYMBOL;
 	m_codeParams.currentActiveLocalLocationIds.clear();
 	m_codeParams.locationIdToFocus = 0;
 	showFiles(m_codeParams, CodeScrollParams(), !message->isReplayed());
@@ -502,7 +502,7 @@ void CodeController::handleMessage(MessageShowReference* message)
 
 		showFiles(m_codeParams, toReferenceScrollParams(ref), !message->isReplayed());
 
-		if (ref.locationType == LOCATION_ERROR)
+		if (ref.locationType == LocationType::ERROR)
 		{
 			MessageShowError(ref.tokenId).dispatch();
 		}
@@ -679,7 +679,7 @@ std::vector<CodeFileParams> CodeController::getFilesForActiveSourceLocations(
 				{
 					isDeclarationFile = true;
 
-					if (location->getType() == LOCATION_SCOPE)
+					if (location->getType() == LocationType::SCOPE)
 					{
 						isDefinitionFile = true;
 					}
@@ -738,7 +738,7 @@ CodeSnippetParams CodeController::getSnippetParamsForWholeFile(
 			m_collection->getSourceLocationFiles().begin()->second;
 		if (file->getSourceLocations().size())
 		{
-			showsErrors = (*file->getSourceLocations().begin())->getType() == LOCATION_ERROR;
+			showsErrors = (*file->getSourceLocations().begin())->getType() == LocationType::ERROR;
 		}
 	}
 
@@ -763,7 +763,7 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 	if (activeSourceLocations->getSourceLocations().size())
 	{
 		showsErrors = (*activeSourceLocations->getSourceLocations().begin())->getType() ==
-			LOCATION_ERROR;
+			LocationType::ERROR;
 	}
 
 	std::shared_ptr<TextAccess> textAccess = m_storageAccess->getFileContent(
@@ -775,7 +775,7 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 
 	std::shared_ptr<SourceLocationFile> scopeLocations =
 		m_storageAccess->getSourceLocationsOfTypeInFile(
-			activeSourceLocations->getFilePath(), LOCATION_SCOPE);
+			activeSourceLocations->getFilePath(), LocationType::SCOPE);
 	activeSourceLocations->forEachStartSourceLocation([&](SourceLocation* location) {
 		buildMergerHierarchy(location, scopeLocations.get(), fileScopedMerger, mergers);
 	});
@@ -783,7 +783,7 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 	std::vector<SnippetMerger::Range> atomicRanges;
 	std::shared_ptr<SourceLocationFile> commentLocations =
 		m_storageAccess->getSourceLocationsOfTypeInFile(
-			activeSourceLocations->getFilePath(), LOCATION_COMMENT);
+			activeSourceLocations->getFilePath(), LocationType::COMMENT);
 	commentLocations->forEachStartSourceLocation([&](SourceLocation* location) {
 		atomicRanges.push_back(SnippetMerger::Range(
 			SnippetMerger::Border(static_cast<int>(location->getLineNumber()), false),
@@ -952,7 +952,7 @@ std::vector<std::string> CodeController::getProjectDescription(SourceLocationFil
 			{
 				line.replace(posA, posB - posA + 1, nameString);
 				locationFile->addSourceLocation(
-					LOCATION_TOKEN,
+					LocationType::TOKEN,
 					++locationId,
 					{tokenId},
 					startLineNumber + i,
@@ -1011,9 +1011,9 @@ void CodeController::createReferences()
 			});
 
 			file.locationFile->forEachStartSourceLocation([&](SourceLocation* location) {
-				if (location->isScopeLocation() || location->getType() == LOCATION_SIGNATURE ||
-					location->getType() == LOCATION_COMMENT ||
-					location->getType() == LOCATION_QUALIFIER)
+				if (location->isScopeLocation() || location->getType() == LocationType::SIGNATURE ||
+					location->getType() == LocationType::COMMENT ||
+					location->getType() == LocationType::QUALIFIER)
 				{
 					return;
 				}
@@ -1177,7 +1177,7 @@ void CodeController::showCurrentLocalReference(bool updateView)
 	m_codeParams.currentActiveLocalLocationIds = {ref.locationId};
 
 	// synchronise reference navigation with local reference navigation
-	if (ref.locationType == LOCATION_TOKEN)
+	if (ref.locationType == LocationType::TOKEN)
 	{
 		for (size_t i = 0; i < m_references.size(); i++)
 		{
@@ -1644,7 +1644,7 @@ void CodeController::showFirstActiveReference(Id tokenId, bool updateView)
 
 	createLocalReferences({tokenId});
 	m_codeParams.activeLocalSymbolIds = {tokenId};
-	m_codeParams.activeLocalSymbolType = LOCATION_TOKEN;
+	m_codeParams.activeLocalSymbolType = LocationType::TOKEN;
 	m_codeParams.currentActiveLocalLocationIds.clear();
 
 	CodeScrollParams scrollParams;

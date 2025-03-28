@@ -199,12 +199,12 @@ bool SourceLocation::isEndLocation() const
 
 bool SourceLocation::isScopeLocation() const
 {
-	return m_type == LOCATION_SCOPE;
+	return m_type == LocationType::SCOPE;
 }
 
 bool SourceLocation::isFullTextSearchMatch() const
 {
-	return m_type == LOCATION_FULLTEXT_SEARCH;
+	return m_type == LocationType::FULLTEXT_SEARCH;
 }
 
 std::wostream& operator<<(std::wostream& ostream, const SourceLocation& location)

@@ -672,7 +672,7 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getFullTextSearchLo
 								const Id locationId = Id(collection->getSourceLocationCount() + 1) +
 									 ~(~Id::type(0) >> 1);
 								collection->addSourceLocation(
-									LOCATION_FULLTEXT_SEARCH,
+									LocationType::FULLTEXT_SEARCH,
 									locationId,
 									std::vector<Id>(),
 									filePath,
@@ -1650,8 +1650,8 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getSourceLocationsF
 			 m_sqliteIndexStorage.getAllByIds<StorageSourceLocation>(locationIds))
 		{
 			const LocationType type = sourceLocation.type;
-			if (type != LOCATION_TOKEN && type != LOCATION_SCOPE && type != LOCATION_LOCAL_SYMBOL &&
-				type != LOCATION_UNSOLVED)
+			if (type != LocationType::TOKEN && type != LocationType::SCOPE && type != LocationType::LOCAL_SYMBOL &&
+				type != LocationType::UNSOLVED)
 			{
 				continue;
 			}
@@ -1718,8 +1718,8 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getSourceLocationsF
 		 m_sqliteIndexStorage.getAllByIds<StorageSourceLocation>(locationIds))
 	{
 		const LocationType type = location.type;
-		if (type != LOCATION_TOKEN && type != LOCATION_SCOPE && type != LOCATION_LOCAL_SYMBOL &&
-			type != LOCATION_UNSOLVED)
+		if (type != LocationType::TOKEN && type != LocationType::SCOPE && type != LocationType::LOCAL_SYMBOL &&
+			type != LocationType::UNSOLVED)
 		{
 			continue;
 		}
@@ -1746,7 +1746,7 @@ std::shared_ptr<SourceLocationFile> PersistentStorage::getSourceLocationsForFile
 	TRACE();
 
 	return m_sqliteIndexStorage.getSourceLocationsForFile(filePath)->getFilteredByTypes(
-		{LOCATION_TOKEN, LOCATION_SCOPE, LOCATION_QUALIFIER, LOCATION_LOCAL_SYMBOL, LOCATION_UNSOLVED});
+		{LocationType::TOKEN, LocationType::SCOPE, LocationType::QUALIFIER, LocationType::LOCAL_SYMBOL, LocationType::UNSOLVED});
 }
 
 std::shared_ptr<SourceLocationFile> PersistentStorage::getSourceLocationsForLinesInFile(
@@ -1757,11 +1757,11 @@ std::shared_ptr<SourceLocationFile> PersistentStorage::getSourceLocationsForLine
 	return m_sqliteIndexStorage.getSourceLocationsForLinesInFile(filePath, startLine, endLine)
 		->getFilteredByLines(startLine, endLine)
 		->getFilteredByTypes(
-			{LOCATION_TOKEN,
-			 LOCATION_SCOPE,
-			 LOCATION_QUALIFIER,
-			 LOCATION_LOCAL_SYMBOL,
-			 LOCATION_UNSOLVED});
+			{LocationType::TOKEN,
+			 LocationType::SCOPE,
+			 LocationType::QUALIFIER,
+			 LocationType::LOCAL_SYMBOL,
+			 LocationType::UNSOLVED});
 }
 
 std::shared_ptr<SourceLocationFile> PersistentStorage::getSourceLocationsOfTypeInFile(
@@ -1926,7 +1926,7 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getErrorSourceLocat
 		Id locationId = error.id + ~(~Id::type(0) >> 1);
 
 		collection->addSourceLocation(
-			LOCATION_ERROR,
+			LocationType::ERROR,
 			locationId,
 			std::vector<Id>(1, error.id),
 			FilePath(error.filePath),
@@ -2255,7 +2255,7 @@ TooltipSnippet PersistentStorage::getTooltipSnippetForNode(const StorageNode& no
 		SourceLocation* sigLoc = nullptr;
 
 		locations->forEachSourceLocation([&sigLoc](SourceLocation* location) {
-			if (!sigLoc && location->isStartLocation() && location->getType() == LOCATION_SIGNATURE)
+			if (!sigLoc && location->isStartLocation() && location->getType() == LocationType::SIGNATURE)
 			{
 				sigLoc = location;
 			}
@@ -2296,7 +2296,7 @@ TooltipSnippet PersistentStorage::getTooltipSnippetForNode(const StorageNode& no
 				sigLoc->getEndLocation()->getLineNumber());
 
 			file->forEachStartSourceLocation([&sigLoc, &annotations, &lines](SourceLocation* loc) {
-				if ((loc->getType() == LOCATION_TOKEN || loc->getType() == LOCATION_QUALIFIER) &&
+				if ((loc->getType() == LocationType::TOKEN || loc->getType() == LocationType::QUALIFIER) &&
 					sigLoc->contains(*loc))
 				{
 					Annotation annotation;
@@ -2458,7 +2458,7 @@ TooltipSnippet PersistentStorage::getTooltipSnippetForNode(const StorageNode& no
 				if (!inRange)
 				{
 					snippet.locationFile->addSourceLocation(
-						LOCATION_TOKEN,
+						LocationType::TOKEN,
 						0,
 						std::vector<Id>(1, p.second),
 						1,
@@ -2475,7 +2475,7 @@ TooltipSnippet PersistentStorage::getTooltipSnippetForNode(const StorageNode& no
 	else
 	{
 		snippet.locationFile->addSourceLocation(
-			LOCATION_TOKEN, 0, std::vector<Id>(1, node.id), 1, 1, 1, snippet.code.size());
+			LocationType::TOKEN, 0, std::vector<Id>(1, node.id), 1, 1, 1, snippet.code.size());
 	}
 
 	return snippet;
@@ -2512,7 +2512,7 @@ TooltipInfo PersistentStorage::getTooltipInfoForSourceLocationIdsAndLocalSymbolI
 				FilePath(L"main.txt"), fileLanguage, true, true, true);
 
 			snippet.locationFile->addSourceLocation(
-				LOCATION_TOKEN, 0, std::vector<Id>(1, node.id), 1, 1, 1, snippet.code.size());
+				LocationType::TOKEN, 0, std::vector<Id>(1, node.id), 1, 1, 1, snippet.code.size());
 
 			if (NodeType(node.type).isCallable())
 			{
@@ -2531,7 +2531,7 @@ TooltipInfo PersistentStorage::getTooltipInfoForSourceLocationIdsAndLocalSymbolI
 		snippet.locationFile = std::make_shared<SourceLocationFile>(
 			FilePath(L"main.txt"), L"", true, true, true);
 		snippet.locationFile->addSourceLocation(
-			LOCATION_LOCAL_SYMBOL, 0, std::vector<Id>(1, id), 1, 1, 1, snippet.code.size());
+			LocationType::LOCAL_SYMBOL, 0, std::vector<Id>(1, id), 1, 1, 1, snippet.code.size());
 
 		info.snippets.push_back(snippet);
 	}
@@ -3081,7 +3081,7 @@ void PersistentStorage::addFileContentsToGraph(Id fileId, Graph* graph) const
 	std::shared_ptr<SourceLocationFile> locationFile =
 		m_sqliteIndexStorage.getSourceLocationsForFile(path);
 	locationFile->forEachStartSourceLocation([this, &tokenIds, &tokenIdsSet](SourceLocation* location) {
-		if (location->getType() != LOCATION_TOKEN)
+		if (location->getType() != LocationType::TOKEN)
 		{
 			return;
 		}
@@ -3394,7 +3394,7 @@ void PersistentStorage::buildMemberEdgeIdOrderMap()
 		 m_sqliteIndexStorage.getAllByIds<StorageSourceLocation>(locationIds))
 	{
 		const LocationType locType = location.type;
-		if (locType != LOCATION_TOKEN)
+		if (locType != LocationType::TOKEN)
 		{
 			continue;
 		}

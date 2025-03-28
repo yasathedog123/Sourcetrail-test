@@ -73,7 +73,7 @@ protected:
 		std::set<Id> tokenIds;
 		Id locationId = 0;
 
-		LocationType locationType = LOCATION_TOKEN;
+		LocationType locationType = LocationType::TOKEN;
 
 		bool isActive = false;
 		bool isFocused = false;

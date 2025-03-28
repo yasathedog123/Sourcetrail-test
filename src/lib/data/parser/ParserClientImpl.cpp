@@ -92,17 +92,17 @@ LocationType parseLocationTypeToLocationType(ParseLocationType type)
 	switch (type)
 	{
 		case ParseLocationType::TOKEN:
-			return LOCATION_TOKEN;
+			return LocationType::TOKEN;
 		case ParseLocationType::SCOPE:
-			return LOCATION_SCOPE;
+			return LocationType::SCOPE;
 		case ParseLocationType::SIGNATURE:
-			return LOCATION_SIGNATURE;
+			return LocationType::SIGNATURE;
 		case ParseLocationType::QUALIFIER:
-			return LOCATION_QUALIFIER;
+			return LocationType::QUALIFIER;
 		case ParseLocationType::LOCAL:
-			return LOCATION_LOCAL_SYMBOL;
+			return LocationType::LOCAL_SYMBOL;
 	}
-	return LOCATION_TOKEN;
+	return LocationType::TOKEN;
 }
 
 }
@@ -153,7 +153,7 @@ Id ParserClientImpl::recordReference(
 	Id edgeId = addEdge(referenceKindToEdgeType(referenceKind), contextSymbolId, referencedSymbolId);
 	if (edgeId)
 	{
-		addSourceLocation(edgeId, location, LOCATION_TOKEN);
+		addSourceLocation(edgeId, location, LocationType::TOKEN);
 	}
 	return edgeId;
 }
@@ -161,7 +161,7 @@ Id ParserClientImpl::recordReference(
 void ParserClientImpl::recordLocalSymbol(const std::wstring& name, const ParseLocation& location)
 {
 	const Id localSymbolId = m_storage->addLocalSymbol(name);
-	addSourceLocation(localSymbolId, location, LOCATION_LOCAL_SYMBOL);
+	addSourceLocation(localSymbolId, location, LocationType::LOCAL_SYMBOL);
 }
 
 void ParserClientImpl::recordLocation(Id elementId, const ParseLocation& location, ParseLocationType type)
@@ -182,7 +182,7 @@ void ParserClientImpl::recordComment(const ParseLocation& location)
 		location.startColumnNumber,
 		location.endLineNumber,
 		location.endColumnNumber,
-		LOCATION_COMMENT));
+		LocationType::COMMENT));
 }
 
 void ParserClientImpl::recordError(
@@ -197,7 +197,7 @@ void ParserClientImpl::recordError(
 		Id errorId = m_storage->addError(
 			StorageErrorData(message, translationUnit.wstr(), fatal, indexed));
 
-		addSourceLocation(errorId, location, LOCATION_ERROR);
+		addSourceLocation(errorId, location, LocationType::ERROR);
 	}
 }
 

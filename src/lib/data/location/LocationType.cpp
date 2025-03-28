@@ -1,30 +1,35 @@
 #include "LocationType.h"
 
+#include <iterator>
+
+using namespace std;
+
+namespace
+{
+
+const LocationType LOCATION_TYPES[] = {
+	LocationType::TOKEN,
+	LocationType::SCOPE,
+	LocationType::QUALIFIER,
+	LocationType::LOCAL_SYMBOL,
+	LocationType::SIGNATURE,
+	LocationType::COMMENT,
+	LocationType::ERROR,
+	LocationType::FULLTEXT_SEARCH,
+	LocationType::SCREEN_SEARCH,
+	LocationType::UNSOLVED
+};
+
+}
+
 template <>
 LocationType intToEnum(int value)
 {
-	switch (value)
-	{
-	case LOCATION_TOKEN:
-		return LOCATION_TOKEN;
-	case LOCATION_SCOPE:
-		return LOCATION_SCOPE;
-	case LOCATION_QUALIFIER:
-		return LOCATION_QUALIFIER;
-	case LOCATION_LOCAL_SYMBOL:
-		return LOCATION_LOCAL_SYMBOL;
-	case LOCATION_SIGNATURE:
-		return LOCATION_SIGNATURE;
-	case LOCATION_COMMENT:
-		return LOCATION_COMMENT;
-	case LOCATION_ERROR:
-		return LOCATION_ERROR;
-	case LOCATION_FULLTEXT_SEARCH:
-		return LOCATION_FULLTEXT_SEARCH;
-	case LOCATION_SCREEN_SEARCH:
-		return LOCATION_SCREEN_SEARCH;
-	case LOCATION_UNSOLVED:
-		return LOCATION_UNSOLVED;
-	}
-	return LOCATION_TOKEN;
+	return findEnum(value, begin(LOCATION_TYPES), end(LOCATION_TYPES), LocationType::TOKEN);
+}
+
+template <>
+int enumToInt(LocationType type)
+{
+	return static_cast<int>(type);
 }

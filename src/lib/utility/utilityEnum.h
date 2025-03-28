@@ -6,6 +6,9 @@
 template <typename T>
 T intToEnum(int);
 
+template <typename T>
+int enumToInt(T);
+
 template <typename E, typename Iterator>
 E findEnum(int i, Iterator begin, Iterator end, E defaultValue)
 {

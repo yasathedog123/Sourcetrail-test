@@ -330,7 +330,7 @@ const std::set<Id>& QtCodeNavigator::getCurrentActiveLocationIds() const
 
 void QtCodeNavigator::setCurrentActiveLocationIds(const std::vector<Id>& currentActiveLocationIds)
 {
-	setActiveLocalTokenIds({}, LOCATION_TOKEN);
+	setActiveLocalTokenIds({}, LocationType::TOKEN);
 
 	m_currentActiveLocationIds = std::set<Id>(
 		currentActiveLocationIds.begin(), currentActiveLocationIds.end());
@@ -355,7 +355,7 @@ const std::set<Id>& QtCodeNavigator::getActiveTokenIds() const
 
 void QtCodeNavigator::setActiveTokenIds(const std::vector<Id>& activeTokenIds)
 {
-	setActiveLocalTokenIds({}, LOCATION_TOKEN);
+	setActiveLocalTokenIds({}, LocationType::TOKEN);
 	setCurrentActiveTokenIds(activeTokenIds);
 
 	m_activeTokenIds = std::set<Id>(activeTokenIds.begin(), activeTokenIds.end());

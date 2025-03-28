@@ -80,7 +80,7 @@ private:
 		Id tokenId = 0;
 		Id locationId = 0;
 		Id scopeLocationId = 0;
-		LocationType locationType = LOCATION_TOKEN;
+		LocationType locationType = LocationType::TOKEN;
 		size_t lineNumber = 0;
 		size_t columnNumber = 0;
 	};

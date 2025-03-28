@@ -162,16 +162,16 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 
 		switch (annotation.locationType)
 		{
-		case LOCATION_LOCAL_SYMBOL:
+		case LocationType::LOCAL_SYMBOL:
 			if (annotation.isActive || annotation.isFocused || annotation.isCoFocused)
 			{
 				focus = true;
 			}
 			break;
 
-		case LOCATION_ERROR:
-		case LOCATION_FULLTEXT_SEARCH:
-		case LOCATION_SCREEN_SEARCH:
+		case LocationType::ERROR:
+		case LocationType::FULLTEXT_SEARCH:
+		case LocationType::SCREEN_SEARCH:
 			if (annotation.isActive || annotation.isFocused || annotation.isCoFocused)
 			{
 				focus = true;
@@ -182,8 +182,8 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 			}
 			break;
 
-		case LOCATION_TOKEN:
-		case LOCATION_SCOPE:
+		case LocationType::TOKEN:
+		case LocationType::SCOPE:
 			if (annotation.isActive && activeLocalTokenIds.size())
 			{
 				focus = true;
@@ -381,7 +381,7 @@ Id QtCodeArea::getLocationIdOfFirstActiveLocation(Id tokenId) const
 {
 	for (const Annotation& annotation: m_annotations)
 	{
-		if (annotation.locationType == LocationType::LOCATION_TOKEN && annotation.isActive &&
+		if (annotation.locationType == LocationType::TOKEN && annotation.isActive &&
 			(!tokenId || annotation.tokenIds.find(tokenId) != annotation.tokenIds.end()))
 		{
 			return annotation.locationId;
@@ -395,7 +395,7 @@ Id QtCodeArea::getLocationIdOfFirstActiveScopeLocation(Id tokenId) const
 {
 	for (const Annotation& annotation: m_annotations)
 	{
-		if (annotation.locationType == LocationType::LOCATION_SCOPE && annotation.isActive &&
+		if (annotation.locationType == LocationType::SCOPE && annotation.isActive &&
 			annotation.tokenIds.find(tokenId) != annotation.tokenIds.end())
 		{
 			return annotation.locationId;
@@ -409,9 +409,9 @@ Id QtCodeArea::getLocationIdOfFirstHighlightedLocation() const
 {
 	for (const Annotation& annotation: m_annotations)
 	{
-		if ((annotation.locationType == LocationType::LOCATION_TOKEN && annotation.isActive) ||
-			annotation.locationType == LocationType::LOCATION_FULLTEXT_SEARCH ||
-			annotation.locationType == LocationType::LOCATION_ERROR)
+		if ((annotation.locationType == LocationType::TOKEN && annotation.isActive) ||
+			annotation.locationType == LocationType::FULLTEXT_SEARCH ||
+			annotation.locationType == LocationType::ERROR)
 		{
 			return annotation.locationId;
 		}
@@ -426,7 +426,7 @@ size_t QtCodeArea::getActiveLocationCount() const
 
 	for (const Annotation& annotation: m_annotations)
 	{
-		if (annotation.locationType == LocationType::LOCATION_TOKEN &&
+		if (annotation.locationType == LocationType::TOKEN &&
 			(annotation.isActive || annotation.isCoFocused))
 		{
 			count++;
@@ -437,8 +437,8 @@ size_t QtCodeArea::getActiveLocationCount() const
 	{
 		for (const Annotation& annotation: m_annotations)
 		{
-			if (annotation.locationType == LocationType::LOCATION_FULLTEXT_SEARCH ||
-				annotation.locationType == LocationType::LOCATION_ERROR)
+			if (annotation.locationType == LocationType::FULLTEXT_SEARCH ||
+				annotation.locationType == LocationType::ERROR)
 			{
 				count++;
 			}
@@ -494,7 +494,7 @@ void QtCodeArea::findScreenMatches(
 
 		// Set first 2 bits to 1 to avoid collisions
 		matchAnnotation.locationId = ~(~Id::type(0) >> 2) + screenMatches->size() + 1;
-		matchAnnotation.locationType = LOCATION_SCREEN_SEARCH;
+		matchAnnotation.locationType = LocationType::SCREEN_SEARCH;
 
 		m_annotations.push_back(matchAnnotation);
 		screenMatches->push_back(std::make_pair(this, matchAnnotation.locationId));
@@ -511,7 +511,7 @@ void QtCodeArea::findScreenMatches(
 void QtCodeArea::clearScreenMatches()
 {
 	size_t i = m_annotations.size();
-	while (i > 0 && m_annotations[i - 1].locationType == LOCATION_SCREEN_SEARCH)
+	while (i > 0 && m_annotations[i - 1].locationType == LocationType::SCREEN_SEARCH)
 	{
 		i--;
 		m_linesToRehighlight.push_back(
@@ -611,8 +611,8 @@ bool QtCodeArea::setFocus(Id locationId)
 	{
 		const LocationType& type = annotation.locationType;
 		if (annotation.locationId == locationId &&
-			(type == LOCATION_TOKEN || type == LOCATION_QUALIFIER ||
-			 type == LOCATION_LOCAL_SYMBOL || type == LOCATION_UNSOLVED || type == LOCATION_ERROR))
+			(type == LocationType::TOKEN || type == LocationType::QUALIFIER ||
+			 type == LocationType::LOCAL_SYMBOL || type == LocationType::UNSOLVED || type == LocationType::ERROR))
 		{
 			focusAnnotation(&annotation, true, false);
 			return true;
@@ -735,7 +735,7 @@ void QtCodeArea::activateLocationId(Id locationId, bool fromMouse)
 	}
 
 	const std::set<Id>& localTokenIds = m_navigator->getActiveLocalTokenIds();
-	if (annotation->locationType == LOCATION_LOCAL_SYMBOL && annotation->tokenIds.size() == 1 &&
+	if (annotation->locationType == LocationType::LOCAL_SYMBOL && annotation->tokenIds.size() == 1 &&
 		localTokenIds.find(*annotation->tokenIds.begin()) != localTokenIds.end())
 	{
 		MessageActivateLocalSymbols({}).dispatch();
@@ -901,7 +901,7 @@ void QtCodeArea::mouseMoveEvent(QMouseEvent* event)
 		{
 			for (const Annotation* annotation: annotations)
 			{
-				if (annotation->locationType == LOCATION_ERROR && annotation->tokenIds.size())
+				if (annotation->locationType == LocationType::ERROR && annotation->tokenIds.size())
 				{
 					std::wstring errorMessage = m_navigator->getErrorMessageForId(
 						*annotation->tokenIds.begin());
@@ -1055,7 +1055,7 @@ void QtCodeArea::activateAnnotationsOrErrors(
 		std::vector<Id> errorIds;
 		for (const Annotation* annotation: annotations)
 		{
-			if (annotation->locationType == LOCATION_ERROR && annotation->tokenIds.size())
+			if (annotation->locationType == LocationType::ERROR && annotation->tokenIds.size())
 			{
 				errorIds.insert(
 					errorIds.end(), annotation->tokenIds.begin(), annotation->tokenIds.end());

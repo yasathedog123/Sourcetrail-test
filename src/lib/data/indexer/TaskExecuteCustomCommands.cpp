@@ -29,7 +29,7 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 	for (const StorageSourceLocation location: storage.getStorageSourceLocations())
 	{
 		// FIXME: this doesn't catch unsolved qualifiers -> convert Qualifier location type to qualifier edge
-		if (location.type == LOCATION_UNSOLVED)
+		if (location.type == LocationType::UNSOLVED)
 		{
 			unsolvedLocationIds.push_back(location.id);
 		}

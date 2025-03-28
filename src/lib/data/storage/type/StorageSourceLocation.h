@@ -7,7 +7,7 @@
 struct StorageSourceLocationData
 {
 	StorageSourceLocationData()
-		: fileNodeId(0), startLine(-1), startCol(-1), endLine(-1), endCol(-1), type(LOCATION_TOKEN)
+		: fileNodeId(0), startLine(-1), startCol(-1), endLine(-1), endCol(-1), type(LocationType::TOKEN)
 	{
 	}
 

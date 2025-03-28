@@ -237,7 +237,7 @@ void QtCodeView::setNavigationState(const CodeParams& params)
 
 	if (params.activeLocalSymbolIds.size())
 	{
-		if (params.activeLocalSymbolType == LOCATION_TOKEN)
+		if (params.activeLocalSymbolType == LocationType::TOKEN)
 		{
 			m_widget->setCurrentActiveTokenIds(
 				params.currentActiveLocalLocationIds.size() ? std::vector<Id>()

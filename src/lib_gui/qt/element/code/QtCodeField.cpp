@@ -231,7 +231,7 @@ void QtCodeField::paintEvent(QPaintEvent* event)
 		}
 
 		QPen pen(color.border.c_str());
-		if (annotation.locationType == LOCATION_UNSOLVED)
+		if (annotation.locationType == LocationType::UNSOLVED)
 		{
 			pen.setStyle(Qt::DashLine);
 		}
@@ -243,7 +243,7 @@ void QtCodeField::paintEvent(QPaintEvent* event)
 		painter.setPen(pen);
 		painter.setBrush(QBrush(color.fill.c_str()));
 
-		if (annotation.locationType == LOCATION_SCOPE)
+		if (annotation.locationType == LocationType::SCOPE)
 		{
 			painter.drawRoundedRect(
 				0,
@@ -379,7 +379,7 @@ bool QtCodeField::annotateText(
 
 		annotation.isCoFocused = utility::shareElement(coFocusedSymbolIds, annotation.tokenIds);
 
-		if (annotation.locationType == LOCATION_QUALIFIER)
+		if (annotation.locationType == LocationType::QUALIFIER)
 		{
 			// never show qualifier locations active
 			annotation.isActive = false;
@@ -498,9 +498,9 @@ void QtCodeField::activateAnnotations(
 
 	for (const Annotation* annotation: annotations)
 	{
-		if (annotation->locationType == LOCATION_TOKEN ||
-			annotation->locationType == LOCATION_QUALIFIER ||
-			annotation->locationType == LOCATION_UNSOLVED)
+		if (annotation->locationType == LocationType::TOKEN ||
+			annotation->locationType == LocationType::QUALIFIER ||
+			annotation->locationType == LocationType::UNSOLVED)
 		{
 			if (annotation->locationId > 0)
 			{
@@ -512,12 +512,12 @@ void QtCodeField::activateAnnotations(
 				tokenIds.insert(annotation->tokenIds.begin(), annotation->tokenIds.end());
 			}
 
-			if (annotation->locationType == LOCATION_UNSOLVED)
+			if (annotation->locationType == LocationType::UNSOLVED)
 			{
 				containsUnsolved = true;
 			}
 		}
-		else if (annotation->locationType == LOCATION_LOCAL_SYMBOL)
+		else if (annotation->locationType == LocationType::LOCAL_SYMBOL)
 		{
 			if (annotation->tokenIds.size())
 			{
@@ -710,23 +710,23 @@ const QtCodeField::AnnotationColor& QtCodeField::getAnnotationColorForAnnotation
 
 	size_t i = 0;
 
-	if (annotation.locationType == LOCATION_LOCAL_SYMBOL)
+	if (annotation.locationType == LocationType::LOCAL_SYMBOL)
 	{
 		i = 3;
 	}
-	else if (annotation.locationType == LOCATION_SCOPE)
+	else if (annotation.locationType == LocationType::SCOPE)
 	{
 		i = 6;
 	}
-	else if (annotation.locationType == LOCATION_ERROR)
+	else if (annotation.locationType == LocationType::ERROR)
 	{
 		i = 9;
 	}
-	else if (annotation.locationType == LOCATION_FULLTEXT_SEARCH)
+	else if (annotation.locationType == LocationType::FULLTEXT_SEARCH)
 	{
 		i = 12;
 	}
-	else if (annotation.locationType == LOCATION_SCREEN_SEARCH)
+	else if (annotation.locationType == LocationType::SCREEN_SEARCH)
 	{
 		i = 15;
 	}
@@ -781,8 +781,8 @@ std::vector<const QtCodeField::Annotation*> QtCodeField::getInteractiveAnnotatio
 	for (const Annotation& annotation: m_annotations)
 	{
 		const LocationType& type = annotation.locationType;
-		if ((type == LOCATION_TOKEN || type == LOCATION_QUALIFIER ||
-			 type == LOCATION_LOCAL_SYMBOL || type == LOCATION_UNSOLVED || type == LOCATION_ERROR) &&
+		if ((type == LocationType::TOKEN || type == LocationType::QUALIFIER ||
+			 type == LocationType::LOCAL_SYMBOL || type == LocationType::UNSOLVED || type == LocationType::ERROR) &&
 			static_cast<int>(lineNumber) >= annotation.startLine &&
 			static_cast<int>(lineNumber) <= annotation.endLine)
 		{
@@ -804,8 +804,8 @@ std::vector<const QtCodeField::Annotation*> QtCodeField::getInteractiveAnnotatio
 	for (const Annotation& annotation: m_annotations)
 	{
 		const LocationType& type = annotation.locationType;
-		if ((type == LOCATION_TOKEN || type == LOCATION_QUALIFIER ||
-			 type == LOCATION_LOCAL_SYMBOL || type == LOCATION_UNSOLVED || type == LOCATION_ERROR) &&
+		if ((type == LocationType::TOKEN || type == LocationType::QUALIFIER ||
+			 type == LocationType::LOCAL_SYMBOL || type == LocationType::UNSOLVED || type == LocationType::ERROR) &&
 			pos >= annotation.start && pos <= annotation.end)
 		{
 			annotations.push_back(&annotation);
@@ -821,7 +821,7 @@ void QtCodeField::checkOpenInTabActionEnabled(QPoint position)
 	for (const Annotation* annotation: getInteractiveAnnotationsForPosition(position))
 	{
 		const LocationType& type = annotation->locationType;
-		if (type == LOCATION_TOKEN || type == LOCATION_QUALIFIER || type == LOCATION_UNSOLVED)
+		if (type == LocationType::TOKEN || type == LocationType::QUALIFIER || type == LocationType::UNSOLVED)
 		{
 			locationIds.emplace_back(annotation->locationId);
 		}
