@@ -1046,7 +1046,7 @@ std::shared_ptr<Graph> PersistentStorage::getGraphForAll() const
 			if (sdk_size)
 			{
 				auto it = m_symbolDefinitionKinds.find(storageNode.id);
-				showNode = (it != m_symbolDefinitionKinds.end() && it->second == DEFINITION_EXPLICIT);
+				showNode = (it != m_symbolDefinitionKinds.end() && it->second == DefinitionKind::EXPLICIT);
 			}
 			if (showNode &&
 				(type.isPackage() ||
@@ -1069,7 +1069,7 @@ std::shared_ptr<Graph> PersistentStorage::getGraphForNodeTypes(NodeTypeSet nodeT
 		if (nodeTypes.contains(NodeType(node.type)))
 		{
 			auto it = m_symbolDefinitionKinds.find(node.id);
-			if (it != m_symbolDefinitionKinds.end() && it->second == DEFINITION_EXPLICIT)
+			if (it != m_symbolDefinitionKinds.end() && it->second == DefinitionKind::EXPLICIT)
 			{
 				tokenIds.push_back(node.id);
 			}
@@ -1178,7 +1178,7 @@ std::shared_ptr<Graph> PersistentStorage::getGraphForActiveTokenIds(
 		std::set<Id> symbolIds;
 		for (const StorageSymbol& symbol: m_sqliteIndexStorage.getAllByIds<StorageSymbol>(ids))
 		{
-			if (symbol.id > 0 && (!isPackage || symbol.definitionKind != DEFINITION_IMPLICIT))
+			if (symbol.id > 0 && (!isPackage || symbol.definitionKind != DefinitionKind::IMPLICIT))
 			{
 				nodeIds.push_back(symbol.id);
 			}
@@ -1396,7 +1396,7 @@ std::shared_ptr<Graph> PersistentStorage::getGraphForTrail(
 						else
 						{
 							auto it = m_symbolDefinitionKinds.find(node.id);
-							if (it == m_symbolDefinitionKinds.end() || it->second == DEFINITION_NONE)
+							if (it == m_symbolDefinitionKinds.end() || it->second == DefinitionKind::NONE)
 							{
 								continue;
 							}
@@ -1574,7 +1574,7 @@ std::vector<Id> PersistentStorage::getNodeIdsForLocationIds(const std::vector<Id
 		}
 
 		auto it = m_symbolDefinitionKinds.find(elementId);
-		if ((it != m_symbolDefinitionKinds.end() && it->second == DEFINITION_IMPLICIT) ||
+		if ((it != m_symbolDefinitionKinds.end() && it->second == DefinitionKind::IMPLICIT) ||
 			edge.type == Edge::EDGE_OVERRIDE)
 		{
 			implicitNodeIds.insert(elementId);
@@ -2166,7 +2166,7 @@ TooltipInfo PersistentStorage::getTooltipInfoForTokenIds(
 	const NodeType type(node.type);
 	info.title = type.getReadableTypeWString();
 
-	DefinitionKind defKind = DEFINITION_NONE;
+	DefinitionKind defKind = DefinitionKind::NONE;
 	const StorageSymbol symbol = m_sqliteIndexStorage.getFirstById<StorageSymbol>(node.id);
 	if (symbol.id > 0)
 	{
@@ -2194,11 +2194,11 @@ TooltipInfo PersistentStorage::getTooltipInfoForTokenIds(
 			info.title = L"incomplete " + info.title;
 		}
 	}
-	else if (defKind == DEFINITION_NONE)
+	else if (defKind == DefinitionKind::NONE)
 	{
 		info.title = L"non-indexed " + info.title;
 	}
-	else if (defKind == DEFINITION_IMPLICIT)
+	else if (defKind == DefinitionKind::IMPLICIT)
 	{
 		info.title = L"implicit " + info.title;
 	}
@@ -2865,7 +2865,7 @@ void PersistentStorage::addFileNodeToGraph(const StorageNode& storageNode, Graph
 		storageNode.id,
 		NodeType(NODE_FILE),
 		NameHierarchy(filePath.fileName(), NAME_DELIMITER_FILE),
-		indexed ? DEFINITION_EXPLICIT : DEFINITION_NONE);
+		indexed ? DefinitionKind::EXPLICIT : DefinitionKind::NONE);
 	node->addComponent(std::make_shared<TokenComponentFilePath>(filePath, complete));
 }
 
@@ -2873,7 +2873,7 @@ void PersistentStorage::addNodeToGraph(
 	const StorageNode& newNode, const NodeType& type, Graph* graph, bool addChildCount) const
 {
 	NameHierarchy nameHierarchy = NameHierarchy::deserialize(newNode.serializedName);
-	DefinitionKind defKind = DEFINITION_NONE;
+	DefinitionKind defKind = DefinitionKind::NONE;
 	auto it = m_symbolDefinitionKinds.find(newNode.id);
 	if (it != m_symbolDefinitionKinds.end())
 	{
@@ -3091,7 +3091,7 @@ void PersistentStorage::addFileContentsToGraph(Id fileId, Graph* graph) const
 			if (tokenIdsSet.insert(tokenId).second)
 			{
 				auto it = m_symbolDefinitionKinds.find(tokenId);
-				if (it == m_symbolDefinitionKinds.end() || it->second != DEFINITION_IMPLICIT)
+				if (it == m_symbolDefinitionKinds.end() || it->second != DefinitionKind::IMPLICIT)
 				{
 					tokenIds.push_back(tokenId);
 				}
@@ -3293,8 +3293,8 @@ void PersistentStorage::buildSearchIndex()
 		{
 			auto it = m_symbolDefinitionKinds.find(node.id);
 			const DefinitionKind defKind =
-				(it != m_symbolDefinitionKinds.end() ? it->second : DEFINITION_NONE);
-			if (defKind != DEFINITION_IMPLICIT)
+				(it != m_symbolDefinitionKinds.end() ? it->second : DefinitionKind::NONE);
+			if (defKind != DefinitionKind::IMPLICIT)
 			{
 				const NameHierarchy nameHierarchy = NameHierarchy::deserialize(node.serializedName);
 
@@ -3304,7 +3304,7 @@ void PersistentStorage::buildSearchIndex()
 
 				// replace template arguments with .. to avoid clutter in search results and have
 				// different template specializations share the same node.
-				if (defKind == DEFINITION_NONE &&
+				if (defKind == DefinitionKind::NONE &&
 					nameHierarchy.getDelimiter() == nameDelimiterTypeToString(NAME_DELIMITER_CXX))
 				{
 					name = utility::replaceBetween(name, L'<', L'>', L"..");
@@ -3468,14 +3468,14 @@ void PersistentStorage::buildHierarchyCache()
 		auto it = m_symbolDefinitionKinds.find(edge.sourceNodeId);
 		if (it != m_symbolDefinitionKinds.end())
 		{
-			sourceIsImplicit = (it->second == DEFINITION_IMPLICIT);
+			sourceIsImplicit = (it->second == DefinitionKind::IMPLICIT);
 		}
 
 		bool targetIsImplicit = false;
 		it = m_symbolDefinitionKinds.find(edge.targetNodeId);
 		if (it != m_symbolDefinitionKinds.end())
 		{
-			targetIsImplicit = (it->second == DEFINITION_IMPLICIT);
+			targetIsImplicit = (it->second == DefinitionKind::IMPLICIT);
 		}
 
 		m_hierarchyCache.createConnection(

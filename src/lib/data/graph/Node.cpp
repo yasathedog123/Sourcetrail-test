@@ -68,17 +68,17 @@ const NameHierarchy& Node::getNameHierarchy() const
 
 bool Node::isDefined() const
 {
-	return m_definitionKind != DEFINITION_NONE;
+	return m_definitionKind != DefinitionKind::NONE;
 }
 
 bool Node::isImplicit() const
 {
-	return m_definitionKind == DEFINITION_IMPLICIT;
+	return m_definitionKind == DefinitionKind::IMPLICIT;
 }
 
 bool Node::isExplicit() const
 {
-	return m_definitionKind == DEFINITION_EXPLICIT;
+	return m_definitionKind == DefinitionKind::EXPLICIT;
 }
 
 size_t Node::getChildCount() const

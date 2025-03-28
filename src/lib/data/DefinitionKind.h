@@ -4,11 +4,11 @@
 #include "utilityEnum.h"
 
 // these values need to be the same as DefinitionKind in Java code
-enum DefinitionKind
+enum class DefinitionKind
 {	 
-	DEFINITION_NONE = 0,
-	DEFINITION_IMPLICIT = 1,
-	DEFINITION_EXPLICIT = 2
+	NONE = 0,
+	IMPLICIT = 1,
+	EXPLICIT = 2
 };
 
 template<>

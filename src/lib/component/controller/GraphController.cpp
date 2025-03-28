@@ -2406,7 +2406,7 @@ void GraphController::createLegendGraph()
 					   NodeKind kind,
 					   const std::wstring& name,
 					   Vec2i position,
-					   DefinitionKind defKind = DEFINITION_EXPLICIT) {
+					   DefinitionKind defKind = DefinitionKind::EXPLICIT) {
 		nodePositions.emplace(++id, position);
 		return graph->createNode(
 			id, NodeType(kind), NameHierarchy(name, NAME_DELIMITER_UNKNOWN), defKind);
@@ -2499,7 +2499,7 @@ void GraphController::createLegendGraph()
 		addText(L"Nodes", 3, Vec2i(x, y));
 
 		addNode(NODE_FILE, L"File", Vec2i(x, y + dy * ++i));
-		addNode(NODE_FILE, L"Non-Indexed File", Vec2i(x, y + dy * ++i), DEFINITION_NONE);
+		addNode(NODE_FILE, L"Non-Indexed File", Vec2i(x, y + dy * ++i), DefinitionKind::NONE);
 		Node* incompleteFile = addNode(NODE_FILE, L"Incomplete File", Vec2i(x, y + dy * ++i));
 		incompleteFile->addComponent(std::make_shared<TokenComponentFilePath>(FilePath(), false));
 
@@ -2514,17 +2514,17 @@ void GraphController::createLegendGraph()
 		y -= 15;
 
 		addNode(NODE_TYPE, L"Type", Vec2i(x, y + dy * ++i));
-		addNode(NODE_TYPE, L"Non-indexed Type", Vec2i(x, y + dy * ++i), DEFINITION_NONE);
+		addNode(NODE_TYPE, L"Non-indexed Type", Vec2i(x, y + dy * ++i), DefinitionKind::NONE);
 
 		addNode(NODE_GLOBAL_VARIABLE, L"variable", Vec2i(x, y + dy * ++i));
 		y -= 15;
 		addNode(
-			NODE_GLOBAL_VARIABLE, L"non-indexed variable", Vec2i(x, y + dy * ++i), DEFINITION_NONE);
+			NODE_GLOBAL_VARIABLE, L"non-indexed variable", Vec2i(x, y + dy * ++i), DefinitionKind::NONE);
 		y -= 15;
 
 		addNode(NODE_FUNCTION, L"function", Vec2i(x, y + dy * ++i));
 		y -= 15;
-		addNode(NODE_FUNCTION, L"non-indexed function", Vec2i(x, y + dy * ++i), DEFINITION_NONE);
+		addNode(NODE_FUNCTION, L"non-indexed function", Vec2i(x, y + dy * ++i), DefinitionKind::NONE);
 		y -= 15;
 
 		Node* typeNode = addNode(NODE_TYPE, L"Type with Members", Vec2i(x, y + dy * ++i));
@@ -2694,7 +2694,7 @@ void GraphController::createLegendGraph()
 				NODE_FUNCTION,
 				L"template_function<ArgumentType>",
 				Vec2i(x, y + dy * ++i),
-				DEFINITION_IMPLICIT);
+				DefinitionKind::IMPLICIT);
 			addEdge(
 				Edge::EDGE_TEMPLATE_SPECIALIZATION,
 				templateFunctionSpecializationNode,
@@ -2704,7 +2704,7 @@ void GraphController::createLegendGraph()
 				NODE_TYPE, L"TemplateType<typename ParameterType>", Vec2i(x, y + dy * ++i));
 			y += 30;
 			Node* templateSpecializationNode = addNode(
-				NODE_TYPE, L"TemplateType<ArgumentType>", Vec2i(x, y + dy * ++i), DEFINITION_IMPLICIT);
+				NODE_TYPE, L"TemplateType<ArgumentType>", Vec2i(x, y + dy * ++i), DefinitionKind::IMPLICIT);
 			Node* argumentNode = addNode(NODE_TYPE, L"ArgumentType", Vec2i(x + 270, y + dy * i));
 			addEdge(Edge::EDGE_TEMPLATE_SPECIALIZATION, templateSpecializationNode, templateNode);
 			addEdge(Edge::EDGE_TYPE_USAGE, templateSpecializationNode, argumentNode);
@@ -2723,9 +2723,9 @@ void GraphController::createLegendGraph()
 				NODE_TYPE,
 				L"TemplateType<ArgumentType>",
 				Vec2i(x, y + dy * ++i + 20),
-				DEFINITION_IMPLICIT);
+				DefinitionKind::IMPLICIT);
 			Node* templateSpecializationMethodNode = addNode(
-				NODE_METHOD, L"method", Vec2i(), DEFINITION_IMPLICIT);
+				NODE_METHOD, L"method", Vec2i(), DefinitionKind::IMPLICIT);
 			addMember(templateSpecializationNode, templateSpecializationMethodNode);
 			addEdge(
 				Edge::EDGE_TEMPLATE_SPECIALIZATION,

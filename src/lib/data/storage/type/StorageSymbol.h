@@ -6,7 +6,7 @@
 
 struct StorageSymbol
 {
-	StorageSymbol(): id(0), definitionKind(DEFINITION_NONE) {}
+	StorageSymbol(): id(0), definitionKind(DefinitionKind::NONE) {}
 
 	StorageSymbol(Id id, DefinitionKind definitionKind): id(id), definitionKind(definitionKind) {}
 

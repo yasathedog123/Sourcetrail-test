@@ -1,16 +1,21 @@
 #include "DefinitionKind.h"
 
-template<>
-DefinitionKind intToEnum(int definitionKind)
+#include <iterator>
+
+using namespace std;
+
+namespace
 {
-	switch (definitionKind)
-	{
-	case DEFINITION_NONE:
-		return DEFINITION_NONE;
-	case DEFINITION_IMPLICIT:
-		return DEFINITION_IMPLICIT;
-	case DEFINITION_EXPLICIT:
-		return DEFINITION_EXPLICIT;
-	}
-	return DEFINITION_NONE;
+
+const DefinitionKind DEFINITION_KINDS[] = {
+	DefinitionKind::NONE,
+	DefinitionKind::IMPLICIT,
+	DefinitionKind::EXPLICIT
+};
+
+}
+template<>
+DefinitionKind intToEnum(int value)
+{
+	return findEnum(value, begin(DEFINITION_KINDS), end(DEFINITION_KINDS), DefinitionKind::NONE);
 }

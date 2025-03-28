@@ -141,7 +141,7 @@ void ParserClientImpl::recordAccessKind(Id symbolId, AccessKind accessKind)
 
 void ParserClientImpl::recordDefinitionKind(Id symbolId, DefinitionKind definitionKind)
 {
-	if (definitionKind != DEFINITION_NONE)
+	if (definitionKind != DefinitionKind::NONE)
 	{
 		m_storage->addSymbol(StorageSymbol(symbolId, definitionKind));
 	}

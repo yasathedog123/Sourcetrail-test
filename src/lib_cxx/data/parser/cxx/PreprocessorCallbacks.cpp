@@ -99,7 +99,7 @@ void PreprocessorCallbacks::MacroDefined(
 
 		Id symbolId = m_client->recordSymbol(nameHierarchy);
 		m_client->recordSymbolKind(symbolId, SymbolKind::MACRO);
-		m_client->recordDefinitionKind(symbolId, DEFINITION_EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, DefinitionKind::EXPLICIT);
 		m_client->recordLocation(
 			symbolId, getParseLocation(macroNameToken), ParseLocationType::TOKEN);
 		m_client->recordLocation(

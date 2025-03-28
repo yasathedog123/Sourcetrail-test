@@ -101,10 +101,10 @@ TEST_CASE("storage saves field as member")
 	std::shared_ptr<IntermediateStorage> intermediateStorage = std::make_shared<IntermediateStorage>();
 
 	Id aId = intermediateStorage->addNode(StorageNodeData(NODE_STRUCT, NameHierarchy::serialize(a))).first;
-	intermediateStorage->addSymbol(StorageSymbol(aId, DEFINITION_EXPLICIT));
+	intermediateStorage->addSymbol(StorageSymbol(aId, DefinitionKind::EXPLICIT));
 
 	Id bId = intermediateStorage->addNode(StorageNodeData(NODE_FIELD, NameHierarchy::serialize(b))).first;
-	intermediateStorage->addSymbol(StorageSymbol(bId, DEFINITION_EXPLICIT));
+	intermediateStorage->addSymbol(StorageSymbol(bId, DefinitionKind::EXPLICIT));
 	intermediateStorage->addEdge(StorageEdgeData(Edge::EDGE_MEMBER, aId, bId));
 
 	storage.inject(intermediateStorage.get());
