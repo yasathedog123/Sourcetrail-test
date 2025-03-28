@@ -11,43 +11,43 @@ NodeKind symbolKindToNodeKind(SymbolKind symbolKind)
 {
 	switch (symbolKind)
 	{
-		case SYMBOL_ANNOTATION:
+		case SymbolKind::ANNOTATION:
 			return NODE_ANNOTATION;
-		case SYMBOL_BUILTIN_TYPE:
+		case SymbolKind::BUILTIN_TYPE:
 			return NODE_BUILTIN_TYPE;
-		case SYMBOL_CLASS:
+		case SymbolKind::CLASS:
 			return NODE_CLASS;
-		case SYMBOL_ENUM:
+		case SymbolKind::ENUM:
 			return NODE_ENUM;
-		case SYMBOL_ENUM_CONSTANT:
+		case SymbolKind::ENUM_CONSTANT:
 			return NODE_ENUM_CONSTANT;
-		case SYMBOL_FIELD:
+		case SymbolKind::FIELD:
 			return NODE_FIELD;
-		case SYMBOL_FUNCTION:
+		case SymbolKind::FUNCTION:
 			return NODE_FUNCTION;
-		case SYMBOL_GLOBAL_VARIABLE:
+		case SymbolKind::GLOBAL_VARIABLE:
 			return NODE_GLOBAL_VARIABLE;
-		case SYMBOL_INTERFACE:
+		case SymbolKind::INTERFACE:
 			return NODE_INTERFACE;
-		case SYMBOL_MACRO:
+		case SymbolKind::MACRO:
 			return NODE_MACRO;
-		case SYMBOL_METHOD:
+		case SymbolKind::METHOD:
 			return NODE_METHOD;
-		case SYMBOL_MODULE:
+		case SymbolKind::MODULE:
 			return NODE_MODULE;
-		case SYMBOL_NAMESPACE:
+		case SymbolKind::NAMESPACE:
 			return NODE_NAMESPACE;
-		case SYMBOL_PACKAGE:
+		case SymbolKind::PACKAGE:
 			return NODE_PACKAGE;
-		case SYMBOL_STRUCT:
+		case SymbolKind::STRUCT:
 			return NODE_STRUCT;
-		case SYMBOL_TYPEDEF:
+		case SymbolKind::TYPEDEF:
 			return NODE_TYPEDEF;
-		case SYMBOL_TYPE_PARAMETER:
+		case SymbolKind::TYPE_PARAMETER:
 			return NODE_TYPE_PARAMETER;
-		case SYMBOL_UNION:
+		case SymbolKind::UNION:
 			return NODE_UNION;
-		case SYMBOL_RECORD:
+		case SymbolKind::RECORD:
 			return NODE_RECORD;
 		default:
 			break;

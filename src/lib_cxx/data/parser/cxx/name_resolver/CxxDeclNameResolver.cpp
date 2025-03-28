@@ -363,7 +363,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 					typenNameResolver.getName(varDecl->getType()));
 
 				std::wstring varName = declNameString;
-				if (utility::getSymbolKind(varDecl) == SYMBOL_GLOBAL_VARIABLE &&
+				if (utility::getSymbolKind(varDecl) == SymbolKind::GLOBAL_VARIABLE &&
 					varDecl->getStorageClass() == clang::SC_Static)
 				{
 					// if a global variable is static it is only visible in the current translation

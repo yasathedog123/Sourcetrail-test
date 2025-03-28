@@ -82,18 +82,18 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 	switch (tagKind)
 	{
 	case TagTypeKind::Struct:
-		return SYMBOL_STRUCT;
+		return SymbolKind::STRUCT;
 	case TagTypeKind::Union:
-		return SYMBOL_UNION;
+		return SymbolKind::UNION;
 	case TagTypeKind::Class:
-		return SYMBOL_CLASS;
+		return SymbolKind::CLASS;
 	case TagTypeKind::Enum:
-		return SYMBOL_ENUM;
+		return SymbolKind::ENUM;
 	case TagTypeKind::Interface:
-		// TODO (petermost): Is this correct or should 'SYMBOL_INTERFACE' be returned?
-		return SYMBOL_UNDEFINED;
+		// TODO (petermost): Is this correct or should 'SymbolKind::INTERFACE' be returned?
+		return SymbolKind::UNDEFINED;
 	default:
-		return SYMBOL_UNDEFINED;
+		return SymbolKind::UNDEFINED;
 	}
 }
 
@@ -109,17 +109,17 @@ bool utility::isParameter(const clang::ValueDecl *d)
 
 SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 {
-	SymbolKind symbolKind = SYMBOL_UNDEFINED;
+	SymbolKind symbolKind = SymbolKind::UNDEFINED;
 
 	if (d->getParentFunctionOrMethod() == nullptr)
 	{
 		if (d->getAccess() == clang::AS_none)
 		{
-			symbolKind = SYMBOL_GLOBAL_VARIABLE;
+			symbolKind = SymbolKind::GLOBAL_VARIABLE;
 		}
 		else
 		{
-			symbolKind = SYMBOL_FIELD;
+			symbolKind = SymbolKind::FIELD;
 		}
 	}
 
