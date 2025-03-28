@@ -25,6 +25,7 @@ public:
 	std::vector<std::wstring> classes;
 	std::vector<std::wstring> unions;
 	std::vector<std::wstring> interfaces;
+	std::vector<std::wstring> records;
 	std::vector<std::wstring> annotations;
 	std::vector<std::wstring> enums;
 	std::vector<std::wstring> enumConstants;

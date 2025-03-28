@@ -21,7 +21,8 @@ public enum SymbolKind {
 	STRUCT(15),
 	TYPEDEF(16),
 	TYPE_PARAMETER(17),
-	UNION(18);
+	UNION(18),
+	RECORD(19);
 
 	private final int m_value;
 		

@@ -41,6 +41,8 @@ SymbolKind intToEnum(int value)
 		return SYMBOL_TYPE_PARAMETER;
 	case SYMBOL_UNION:
 		return SYMBOL_UNION;
+	case SYMBOL_RECORD:
+		return SYMBOL_RECORD;
 	}
 	return SYMBOL_UNDEFINED;
 }

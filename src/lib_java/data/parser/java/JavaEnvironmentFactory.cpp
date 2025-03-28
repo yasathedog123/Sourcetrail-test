@@ -82,9 +82,9 @@ void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::s
 
 	// options.push_back({ const_cast<char*>("-verbose:jni") });
 
-	// Use this option to allow attaching a debugger:
-	//options.push_back({ const_cast<char*>("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000") });
-	//
+	// Allow attaching a debugger (default Eclipse port):
+	// options.push_back({ .optionString = const_cast<char*>("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000") });
+
 	// use these options to enable profiling in VisualVM
 	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote") });
 	//options.push_back({ const_cast<char*>("-Dcom.sun.management.jmxremote.port=9010") });

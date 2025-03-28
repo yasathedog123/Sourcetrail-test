@@ -34,9 +34,10 @@ enum NodeKind : NodeKindMask
 	NODE_FILE = 1 << 18,
 	NODE_MACRO = 1 << 19,
 	NODE_UNION = 1 << 20,
+	NODE_RECORD = 1 << 21
 };
 
-constexpr NodeKind NODE_KIND_MAX_VALUE = NODE_UNION;
+constexpr NodeKind NODE_KIND_MAX_VALUE = NODE_RECORD;
 
 template<>
 NodeKind intToEnum(int value);

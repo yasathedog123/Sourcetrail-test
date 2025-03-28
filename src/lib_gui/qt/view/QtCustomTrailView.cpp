@@ -190,27 +190,30 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 		std::vector<QString> nodeFilters;
 		std::vector<QColor> nodeColors;
 
-		const std::vector<NodeKind> nodeKinds = {// NODE_SYMBOL,
-												 NODE_TYPE,
-												 NODE_BUILTIN_TYPE,
-												 // NODE_MODULE,
-												 // NODE_NAMESPACE,
-												 // NODE_PACKAGE,
-												 NODE_CLASS,
-												 NODE_STRUCT,
-												 NODE_UNION,
-												 NODE_INTERFACE,
-												 NODE_TYPEDEF,
-												 NODE_TYPE_PARAMETER,
-												 NODE_ENUM,
-												 NODE_ENUM_CONSTANT,
-												 NODE_GLOBAL_VARIABLE,
-												 NODE_FIELD,
-												 NODE_FUNCTION,
-												 NODE_METHOD,
-												 NODE_FILE,
-												 NODE_MACRO,
-												 NODE_ANNOTATION};
+		std::vector<NodeKind> nodeKinds = {
+			// NODE_SYMBOL,
+			 NODE_TYPE,
+			 NODE_BUILTIN_TYPE,
+			 // NODE_MODULE,
+			 // NODE_NAMESPACE,
+			 // NODE_PACKAGE,
+			 NODE_CLASS,
+			 NODE_STRUCT,
+			 NODE_RECORD,
+			 NODE_UNION,
+			 NODE_INTERFACE,
+			 NODE_TYPEDEF,
+			 NODE_TYPE_PARAMETER,
+			 NODE_ENUM,
+			 NODE_ENUM_CONSTANT,
+			 NODE_GLOBAL_VARIABLE,
+			 NODE_FIELD,
+			 NODE_FUNCTION,
+			 NODE_METHOD,
+			 NODE_FILE,
+			 NODE_MACRO,
+			 NODE_ANNOTATION
+		};
 
 		for (NodeKind t: nodeKinds)
 		{

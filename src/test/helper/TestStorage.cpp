@@ -340,6 +340,8 @@ std::wstring TestStorage::nodeTypeToString(NodeKind nodeType)
 		return L"SYMBOL_TYPE_PARAMETER";
 	case NODE_UNION:
 		return L"SYMBOL_UNION";
+	case NODE_RECORD:
+		return L"SYMBOL_RECORD";
 	default:
 		break;
 	}
@@ -418,6 +420,8 @@ std::vector<std::wstring> *TestStorage::getBinForNodeType(NodeKind nodeType)
 		return &macros;
 	case NODE_TYPE_PARAMETER:
 		return &typeParameters;
+	case NODE_RECORD:
+		return &records;
 	default:
 		break;
 	}

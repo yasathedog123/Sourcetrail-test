@@ -46,7 +46,7 @@ public:
 		std::wstring bundleName;
 	};
 
-	static std::vector<NodeType> getOverviewBundleNodeTypesOrdered();
+	static std::vector<NodeType> getOverviewBundleNodes();
 
 	explicit NodeType(NodeKind kind);
 
@@ -79,10 +79,7 @@ public:
 	bool hasOverviewBundle() const;
 	std::string getUnderscoredTypeString() const;
 	std::string getReadableTypeString() const;
-	std::wstring getUnderscoredTypeWString() const;
 	std::wstring getReadableTypeWString() const;
-
-	static std::vector<NodeType> const overviewBundleNodeTypesOrdered;
 
 private:
 	NodeKind m_kind;

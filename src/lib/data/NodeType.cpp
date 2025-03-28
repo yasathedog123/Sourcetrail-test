@@ -3,23 +3,28 @@
 #include "ResourcePaths.h"
 #include "utilityString.h"
 
-std::vector<NodeType> const NodeType::overviewBundleNodeTypesOrdered = {
-	NodeType(NODE_FILE),
-	NodeType(NODE_MACRO),
-	NodeType(NODE_ANNOTATION),
-	NodeType(NODE_MODULE),
-	NodeType(NODE_NAMESPACE),
-	NodeType(NODE_PACKAGE),
-	NodeType(NODE_CLASS),
-	NodeType(NODE_INTERFACE),
-	NodeType(NODE_STRUCT),
-	NodeType(NODE_UNION),
-	NodeType(NODE_FUNCTION),
-	NodeType(NODE_GLOBAL_VARIABLE),
-	NodeType(NODE_TYPE),
-	NodeType(NODE_TYPEDEF),
-	NodeType(NODE_ENUM)};
-
+std::vector<NodeType> NodeType::getOverviewBundleNodes()
+{
+	// Defines the order of the bundles on the 'overview' view:
+	return {
+		NodeType(NODE_FILE),
+		NodeType(NODE_MACRO),
+		NodeType(NODE_ANNOTATION),
+		NodeType(NODE_MODULE),
+		NodeType(NODE_NAMESPACE),
+		NodeType(NODE_PACKAGE),
+		NodeType(NODE_CLASS),
+		NodeType(NODE_INTERFACE),
+		NodeType(NODE_STRUCT),
+		NodeType(NODE_RECORD),
+		NodeType(NODE_UNION),
+		NodeType(NODE_FUNCTION),
+		NodeType(NODE_GLOBAL_VARIABLE),
+		NodeType(NODE_TYPE),
+		NodeType(NODE_TYPEDEF),
+		NodeType(NODE_ENUM)
+	};
+}
 
 NodeType::NodeType(NodeKind kind): m_kind(kind) {}
 
@@ -68,7 +73,7 @@ bool NodeType::isUnknownSymbol() const
 
 bool NodeType::isInheritable() const
 {
-	// what about java enums?
+	// TODO: what about java enums? Cannot inherit from!
 	const NodeKindMask mask = NODE_SYMBOL | NODE_BUILTIN_TYPE | NODE_TYPE | NODE_STRUCT |
 		NODE_CLASS | NODE_INTERFACE;
 
@@ -96,14 +101,14 @@ bool NodeType::isVariable() const
 bool NodeType::isUsable() const
 {
 	const NodeKindMask mask = NODE_SYMBOL | NODE_BUILTIN_TYPE | NODE_STRUCT | NODE_CLASS |
-		NODE_ENUM | NODE_UNION | NODE_INTERFACE | NODE_ANNOTATION | NODE_TYPEDEF;
+		NODE_ENUM | NODE_UNION | NODE_INTERFACE | NODE_ANNOTATION | NODE_TYPEDEF | NODE_RECORD;
 	return ((m_kind & mask) > 0);
 }
 
 bool NodeType::isPotentialMember() const
 {
 	const NodeKindMask mask = NODE_METHOD | NODE_FIELD | NODE_CLASS | NODE_INTERFACE |
-		NODE_ANNOTATION | NODE_STRUCT | NODE_UNION | NODE_TYPEDEF | NODE_ENUM;
+		NODE_ANNOTATION | NODE_STRUCT | NODE_UNION | NODE_TYPEDEF | NODE_ENUM | NODE_RECORD;
 
 	return ((m_kind & mask) > 0);
 }
@@ -111,7 +116,7 @@ bool NodeType::isPotentialMember() const
 bool NodeType::isCollapsible() const
 {
 	const NodeKindMask mask = NODE_SYMBOL | NODE_TYPE | NODE_BUILTIN_TYPE | NODE_STRUCT |
-		NODE_CLASS | NODE_INTERFACE | NODE_ANNOTATION | NODE_ENUM | NODE_UNION | NODE_FILE;
+		NODE_CLASS | NODE_INTERFACE | NODE_ANNOTATION | NODE_ENUM | NODE_UNION | NODE_FILE | NODE_RECORD;
 	return ((m_kind & mask) > 0);
 }
 
@@ -125,7 +130,7 @@ bool NodeType::hasSearchFilter() const
 	const NodeKindMask mask = NODE_BUILTIN_TYPE | NODE_MODULE | NODE_NAMESPACE | NODE_PACKAGE |
 		NODE_STRUCT | NODE_CLASS | NODE_INTERFACE | NODE_ANNOTATION | NODE_GLOBAL_VARIABLE |
 		NODE_FIELD | NODE_FUNCTION | NODE_METHOD | NODE_ENUM | NODE_ENUM_CONSTANT | NODE_TYPEDEF |
-		NODE_FILE | NODE_MACRO | NODE_UNION;
+		NODE_FILE | NODE_MACRO | NODE_UNION | NODE_RECORD;
 	return ((m_kind & mask) > 0);
 }
 
@@ -171,10 +176,11 @@ Tree<NodeType::BundleInfo> NodeType::getOverviewBundleTree() const
 		return Tree<BundleInfo>(BundleInfo(L"Enums"));
 	case NODE_UNION:
 		return Tree<BundleInfo>(BundleInfo(L"Unions"));
+	case NODE_RECORD:
+		return Tree<BundleInfo>(BundleInfo(L"Records"));
 	default:
 		break;
 	}
-
 	return Tree<BundleInfo>();
 }
 
@@ -189,8 +195,7 @@ FilePath NodeType::getIconPath() const
 	switch (m_kind)
 	{
 	case NODE_ANNOTATION:
-		return ResourcePaths::getGuiDirectoryPath().concatenate(
-			L"graph_view/images/annotation.png");
+		return ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/annotation.png");
 	case NODE_ENUM:
 		return ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/enum.png");
 	case NODE_TYPEDEF:
@@ -230,6 +235,7 @@ NodeType::StyleType NodeType::getNodeStyle() const
 	case NODE_CLASS:
 	case NODE_UNION:
 	case NODE_INTERFACE:
+	case NODE_RECORD:
 	case NODE_ANNOTATION:
 	case NODE_ENUM:
 	case NODE_TYPEDEF:
@@ -260,12 +266,6 @@ std::string NodeType::getUnderscoredTypeString() const
 std::string NodeType::getReadableTypeString() const
 {
 	return getReadableNodeKindString(m_kind);
-}
-
-std::wstring NodeType::getUnderscoredTypeWString() const
-{
-	std::string str = getUnderscoredTypeString();
-	return std::wstring(str.begin(), str.end());
 }
 
 std::wstring NodeType::getReadableTypeWString() const

@@ -45,6 +45,8 @@ NodeKind intToEnum(int value)
 		return NODE_MACRO;
 	case NODE_UNION:
 		return NODE_UNION;
+	case NODE_RECORD:
+		return NODE_RECORD;
 	}
 	return NODE_SYMBOL;
 }
@@ -100,6 +102,8 @@ std::string getReadableNodeKindString(NodeKind kind)
 		return "macro";
 	case NODE_UNION:
 		return "union";
+	case NODE_RECORD:
+		return "record";
 	}
 	return "";
 }

@@ -143,14 +143,14 @@
 			</line_number>
 
 			<syntax>
-				<text>white</text>
-				<directive>magenta</directive>
-				<keyword>white</keyword>
-				<type>cyan</type>
-				<comment>lime</comment>
-				<number>cyan</number>
-				<quotation>cyan</quotation>
-				<function>white</function>
+				<text>#F7F7F7</text>
+				<directive>#1F9C62</directive>
+				<keyword>#1F9C62</keyword>
+				<type>#D95233</type>
+				<comment>#4E768A</comment>
+				<number>#CC3463</number>
+				<quotation>#9368AD</quotation>
+				<function>#D69C36</function>
 			</syntax>
 
 			<selection>
@@ -276,6 +276,9 @@
 			<union>
 				<like>type</like>
 			</union>
+			<record>
+				<like>type</like>
+			</record>
 			<typedef>
 				<like>type</like>
 			</typedef>

@@ -45,7 +45,7 @@ bool ConfigManager::getValue(const std::string& key, std::string& value) const
 	{
 		if (m_warnOnEmptyKey)
 		{
-			// LOG_WARNING("value " + key + " is not present in config.");
+			LOG_WARNING("value " + key + " is not present in config.");
 		}
 		return false;
 	}
@@ -130,7 +130,7 @@ bool ConfigManager::getValues(const std::string& key, std::vector<std::string>& 
 	{
 		if (m_warnOnEmptyKey)
 		{
-			// LOG_WARNING("value " + key + " is not present in config.");
+			LOG_WARNING("value " + key + " is not present in config.");
 		}
 		return false;
 	}

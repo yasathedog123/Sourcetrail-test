@@ -47,6 +47,8 @@ NodeKind symbolKindToNodeKind(SymbolKind symbolKind)
 			return NODE_TYPE_PARAMETER;
 		case SYMBOL_UNION:
 			return NODE_UNION;
+		case SYMBOL_RECORD:
+			return NODE_RECORD;
 		default:
 			break;
 	}

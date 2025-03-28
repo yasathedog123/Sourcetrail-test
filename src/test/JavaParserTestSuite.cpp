@@ -15,6 +15,10 @@
 
 #	include "TestStorage.h"
 
+using namespace std;
+using namespace string_literals;
+using namespace utility;
+
 namespace
 {
 std::string setupJavaEnvironmentFactory()
@@ -112,6 +116,38 @@ TEST_CASE("java parser finds interface declaration in default package", JAVA_TAG
 
 	REQUIRE(utility::containsElement<std::wstring>(
 		client->interfaces, L"public A <1:1 <1:18 1:18> 3:1>"));
+}
+
+TEST_CASE("java parser finds record declaration in default package", JAVA_TAG)
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		"public record A()\n"
+		"{\n"
+		"}\n");
+
+	REQUIRE(containsElement(client->records, L"public A <1:1 <1:15 1:15> 3:1>"s));
+}
+
+TEST_CASE("java parser finds record declaration in named package", JAVA_TAG)
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		"package foo;\n"
+		"public record A()\n"
+		"{\n"
+		"}\n");
+
+	REQUIRE(containsElement(client->records, L"public foo.A <2:1 <2:15 2:15> 4:1>"s));
+}
+
+TEST_CASE("java parser finds record declaration in nested named package", JAVA_TAG)
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		"package foo.bar;\n"
+		"public record A()\n"
+		"{\n"
+		"}\n");
+
+	REQUIRE(containsElement(client->records, L"public foo.bar.A <2:1 <2:15 2:15> 4:1>"s));
 }
 
 TEST_CASE("java parser finds class declaration in named package", JAVA_TAG)

@@ -1441,7 +1441,7 @@ void GraphController::bundleNodesByType()
 
 	bool hasNonFileBundle = false;
 
-	for (const NodeType& nodeType: NodeType::overviewBundleNodeTypesOrdered)
+	for (const NodeType& nodeType: NodeType::getOverviewBundleNodes())
 	{
 		Tree<NodeType::BundleInfo> bundleInfoTree = nodeType.getOverviewBundleTree();
 		if (bundleInfoTree.data.isValid())
@@ -2553,6 +2553,7 @@ void GraphController::createLegendGraph()
 		addNode(NODE_INTERFACE, L"Interface", Vec2i(x, y + dy * ++i));
 
 		addNode(NODE_STRUCT, L"Struct", Vec2i(x, y + dy * ++i));
+		addNode(NODE_RECORD, L"Record", Vec2i(x, y + dy * ++i));
 		addNode(NODE_UNION, L"Union", Vec2i(x, y + dy * ++i));
 
 		addNode(NODE_TYPEDEF, L"TypeDef", Vec2i(x, y + dy * ++i));

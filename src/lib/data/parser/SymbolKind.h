@@ -26,6 +26,7 @@ enum SymbolKind
 	SYMBOL_TYPEDEF = 16,
 	SYMBOL_TYPE_PARAMETER = 17,
 	SYMBOL_UNION = 18,
+	SYMBOL_RECORD = 19
 };
 
 template <>
