@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2025.4.1
+* Java: Add Support for record classes
+* macOS: Fix vcpkg build. Thanks to [ChristianWieden](https://github.com/ChristianWieden) for the help
+
 #### 2025.3.3
 * Java: Add support for Eclipse JDT 3.40 (Java 23)
 * Java: Update Gradle support to 8.12
