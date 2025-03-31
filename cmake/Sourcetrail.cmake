@@ -10,8 +10,8 @@ function(setGccTargetOptions targetName)
 		PRIVATE
 			-pipe
 
-			-ftrivial-auto-var-init=zero
-			-Wtrivial-auto-var-init
+			# Will lead to a failure in "cxx parser finds braces with closing bracket in macro" !!!
+			# -ftrivial-auto-var-init=zero
 			
 			-Wall
 			-Wextra
@@ -36,6 +36,7 @@ function(setGccTargetOptions targetName)
 			# -Woverloaded-virtual
 			# -Wundef
 			-Wuninitialized
+			-Winit-self
 			# -Wunused-macros
 			# -Wuseless-cast
 			-Wwrite-strings
@@ -78,7 +79,8 @@ function(setClangTargetOptions targetName)
 		PRIVATE
 			-pipe
 
-			-ftrivial-auto-var-init=zero
+			# Will lead to a failure in "cxx parser finds braces with closing bracket in macro" !!!
+			# -ftrivial-auto-var-init=zero
 
 			-Wall
 			-Wextra

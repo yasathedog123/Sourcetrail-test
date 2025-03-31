@@ -4186,6 +4186,8 @@ TEST_CASE("cxx parser finds no duplicate braces of template class and method dec
 
 TEST_CASE("cxx parser finds braces with closing bracket in macro")
 {
+	// TODO: Why does the parser return different locations when the switch '-ftrivial-auto-var-init=zero' is used?
+	
 	std::shared_ptr<TestStorage> client = parseCode(
 		"\n"
 		"namespace constants\n"
@@ -4199,10 +4201,8 @@ TEST_CASE("cxx parser finds braces with closing bracket in macro")
 		"CONSTANT(third, 3)\n"
 		"}\n");
 
-	REQUIRE(
-		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:1> <3:1 3:1>"));
-	REQUIRE(
-		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:1> <7:2 7:2>"));
+	REQUIRE(containsElement(client->localSymbols, L"input.cc<3:1> <3:1 3:1>"s));
+	REQUIRE(containsElement(client->localSymbols, L"input.cc<3:1> <7:2 7:2>"s));
 	// TS_ASSERT(utility::containsElement<std::wstring>(client->localSymbols, L"<0:0> <11:1
 	// 11:1>")); // unwanted sideeffect
 
@@ -4218,8 +4218,7 @@ TEST_CASE("cxx parser finds braces with closing bracket in macro")
 		"CONSTANT(third, 3)\n"
 		"}\n");
 
-	REQUIRE(
-		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:1> <7:1 7:1>"));
+	REQUIRE(containsElement(client->localSymbols, L"input.cc<7:1> <7:1 7:1>"s));
 	// TS_ASSERT(utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:1> <10:1
 	// 10:1>")); // missing TS_ASSERT(utility::containsElement<std::wstring>(client->localSymbols,
 	// L"<0:0> <10:1 10:1>")); // unwanted sideeffect
