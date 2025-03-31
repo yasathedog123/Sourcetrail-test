@@ -1,7 +1,7 @@
 #ifndef UTILITY_ENUM_H
 #define UTILITY_ENUM_H
 
-#include <algorithm>
+#include <ranges>
 
 template <typename T>
 T intToEnum(int);
@@ -9,13 +9,13 @@ T intToEnum(int);
 template <typename T>
 int enumToInt(T);
 
-template <typename E, typename Iterator>
-E findEnum(int i, Iterator begin, Iterator end, E defaultValue)
+template <typename E, typename Range>
+E lookupEnum(int i, Range &&enums, E &&defaultValue)
 {
-	auto found = std::find_if(begin, end, [=](E e) {
-		return i == static_cast<int>(e);
-	});
-	return found != end ? *found : defaultValue;
+	if (i >= 0 && i < std::ranges::ssize(enums))
+		return *(std::ranges::begin(enums) + i);
+	else
+		return defaultValue;
 }
 
 #endif // UTILITYENUM_H

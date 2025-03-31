@@ -1,9 +1,5 @@
 #include "SymbolKind.h"
 
-#include <iterator>
-
-using namespace std;
-
 namespace
 {
 
@@ -35,5 +31,5 @@ const SymbolKind SYMBOL_KINDS[] = {
 template <>
 SymbolKind intToEnum(int value)
 {
-	return findEnum(value, begin(SYMBOL_KINDS), end(SYMBOL_KINDS), SymbolKind::UNDEFINED);
+	return lookupEnum(value, SYMBOL_KINDS, SymbolKind::UNDEFINED);
 }

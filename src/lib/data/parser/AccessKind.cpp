@@ -1,9 +1,5 @@
 #include "AccessKind.h"
 
-#include <iterator>
-
-using namespace std;
-
 namespace
 {
 
@@ -22,7 +18,7 @@ const AccessKind ACCESS_KINDS[] = {
 template <>
 AccessKind intToEnum(int value)
 {
-	return findEnum(value, begin(ACCESS_KINDS), end(ACCESS_KINDS), AccessKind::NONE);
+	return lookupEnum(value, ACCESS_KINDS, AccessKind::NONE);
 }
 
 std::wstring accessKindToString(AccessKind t)

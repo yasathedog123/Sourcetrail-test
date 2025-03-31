@@ -1,9 +1,5 @@
 #include "LocationType.h"
 
-#include <iterator>
-
-using namespace std;
-
 namespace
 {
 
@@ -25,7 +21,7 @@ const LocationType LOCATION_TYPES[] = {
 template <>
 LocationType intToEnum(int value)
 {
-	return findEnum(value, begin(LOCATION_TYPES), end(LOCATION_TYPES), LocationType::TOKEN);
+	return lookupEnum(value, LOCATION_TYPES, LocationType::TOKEN);
 }
 
 template <>

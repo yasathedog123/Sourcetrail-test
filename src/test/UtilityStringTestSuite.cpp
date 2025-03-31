@@ -379,3 +379,13 @@ TEST_CASE(
 {
 	REQUIRE_FALSE(utility::caseInsensitiveLess(L"ab_cD!E", L"aB_cd!"));
 }
+
+TEST_CASE("trim blank spaces of string")
+{
+	REQUIRE(utility::trim(" foo  ") == "foo");
+}
+
+TEST_CASE("trim blank spaces of wstring")
+{
+	REQUIRE(utility::trim(L" foo  ") == L"foo");
+}
