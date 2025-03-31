@@ -1114,7 +1114,7 @@ void CodeController::iterateReference(bool next)
 	{
 		m_referenceIndex++;
 
-		if (m_referenceIndex == m_references.size())
+		if (m_referenceIndex == static_cast<int>(m_references.size()))
 		{
 			m_referenceIndex = 0;
 		}

@@ -10,6 +10,9 @@ function(setGccTargetOptions targetName)
 		PRIVATE
 			-pipe
 
+			-ftrivial-auto-var-init=zero
+			-Wtrivial-auto-var-init
+			
 			-Wall
 			-Wextra
 			-Wpedantic
@@ -74,6 +77,8 @@ function(setClangTargetOptions targetName)
 	target_compile_options(${targetName}
 		PRIVATE
 			-pipe
+
+			-ftrivial-auto-var-init=zero
 
 			-Wall
 			-Wextra

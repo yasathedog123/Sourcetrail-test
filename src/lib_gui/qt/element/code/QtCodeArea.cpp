@@ -258,7 +258,7 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 
 			p.setColor(textColor);
 
-			if (focusedLineNumber == number)
+			if (static_cast<int>(focusedLineNumber) == number)
 			{
 				painter.fillRect(m_lineNumberArea->width() - 8, top, 3, height, focusColor);
 			}
