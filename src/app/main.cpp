@@ -201,7 +201,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			MessageLoadProject(commandLineParser.getProjectFilePath(), false, REFRESH_NONE).dispatch();
+			MessageLoadProject(commandLineParser.getProjectFilePath(), false, RefreshMode::NONE).dispatch();
 		}
 
 		return QtApplication::exec();

@@ -888,10 +888,8 @@ void SqliteIndexStorage::setFileIndexed(Id fileId, bool indexed)
 
 void SqliteIndexStorage::setFileCompleteIfNoError(Id fileId, const std::wstring&  /*filePath*/, bool complete)
 {
-	bool fileHasErrors = doGetFirst<StorageSourceLocation>(
-							 "WHERE file_node_id == " + to_string(fileId) +
-							 " AND type == " + std::to_string(enumToInt(LocationType::ERROR)))
-							 .id != 0;
+	bool fileHasErrors = doGetFirst<StorageSourceLocation>("WHERE file_node_id == " + to_string(fileId) +
+		" AND type == " + to_string(LocationType::ERROR)).id != 0;
 	if (fileHasErrors != complete)
 	{
 		executeStatement(
@@ -968,8 +966,7 @@ std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsForLin
 std::shared_ptr<SourceLocationFile> SqliteIndexStorage::getSourceLocationsOfTypeInFile(
 	const FilePath& filePath, LocationType type) const
 {
-	return getSourceLocationsForFile(
-		filePath, "AND type == " + std::to_string(enumToInt(type)));
+	return getSourceLocationsForFile(filePath, "AND type == " + to_string(type));
 }
 
 std::shared_ptr<SourceLocationCollection> SqliteIndexStorage::getSourceLocationsForElementIds(

@@ -12,7 +12,7 @@ public:
 	MessageLoadProject(
 		const FilePath& filePath,
 		bool settingsChanged = false,
-		RefreshMode refreshMode = REFRESH_NONE,
+		RefreshMode refreshMode = RefreshMode::NONE,
 		bool shallowIndexingRequested = false)
 		: projectSettingsFilePath(filePath)
 		, settingsChanged(settingsChanged)

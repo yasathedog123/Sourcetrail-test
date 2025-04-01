@@ -380,11 +380,11 @@ void Project::refresh(
 
 	if (needsFullRefresh || fullRefresh)
 	{
-		refreshMode = REFRESH_ALL_FILES;
+		refreshMode = RefreshMode::ALL_FILES;
 	}
-	else if (refreshMode == REFRESH_NONE)
+	else if (refreshMode == RefreshMode::NONE)
 	{
-		refreshMode = REFRESH_UPDATED_FILES;
+		refreshMode = RefreshMode::UPDATED_FILES;
 	}
 
 	bool allowsShallowIndexing = false;
@@ -402,11 +402,11 @@ void Project::refresh(
 
 	if (m_hasGUI)
 	{
-		std::vector<RefreshMode> enabledModes = {REFRESH_ALL_FILES};
+		std::vector<RefreshMode> enabledModes = {RefreshMode::ALL_FILES};
 		if (!needsFullRefresh)
 		{
 			enabledModes.insert(
-				enabledModes.end(), {REFRESH_UPDATED_FILES, REFRESH_UPDATED_AND_INCOMPLETE_FILES});
+				enabledModes.end(), {RefreshMode::UPDATED_FILES, RefreshMode::UPDATED_AND_INCOMPLETE_FILES});
 		}
 
 		dialogView->startIndexingDialog(
@@ -430,16 +430,16 @@ RefreshInfo Project::getRefreshInfo(RefreshMode mode) const
 {
 	switch (mode)
 	{
-	case REFRESH_NONE:
+	case RefreshMode::NONE:
 		return RefreshInfo();
 
-	case REFRESH_UPDATED_FILES:
+	case RefreshMode::UPDATED_FILES:
 		return RefreshInfoGenerator::getRefreshInfoForUpdatedFiles(m_sourceGroups, m_storage);
 
-	case REFRESH_UPDATED_AND_INCOMPLETE_FILES:
+	case RefreshMode::UPDATED_AND_INCOMPLETE_FILES:
 		return RefreshInfoGenerator::getRefreshInfoForIncompleteFiles(m_sourceGroups, m_storage);
 
-	case REFRESH_ALL_FILES:
+	case RefreshMode::ALL_FILES:
 	default:
 		return RefreshInfoGenerator::getRefreshInfoForAllFiles(m_sourceGroups);
 	}
@@ -455,7 +455,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 
 	{
 		std::wstring message;
-		if (info.mode != REFRESH_ALL_FILES && info.filesToClear.empty() && info.filesToIndex.empty())
+		if (info.mode != RefreshMode::ALL_FILES && info.filesToClear.empty() && info.filesToIndex.empty())
 		{
 			message = L"Nothing to refresh, all files are up-to-date.";
 		}
@@ -481,7 +481,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		}
 	}
 
-	if (info.mode != REFRESH_ALL_FILES &&
+	if (info.mode != RefreshMode::ALL_FILES &&
 		(info.filesToClear.size() || info.nonIndexedFilesToClear.size()))
 	{
 		for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
@@ -519,7 +519,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 					else
 					{
 						const bool shallow = info.shallow;
-						info = getRefreshInfo(REFRESH_ALL_FILES);
+						info = getRefreshInfo(RefreshMode::ALL_FILES);
 						info.shallow = shallow;
 					}
 				}
@@ -541,7 +541,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 	const FilePath indexDbFilePath = m_settings->getDBFilePath();
 	const FilePath tempIndexDbFilePath = m_settings->getTempDBFilePath();
 
-	if (info.mode != REFRESH_ALL_FILES)
+	if (info.mode != RefreshMode::ALL_FILES)
 	{
 		// store the indexed data into the temp db but keep the current state to allow browsing
 		// while indexing
@@ -554,14 +554,14 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 
 	std::shared_ptr<TaskGroupSequence> taskSequential = std::make_shared<TaskGroupSequence>();
 
-	if (info.mode != REFRESH_ALL_FILES &&
+	if (info.mode != RefreshMode::ALL_FILES &&
 		(info.filesToClear.size() || info.nonIndexedFilesToClear.size()))
 	{
 		taskSequential->addTask(std::make_shared<TaskCleanStorage>(
 			tempStorage,
 			dialogView,
 			utility::toVector(utility::concat(info.filesToClear, info.nonIndexedFilesToClear)),
-			info.mode == REFRESH_UPDATED_AND_INCOMPLETE_FILES));
+			info.mode == RefreshMode::UPDATED_AND_INCOMPLETE_FILES));
 	}
 
 	tempStorage->setProjectSettingsText(

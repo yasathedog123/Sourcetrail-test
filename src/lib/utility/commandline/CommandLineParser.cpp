@@ -222,12 +222,12 @@ void CommandLineParser::processProjectfile()
 
 void CommandLineParser::fullRefresh()
 {
-	m_refreshMode = REFRESH_ALL_FILES;
+	m_refreshMode = RefreshMode::ALL_FILES;
 }
 
 void CommandLineParser::incompleteRefresh()
 {
-	m_refreshMode = REFRESH_UPDATED_AND_INCOMPLETE_FILES;
+	m_refreshMode = RefreshMode::UPDATED_AND_INCOMPLETE_FILES;
 }
 
 void CommandLineParser::setShallowIndexingRequested(bool enabled)

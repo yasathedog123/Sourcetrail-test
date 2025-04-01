@@ -1,5 +1,7 @@
 #include "LocationType.h"
 
+using namespace std;
+
 namespace
 {
 
@@ -24,8 +26,12 @@ LocationType intToEnum(int value)
 	return lookupEnum(value, LOCATION_TYPES, LocationType::TOKEN);
 }
 
-template <>
-int enumToInt(LocationType type)
+size_t operator << (size_t bits, LocationType type)
 {
-	return static_cast<int>(type);
+	return bits << static_cast<int>(type);
+}
+
+string to_string(LocationType type)
+{
+	return std::to_string(static_cast<int>(type));
 }

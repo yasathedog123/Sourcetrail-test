@@ -6,9 +6,6 @@
 template <typename T>
 T intToEnum(int);
 
-template <typename T>
-int enumToInt(T);
-
 template <typename E, typename Range>
 E lookupEnum(int i, Range &&enums, E &&defaultValue)
 {

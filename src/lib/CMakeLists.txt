@@ -322,6 +322,7 @@ add_library(Sourcetrail_lib
 	project/Project.cpp
 	project/Project.h
 	project/RefreshInfo.h
+	project/RefreshInfo.cpp
 	project/RefreshInfoGenerator.h
 	project/RefreshInfoGenerator.cpp
 	project/SourceGroup.cpp

@@ -262,7 +262,7 @@ void Application::handleMessage(MessageLoadProject* message)
 		if (message->settingsChanged && m_hasGUI)
 		{
 			m_project->setStateOutdated();
-			refreshProject(REFRESH_ALL_FILES, message->shallowIndexingRequested);
+			refreshProject(RefreshMode::ALL_FILES, message->shallowIndexingRequested);
 		}
 	}
 	else
@@ -327,7 +327,7 @@ void Application::handleMessage(MessageLoadProject* message)
 			MessageStatus(message, true).dispatch();
 		}
 
-		if (message->refreshMode != REFRESH_NONE)
+		if (message->refreshMode != RefreshMode::NONE)
 		{
 			refreshProject(message->refreshMode, message->shallowIndexingRequested);
 		}
@@ -338,7 +338,7 @@ void Application::handleMessage(MessageRefresh* message)
 {
 	TRACE("app refresh");
 
-	refreshProject(message->all ? REFRESH_ALL_FILES : REFRESH_UPDATED_FILES, false);
+	refreshProject(message->all ? RefreshMode::ALL_FILES : RefreshMode::UPDATED_FILES, false);
 }
 
 void Application::handleMessage(MessageRefreshUI* message)
