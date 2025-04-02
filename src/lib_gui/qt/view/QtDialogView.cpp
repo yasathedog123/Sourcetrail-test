@@ -382,7 +382,7 @@ void QtDialogView::hideUnknownProgress()
 		m_windowStack.popWindow();
 	}
 
-	if (!m_windowStack.getWindowCount())
+	if (m_windowStack.getWindowCount() == 0)
 	{
 		setUIBlocked(false);
 	}

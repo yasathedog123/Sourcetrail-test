@@ -187,7 +187,7 @@ void QtListBox::showEditDialog()
 		connect(m_editDialog.get(), &QtTextEditDialog::finished, this, &QtListBox::savedEditDialog);
 	}
 
-	m_editDialog->showWindow();
+	m_editDialog->show();
 	m_editDialog->raise();
 }
 

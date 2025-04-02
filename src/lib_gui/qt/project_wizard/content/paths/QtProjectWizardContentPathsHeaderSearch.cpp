@@ -132,7 +132,7 @@ void QtProjectWizardContentPathsHeaderSearch::detectIncludesButtonClicked()
 	{
 		m_pathsDialog->setPaths(pathSettings->getSourcePaths(), true);
 	}
-	m_pathsDialog->showWindow();
+	m_pathsDialog->show();
 
 	connect(
 		m_pathsDialog.get(),
@@ -369,7 +369,7 @@ void QtProjectWizardContentPathsHeaderSearch::showDetectedIncludesResult(
 		m_filesDialog->updateNextButton(QStringLiteral("Add"));
 
 		m_filesDialog->setText(detailedText);
-		m_filesDialog->showWindow();
+		m_filesDialog->show();
 
 		connect(
 			m_filesDialog,
@@ -434,7 +434,7 @@ void QtProjectWizardContentPathsHeaderSearch::showValidationResult(
 		m_filesDialog->setReadOnly(true);
 
 		m_filesDialog->setText(detailedText);
-		m_filesDialog->showWindow();
+		m_filesDialog->show();
 
 		connect(
 			m_filesDialog,

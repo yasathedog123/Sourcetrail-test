@@ -283,7 +283,7 @@ void QtProjectWizardContentPathsIndexedHeaders::buttonClicked()
 
 	if (m_filesDialog)
 	{
-		m_filesDialog->showWindow();
+		m_filesDialog->show();
 		m_filesDialog->raise();
 	}
 }

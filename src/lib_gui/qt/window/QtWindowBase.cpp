@@ -1,12 +1,12 @@
 #include "QtWindowBase.h"
 
-#include <QGraphicsDropShadowEffect>
-#include <QMouseEvent>
-#include <QVBoxLayout>
-
 #include "ApplicationSettings.h"
 #include "ResourcePaths.h"
 #include "compatibilityQt.h"
+
+#include <QGraphicsDropShadowEffect>
+#include <QMouseEvent>
+#include <QVBoxLayout>
 
 using namespace utility::compatibility;
 
@@ -19,7 +19,6 @@ QtWindowBase::QtWindowBase(bool isSubWindow, QWidget* parent)
 		setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint);
 		setAttribute(Qt::WA_TranslucentBackground, true);
 		setFocusPolicy(Qt::StrongFocus);
-		setFocus();
 	}
 	else
 	{
@@ -117,14 +116,12 @@ void QtWindowBase::moveToCenter()
 	}
 }
 
-void QtWindowBase::showWindow()
+void QtWindowBase::setVisible(bool visible)
 {
-	show();
-}
-
-void QtWindowBase::hideWindow()
-{
-	hide();
+	QWidget::setVisible(visible);
+	
+	if (visible)
+		setFocus();
 }
 
 void QtWindowBase::mouseMoveEvent(QMouseEvent* event)

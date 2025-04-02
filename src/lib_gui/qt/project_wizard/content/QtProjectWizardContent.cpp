@@ -167,7 +167,7 @@ void QtProjectWizardContent::showFilesDialog(const std::vector<FilePath>& filePa
 			&QtProjectWizardContent::closedFilesDialog);
 	}
 
-	m_filesDialog->showWindow();
+	m_filesDialog->show();
 	m_filesDialog->raise();
 }
 
