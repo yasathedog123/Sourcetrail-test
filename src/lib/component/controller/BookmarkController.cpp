@@ -36,8 +36,14 @@ void BookmarkController::clear()
 
 void BookmarkController::displayBookmarks()
 {
-	getView<BookmarkView>()->displayBookmarks(getBookmarks(m_filter, m_order));
+	getView<BookmarkView>()->displayBookmarkBrowser(getBookmarks(m_filter, m_order));
 }
+
+void BookmarkController::undisplayBookmarks()
+{
+	getView<BookmarkView>()->undisplayBookmarkBrowser();
+}
+
 
 void BookmarkController::displayBookmarksFor(
 	Bookmark::BookmarkFilter filter, Bookmark::BookmarkOrder order)
@@ -246,12 +252,11 @@ void BookmarkController::showBookmarkCreator(Id nodeId)
 		std::shared_ptr<Bookmark> bookmark = getBookmarkForNodeId(nodeId);
 		if (bookmark != nullptr)
 		{
-			view->displayBookmarkEditor(bookmark, getAllBookmarkCategories());
+			view->displayBookmarkCreator(bookmark, getAllBookmarkCategories());
 		}
 		else
 		{
-			view->displayBookmarkCreator(
-				getDisplayNamesForNodeId(nodeId), getAllBookmarkCategories(), nodeId);
+			view->displayBookmarkCreator(getDisplayNamesForNodeId(nodeId), getAllBookmarkCategories(), nodeId);
 		}
 	}
 	else
@@ -259,7 +264,7 @@ void BookmarkController::showBookmarkCreator(Id nodeId)
 		std::shared_ptr<Bookmark> bookmark = getBookmarkForActiveToken(tabId);
 		if (bookmark != nullptr)
 		{
-			view->displayBookmarkEditor(bookmark, getAllBookmarkCategories());
+			view->displayBookmarkCreator(bookmark, getAllBookmarkCategories());
 		}
 		else
 		{
@@ -270,7 +275,7 @@ void BookmarkController::showBookmarkCreator(Id nodeId)
 
 void BookmarkController::showBookmarkEditor(const std::shared_ptr<Bookmark> bookmark)
 {
-	getView<BookmarkView>()->displayBookmarkEditor(bookmark, getAllBookmarkCategories());
+	getView<BookmarkView>()->displayBookmarkCreator(bookmark, getAllBookmarkCategories());
 }
 
 BookmarkController::BookmarkCache::BookmarkCache(StorageAccess* storageAccess)
@@ -675,7 +680,7 @@ void BookmarkController::update()
 	BookmarkView* view = getView<BookmarkView>();
 	if (view->bookmarkBrowserIsVisible())
 	{
-		view->displayBookmarks(getBookmarks(m_filter, m_order));
+		view->displayBookmarkBrowser(getBookmarks(m_filter, m_order));
 	}
 
 	std::vector<std::shared_ptr<Bookmark>> bookmarks = getBookmarks(

@@ -34,21 +34,17 @@ public:
 
 	void displayBookmarks();
 	void displayBookmarksFor(Bookmark::BookmarkFilter filter, Bookmark::BookmarkOrder order);
-
-	void createBookmark(
-		const std::wstring& name, const std::wstring& comment, const std::wstring& category, Id nodeId);
-	void editBookmark(
-		Id bookmarkId,
-		const std::wstring& name,
-		const std::wstring& comment,
-		const std::wstring& category);
-
+	void undisplayBookmarks();
+	
+	void createBookmark(const std::wstring& name, const std::wstring& comment, const std::wstring& category, Id nodeId);
+	void editBookmark(Id bookmarkId, const std::wstring& name, const std::wstring& comment, const std::wstring& category);
+	
 	void deleteBookmark(Id bookmarkId);
 	void deleteBookmarkCategory(Id categoryId);
 	void deleteBookmarkForActiveTokens();
-
+	
 	void activateBookmark(const std::shared_ptr<Bookmark> bookmark);
-
+	
 	void showBookmarkCreator(Id nodeId = 0);
 	void showBookmarkEditor(const std::shared_ptr<Bookmark> bookmark);
 
@@ -94,29 +90,21 @@ private:
 	std::vector<std::shared_ptr<Bookmark>> getAllBookmarks() const;
 	std::vector<std::shared_ptr<NodeBookmark>> getAllNodeBookmarks() const;
 	std::vector<std::shared_ptr<EdgeBookmark>> getAllEdgeBookmarks() const;
-	std::vector<std::shared_ptr<Bookmark>> getBookmarks(
-		Bookmark::BookmarkFilter filter, Bookmark::BookmarkOrder order) const;
+	std::vector<std::shared_ptr<Bookmark>> getBookmarks(Bookmark::BookmarkFilter filter, Bookmark::BookmarkOrder order) const;
 
 	std::vector<std::wstring> getActiveNodeDisplayNames() const;
 	std::vector<std::wstring> getActiveEdgeDisplayNames() const;
 	std::wstring getNodeDisplayName(const Id id) const;
 
-	static std::vector<std::shared_ptr<Bookmark>> getFilteredBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks,
-		Bookmark::BookmarkFilter filter);
-	static std::vector<std::shared_ptr<Bookmark>> getOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order);
-	static std::vector<std::shared_ptr<Bookmark>> getDateOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
-	static std::vector<std::shared_ptr<Bookmark>> getNameOrderedBookmarks(
-		const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
+	static std::vector<std::shared_ptr<Bookmark>> getFilteredBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkFilter filter);
+	static std::vector<std::shared_ptr<Bookmark>> getOrderedBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks, Bookmark::BookmarkOrder order);
+	static std::vector<std::shared_ptr<Bookmark>> getDateOrderedBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
+	static std::vector<std::shared_ptr<Bookmark>> getNameOrderedBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks, const bool ascending);
 
 	void cleanBookmarkCategories();
 
-	static bool bookmarkDateCompare(
-		const std::shared_ptr<Bookmark> a, const std::shared_ptr<Bookmark> b);
-	static bool bookmarkNameCompare(
-		const std::shared_ptr<Bookmark> a, const std::shared_ptr<Bookmark> b);
+	static bool bookmarkDateCompare(const std::shared_ptr<Bookmark> a, const std::shared_ptr<Bookmark> b);
+	static bool bookmarkNameCompare(const std::shared_ptr<Bookmark> a, const std::shared_ptr<Bookmark> b);
 
 	void update();
 

@@ -18,6 +18,8 @@ add_library(Sourcetrail_lib_gui
 	qt/element/button/QtIconButton.h
 	qt/element/button/QtIconStateButton.cpp
 	qt/element/button/QtIconStateButton.h
+	qt/element/button/QtPushButton.h 
+	qt/element/button/QtPushButton.cpp
 	qt/element/button/QtSelfRefreshIconButton.cpp
 	qt/element/button/QtSelfRefreshIconButton.h
 

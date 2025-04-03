@@ -9,6 +9,7 @@
 #include "Bookmark.h"
 #include "BookmarkController.h"
 #include "ControllerProxy.h"
+#include "QtPushButton.h"
 
 class Bookmark;
 
@@ -38,6 +39,7 @@ protected:
 
 private slots:
 	void activateClicked();
+	void activateDoubleClicked();
 	void editClicked();
 	void deleteClicked();
 	void elideButtonText();
@@ -49,7 +51,7 @@ private:
 
 	ControllerProxy<BookmarkController>* m_controllerProxy;
 
-	QPushButton* m_activateButton;
+	QtPushButton* m_activateButton;
 	QPushButton* m_editButton;
 	QPushButton* m_deleteButton;
 	QPushButton* m_toggleCommentButton;

@@ -8,6 +8,7 @@
 
 class QFrame;
 class QtBookmarkBrowser;
+class QtMainWindow;
 
 class QtBookmarkView: public BookmarkView
 {
@@ -20,17 +21,18 @@ public:
 	void refreshView() override;
 
 	// BookmarkView implementation
-	void displayBookmarkCreator(
-		const std::vector<std::wstring>& names,
-		const std::vector<BookmarkCategory>& categories,
-		Id nodeId) override;
-	void displayBookmarkEditor(
-		std::shared_ptr<Bookmark> bookmark, const std::vector<BookmarkCategory>& categories) override;
+	void displayBookmarkCreator(const std::vector<std::wstring>& names, const std::vector<BookmarkCategory>& categories, Id nodeId) override;
+	void displayBookmarkCreator(std::shared_ptr<Bookmark> bookmark, const std::vector<BookmarkCategory>& categories) override;
 
-	void displayBookmarks(const std::vector<std::shared_ptr<Bookmark>>& bookmarks) override;
+	void displayBookmarkBrowser(const std::vector<std::shared_ptr<Bookmark>>& bookmarks) override;
+	
+	void undisplayBookmarkBrowser() override;
+	
 	bool bookmarkBrowserIsVisible() const override;
 
 private:
+	QtMainWindow *getMainWindow() const;
+	
 	ControllerProxy<BookmarkController> m_controllerProxy;
 	QtThreadedLambdaFunctor m_onQtThread;
 

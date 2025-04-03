@@ -26,7 +26,7 @@ QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	buttonsLayout->setContentsMargins(0, 0, 0, 0);
 	buttonsLayout->setAlignment(Qt::AlignTop);
 
-	m_activateButton = new QPushButton();
+	m_activateButton = new QtPushButton();
 	m_activateButton->setObjectName(QStringLiteral("activate_button"));
 	m_activateButton->setToolTip(QStringLiteral("Activate bookmark"));
 	m_activateButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
@@ -79,7 +79,8 @@ QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	m_comment->hide();
 	layout->addWidget(m_comment);
 
-	connect(m_activateButton, &QPushButton::clicked, this, &QtBookmark::activateClicked);
+	connect(m_activateButton, &QtPushButton::clicked, this, &QtBookmark::activateClicked);
+	connect(m_activateButton, &QtPushButton::doubleClicked, this, &QtBookmark::activateDoubleClicked);
 	connect(m_editButton, &QPushButton::clicked, this, &QtBookmark::editClicked);
 	connect(m_deleteButton, &QPushButton::clicked, this, &QtBookmark::deleteClicked);
 	connect(m_toggleCommentButton, &QPushButton::clicked, this, &QtBookmark::commentToggled);
@@ -154,7 +155,7 @@ void QtBookmark::commentToggled()
 	updateArrow();
 
 	// forces the parent tree view to rescale
-	if (m_treeWidgetItem)
+	if (m_treeWidgetItem != nullptr)
 	{
 		m_treeWidgetItem->setExpanded(false);
 		m_treeWidgetItem->setExpanded(true);
@@ -199,6 +200,12 @@ void QtBookmark::leaveEvent(QEvent*  /*event*/)
 void QtBookmark::activateClicked()
 {
 	m_controllerProxy->executeAsTaskWithArgs(&BookmarkController::activateBookmark, m_bookmark);
+}
+
+void QtBookmark::activateDoubleClicked()
+{
+	m_controllerProxy->executeAsTaskWithArgs(&BookmarkController::activateBookmark, m_bookmark);
+	m_controllerProxy->executeAsTaskWithArgs(&BookmarkController::undisplayBookmarks);
 }
 
 void QtBookmark::editClicked()
