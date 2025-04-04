@@ -5,25 +5,24 @@
 
 #include "SourceGroupType.h"
 
-enum LanguageType
+enum class LanguageType
 {
+	UNKNOWN,
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	LANGUAGE_CPP,
-	LANGUAGE_C,
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+	CXX,
+	C,
+#endif
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	LANGUAGE_JAVA,
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+	JAVA,
+#endif
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-	LANGUAGE_PYTHON,
-#endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-	LANGUAGE_CUSTOM,
-	LANGUAGE_UNKNOWN
+	PYTHON,
+#endif
+	CUSTOM
 };
 
 std::string languageTypeToString(LanguageType t);
-LanguageType stringToLanguageType(std::string s);
 
 LanguageType getLanguageTypeForSourceGroupType(SourceGroupType t);
 
-#endif	  // LANGUAGE_TYPE_H
+#endif

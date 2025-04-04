@@ -111,24 +111,24 @@ void QtStartScreen::updateButtons()
 			switch (lang)
 			{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-			case LanguageType::LANGUAGE_C:
+			case LanguageType::C:
 				button->setIcon(m_cIcon);
 				break;
-			case LANGUAGE_CPP:
+			case LanguageType::CXX:
 				button->setIcon(m_cppIcon);
 				break;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-			case LANGUAGE_JAVA:
+			case LanguageType::JAVA:
 				button->setIcon(m_javaIcon);
 				break;
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-			case LANGUAGE_PYTHON:
+			case LanguageType::PYTHON:
 				button->setIcon(m_pythonIcon);
 				break;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-			case LANGUAGE_CUSTOM:
+			case LanguageType::CUSTOM:
 			default:
 				button->setIcon(m_projectIcon);
 				break;

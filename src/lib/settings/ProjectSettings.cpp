@@ -36,7 +36,7 @@ const size_t ProjectSettings::VERSION = 8;
 
 LanguageType ProjectSettings::getLanguageOfProject(const FilePath& filePath)
 {
-	LanguageType languageType = LANGUAGE_UNKNOWN;
+	LanguageType languageType = LanguageType::UNKNOWN;
 
 	ProjectSettings projectSettings;
 	projectSettings.load(filePath);
@@ -45,14 +45,14 @@ LanguageType ProjectSettings::getLanguageOfProject(const FilePath& filePath)
 	{
 		const LanguageType currentLanguageType = getLanguageTypeForSourceGroupType(
 			sourceGroupSettings->getType());
-		if (languageType == LANGUAGE_UNKNOWN)
+		if (languageType == LanguageType::UNKNOWN)
 		{
 			languageType = currentLanguageType;
 		}
 		else if (languageType != currentLanguageType)
 		{
 			// language is unknown if source groups have different languages.
-			languageType = LANGUAGE_UNKNOWN;
+			languageType = LanguageType::UNKNOWN;
 			break;
 		}
 	}
@@ -460,23 +460,23 @@ SettingsMigrator ProjectSettings::getMigrations() const
 		switch (getLanguageTypeForSourceGroupType(sourceGroupSettings->getType()))
 		{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-		case LANGUAGE_C:
+		case LanguageType::C:
 			languageName = "c";
 			break;
-		case LANGUAGE_CPP:
+		case LanguageType::CXX:
 			languageName = "cpp";
 			break;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-		case LANGUAGE_JAVA:
+		case LanguageType::JAVA:
 			languageName = "java";
 			break;
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-		case LANGUAGE_PYTHON:
+		case LanguageType::PYTHON:
 			continue;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-		case LANGUAGE_CUSTOM:
+		case LanguageType::CUSTOM:
 		default:
 			continue;
 		}

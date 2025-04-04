@@ -17,6 +17,8 @@
 
 using namespace boost::chrono;
 
+Q_DECLARE_METATYPE(LanguageType);
+
 QtProjectWizardContentSelect::QtProjectWizardContentSelect(QtProjectWizardWindow* window)
 	: QtProjectWizardContent(window)
 {
@@ -55,24 +57,24 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 	// define which kind of source groups are available for each language
 	std::map<LanguageType, std::vector<SourceGroupInfo>> sourceGroupInfos;
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	sourceGroupInfos[LANGUAGE_C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CDB, true));
-	sourceGroupInfos[LANGUAGE_C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_VS));
-	sourceGroupInfos[LANGUAGE_C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CODEBLOCKS));
-	sourceGroupInfos[LANGUAGE_C].push_back(SourceGroupInfo(SOURCE_GROUP_C_EMPTY));
-	sourceGroupInfos[LANGUAGE_CPP].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CDB, true));
-	sourceGroupInfos[LANGUAGE_CPP].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_VS));
-	sourceGroupInfos[LANGUAGE_CPP].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CODEBLOCKS));
-	sourceGroupInfos[LANGUAGE_CPP].push_back(SourceGroupInfo(SOURCE_GROUP_CPP_EMPTY));
+	sourceGroupInfos[LanguageType::C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CDB, true));
+	sourceGroupInfos[LanguageType::C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_VS));
+	sourceGroupInfos[LanguageType::C].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CODEBLOCKS));
+	sourceGroupInfos[LanguageType::C].push_back(SourceGroupInfo(SOURCE_GROUP_C_EMPTY));
+	sourceGroupInfos[LanguageType::CXX].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CDB, true));
+	sourceGroupInfos[LanguageType::CXX].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_VS));
+	sourceGroupInfos[LanguageType::CXX].push_back(SourceGroupInfo(SOURCE_GROUP_CXX_CODEBLOCKS));
+	sourceGroupInfos[LanguageType::CXX].push_back(SourceGroupInfo(SOURCE_GROUP_CPP_EMPTY));
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	sourceGroupInfos[LANGUAGE_JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_MAVEN));
-	sourceGroupInfos[LANGUAGE_JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_GRADLE));
-	sourceGroupInfos[LANGUAGE_JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_EMPTY));
+	sourceGroupInfos[LanguageType::JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_MAVEN));
+	sourceGroupInfos[LanguageType::JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_GRADLE));
+	sourceGroupInfos[LanguageType::JAVA].push_back(SourceGroupInfo(SOURCE_GROUP_JAVA_EMPTY));
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-	sourceGroupInfos[LANGUAGE_PYTHON].push_back(SourceGroupInfo(SOURCE_GROUP_PYTHON_EMPTY));
+	sourceGroupInfos[LanguageType::PYTHON].push_back(SourceGroupInfo(SOURCE_GROUP_PYTHON_EMPTY));
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-	sourceGroupInfos[LANGUAGE_CUSTOM].push_back(SourceGroupInfo(SOURCE_GROUP_CUSTOM_COMMAND));
+	sourceGroupInfos[LanguageType::CUSTOM].push_back(SourceGroupInfo(SOURCE_GROUP_CUSTOM_COMMAND));
 
 	// define which icons should be used for which kind of source group
 #if BUILD_CXX_LANGUAGE_PACKAGE
@@ -150,7 +152,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 		QPushButton* b = new QPushButton(languageTypeToString(it.first).c_str(), this);
 		b->setObjectName(QStringLiteral("menuButton"));
 		b->setCheckable(true);
-		b->setProperty("language_type", it.first);
+		b->setProperty("language_type", QVariant::fromValue(it.first));
 		m_languages->addButton(b);
 		vlayout->addWidget(b);
 	}
@@ -158,42 +160,38 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 	vlayout->addStretch();
 	layout->addLayout(vlayout, 0, QtProjectWizardWindow::FRONT_COL, Qt::AlignRight);
 
-	connect(
-		m_languages,
-		qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked),
-		[this](QAbstractButton* button)
+	connect(m_languages, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), [this](QAbstractButton* button)
+	{
+		LanguageType selectedLanguage = LanguageType::UNKNOWN;
+		QVariant languageTypeProperty = button->property("language_type");
+		if (languageTypeProperty.canConvert<LanguageType>())
 		{
-			LanguageType selectedLanguage = LANGUAGE_UNKNOWN;
-			bool ok = false;
-			int languageTypeInt = button->property("language_type").toInt(&ok);
-			if (ok)
-			{
-				selectedLanguage = LanguageType(languageTypeInt);
-			}
+			selectedLanguage = languageTypeProperty.value<LanguageType>();
+		}
 
-			bool hasRecommended = false;
-			for (auto& it: m_buttons)
+		bool hasRecommended = false;
+		for (auto& it: m_buttons)
+		{
+			it.second->setExclusive(false);
+			for (QAbstractButton* button: it.second->buttons())
 			{
-				it.second->setExclusive(false);
-				for (QAbstractButton* button: it.second->buttons())
+				button->setChecked(false);
+				button->setVisible(it.first == selectedLanguage);
+
+				if (it.first == selectedLanguage)
 				{
-					button->setChecked(false);
-					button->setVisible(it.first == selectedLanguage);
-
-					if (it.first == selectedLanguage)
-					{
-						hasRecommended = hasRecommended | button->property("recommended").toBool();
-					}
+					hasRecommended = hasRecommended | button->property("recommended").toBool();
 				}
-				it.second->setExclusive(true);
 			}
+			it.second->setExclusive(true);
+		}
 
-			m_window->setNextEnabled(false);
-			m_title->setText("Source Group Types - " + m_languages->checkedButton()->text());
+		m_window->setNextEnabled(false);
+		m_title->setText("Source Group Types - " + m_languages->checkedButton()->text());
 
-			m_description->setText(
-				hasRecommended ? QStringLiteral("<b>* recommended</b>") : QLatin1String(""));
-		});
+		m_description->setText(
+			hasRecommended ? QStringLiteral("<b>* recommended</b>") : QLatin1String(""));
+	});
 
 	QtFlowLayout* flayout = new QtFlowLayout(10, 0, 0);
 

@@ -846,7 +846,7 @@ bool Project::hasCxxSourceGroup() const
 	{
 		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
 		{
-			if (sourceGroup->getLanguage() == LANGUAGE_C || sourceGroup->getLanguage() == LANGUAGE_CPP)
+			if (sourceGroup->getLanguage() == LanguageType::C || sourceGroup->getLanguage() == LanguageType::CXX)
 			{
 				return true;
 			}
