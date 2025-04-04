@@ -36,7 +36,7 @@ void SourceGroupSettings::load(const ConfigManager* config, const std::string& k
 	}
 
 	setStatus(stringToSourceGroupStatusType(config->getValueOrDefault(
-		key + "/status", sourceGroupStatusTypeToString(SOURCE_GROUP_STATUS_ENABLED))));
+		key + "/status", sourceGroupStatusTypeToString(SourceGroupStatusType::ENABLED))));
 }
 
 void SourceGroupSettings::save(ConfigManager* config, const std::string& key)

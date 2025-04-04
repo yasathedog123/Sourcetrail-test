@@ -371,7 +371,7 @@ void Project::refresh(
 		m_settings->getAllSourceGroupSettings());
 	for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 	{
-		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED && !sourceGroup->prepareIndexing())
+		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED && !sourceGroup->prepareIndexing())
 		{
 			m_refreshStage = RefreshStageType::NONE;
 			return;
@@ -390,7 +390,7 @@ void Project::refresh(
 	bool allowsShallowIndexing = false;
 	for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 	{
-		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED &&
+		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED &&
 			sourceGroup->allowsShallowIndexing())
 		{
 			allowsShallowIndexing = true;
@@ -486,7 +486,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 	{
 		for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 		{
-			if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED &&
+			if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED &&
 				!sourceGroup->allowsPartialClearing())
 			{
 				bool abortIndexing = false;
@@ -574,7 +574,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		std::make_unique<CombinedIndexerCommandProvider>();
 	for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 	{
-		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 		{
 			if (sourceGroup->getType() == SOURCE_GROUP_CUSTOM_COMMAND)
 			{
@@ -634,7 +634,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		taskSequential->addTask(preIndexTasks);
 		for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 		{
-			if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+			if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 			{
 				preIndexTasks->addTask(sourceGroup->getPreIndexTask(storageProvider, dialogView));
 			}
@@ -844,7 +844,7 @@ bool Project::hasCxxSourceGroup() const
 #if BUILD_CXX_LANGUAGE_PACKAGE
 	for (const std::shared_ptr<SourceGroup>& sourceGroup: m_sourceGroups)
 	{
-		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 		{
 			if (sourceGroup->getLanguage() == LanguageType::C || sourceGroup->getLanguage() == LanguageType::CXX)
 			{

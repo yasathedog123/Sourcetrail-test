@@ -578,7 +578,7 @@ void QtProjectWizard::updateSourceGroupList()
 	for (const std::shared_ptr<SourceGroupSettings>& group: m_allSourceGroupSettings)
 	{
 		QString name = QString::fromStdString(group->getName());
-		if (group->getStatus() == SOURCE_GROUP_STATUS_DISABLED)
+		if (group->getStatus() == SourceGroupStatusType::DISABLED)
 		{
 			name = "(" + name + ")";
 		}

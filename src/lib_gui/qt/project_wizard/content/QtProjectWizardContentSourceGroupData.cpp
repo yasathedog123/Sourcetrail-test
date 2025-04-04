@@ -54,7 +54,7 @@ void QtProjectWizardContentSourceGroupData::load()
 {
 	m_name->setText(QString::fromStdString(m_settings->getName()));
 
-	m_status->setChecked(m_settings->getStatus() == SOURCE_GROUP_STATUS_ENABLED);
+	m_status->setChecked(m_settings->getStatus() == SourceGroupStatusType::ENABLED);
 }
 
 void QtProjectWizardContentSourceGroupData::save()
@@ -62,7 +62,7 @@ void QtProjectWizardContentSourceGroupData::save()
 	m_settings->setName(m_name->text().toStdString());
 
 	m_settings->setStatus(
-		m_status->isChecked() ? SOURCE_GROUP_STATUS_ENABLED : SOURCE_GROUP_STATUS_DISABLED);
+		m_status->isChecked() ? SourceGroupStatusType::ENABLED : SourceGroupStatusType::DISABLED);
 }
 
 bool QtProjectWizardContentSourceGroupData::check()
@@ -91,7 +91,7 @@ void QtProjectWizardContentSourceGroupData::editedName(QString name)
 void QtProjectWizardContentSourceGroupData::changedStatus(bool  /*checked*/)
 {
 	emit statusUpdated(
-		m_status->isChecked() ? SOURCE_GROUP_STATUS_ENABLED : SOURCE_GROUP_STATUS_DISABLED);
+		m_status->isChecked() ? SourceGroupStatusType::ENABLED : SourceGroupStatusType::DISABLED);
 
 	editedName(m_name->text());
 }

@@ -24,7 +24,7 @@ void SourceGroupSettingsUnloadable::loadSettings(const ConfigManager* config)
 	const std::string key = s_keyPrefix + getId();
 
 	SourceGroupSettings::load(config, key);
-	setStatus(SOURCE_GROUP_STATUS_DISABLED);
+	setStatus(SourceGroupStatusType::DISABLED);
 
 	m_typeString = config->getValueOrDefault<std::string>(key + "/type", "");
 

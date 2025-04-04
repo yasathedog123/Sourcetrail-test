@@ -212,7 +212,7 @@ TEST_CASE("refresh info for all files is empty for disabled source group")
 		const FilePath sourceFilePath = m_sourceFolder.getConcatenated(L"main.cpp");
 
 		std::shared_ptr<SourceGroupTest> sourceGroup(new SourceGroupTest({sourceFilePath}));
-		sourceGroup->setStatus(SOURCE_GROUP_STATUS_DISABLED);
+		sourceGroup->setStatus(SourceGroupStatusType::DISABLED);
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
 		sourceGroups.push_back(sourceGroup);
@@ -236,7 +236,7 @@ TEST_CASE("refresh info for all files is clears indexed files of disabled source
 		const FilePath sourceFilePath = m_sourceFolder.getConcatenated(L"main.cpp");
 
 		std::shared_ptr<SourceGroupTest> sourceGroup(new SourceGroupTest({sourceFilePath}));
-		sourceGroup->setStatus(SOURCE_GROUP_STATUS_DISABLED);
+		sourceGroup->setStatus(SourceGroupStatusType::DISABLED);
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
 		sourceGroups.push_back(sourceGroup);
@@ -274,7 +274,7 @@ TEST_CASE("refresh info for all files is clears nonindexed files of disabled sou
 
 		std::shared_ptr<SourceGroupTest> sourceGroup(new SourceGroupTest(
 			{upToDateSourceFilePath}, {upToDateSourceFilePath, upToDateHeaderFilePath}));
-		sourceGroup->setStatus(SOURCE_GROUP_STATUS_DISABLED);
+		sourceGroup->setStatus(SourceGroupStatusType::DISABLED);
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
 		sourceGroups.push_back(sourceGroup);

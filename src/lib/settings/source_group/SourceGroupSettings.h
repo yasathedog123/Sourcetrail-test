@@ -57,7 +57,7 @@ private:
 	const SourceGroupType m_type;
 	std::string m_id;
 	std::string m_name;
-	SourceGroupStatusType m_status = SOURCE_GROUP_STATUS_ENABLED;
+	SourceGroupStatusType m_status = SourceGroupStatusType::ENABLED;
 };
 
 #endif	  // SOURCE_GROUP_SETTINGS_H

@@ -30,7 +30,7 @@ RefreshInfo RefreshInfoGenerator::getRefreshInfoForUpdatedFiles(
 
 			for (const std::shared_ptr<SourceGroup> &sourceGroup: sourceGroups)
 			{
-				if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+				if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 				{
 					utility::append(
 						alreadyKnownPaths,
@@ -187,7 +187,7 @@ RefreshInfo RefreshInfoGenerator::getRefreshInfoForIncompleteFiles(
 
 		for (const std::shared_ptr<SourceGroup>& sourceGroup: sourceGroups)
 		{
-			if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+			if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 			{
 				utility::append(
 					info.filesToIndex,
@@ -215,7 +215,7 @@ std::set<FilePath> RefreshInfoGenerator::getAllSourceFilePaths(
 
 	for (const std::shared_ptr<SourceGroup>& sourceGroup: sourceGroups)
 	{
-		if (sourceGroup->getStatus() == SOURCE_GROUP_STATUS_ENABLED)
+		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 		{
 			for (const FilePath& sourceFilePath: sourceGroup->getAllSourceFilePaths())
 			{
