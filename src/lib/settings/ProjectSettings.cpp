@@ -186,36 +186,36 @@ std::vector<std::shared_ptr<SourceGroupSettings>> ProjectSettings::getAllSourceG
 		switch (type)
 		{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-		case SOURCE_GROUP_C_EMPTY:
+		case SourceGroupType::C_EMPTY:
 			settings = std::make_shared<SourceGroupSettingsCEmpty>(id, this);
 			break;
-		case SOURCE_GROUP_CPP_EMPTY:
+		case SourceGroupType::CXX_EMPTY:
 			settings = std::make_shared<SourceGroupSettingsCppEmpty>(id, this);
 			break;
-		case SOURCE_GROUP_CXX_CDB:
+		case SourceGroupType::CXX_CDB:
 			settings = std::make_shared<SourceGroupSettingsCxxCdb>(id, this);
 			break;
-		case SOURCE_GROUP_CXX_CODEBLOCKS:
+		case SourceGroupType::CXX_CODEBLOCKS:
 			settings = std::make_shared<SourceGroupSettingsCxxCodeblocks>(id, this);
 			break;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-		case SOURCE_GROUP_JAVA_EMPTY:
+		case SourceGroupType::JAVA_EMPTY:
 			settings = std::make_shared<SourceGroupSettingsJavaEmpty>(id, this);
 			break;
-		case SOURCE_GROUP_JAVA_MAVEN:
+		case SourceGroupType::JAVA_MAVEN:
 			settings = std::make_shared<SourceGroupSettingsJavaMaven>(id, this);
 			break;
-		case SOURCE_GROUP_JAVA_GRADLE:
+		case SourceGroupType::JAVA_GRADLE:
 			settings = std::make_shared<SourceGroupSettingsJavaGradle>(id, this);
 			break;
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-		case SOURCE_GROUP_PYTHON_EMPTY:
+		case SourceGroupType::PYTHON_EMPTY:
 			settings = std::make_shared<SourceGroupSettingsPythonEmpty>(id, this);
 			break;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-		case SOURCE_GROUP_CUSTOM_COMMAND:
+		case SourceGroupType::CUSTOM_COMMAND:
 			settings = std::make_shared<SourceGroupSettingsCustomCommand>(id, this);
 			break;
 		default:
@@ -376,7 +376,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 					const std::string language = migration->getValueFromSettings<std::string>(
 						settings, "language_settings/language", "");
 
-					SourceGroupType type = SOURCE_GROUP_UNKNOWN;
+					SourceGroupType type = SourceGroupType::UNKNOWN;
 #if BUILD_CXX_LANGUAGE_PACKAGE
 					if (language == "C" || language == "C++")
 					{
@@ -384,15 +384,15 @@ SettingsMigrator ProjectSettings::getMigrations() const
 							settings, sourceGroupKey + "/build_file_path/compilation_db_path", "");
 						if (!cdbPath.empty())
 						{
-							type = SOURCE_GROUP_CXX_CDB;
+							type = SourceGroupType::CXX_CDB;
 						}
 						else if (language == "C")
 						{
-							type = SOURCE_GROUP_C_EMPTY;
+							type = SourceGroupType::C_EMPTY;
 						}
 						else
 						{
-							type = SOURCE_GROUP_CPP_EMPTY;
+							type = SourceGroupType::CXX_EMPTY;
 						}
 					}
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
@@ -404,18 +404,18 @@ SettingsMigrator ProjectSettings::getMigrations() const
 								settings, sourceGroupKey + "/maven/project_file_path", "");
 						if (!mavenProjectFilePath.empty())
 						{
-							type = SOURCE_GROUP_JAVA_MAVEN;
+							type = SourceGroupType::JAVA_MAVEN;
 						}
 						const std::string gradleProjectFilePath =
 							migration->getValueFromSettings<std::string>(
 								settings, sourceGroupKey + "/gradle/project_file_path", "");
 						if (!gradleProjectFilePath.empty())
 						{
-							type = SOURCE_GROUP_JAVA_GRADLE;
+							type = SourceGroupType::JAVA_GRADLE;
 						}
 						else
 						{
-							type = SOURCE_GROUP_JAVA_EMPTY;
+							type = SourceGroupType::JAVA_EMPTY;
 						}
 					}
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
@@ -442,7 +442,7 @@ SettingsMigrator ProjectSettings::getMigrations() const
 	for (const std::shared_ptr<SourceGroupSettings> &sourceGroupSettings: getAllSourceGroupSettings())
 	{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-		if (sourceGroupSettings->getType() == SOURCE_GROUP_CXX_CDB)
+		if (sourceGroupSettings->getType() == SourceGroupType::CXX_CDB)
 		{
 			const std::string key = SourceGroupSettings::s_keyPrefix + sourceGroupSettings->getId();
 			migrator.addMigration(

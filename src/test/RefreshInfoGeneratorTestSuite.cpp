@@ -21,7 +21,7 @@ class SourceGroupSettingsTest: public SourceGroupSettings
 {
 public:
 	SourceGroupSettingsTest(const ProjectSettings* projectSettings)
-		: SourceGroupSettings(SOURCE_GROUP_UNKNOWN, "TEST_ID", projectSettings)
+		: SourceGroupSettings(SourceGroupType::UNKNOWN, "TEST_ID", projectSettings)
 	{
 	}
 

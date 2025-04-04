@@ -7,7 +7,7 @@ bool SourceGroupFactoryModulePython::supports(SourceGroupType type) const
 {
 	switch (type)
 	{
-	case SOURCE_GROUP_PYTHON_EMPTY:
+	case SourceGroupType::PYTHON_EMPTY:
 		return true;
 	default:
 		break;

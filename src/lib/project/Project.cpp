@@ -576,13 +576,13 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 	{
 		if (sourceGroup->getStatus() == SourceGroupStatusType::ENABLED)
 		{
-			if (sourceGroup->getType() == SOURCE_GROUP_CUSTOM_COMMAND)
+			if (sourceGroup->getType() == SourceGroupType::CUSTOM_COMMAND)
 			{
 				customIndexerCommandProvider->addProvider(
 					sourceGroup->getIndexerCommandProvider(info));
 			}
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-			else if (sourceGroup->getType() == SOURCE_GROUP_PYTHON_EMPTY)
+			else if (sourceGroup->getType() == SourceGroupType::PYTHON_EMPTY)
 			{
 				customIndexerCommandProvider->addProvider(
 					sourceGroup->getIndexerCommandProvider(info));

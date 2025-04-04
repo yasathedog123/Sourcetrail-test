@@ -16,7 +16,7 @@ class SourceGroupSettingsPythonEmpty
 {
 public:
 	SourceGroupSettingsPythonEmpty(const std::string& id, const ProjectSettings* projectSettings)
-		: SourceGroupSettingsWithComponents(SOURCE_GROUP_PYTHON_EMPTY, id, projectSettings)
+		: SourceGroupSettingsWithComponents(SourceGroupType::PYTHON_EMPTY, id, projectSettings)
 	{
 	}
 

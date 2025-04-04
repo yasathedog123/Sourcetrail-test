@@ -5,7 +5,7 @@
 
 SourceGroupSettingsUnloadable::SourceGroupSettingsUnloadable(
 	const std::string& id, const ProjectSettings* projectSettings)
-	: SourceGroupSettings(SOURCE_GROUP_UNKNOWN, id, projectSettings)
+	: SourceGroupSettings(SourceGroupType::UNKNOWN, id, projectSettings)
 {
 }
 

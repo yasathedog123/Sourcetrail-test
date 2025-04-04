@@ -924,7 +924,7 @@ void QtProjectWizard::newSourceGroupFromVS()
 	window->resize(QSize(560, 320));
 
 	connect(window, &QtProjectWizardWindow::next, [this]() {
-		selectedProjectType(SOURCE_GROUP_CXX_CDB);
+		selectedProjectType(SourceGroupType::CXX_CDB);
 	});
 
 	window->show();
@@ -942,7 +942,7 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 	switch (sourceGroupType)
 	{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_C_EMPTY:
+	case SourceGroupType::C_EMPTY:
 	{
 		std::shared_ptr<SourceGroupSettingsCEmpty> cxxSettings =
 			std::make_shared<SourceGroupSettingsCEmpty>(sourceGroupId, m_projectSettings.get());
@@ -950,7 +950,7 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 		settings = cxxSettings;
 	}
 	break;
-	case SOURCE_GROUP_CPP_EMPTY:
+	case SourceGroupType::CXX_EMPTY:
 	{
 		std::shared_ptr<SourceGroupSettingsCppEmpty> cxxSettings =
 			std::make_shared<SourceGroupSettingsCppEmpty>(sourceGroupId, m_projectSettings.get());
@@ -958,11 +958,11 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 		settings = cxxSettings;
 	}
 	break;
-	case SOURCE_GROUP_CXX_CDB:
+	case SourceGroupType::CXX_CDB:
 		settings = std::make_shared<SourceGroupSettingsCxxCdb>(
 			sourceGroupId, m_projectSettings.get());
 		break;
-	case SOURCE_GROUP_CXX_CODEBLOCKS:
+	case SourceGroupType::CXX_CODEBLOCKS:
 	{
 		std::shared_ptr<SourceGroupSettingsCxxCodeblocks> cxxSettings =
 			std::make_shared<SourceGroupSettingsCxxCodeblocks>(
@@ -971,38 +971,38 @@ void QtProjectWizard::selectedProjectType(SourceGroupType sourceGroupType)
 		settings = cxxSettings;
 	}
 	break;
-	case SOURCE_GROUP_CXX_VS:
+	case SourceGroupType::CXX_VS:
 		newSourceGroupFromVS();
 		return;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_JAVA_EMPTY:
+	case SourceGroupType::JAVA_EMPTY:
 		settings = std::make_shared<SourceGroupSettingsJavaEmpty>(
 			sourceGroupId, m_projectSettings.get());
 		break;
-	case SOURCE_GROUP_JAVA_MAVEN:
+	case SourceGroupType::JAVA_MAVEN:
 		settings = std::make_shared<SourceGroupSettingsJavaMaven>(
 			sourceGroupId, m_projectSettings.get());
 		break;
-	case SOURCE_GROUP_JAVA_GRADLE:
+	case SourceGroupType::JAVA_GRADLE:
 		settings = std::make_shared<SourceGroupSettingsJavaGradle>(
 			sourceGroupId, m_projectSettings.get());
 		break;
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_PYTHON_EMPTY:
+	case SourceGroupType::PYTHON_EMPTY:
 		settings = std::make_shared<SourceGroupSettingsPythonEmpty>(
 			sourceGroupId, m_projectSettings.get());
 		break;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
 
-	case SOURCE_GROUP_CUSTOM_COMMAND:
+	case SourceGroupType::CUSTOM_COMMAND:
 		settings = std::make_shared<SourceGroupSettingsCustomCommand>(
 			sourceGroupId, m_projectSettings.get());
 		break;
-	case SOURCE_GROUP_UNKNOWN:
+	case SourceGroupType::UNKNOWN:
 		break;
 	}
 

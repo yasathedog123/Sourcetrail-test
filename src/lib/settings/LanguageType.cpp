@@ -31,30 +31,30 @@ LanguageType getLanguageTypeForSourceGroupType(SourceGroupType t)
 	switch (t)
 	{
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_C_EMPTY:
+	case SourceGroupType::C_EMPTY:
 		return LanguageType::C;
-	case SOURCE_GROUP_CPP_EMPTY:
+	case SourceGroupType::CXX_EMPTY:
 		return LanguageType::CXX;
-	case SOURCE_GROUP_CXX_CDB:
+	case SourceGroupType::CXX_CDB:
 		return LanguageType::CXX;
-	case SOURCE_GROUP_CXX_CODEBLOCKS:
+	case SourceGroupType::CXX_CODEBLOCKS:
 		return LanguageType::CXX;
-	case SOURCE_GROUP_CXX_VS:
+	case SourceGroupType::CXX_VS:
 		return LanguageType::CXX;
 #endif	  // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_JAVA_EMPTY:
+	case SourceGroupType::JAVA_EMPTY:
 		return LanguageType::JAVA;
-	case SOURCE_GROUP_JAVA_MAVEN:
+	case SourceGroupType::JAVA_MAVEN:
 		return LanguageType::JAVA;
-	case SOURCE_GROUP_JAVA_GRADLE:
+	case SourceGroupType::JAVA_GRADLE:
 		return LanguageType::JAVA;
 #endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_PYTHON_EMPTY:
+	case SourceGroupType::PYTHON_EMPTY:
 		return LanguageType::PYTHON;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-	case SOURCE_GROUP_CUSTOM_COMMAND:
+	case SourceGroupType::CUSTOM_COMMAND:
 		return LanguageType::CUSTOM;
 	default:
 		break;
