@@ -428,6 +428,11 @@ void QtMainWindow::hideWindowsTaskbarProgress()
 	m_windowsTaskbarButton.hideProgress();
 }
 
+void QtMainWindow::alert()
+{
+	QApplication::alert(this);
+}
+
 void QtMainWindow::showEvent(QShowEvent*  /*e*/)
 {
 	m_windowsTaskbarButton.setWindow(this);

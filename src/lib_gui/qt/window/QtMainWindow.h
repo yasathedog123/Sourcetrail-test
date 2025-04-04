@@ -83,6 +83,8 @@ public:
 	void setWindowsTaskbarProgress(float progress);
 	void hideWindowsTaskbarProgress();
 
+	void alert();
+	
 signals:
 	void showScreenSearch();
 	void hideScreenSearch();

@@ -295,6 +295,8 @@ DatabasePolicy QtDialogView::finishedIndexingDialog(
 		});
 
 		m_mainWindow->hideWindowsTaskbarProgress();
+		m_mainWindow->alert();
+		
 		setUIBlocked(true);
 	});
 
