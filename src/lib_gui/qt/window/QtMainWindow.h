@@ -1,15 +1,14 @@
 #ifndef QT_MAIN_WINDOW_H
 #define QT_MAIN_WINDOW_H
 
-#include <memory>
-#include <utility>
-#include <vector>
+#include "FilePath.h"
+#include "QtWindowStack.h"
+#include "QtWindowTitleProgress.h"
 
 #include <QMainWindow>
 
-#include "QtWindowStack.h"
-#include "QtWindowsTaskbarButton.h"
-#include "SearchMatch.h"
+#include <memory>
+#include <vector>
 
 class Bookmark;
 class MessageBase;
@@ -80,8 +79,8 @@ public:
 	void setContentEnabled(bool enabled);
 	void refreshStyle();
 
-	void setWindowsTaskbarProgress(float progress);
-	void hideWindowsTaskbarProgress();
+	void setWindowTitleProgress(size_t fileCount, size_t totalFileCount);
+	void hideWindowTitleProgress();
 
 	void alert();
 	
@@ -205,7 +204,7 @@ private:
 
 	QtWindowStack m_windowStack;
 
-	QtWindowsTaskbarButton m_windowsTaskbarButton;
+	QtWindowTitleProgress m_windowTitleProgress;
 };
 
 #endif	  // QT_MAIN_WINDOW_H

@@ -225,10 +225,9 @@ void QtDialogView::updateIndexingDialog(
 			window = createWindow<QtIndexingProgressDialog>(m_dialogsHideable);
 		}
 
-		window->updateIndexingProgress(
-			finishedFileCount, totalFileCount, sourcePaths.empty() ? FilePath() : sourcePaths.back());
+		window->updateIndexingProgress(finishedFileCount, totalFileCount, sourcePaths.empty() ? FilePath() : sourcePaths.back());
 
-		m_mainWindow->setWindowsTaskbarProgress(float(finishedFileCount) / totalFileCount);
+		m_mainWindow->setWindowTitleProgress(finishedFileCount, totalFileCount);
 
 		setUIBlocked(m_dialogsVisible);
 	});
@@ -294,7 +293,7 @@ DatabasePolicy QtDialogView::finishedIndexingDialog(
 			m_resultReady = true;
 		});
 
-		m_mainWindow->hideWindowsTaskbarProgress();
+		m_mainWindow->hideWindowTitleProgress();
 		m_mainWindow->alert();
 		
 		setUIBlocked(true);

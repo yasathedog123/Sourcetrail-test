@@ -418,14 +418,14 @@ void QtMainWindow::refreshStyle()
 	QToolTip::setFont(tooltipFont);
 }
 
-void QtMainWindow::setWindowsTaskbarProgress(float progress)
+void QtMainWindow::setWindowTitleProgress(size_t fileCount, size_t totalFileCount)
 {
-	m_windowsTaskbarButton.setProgress(progress);
+	m_windowTitleProgress.setProgress(fileCount, totalFileCount);
 }
 
-void QtMainWindow::hideWindowsTaskbarProgress()
+void QtMainWindow::hideWindowTitleProgress()
 {
-	m_windowsTaskbarButton.hideProgress();
+	m_windowTitleProgress.hideProgress();
 }
 
 void QtMainWindow::alert()
@@ -435,7 +435,7 @@ void QtMainWindow::alert()
 
 void QtMainWindow::showEvent(QShowEvent*  /*e*/)
 {
-	m_windowsTaskbarButton.setWindow(this);
+	m_windowTitleProgress.setWindow(this);
 }
 
 void QtMainWindow::keyPressEvent(QKeyEvent* event)
