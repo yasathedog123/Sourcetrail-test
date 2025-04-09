@@ -18,7 +18,7 @@ void QtWindowTitleProgress::setProgress(size_t fileCount, size_t totalFileCount)
 	if (totalFileCount > 0)
 		progress = fileCount * 100 / totalFileCount;
 		
-	m_mainWindow->setWindowTitle(tr("%1% Progress - %2%").arg(progress).arg(m_oldTitle));
+	m_mainWindow->setWindowTitle(tr("%1% Progress - %2").arg(progress).arg(m_oldTitle));
 }
 
 void QtWindowTitleProgress::hideProgress()
