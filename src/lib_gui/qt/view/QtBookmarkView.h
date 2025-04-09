@@ -31,8 +31,6 @@ public:
 	bool bookmarkBrowserIsVisible() const override;
 
 private:
-	QtMainWindow *getMainWindow() const;
-	
 	ControllerProxy<BookmarkController> m_controllerProxy;
 	QtThreadedLambdaFunctor m_onQtThread;
 

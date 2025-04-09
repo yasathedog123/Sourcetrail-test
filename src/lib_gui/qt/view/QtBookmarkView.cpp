@@ -2,11 +2,12 @@
 
 #include "QtBookmarkBrowser.h"
 #include "QtBookmarkCreator.h"
-#include "QtMainView.h"
 #include "QtMainWindow.h"
 #include "TabId.h"
+#include "utilityQt.h"
 
 using namespace std;
+using namespace utility;
 
 QtBookmarkView::QtBookmarkView(ViewLayout* viewLayout)
 	: BookmarkView(viewLayout), m_controllerProxy(this, TabId::app()) 
@@ -25,7 +26,7 @@ void QtBookmarkView::displayBookmarkCreator(const std::vector<std::wstring>& nam
 {
 	m_onQtThread([=, this]() 
 	{
-		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindow());
+		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindowforMainView(getViewLayout()));
 		bookmarkCreator->setupBookmarkCreator();
 
 		std::wstring displayName;
@@ -53,7 +54,7 @@ void QtBookmarkView::displayBookmarkCreator(std::shared_ptr<Bookmark> bookmark, 
 {
 	m_onQtThread([=, this]() 
 	{
-		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindow(), bookmark->getId());
+		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindowforMainView(getViewLayout()), bookmark->getId());
 
 		bookmarkCreator->setupBookmarkCreator();
 		bookmarkCreator->setDisplayName(bookmark->getName());
@@ -72,7 +73,7 @@ void QtBookmarkView::displayBookmarkBrowser(const std::vector<std::shared_ptr<Bo
 	{
 		if (m_bookmarkBrowser == nullptr)
 		{
-			m_bookmarkBrowser = new QtBookmarkBrowser(&m_controllerProxy, getMainWindow());
+			m_bookmarkBrowser = new QtBookmarkBrowser(&m_controllerProxy, getMainWindowforMainView(getViewLayout()));
 			m_bookmarkBrowser->setupBookmarkBrowser();
 		}
 		m_bookmarkBrowser->setBookmarks(bookmarks);
@@ -100,9 +101,4 @@ bool QtBookmarkView::bookmarkBrowserIsVisible() const
 	{
 		return false;
 	}
-}
-
-inline QtMainWindow *QtBookmarkView::getMainWindow() const
-{
-	return dynamic_cast<QtMainView*>(dynamic_cast<View*>(getViewLayout())->getViewLayout())->getMainWindow();
 }
