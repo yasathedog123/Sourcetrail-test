@@ -11,7 +11,7 @@
 #include "FileLogger.h"
 #include "FileSystem.h"
 #include "MessageSwitchColorScheme.h"
-#include "QtKeySequences.h"
+#include "QtActions.h"
 #include "TextCodec.h"
 #include "ResourcePaths.h"
 #include "logging.h"
@@ -222,7 +222,7 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 		tr("Graph Zoom"),
 		tr("Zoom graph on mouse wheel"),
 		tr("<p>Enable graph zoom using mouse wheel only, instead of using %1/%2.</p>")
-			.arg(toString(QtKeySequences::zoomInWithMouse())).arg(toString(QtKeySequences::zoomOutWithMouse())),
+			.arg(QtActions::zoomInWithMouse().shortcut()).arg(QtActions::zoomOutWithMouse().shortcut()),
 		layout,
 		row);
 

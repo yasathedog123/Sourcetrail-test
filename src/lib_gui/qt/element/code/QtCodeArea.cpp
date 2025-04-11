@@ -27,7 +27,7 @@
 #include "Platform.h"
 #include "QtCodeNavigator.h"
 #include "QtContextMenu.h"
-#include "QtKeySequences.h"
+#include "QtActions.h"
 #include "SourceLocationFile.h"
 #include "TextCodec.h"
 #include "compatibilityQt.h"
@@ -1131,7 +1131,7 @@ void QtCodeArea::createActions()
 	m_copyAction->setEnabled(false);
 	connect(m_copyAction, &QAction::triggered, this, &QPlainTextEdit::copy);
 
-	m_setIDECursorPositionAction = new QAction(tr("Show in IDE (%1)").arg(toString(QtKeySequences::showInIDEWithMouse())), this);
+	m_setIDECursorPositionAction = new QAction(QtActions::showInIDEWithMouse().text(), this);
 	m_setIDECursorPositionAction->setStatusTip(tr("Set the IDE Cursor to this code position"));
 	m_setIDECursorPositionAction->setToolTip(tr("Set the IDE Cursor to this code position"));
 	connect(m_setIDECursorPositionAction, &QAction::triggered, this, &QtCodeArea::setIDECursorPosition);

@@ -9,6 +9,7 @@
 #include "QtSearchBarButton.h"
 #include "QtSmartSearchBox.h"
 #include "ResourcePaths.h"
+#include "QtActions.h"
 
 QtSearchBar::QtSearchBar()
 {
@@ -20,10 +21,9 @@ QtSearchBar::QtSearchBar()
 	layout->setAlignment(Qt::AlignTop);
 	setLayout(layout);
 
-	m_homeButton = new QtSearchBarButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/home.png"));
+	m_homeButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/home.png"));
 	m_homeButton->setObjectName(QStringLiteral("home_button"));
-	m_homeButton->setToolTip(QStringLiteral("to overview"));
+	m_homeButton->setToolTip(QtActions::toOverview().tooltip());
 	layout->addWidget(m_homeButton);
 	connect(m_homeButton, &QPushButton::clicked, this, &QtSearchBar::homeButtonClicked);
 
@@ -36,20 +36,19 @@ QtSearchBar::QtSearchBar()
 	innerLayout->setContentsMargins(12, 3, 5, 2);
 	m_searchBoxContainer->setLayout(innerLayout);
 
-	m_searchBox = new QtSmartSearchBox(QStringLiteral("Search"), true, m_searchBoxContainer);
+	m_searchBox = new QtSmartSearchBox(tr("Search"), true, m_searchBoxContainer);
+	m_searchBox->setToolTip(QtActions::findSymbol().tooltip());
 	m_searchBox->setMinimumWidth(100);
 	m_searchBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	innerLayout->addWidget(m_searchBox);
 
 	connect(m_searchBox, &QtSmartSearchBox::autocomplete, this, &QtSearchBar::requestAutocomplete);
 	connect(m_searchBox, &QtSmartSearchBox::search, this, &QtSearchBar::requestSearch);
-	connect(
-		m_searchBox, &QtSmartSearchBox::fullTextSearch, this, &QtSearchBar::requestFullTextSearch);
+	connect(m_searchBox, &QtSmartSearchBox::fullTextSearch, this, &QtSearchBar::requestFullTextSearch);
 
-	m_searchButton = new QtSearchBarButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/search.png"));
+	m_searchButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/search.png"));
 	m_searchButton->setObjectName(QStringLiteral("search_button"));
-	m_searchButton->setToolTip(QStringLiteral("search"));
+	m_searchButton->setToolTip(QtActions::executeFindSymbol().tooltip());
 	layout->addWidget(m_searchButton);
 
 	connect(m_searchButton, &QPushButton::clicked, m_searchBox, &QtSmartSearchBox::startSearch);

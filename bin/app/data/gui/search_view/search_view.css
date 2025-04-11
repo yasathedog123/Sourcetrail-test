@@ -2,10 +2,12 @@
 	font-size: <setting:font_size>px;
 }
 
+/* Disabled, so the searchbox/tooltip uses the global font
 #search_box, #search_box * {
 	font-family: "<setting:font_name>";
 	font-size: <setting:font_size+2>px;
 }
+*/
 
 #search_bar {
 	background-color: transparent;

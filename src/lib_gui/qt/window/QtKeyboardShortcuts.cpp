@@ -3,23 +3,22 @@
 #include <QHeaderView>
 #include <QLabel>
 
-#include "QtKeySequences.h"
+#include "QtActions.h"
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
 namespace
 {
 
-template <typename T>
-QString joinToString(const QList<T> &list)
+QString joinToString(const QList<QString> &list)
 {
 	QString str;
 
 	auto it = list.begin();
 	if (it != list.end()) {
-		str.append(toString(*it++));
+		str.append(*it++);
 		while (it != list.end())
-			str.append(" | ").append(toString(*it++));
+			str.append(QtActions::SHORTCUT_SEPARATOR).append(*it++);
 	}
 	return str;
 }
@@ -29,21 +28,10 @@ struct Shortcut
 	const QString name;
 	const QString shortcut;
 
-	Shortcut(const QString& name, const QString& shortcut)
-		: name(name), shortcut(shortcut)
-	{}
-
-	Shortcut(const QString &name, const QKeySequence &shortcut)
-		: Shortcut(name, shortcut.toString())
-	{}
-
-	Shortcut(const QString &name, const QList<QString> &shortcuts)
-		: Shortcut(name, joinToString(shortcuts))
-	{}
-
-	Shortcut(const QString &name, const QList<QKeySequence> &shortcuts)
-		: Shortcut(name, joinToString(shortcuts))
-	{}
+	Shortcut(const QtActions::Info &info)
+		:name(info.plainText()), shortcut(joinToString(info.shortcuts()))
+	{
+	}
 };
 
 void addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts)
@@ -166,25 +154,25 @@ QTableWidget* QtKeyboardShortcuts::createGeneralShortcutsTable()
 	QtShortcutTable* table = createTableWidget("table_general");
 
 	addShortcuts(table, {
-		Shortcut(tr("Switch Focus between Graph and Code"), QtKeySequences::switchGraphCodeFocus()),
-		Shortcut(tr("Larger Font"), QtKeySequences::largerFont()),
-		Shortcut(tr("Smaller Font"), QtKeySequences::smallerFont()),
-		Shortcut(tr("Reset Font Size"), QtKeySequences::resetFontSize()),
-		Shortcut(tr("Back"), QtKeySequences::back()),
-		Shortcut(tr("Forward"), QtKeySequences::forward()),
-		Shortcut(tr("Refresh"), QtKeySequences::refresh()),
-		Shortcut(tr("Full Refresh"), QtKeySequences::fullRefresh()),
-		Shortcut(tr("Find Symbol"), QtKeySequences::findSymbol()),
-		Shortcut(tr("Find Text"), QtKeySequences::findText()),
-		Shortcut(tr("Find On-Screen"), QtKeySequences::findOnScreen()),
-		Shortcut(tr("New Project"), QtKeySequences::newProject()),
-		Shortcut(tr("Open Project"), QtKeySequences::openProject()),
-		Shortcut(tr("Close Window"), QtKeySequences::closeTab()),
-		Shortcut(tr("Refresh UI"), QtKeySequences::refreshUI()),
-		Shortcut(tr("To Overview"), QtKeySequences::toOverview()),
-		Shortcut(tr("Preferences"), QtKeySequences::preferences()),
-		Shortcut(tr("Bookmark Active Symbol"), QtKeySequences::bookmarkActiveSymbol()),
-		Shortcut(tr("Bookmark Manager"), QtKeySequences::bookmarkManager())
+		QtActions::switchGraphCodeFocus(),
+		QtActions::largerFont(),
+		QtActions::smallerFont(),
+		QtActions::resetFontSize(),
+		QtActions::back(),
+		QtActions::forward(),
+		QtActions::refresh(),
+		QtActions::fullRefresh(),
+		QtActions::findSymbol(),
+		QtActions::findText(),
+		QtActions::findOnScreen(),
+		QtActions::newProject(),
+		QtActions::openProject(),
+		QtActions::closeTab(),
+		QtActions::refreshUI(),
+		QtActions::toOverview(),
+		QtActions::preferences(),
+		QtActions::bookmarkActiveSymbol(),
+		QtActions::bookmarkManager()
 	});
 	return table;
 }
@@ -194,17 +182,16 @@ QTableWidget* QtKeyboardShortcuts::createCodeViewShortcutsTable()
 	QtShortcutTable* table = createTableWidget("table_code");
 
 	addShortcuts(table, {
-		Shortcut(tr("Move Focus Within Code"), QtKeySequences::moveCodeFocus()),
-		Shortcut(tr("Move Focus to Closest Reference"), QtKeySequences::moveReferenceFocus()),
-		Shortcut(tr("Activate Location"), QtKeySequences::activateLocation()),
-		Shortcut(tr("Activate Location in New Tab"), QtKeySequences::activateLocationNewTab()),
-		Shortcut(tr("Next Reference"), QtKeySequences::nextReference()),
-		Shortcut(tr("Previous Reference"), QtKeySequences::previousReference()),
-		Shortcut(tr("Next Local Reference"), QtKeySequences::nextLocalReference()),
-		Shortcut(tr("Previous Local Reference"), QtKeySequences::previousLocalReference()),
-		Shortcut(tr("Scroll Code Area"), QtKeySequences::scrollCodeArea())
+		QtActions::moveCodeFocus(),
+		QtActions::moveReferenceFocus(),
+		QtActions::activateLocation(),
+		QtActions::activateLocationNewTab(),
+		QtActions::nextReference(),
+		QtActions::previousReference(),
+		QtActions::nextLocalReference(),
+		QtActions::previousLocalReference(),
+		QtActions::scrollCodeArea()
 	});
-
 	return table;
 }
 
@@ -213,17 +200,16 @@ QTableWidget* QtKeyboardShortcuts::createGraphViewShortcutsTable()
 	QtShortcutTable* table = createTableWidget("table_graph");
 
 	addShortcuts(table, {
-		Shortcut(tr("Move Focus Within Nodes"), QtKeySequences::moveNodeFocus()),
-		Shortcut(tr("Move Focus Within Edges"), QtKeySequences::moveEdgeFocus()),
-		Shortcut(tr("Activate Node/Edge"), QtKeySequences::activateNodeEdge()),
-		Shortcut(tr("Expand/Collapse Node"), QtKeySequences::expandOrCollapseNode()),
-		Shortcut(tr("Activate Node in New Tab"), QtKeySequences::activateNodeNewTab()),
-		Shortcut(tr("Scroll Graph Area"), QtKeySequences::scrollGraphArea()),
-		Shortcut(tr("Zoom in"), QtKeySequences::zoomIn()),
-		Shortcut(tr("Zoom out"), QtKeySequences::zoomOut()),
-		Shortcut(tr("Reset Zoom"), QtKeySequences::resetZoom()),
-		Shortcut(tr("Open Custom Trail Dialog"), QtKeySequences::customTrailDialog())
+		QtActions::moveNodeFocus(),
+		QtActions::moveEdgeFocus(),
+		QtActions::activateNodeEdge(),
+		QtActions::expandOrCollapseNode(),
+		QtActions::activateNodeNewTab(),
+		QtActions::scrollGraphArea(),
+		QtActions::zoomIn(),
+		QtActions::zoomOut(),
+		QtActions::resetZoom(),
+		QtActions::customTrailDialog()
 	});
-
 	return table;
 }

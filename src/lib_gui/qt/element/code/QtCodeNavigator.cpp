@@ -21,14 +21,13 @@
 #include "QtCodeArea.h"
 #include "QtCodeFile.h"
 #include "QtCodeSnippet.h"
+#include "QtActions.h"
 #include "QtSearchBarButton.h"
 #include "ResourcePaths.h"
 #include "SourceLocation.h"
 #include "SourceLocationCollection.h"
-#include "SourceLocationFile.h"
 #include "TabId.h"
 #include "logging.h"
-#include "utility.h"
 #include "utilityQt.h"
 
 QtCodeNavigator::QtCodeNavigator(QWidget* parent)
@@ -59,16 +58,14 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 		navLayout->setContentsMargins(7, 7 - indicatorHeight, 7, 6);
 
 		{
-			m_prevReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
-			m_nextReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
+			m_prevReferenceButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
+			m_nextReferenceButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
 
 			m_prevReferenceButton->setObjectName(QStringLiteral("reference_button_previous"));
 			m_nextReferenceButton->setObjectName(QStringLiteral("reference_button_next"));
 
-			m_prevReferenceButton->setToolTip(QStringLiteral("previous reference"));
-			m_nextReferenceButton->setToolTip(QStringLiteral("next reference"));
+			m_prevReferenceButton->setToolTip(QtActions::previousReference().tooltip());
+			m_nextReferenceButton->setToolTip(QtActions::nextReference().tooltip());
 
 			m_prevReferenceButton->setIconSize(QSize(12, 12));
 			m_nextReferenceButton->setIconSize(QSize(12, 12));
@@ -76,13 +73,11 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 			navLayout->addWidget(m_prevReferenceButton);
 			navLayout->addWidget(m_nextReferenceButton);
 
-			connect(
-				m_prevReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::previousReference);
-			connect(
-				m_nextReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::nextReference);
+			connect(m_prevReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::previousReference);
+			connect(m_nextReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::nextReference);
 
 			// m_refLabel = new QLabel("0 files  |  0 references");
-			m_refLabel = new QLabel(QStringLiteral("0 references"));
+			m_refLabel = new QLabel(tr("0 references"));
 			m_refLabel->setObjectName(QStringLiteral("references_label"));
 			navLayout->addWidget(m_refLabel);
 
@@ -90,18 +85,14 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 		}
 
 		{
-			m_prevLocalReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
-			m_nextLocalReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
+			m_prevLocalReferenceButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
+			m_nextLocalReferenceButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
 
-			m_prevLocalReferenceButton->setObjectName(
-				QStringLiteral("local_reference_button_previous"));
-			m_nextLocalReferenceButton->setObjectName(
-				QStringLiteral("local_reference_button_next"));
+			m_prevLocalReferenceButton->setObjectName(QStringLiteral("local_reference_button_previous"));
+			m_nextLocalReferenceButton->setObjectName(QStringLiteral("local_reference_button_next"));
 
-			m_prevLocalReferenceButton->setToolTip(QStringLiteral("previous local reference"));
-			m_nextLocalReferenceButton->setToolTip(QStringLiteral("next local reference"));
+			m_prevLocalReferenceButton->setToolTip(QtActions::previousLocalReference().tooltip());
+			m_nextLocalReferenceButton->setToolTip(QtActions::nextLocalReference().tooltip());
 
 			m_prevLocalReferenceButton->setIconSize(QSize(12, 12));
 			m_nextLocalReferenceButton->setIconSize(QSize(12, 12));
@@ -109,18 +100,10 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 			navLayout->addWidget(m_prevLocalReferenceButton);
 			navLayout->addWidget(m_nextLocalReferenceButton);
 
-			connect(
-				m_prevLocalReferenceButton,
-				&QPushButton::clicked,
-				this,
-				&QtCodeNavigator::previousLocalReference);
-			connect(
-				m_nextLocalReferenceButton,
-				&QPushButton::clicked,
-				this,
-				&QtCodeNavigator::nextLocalReference);
+			connect(m_prevLocalReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::previousLocalReference);
+			connect(m_nextLocalReferenceButton, &QPushButton::clicked, this, &QtCodeNavigator::nextLocalReference);
 
-			m_localRefLabel = new QLabel(QStringLiteral("0/0 local references"));
+			m_localRefLabel = new QLabel(tr("0/0 local references"));
 			m_localRefLabel->setObjectName(QStringLiteral("references_label"));
 			navLayout->addWidget(m_localRefLabel);
 
@@ -135,16 +118,14 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 			m_localRefLabel->hide();
 		}
 
-		m_listButton = new QtSearchBarButton(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/list.png"), true);
-		m_fileButton = new QtSearchBarButton(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/file.png"), true);
+		m_listButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/list.png"), true);
+		m_fileButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/file.png"), true);
 
 		m_listButton->setObjectName(QStringLiteral("mode_button_list"));
 		m_fileButton->setObjectName(QStringLiteral("mode_button_single"));
 
-		m_listButton->setToolTip(QStringLiteral("snippet list mode"));
-		m_fileButton->setToolTip(QStringLiteral("single file mode"));
+		m_listButton->setToolTip(tr("snippet list mode"));
+		m_fileButton->setToolTip(tr("single file mode"));
 
 		m_listButton->setCheckable(true);
 		m_fileButton->setCheckable(true);
@@ -209,13 +190,11 @@ void QtCodeNavigator::updateReferenceCount(
 {
 	if (referenceIndex != referenceCount)
 	{
-		m_refLabel->setText(
-			QString::number(referenceIndex + 1) + "/" + QString::number(referenceCount) +
-			" references");
+		m_refLabel->setText(tr("%1/%2 references").arg(referenceIndex + 1).arg(referenceCount));
 	}
 	else
 	{
-		m_refLabel->setText(QString::number(referenceCount) + " references");
+		m_refLabel->setText(tr("%1 references").arg(referenceCount));
 	}
 
 	m_refLabel->setMinimumWidth(
@@ -229,13 +208,11 @@ void QtCodeNavigator::updateReferenceCount(
 
 	if (localReferenceIndex != localReferenceCount)
 	{
-		m_localRefLabel->setText(
-			QString::number(localReferenceIndex + 1) + "/" + QString::number(localReferenceCount) +
-			" local references");
+		m_localRefLabel->setText(tr("%1/%2 local references").arg(localReferenceIndex + 1).arg(localReferenceCount));
 	}
 	else
 	{
-		m_localRefLabel->setText(QString::number(localReferenceCount) + " local references");
+		m_localRefLabel->setText(tr("%1 local references").arg(localReferenceCount));
 	}
 
 	m_localRefLabel->setMinimumWidth(

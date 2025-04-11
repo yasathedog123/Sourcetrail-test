@@ -14,7 +14,7 @@
 #include "MessageTooltipShow.h"
 #include "QtContextMenu.h"
 #include "QtHighlighter.h"
-#include "QtKeySequences.h"
+#include "QtActions.h"
 #include "SourceLocation.h"
 #include "SourceLocationFile.h"
 #include "TextCodec.h"
@@ -98,7 +98,7 @@ QtCodeField::QtCodeField(
 	setFont(font);
 	setTabStopDistance(appSettings->getCodeTabWidth() * fontMetrics().boundingRect('9').width());
 
-	m_openInTabAction = new QAction(tr("Open in New Tab (%1)").arg(toString(QtKeySequences::openInNewTabWithMouse())), this);
+	m_openInTabAction = new QAction(QtActions::openInNewTabWithMouse().text(), this);
 	m_openInTabAction->setStatusTip(tr("Opens the node in a new tab"));
 	m_openInTabAction->setToolTip(tr("Opens the node in a new tab"));
 	m_openInTabAction->setEnabled(false);

@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QTimer>
 
+#include "QtActions.h"
 #include "QtSelfRefreshIconButton.h"
 #include "ResourcePaths.h"
 #include "utilityQt.h"
@@ -41,10 +42,7 @@ QtScreenSearchBox::QtScreenSearchBox(
 
 	// search field
 	{
-		m_searchButton = new QtSelfRefreshIconButton(
-			QLatin1String(""),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/search.png"),
-			"screen_search/button");
+		m_searchButton = new QtSelfRefreshIconButton("", ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/search.png"), "screen_search/button");
 		m_searchButton->setObjectName(QStringLiteral("search_button"));
 		m_searchButton->setIconSize(QSize(12, 12));
 		layout->addWidget(m_searchButton);
@@ -76,19 +74,14 @@ QtScreenSearchBox::QtScreenSearchBox(
 
 	// buttons
 	{
-		m_prevButton = new QtSelfRefreshIconButton(
-			QLatin1String(""),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_left.png"),
-			"screen_search/button");
-		m_nextButton = new QtSelfRefreshIconButton(
-			QLatin1String(""),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_right.png"),
-			"screen_search/button");
-
+		m_prevButton = new QtSelfRefreshIconButton("", ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_left.png"), "screen_search/button");
+		m_prevButton->setToolTip(QtActions::screenSearchPrevious().tooltip());
 		m_prevButton->setObjectName(QStringLiteral("prev_button"));
-		m_nextButton->setObjectName(QStringLiteral("next_button"));
-
 		m_prevButton->setIconSize(QSize(12, 12));
+		
+		m_nextButton = new QtSelfRefreshIconButton("", ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_right.png"), "screen_search/button");
+		m_nextButton->setToolTip(QtActions::screenSearchNext().tooltip());
+		m_nextButton->setObjectName(QStringLiteral("next_button"));
 		m_nextButton->setIconSize(QSize(12, 12));
 
 		layout->addWidget(m_prevButton);
@@ -107,10 +100,8 @@ QtScreenSearchBox::QtScreenSearchBox(
 
 	// buttons
 	{
-		m_closeButton = new QtSelfRefreshIconButton(
-			QLatin1String(""),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"screen_search_view/images/close.png"),
-			"screen_search/button");
+		m_closeButton = new QtSelfRefreshIconButton("", ResourcePaths::getGuiDirectoryPath().concatenate(L"screen_search_view/images/close.png"), "screen_search/button");
+		m_closeButton->setToolTip(QtActions::screenSearchClose().tooltip());
 		m_closeButton->setObjectName(QStringLiteral("close_button"));
 		m_closeButton->setIconSize(QSize(15, 15));
 		layout->addWidget(m_closeButton);

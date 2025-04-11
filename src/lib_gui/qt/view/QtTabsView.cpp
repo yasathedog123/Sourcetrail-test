@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "ColorScheme.h"
 #include "GraphViewStyle.h"
+#include "QtActions.h"
 #include "QtSelfRefreshIconButton.h"
 #include "QtTabBar.h"
 #include "QtViewWidgetWrapper.h"
@@ -39,11 +40,10 @@ QtTabsView::QtTabsView(ViewLayout* viewLayout)
 
 	connect(m_tabBar, &QTabBar::currentChanged, this, &QtTabsView::changedTab);
 
-	QPushButton* addButton = new QtSelfRefreshIconButton(
-		QLatin1String(""),
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/add.png"),
-		"tab/bar/button");
+	QPushButton* addButton = new QtSelfRefreshIconButton(QStringLiteral(""), 
+		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/add.png"), "tab/bar/button");
 	addButton->setObjectName(QStringLiteral("add_button"));
+	addButton->setToolTip(QtActions::newTab().tooltip());
 	addButton->setIconSize(QSize(14, 14));
 
 	QWidget* back = new QWidget();
@@ -144,7 +144,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	m_insertedTabCount++;
 	int idx = match.isValid() ? static_cast<int>(m_tabBar->currentIndex() + m_insertedTabCount)
 							  : m_tabBar->count() + 1;
-	idx = m_tabBar->insertTab(idx, QStringLiteral(" Empty Tab "));
+	idx = m_tabBar->insertTab(idx, tr(" Empty Tab "));
 	m_tabBar->setTabData(idx, static_id_cast<qulonglong>(tabId));
 
 	QPushButton* typeCircle = new QPushButton();
@@ -162,11 +162,10 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 		}
 	});
 
-	QPushButton* closeButton = new QtSelfRefreshIconButton(
-		QLatin1String(""),
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/close.png"),
-		"tab/bar/button");
+	QPushButton* closeButton = new QtSelfRefreshIconButton(QString(), 
+		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/close.png"), "tab/bar/button");
 	closeButton->setObjectName(QStringLiteral("close_button"));
+	closeButton->setToolTip(QtActions::closeTab().tooltip());
 	closeButton->setIconSize(QSize(10, 10));
 	m_tabBar->setTabButton(idx, QTabBar::RightSide, closeButton);
 

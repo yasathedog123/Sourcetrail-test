@@ -16,6 +16,7 @@
 #include "CompositeView.h"
 #include "FileSystem.h"
 #include "MessageActivateBase.h"
+#include "MessageActivateLegend.h"
 #include "MessageActivateOverview.h"
 #include "MessageBookmarkActivate.h"
 #include "MessageBookmarkBrowse.h"
@@ -40,10 +41,10 @@
 #include "MessageWindowClosed.h"
 #include "MessageZoom.h"
 #include "QtAbout.h"
+#include "QtActions.h"
 #include "QtContextMenu.h"
 #include "QtFileDialog.h"
 #include "QtKeyboardShortcuts.h"
-#include "QtKeySequences.h"
 #include "QtLicenseWindow.h"
 #include "QtPreferencesWindow.h"
 #include "QtProjectWizard.h"
@@ -527,6 +528,11 @@ void QtMainWindow::showKeyboardShortcuts()
 	keyboardShortcutWindow->setup();
 }
 
+void QtMainWindow::showLegend()
+{
+	MessageActivateLegend().dispatch();
+}
+
 void QtMainWindow::showErrorHelpMessage()
 {
 	MessageErrorsHelpMessage(true).dispatch();
@@ -534,8 +540,7 @@ void QtMainWindow::showErrorHelpMessage()
 
 void QtMainWindow::showChangelog()
 {
-	QDesktopServices::openUrl(QUrl(
-		QStringLiteral("https://github.com/petermost/Sourcetrail/blob/master/CHANGELOG.md")));
+	QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/petermost/Sourcetrail/blob/master/CHANGELOG.md")));
 }
 
 void QtMainWindow::showBugtracker()
@@ -855,8 +860,8 @@ void QtMainWindow::setupProjectMenu()
 	QMenu* menu = new QMenu(tr("&Project"), this);
 	menuBar()->addMenu(menu);
 
-	menu->addAction(tr("&New Project..."), QtKeySequences::newProject(), this, &QtMainWindow::newProject);
-	menu->addAction(tr("&Open Project..."), QtKeySequences::openProject(), this, &QtMainWindow::openProject);
+	menu->addAction(QtActions::newProject().text(), QtActions::newProject().shortcut(), this, &QtMainWindow::newProject);
+	menu->addAction(QtActions::openProject().text(), QtActions::openProject().shortcut(), this, &QtMainWindow::openProject);
 
 	m_recentProjectsMenu = new QMenu(tr("Recent Projects"));
 	menu->addMenu(m_recentProjectsMenu);
@@ -869,7 +874,7 @@ void QtMainWindow::setupProjectMenu()
 	menu->addSeparator();
 
 	menu->addAction(tr("Close Project"), this, &QtMainWindow::closeProject);
-	menu->addAction(tr("E&xit"), QtKeySequences::exit(), QCoreApplication::instance(), &QCoreApplication::quit);
+	menu->addAction(QtActions::exit().text(), QtActions::exit().shortcut(), QCoreApplication::instance(), &QCoreApplication::quit);
 }
 
 void QtMainWindow::setupEditMenu()
@@ -877,37 +882,37 @@ void QtMainWindow::setupEditMenu()
 	QMenu* menu = new QMenu(tr("&Edit"), this);
 	menuBar()->addMenu(menu);
 
-	menu->addAction(tr("&Refresh"), QtKeySequences::refresh(), this, &QtMainWindow::refresh);
-	menu->addAction(tr("&Full Refresh"), QtKeySequences::fullRefresh(), this, &QtMainWindow::forceRefresh);
+	menu->addAction(QtActions::refresh().text(), QtActions::refresh().shortcut(), this, &QtMainWindow::refresh);
+	menu->addAction(QtActions::fullRefresh().text(), QtActions::fullRefresh().shortcut(), this, &QtMainWindow::forceRefresh);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("&Find Symbol"), QtKeySequences::findSymbol(), this, &QtMainWindow::find);
-	menu->addAction(tr("&Find Text"), QtKeySequences::findText(), this, &QtMainWindow::findFulltext);
-	menu->addAction(tr("&Find On-Screen"), QtKeySequences::findOnScreen().first(), this, &QtMainWindow::findOnScreen);
+	menu->addAction(QtActions::findSymbol().text(), QtActions::findSymbol().shortcut(), this, &QtMainWindow::find);
+	menu->addAction(QtActions::findText().text(), QtActions::findText().shortcut(), this, &QtMainWindow::findFulltext);
+	menu->addAction(QtActions::findOnScreen().text(), QtActions::findOnScreen().shortcut(), this, &QtMainWindow::findOnScreen);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("Next Reference"), QtKeySequences::nextReference(), this, &QtMainWindow::codeReferenceNext);
-	menu->addAction(tr("Previous Reference"), QtKeySequences::previousReference(), this, &QtMainWindow::codeReferencePrevious);
-	menu->addAction(tr("Next Local Reference"), QtKeySequences::nextLocalReference(), this, &QtMainWindow::codeLocalReferenceNext);
-	menu->addAction(tr("Previous Local Reference"), QtKeySequences::previousLocalReference(), this, &QtMainWindow::codeLocalReferencePrevious);
+	menu->addAction(QtActions::nextReference().text(), QtActions::nextReference().shortcut(), this, &QtMainWindow::codeReferenceNext);
+	menu->addAction(QtActions::previousReference().text(), QtActions::previousReference().shortcut(), this, &QtMainWindow::codeReferencePrevious);
+	menu->addAction(QtActions::nextLocalReference().text(), QtActions::nextLocalReference().shortcut(), this, &QtMainWindow::codeLocalReferenceNext);
+	menu->addAction(QtActions::previousLocalReference().text(), QtActions::previousLocalReference().shortcut(), this, &QtMainWindow::codeLocalReferencePrevious);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("Custom Trail..."), QtKeySequences::customTrailDialog(), this, &QtMainWindow::customTrail);
+	menu->addAction(QtActions::customTrailDialog().text(), QtActions::customTrailDialog().shortcut(), this, &QtMainWindow::customTrail);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("&To overview"), QtKeySequences::toOverview(), this, &QtMainWindow::overview);
+	menu->addAction(QtActions::toOverview().text(), QtActions::toOverview().shortcut(), this, &QtMainWindow::overview);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("&Save Graph as Image..."), QtKeySequences::saveGraphAsImage(), this, &QtMainWindow::saveAsImage);
+	menu->addAction(QtActions::saveGraphAsImage().text(), QtActions::saveGraphAsImage().shortcut(), this, &QtMainWindow::saveAsImage);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("Preferences..."), QtKeySequences::preferences(), this, &QtMainWindow::openSettings);
+	menu->addAction(QtActions::preferences().text(), QtActions::preferences().shortcut(), this, &QtMainWindow::openSettings);
 }
 
 void QtMainWindow::setupViewMenu()
@@ -915,10 +920,10 @@ void QtMainWindow::setupViewMenu()
 	QMenu* menu = new QMenu(tr("&View"), this);
 	menuBar()->addMenu(menu);
 
-	menu->addAction(tr("New Tab"), QtKeySequences::newTab(), this, &QtMainWindow::openTab);
-	menu->addAction(tr("Close Tab"), QtKeySequences::closeTab().first(), this, &QtMainWindow::closeTab);
-	menu->addAction(tr("Select Next Tab"), QtKeySequences::selectNextTab(), this, &QtMainWindow::nextTab);
-	menu->addAction(tr("Select Previous Tab"), QtKeySequences::selectPreviousTab(), this, &QtMainWindow::previousTab);
+	menu->addAction(QtActions::newTab().text(), QtActions::newTab().shortcut(), this, &QtMainWindow::openTab);
+	menu->addAction(QtActions::closeTab().text(), QtActions::closeTab().shortcut(), this, &QtMainWindow::closeTab);
+	menu->addAction(QtActions::selectNextTab().text(), QtActions::selectNextTab().shortcut(), this, &QtMainWindow::nextTab);
+	menu->addAction(QtActions::selectPreviousTab().text(), QtActions::selectPreviousTab().shortcut(), this, &QtMainWindow::previousTab);
 
 	menu->addSeparator();
 
@@ -929,15 +934,16 @@ void QtMainWindow::setupViewMenu()
 	m_showTitleBarsAction->setChecked(m_showDockWidgetTitleBars);
 	connect(m_showTitleBarsAction, &QAction::triggered, this, &QtMainWindow::toggleShowDockWidgetTitleBars);
 	menu->addAction(m_showTitleBarsAction);
+	
 	menu->addAction(tr("Reset Window Layout"), this, &QtMainWindow::resetWindowLayout);
 
 	menu->addSeparator();
 
 	m_viewSeparator = menu->addSeparator();
 
-	menu->addAction(tr("Larger Font"), QtKeySequences::largerFont(), this, &QtMainWindow::zoomIn);
-	menu->addAction(tr("Smaller Font"), QtKeySequences::smallerFont(), this, &QtMainWindow::zoomOut);
-	menu->addAction(tr("Reset Font Size"), QtKeySequences::resetFontSize(), this, &QtMainWindow::resetZoom);
+	menu->addAction(QtActions::largerFont().text(), QtActions::largerFont().shortcut(), this, &QtMainWindow::zoomIn);
+	menu->addAction(QtActions::smallerFont().text(), QtActions::smallerFont().shortcut(), this, &QtMainWindow::zoomOut);
+	menu->addAction(QtActions::resetFontSize().text(), QtActions::resetFontSize().shortcut(), this, &QtMainWindow::resetZoom);
 
 	m_viewMenu = menu;
 }
@@ -952,14 +958,10 @@ void QtMainWindow::setupHistoryMenu()
 	else
 		m_historyMenu->clear();
 
-	m_historyMenu->addAction(tr("Back"), QtKeySequences::back().first(), this, &QtMainWindow::undo);
-	m_historyMenu->addAction(tr("Forward"), QtKeySequences::forward().first(), this, &QtMainWindow::redo);
+	m_historyMenu->addAction(QtActions::back().text(), QtActions::back().shortcut(), this, &QtMainWindow::undo);
+	m_historyMenu->addAction(QtActions::forward().text(), QtActions::forward().shortcut(), this, &QtMainWindow::redo);
 
-	m_historyMenu->addSeparator();
-
-	QAction* title = new QAction(tr("Recently Active Symbols"));
-	title->setEnabled(false);
-	m_historyMenu->addAction(title);
+	m_historyMenu->addSection(tr("Recent Symbols"));
 
 	for (size_t i = 0; i < m_history.size(); i++)
 	{
@@ -991,17 +993,10 @@ void QtMainWindow::setupBookmarksMenu()
 	else
 		m_bookmarksMenu->clear();
 
-	m_bookmarksMenu->addAction(tr("Bookmark Active Symbol..."), QtKeySequences::bookmarkActiveSymbol(),
-		this, &QtMainWindow::showBookmarkCreator);
+	m_bookmarksMenu->addAction(QtActions::bookmarkActiveSymbol().text(), QtActions::bookmarkActiveSymbol().shortcut(), this, &QtMainWindow::showBookmarkCreator);
+	m_bookmarksMenu->addAction(QtActions::bookmarkManager().text(), QtActions::bookmarkManager().shortcut(), this, &QtMainWindow::showBookmarkBrowser);
 
-	m_bookmarksMenu->addAction(tr("Bookmark Manager"), QtKeySequences::bookmarkManager(),
-		this, &QtMainWindow::showBookmarkBrowser);
-
-	m_bookmarksMenu->addSeparator();
-
-	QAction* title = new QAction(tr("Recent Bookmarks"));
-	title->setEnabled(false);
-	m_bookmarksMenu->addAction(title);
+	m_bookmarksMenu->addSection(tr("Recent Bookmarks"));
 
 	for (size_t i = 0; i < m_bookmarks.size(); i++)
 	{
@@ -1022,21 +1017,26 @@ void QtMainWindow::setupHelpMenu()
 	QMenu* menu = new QMenu(tr("&Help"), this);
 	menuBar()->addMenu(menu);
 
-	menu->addAction(tr("Keyboard Shortcuts"), this, &QtMainWindow::showKeyboardShortcuts);
-	menu->addAction(tr("Fixing Errors"), this, &QtMainWindow::showErrorHelpMessage);
-	menu->addAction(tr("Documentation"), this, &QtMainWindow::showDocumentation);
-	menu->addAction(tr("Changelog"), this, &QtMainWindow::showChangelog);
-	menu->addAction(tr("Bug Tracker"), this, &QtMainWindow::showBugtracker);
+	menu->addAction(QtActions::showKeyboardShortcuts().text(), QtActions::showKeyboardShortcuts().shortcut(), this, &QtMainWindow::showKeyboardShortcuts);
+	menu->addAction(QtActions::showLegend().text(), QtActions::showLegend().shortcut(), &QtMainWindow::showLegend);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("License"), this, &QtMainWindow::showLicenses);
-	menu->addAction(tr("&About Sourcetrail"), this, &QtMainWindow::about);
+	menu->addAction(tr("Fixing Errors..."), this, &QtMainWindow::showErrorHelpMessage);
+	menu->addAction(tr("Documentation..."), this, &QtMainWindow::showDocumentation);
+	menu->addAction(tr("Changelog..."), this, &QtMainWindow::showChangelog);
+	menu->addAction(tr("Bug Tracker..."), this, &QtMainWindow::showBugtracker);
 
 	menu->addSeparator();
 
-	menu->addAction(tr("Show Data Folder"), this, &QtMainWindow::showDataFolder);
-	menu->addAction(tr("Show Log Folder"), this, &QtMainWindow::showLogFolder);
+	menu->addAction(tr("License..."), this, &QtMainWindow::showLicenses);
+	menu->addAction(tr("About Sourcetrail..."), this, &QtMainWindow::about);
+	menu->addAction(tr("About Qt..."), this, QApplication::aboutQt);
+
+	menu->addSeparator();
+
+	menu->addAction(tr("Show Data Folder..."), this, &QtMainWindow::showDataFolder);
+	menu->addAction(tr("Show Log Folder..."), this, &QtMainWindow::showLogFolder);
 }
 
 QtMainWindow::DockWidget* QtMainWindow::getDockWidgetForView(View* view)

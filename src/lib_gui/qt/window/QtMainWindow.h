@@ -105,6 +105,8 @@ public slots:
 	static void showBugtracker();
 	static void showDocumentation();
 	void showKeyboardShortcuts();
+	static void showLegend();
+
 	static void showErrorHelpMessage();
 	void showLicenses();
 

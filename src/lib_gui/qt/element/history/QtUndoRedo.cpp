@@ -9,6 +9,7 @@
 
 #include "QtContextMenu.h"
 #include "QtHistoryList.h"
+#include "QtActions.h"
 #include "QtSearchBarButton.h"
 
 QtUndoRedo::QtUndoRedo()
@@ -16,22 +17,19 @@ QtUndoRedo::QtUndoRedo()
 {
 	setObjectName(QStringLiteral("undo_redo_bar"));
 
-	m_undoButton = new QtSearchBarButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/arrow_left.png"));
+	m_undoButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/arrow_left.png"));
 	m_undoButton->setObjectName(QStringLiteral("undo_button"));
-	m_undoButton->setToolTip(QStringLiteral("back"));
+	m_undoButton->setToolTip(QtActions::back().tooltip());
 	m_undoButton->setEnabled(false);
 
-	m_historyButton = new QtSearchBarButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/history.png"));
+	m_historyButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/history.png"));
 	m_historyButton->setObjectName(QStringLiteral("history_button"));
-	m_historyButton->setToolTip(QStringLiteral("history"));
+	m_historyButton->setToolTip(tr("History"));
 	m_historyButton->setEnabled(false);
 
-	m_redoButton = new QtSearchBarButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/arrow_right.png"));
+	m_redoButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/images/arrow_right.png"));
 	m_redoButton->setObjectName(QStringLiteral("redo_button"));
-	m_redoButton->setToolTip(QStringLiteral("forward"));
+	m_redoButton->setToolTip(QtActions::forward().tooltip());
 	m_redoButton->setEnabled(false);
 
 	QBoxLayout* layout = new QHBoxLayout();

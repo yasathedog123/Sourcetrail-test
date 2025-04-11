@@ -78,20 +78,12 @@ QtContextMenu* QtContextMenu::getInstance()
 		s_copyFullPathAction = new QAction(tr("Copy Full Path"), s_instance);
 		s_copyFullPathAction->setStatusTip(tr("Copies the path of this file to the clipboard"));
 		s_copyFullPathAction->setToolTip(tr("Copies the path of this file to the clipboard"));
-		connect(
-			s_copyFullPathAction,
-			&QAction::triggered,
-			s_instance,
-			&QtContextMenu::copyFullPathActionTriggered);
+		connect(s_copyFullPathAction, &QAction::triggered, s_instance, &QtContextMenu::copyFullPathActionTriggered);
 
-		s_openContainingFolderAction = new QAction(tr("Open Containing Folder"), s_instance);
+		s_openContainingFolderAction = new QAction(tr("Open Containing Folder..."), s_instance);
 		s_openContainingFolderAction->setStatusTip(tr("Opens the folder that contains this file"));
 		s_openContainingFolderAction->setToolTip(tr("Opens the folder that contains this file"));
-		connect(
-			s_openContainingFolderAction,
-			&QAction::triggered,
-			s_instance,
-			&QtContextMenu::openContainingFolderActionTriggered);
+		connect(s_openContainingFolderAction, &QAction::triggered, s_instance, &QtContextMenu::openContainingFolderActionTriggered);
 	}
 
 	return s_instance;
