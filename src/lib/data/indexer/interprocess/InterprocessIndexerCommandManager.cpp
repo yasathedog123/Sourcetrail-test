@@ -8,7 +8,7 @@ const char* InterprocessIndexerCommandManager::s_sharedMemoryNamePrefix = "icmd_
 const char* InterprocessIndexerCommandManager::s_indexerCommandsKeyName = "indexer_commands";
 
 InterprocessIndexerCommandManager::InterprocessIndexerCommandManager(
-	const std::string& instanceUuid, Id processId, bool isOwner)
+	const std::string& instanceUuid, ProcessId processId, bool isOwner)
 	: BaseInterprocessDataManager(
 		  s_sharedMemoryNamePrefix + instanceUuid, 1048576 /* 1 MB */, instanceUuid, processId, isOwner)
 {

@@ -11,7 +11,7 @@ TaskFillIndexerCommandsQueue::TaskFillIndexerCommandsQueue(
 	std::unique_ptr<IndexerCommandProvider> indexerCommandProvider,
 	size_t maximumQueueSize)
 	: m_indexerCommandProvider(std::move(indexerCommandProvider))
-	, m_indexerCommandManager(appUUID, 0, true)
+	, m_indexerCommandManager(appUUID, ProcessId::NONE, true)
 	, m_maximumQueueSize(maximumQueueSize)
 {
 }

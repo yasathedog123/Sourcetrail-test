@@ -47,7 +47,7 @@ void suppressCrashMessage()
 
 int main(int argc, char* argv[])
 {
-	int processId = -1;
+	ProcessId processId = ProcessId::INVALID;
 	std::string instanceUuid;
 	std::string appPath;
 	std::string userDataPath;
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 
 	if (argc >= 2)
 	{
-		processId = std::stoi(argv[1]);
+		processId = ProcessId(std::stoi(argv[1]));
 	}
 
 	if (argc >= 3)

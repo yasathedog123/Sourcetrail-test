@@ -35,9 +35,9 @@ protected:
 	void terminate() override;
 
 	void handleMessage(MessageIndexingInterrupted* message) override;
-
-	void runIndexerProcess(int processId, const std::wstring& logFilePath);
-	void runIndexerThread(int processId);
+	
+	void runIndexerProcess(ProcessId processId, const std::wstring& logFilePath);
+	void runIndexerThread(ProcessId processId);
 	bool fetchIntermediateStorages(std::shared_ptr<Blackboard> blackboard);
 	void updateIndexingDialog(
 		std::shared_ptr<Blackboard> blackboard, const std::vector<FilePath>& sourcePaths);

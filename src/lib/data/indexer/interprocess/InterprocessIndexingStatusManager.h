@@ -1,15 +1,13 @@
 #ifndef INTERPROCESS_INDEXING_STATUS_MANAGER_H
 #define INTERPROCESS_INDEXING_STATUS_MANAGER_H
 
-#include <set>
-
 #include "BaseInterprocessDataManager.h"
 #include "FilePath.h"
 
 class InterprocessIndexingStatusManager: public BaseInterprocessDataManager
 {
 public:
-	InterprocessIndexingStatusManager(const std::string& instanceUuid, Id processId, bool isOwner);
+	InterprocessIndexingStatusManager(const std::string& instanceUuid, ProcessId processId, bool isOwner);
 	~InterprocessIndexingStatusManager() override;
 
 	void startIndexingSourceFile(const FilePath& filePath);
@@ -18,7 +16,7 @@ public:
 	void setIndexingInterrupted(bool interrupted);
 	bool getIndexingInterrupted();
 
-	Id getNextFinishedProcessId();
+	ProcessId getNextFinishedProcessId();
 
 	std::vector<FilePath> getCurrentlyIndexedSourceFilePaths();
 	std::vector<FilePath> getCrashedSourceFilePaths();

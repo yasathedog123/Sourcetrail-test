@@ -25,7 +25,7 @@ TaskBuildIndex::TaskBuildIndex(
 	, m_dialogView(dialogView)
 	, m_appUUID(appUUID)
 	, m_multiProcessIndexing(multiProcessIndexing)
-	, m_interprocessIndexingStatusManager(appUUID, 0, true)
+	, m_interprocessIndexingStatusManager(appUUID, ProcessId::NONE, true)
 	,
 	 m_processCount(processCount)
 
@@ -47,14 +47,14 @@ void TaskBuildIndex::doEnter(std::shared_ptr<Blackboard> blackboard)
 	}
 
 	// start indexer processes
-	for (unsigned int i = 0; i < m_processCount; i++)
+	for (size_t i = 0; i < m_processCount; i++)
 	{
 		{
 			std::lock_guard<std::mutex> lock(m_runningThreadCountMutex);
 			m_runningThreadCount++;
 		}
 
-		const int processId = i + 1;	// 0 remains reserved for the main process
+		const ProcessId processId = static_cast<ProcessId>(i + 1);	// 0 remains reserved for the main process
 
 		m_interprocessIntermediateStorageManagers.push_back(
 			std::make_shared<InterprocessIntermediateStorageManager>(m_appUUID, processId, true));
@@ -175,7 +175,7 @@ void TaskBuildIndex::handleMessage(MessageIndexingInterrupted*  /*message*/)
 		L"Interrupting Indexing", L"Waiting for indexer\nthreads to finish");
 }
 
-void TaskBuildIndex::runIndexerProcess(int processId, const std::wstring& logFilePath)
+void TaskBuildIndex::runIndexerProcess(ProcessId processId, const std::wstring& logFilePath)
 {
 	const FilePath indexerProcessPath = AppPath::getCxxIndexerFilePath();
 	if (!indexerProcessPath.exists())
@@ -188,7 +188,7 @@ void TaskBuildIndex::runIndexerProcess(int processId, const std::wstring& logFil
 	}
 
 	std::vector<std::wstring> commandArguments;
-	commandArguments.push_back(std::to_wstring(processId));
+	commandArguments.push_back(to_wstring(processId));
 	commandArguments.push_back(utility::decodeFromUtf8(m_appUUID));
 	commandArguments.push_back(AppPath::getSharedDataDirectoryPath().getAbsolute().wstr());
 	commandArguments.push_back(UserPaths::getUserDataDirectoryPath().getAbsolute().wstr());
@@ -214,7 +214,7 @@ void TaskBuildIndex::runIndexerProcess(int processId, const std::wstring& logFil
 	}
 }
 
-void TaskBuildIndex::runIndexerThread(int processId)
+void TaskBuildIndex::runIndexerThread(ProcessId processId)
 {
 	do
 	{
@@ -251,15 +251,15 @@ bool TaskBuildIndex::fetchIntermediateStorages(std::shared_ptr<Blackboard> black
 	TimeStamp t = TimeStamp::now();
 	do
 	{
-		Id finishedProcessId = m_interprocessIndexingStatusManager.getNextFinishedProcessId();
-		if (!finishedProcessId ||
-			finishedProcessId > m_interprocessIntermediateStorageManagers.size())
+		ProcessId finishedProcessId = m_interprocessIndexingStatusManager.getNextFinishedProcessId();
+		if (finishedProcessId == ProcessId::NONE 
+			|| static_cast<size_t>(finishedProcessId) > m_interprocessIntermediateStorageManagers.size())
 		{
 			break;
 		}
 
 		std::shared_ptr<InterprocessIntermediateStorageManager> storageManager =
-			m_interprocessIntermediateStorageManagers[static_id_cast<size_t>(finishedProcessId) - 1];
+			m_interprocessIntermediateStorageManagers[static_cast<size_t>(finishedProcessId) - 1];
 
 		const size_t storageCount = storageManager->getIntermediateStorageCount();
 		if (!storageCount)
