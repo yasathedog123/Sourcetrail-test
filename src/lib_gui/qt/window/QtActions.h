@@ -47,7 +47,6 @@ public:
 	static Info findSymbol();
 	static Info executeFindSymbol();
 	static Info findText();
-	static Info findOnScreen();
 	static Info nextReference();
 	static Info previousReference();
 	static Info nextLocalReference();
@@ -98,6 +97,7 @@ public:
 	
 	// Screen search keys:
 	
+	static Info findOnScreen();
 	static Info screenSearchNext();
 	static Info screenSearchPrevious();
 	static Info screenSearchClose();

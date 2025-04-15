@@ -187,17 +187,6 @@ QtActions::Info QtActions::findText()
 	return Info(tr("&Find Text"), addModifier(Qt::ShiftModifier | Qt::ControlModifier, findSymbol().shortcut()));
 }
 
-QtActions::Info QtActions::findOnScreen()
-{
-	return Info(tr("&Find On-Screen"), QList<QKeySequence>({
-		Qt::ControlModifier | Qt::Key_D,
-
-		// Handled in QtMainWindow::keyPressEvent:
-		Qt::Key_Slash,
-		Qt::Key_Question
-	}));
-}
-
 QtActions::Info QtActions::nextReference()
 {
 	return Info(tr("Next Reference"), Qt::ControlModifier | Qt::Key_G);
@@ -467,6 +456,17 @@ QtActions::Info QtActions::activateBookmark()
 	Info info(tr("Activate bookmark"), MOUSE_LEFT_CLICK, MOUSE_LEFT_DOUBLE_CLICK);
 	
 	return info;
+}
+
+QtActions::Info QtActions::findOnScreen()
+{
+	return Info(tr("&Find On-Screen"), QList<QKeySequence>({
+		Qt::ControlModifier | Qt::Key_D,
+
+		// Handled in QtMainWindow::keyPressEvent:
+		Qt::Key_Slash,
+		Qt::Key_Question
+	}));
 }
 
 QtActions::Info QtActions::screenSearchNext()
