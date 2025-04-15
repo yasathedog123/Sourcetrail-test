@@ -2,7 +2,6 @@
 #define QT_SMART_SEARCH_BOX_H
 
 #include <deque>
-#include <memory>
 
 #include <QLineEdit>
 #include <QPushButton>

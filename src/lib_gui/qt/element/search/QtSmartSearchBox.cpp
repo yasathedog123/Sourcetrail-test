@@ -18,7 +18,8 @@
 
 using namespace utility::compatibility;
 
-QtSearchElement::QtSearchElement(const QString& text, QWidget* parent): QPushButton(text, parent)
+QtSearchElement::QtSearchElement(const QString& text, QWidget* parent)
+	: QPushButton(text, parent)
 {
 	show();
 	setCheckable(true);
@@ -834,41 +835,41 @@ void QtSmartSearchBox::updateElements()
 		}
 
 		QtSearchElement* element = new QtSearchElement(QString::fromStdWString(name), this);
+		element->setObjectName(QStringLiteral("search_box_element"));
 		m_elements.push_back(element);
-
-		std::string color;
-		std::string hoverColor;
+		
+		std::string backgroundColor;
+		std::string backgroundHoverColor;
 		std::string textColor = searchTextColor;
 		std::string textHoverColor = searchTextColor;
-
+		
 		if (match.searchType == SearchMatch::SEARCH_TOKEN)
 		{
-			color = GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), false).fill;
-			hoverColor =
-				GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), true).fill;
-			textColor =
-				GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), false).text;
-			textHoverColor =
-				GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), true).text;
+			backgroundColor = GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), false).fill;
+			backgroundHoverColor = GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), true).fill;
+			textColor = GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), false).text;
+			textHoverColor = GraphViewStyle::getNodeColor(match.nodeType.getUnderscoredTypeString(), true).text;
 		}
 		else
 		{
 			const std::wstring typeName = match.getSearchTypeName();
-
-			color = scheme->getSearchTypeColor(utility::encodeToUtf8(typeName), "fill");
-			hoverColor = scheme->getSearchTypeColor(
-				utility::encodeToUtf8(typeName), "fill", "hover");
+			
+			backgroundColor = scheme->getSearchTypeColor(utility::encodeToUtf8(typeName), "fill");
+			backgroundHoverColor = scheme->getSearchTypeColor(utility::encodeToUtf8(typeName), "fill", "hover");
 			textColor = scheme->getSearchTypeColor(utility::encodeToUtf8(typeName), "text");
-			textHoverColor = scheme->getSearchTypeColor(
-				utility::encodeToUtf8(typeName), "text", "hover");
-			;
+			textHoverColor = scheme->getSearchTypeColor(utility::encodeToUtf8(typeName), "text", "hover");
 		}
-
+		// Properties are also set in 'search_view.css'
 		std::stringstream css;
-		css << "QPushButton { border: none; padding: 0px 4px; background-color:" << color
-			<< "; color:" << textColor << ";} ";
-		css << "QPushButton:hover { background-color:" << hoverColor << "; color:" << textHoverColor
-			<< ";} ";
+		css << "#search_box_element { ";
+		css << "background-color: " << backgroundColor << "; ";
+		css << "color: " << textColor << "; ";
+		css << "}";
+		
+		css << "#search_box_element:hover { ";
+		css << "background-color: " << backgroundHoverColor << "; ";
+		css << "color: " << textHoverColor << "; ";
+		css << "}";
 
 		element->setStyleSheet(css.str().c_str());
 

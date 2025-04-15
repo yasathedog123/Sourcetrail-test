@@ -2,13 +2,6 @@
 	font-size: <setting:font_size>px;
 }
 
-/* Disabled, so the searchbox/tooltip uses the global font
-#search_box, #search_box * {
-	font-family: "<setting:font_name>";
-	font-size: <setting:font_size+2>px;
-}
-*/
-
 #search_bar {
 	background-color: transparent;
 }
@@ -23,10 +16,20 @@
 }
 
 #search_box {
+	font-family: "<setting:font_name>";
+	font-size: <setting:font_size+2>px;
 	background-color: transparent;
 	border: none;
 	color: <color:search/field/text>;
 	selection-background-color: <color:search/field/highlight>;
+}
+
+#search_box_element {
+	font-family: "<setting:font_name>";
+	font-size: <setting:font_size+2>px;
+	border: none;
+	padding: 0px 0px;
+	/* Properties are also set in 'QtSmartSearchBox::updateElements' */
 }
 
 #search_box_highlight {
