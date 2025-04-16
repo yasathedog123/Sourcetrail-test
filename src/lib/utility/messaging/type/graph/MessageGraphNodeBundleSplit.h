@@ -2,7 +2,7 @@
 #define MESSAGE_GRAPH_NODE_BUNDLE_SPLIT_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 
 class MessageGraphNodeBundleSplit: public Message<MessageGraphNodeBundleSplit>
@@ -11,7 +11,7 @@ public:
 	MessageGraphNodeBundleSplit(Id bundleId, bool removeOtherNodes = false, bool layoutToList = false)
 		: bundleId(bundleId), removeOtherNodes(removeOtherNodes), layoutToList(layoutToList)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

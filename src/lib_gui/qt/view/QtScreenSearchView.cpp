@@ -7,11 +7,11 @@
 #include "QtScreenSearchBox.h"
 #include "QtViewWidgetWrapper.h"
 #include "ResourcePaths.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "utilityQt.h"
 
 QtScreenSearchView::QtScreenSearchView(ViewLayout* viewLayout)
-	: ScreenSearchView(viewLayout), m_controllerProxy(this, TabId::app())
+	: ScreenSearchView(viewLayout), m_controllerProxy(this, TabIds::app())
 {
 	m_widget = new QtScreenSearchBox(&m_controllerProxy);
 

@@ -6,7 +6,7 @@
 #include "MessageBase.h"
 #include "MessageFilter.h"
 #include "MessageListenerBase.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskGroupParallel.h"
 #include "TaskGroupSequence.h"
 #include "TaskLambda.h"
@@ -297,7 +297,7 @@ void MessageQueue::sendMessageAsTask(std::shared_ptr<MessageBase> message, bool 
 	Id schedulerId = message->getSchedulerId();
 	if (!schedulerId)
 	{
-		schedulerId = TabId::app();
+		schedulerId = TabIds::app();
 	}
 
 	if (asNextTask)

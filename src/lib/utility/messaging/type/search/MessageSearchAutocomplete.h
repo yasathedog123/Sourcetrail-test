@@ -4,7 +4,7 @@
 #include "Message.h"
 #include "Node.h"
 #include "NodeTypeSet.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 class MessageSearchAutocomplete: public Message<MessageSearchAutocomplete>
 {
@@ -12,7 +12,7 @@ public:
 	MessageSearchAutocomplete(const std::wstring& query, NodeTypeSet acceptedNodeTypes)
 		: query(query), acceptedNodeTypes(acceptedNodeTypes)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

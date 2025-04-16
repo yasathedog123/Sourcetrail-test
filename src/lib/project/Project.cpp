@@ -31,7 +31,7 @@
 #include "MessageIndexingStatus.h"
 #include "MessageRefresh.h"
 #include "MessageStatus.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskDecoratorRepeat.h"
 #include "TaskFindKeyOnBlackboard.h"
 #include "TaskGroupParallel.h"
@@ -735,7 +735,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		std::make_shared<TaskGroupSequence>()->addChildTasks(
 			std::make_shared<TaskFindKeyOnBlackboard>("keep_database"),
 			std::make_shared<TaskLambda>([dialogView, this]() {
-				Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([dialogView, this]() {
+				Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([dialogView, this]() {
 								   swapToTempStorage(dialogView);
 							   }));
 			})),
@@ -743,7 +743,7 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 			std::make_shared<TaskFindKeyOnBlackboard>("discard_database"),
 			std::make_shared<TaskLambda>([this]() {
 				Task::dispatch(
-					TabId::app(), std::make_shared<TaskLambda>([this]() { discardTempStorage(); }));
+					TabIds::app(), std::make_shared<TaskLambda>([this]() { discardTempStorage(); }));
 			}))));
 
 	taskSequential->addTask(std::make_shared<TaskLambda>([dialogView, this]() {
@@ -755,17 +755,17 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		std::make_shared<TaskGroupSequence>()->addChildTasks(
 			std::make_shared<TaskFindKeyOnBlackboard>("refresh_database"),
 			std::make_shared<TaskLambda>([dialogView, this]() {
-				Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([dialogView, this]() {
+				Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([dialogView, this]() {
 								   MessageIndexingShowDialog().dispatch();
 								   MessageRefresh().refreshAll().dispatch();
 							   }));
 			})),
 		std::make_shared<TaskGroupSequence>()->addChildTasks(std::make_shared<TaskLambda>([this]() {
-			Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([this]() {}));
+			Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([this]() {}));
 		}))));
 
 	taskSequential->setIsBackgroundTask(true);
-	Task::dispatch(TabId::app(), taskSequential);
+	Task::dispatch(TabIds::app(), taskSequential);
 
 	m_refreshStage = RefreshStageType::INDEXING;
 	MessageStatus(

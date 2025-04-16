@@ -20,7 +20,7 @@
 #include "ProjectSettings.h"
 #include "SharedMemoryGarbageCollector.h"
 #include "StorageCache.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskManager.h"
 #include "TaskScheduler.h"
 #include "UserPaths.h"
@@ -56,8 +56,8 @@ void Application::createInstance(
 		collector->run(Application::getUUID());
 	}
 
-	TaskManager::createScheduler(TabId::app());
-	TaskManager::createScheduler(TabId::background());
+	TaskManager::createScheduler(TabIds::app());
+	TaskManager::createScheduler(TabIds::background());
 	MessageQueue::getInstance();
 
 	s_instance = std::shared_ptr<Application>(new Application(hasGui));
@@ -88,8 +88,8 @@ std::shared_ptr<Application> Application::getInstance()
 void Application::destroyInstance()
 {
 	MessageQueue::getInstance()->stopMessageLoop();
-	TaskManager::destroyScheduler(TabId::background());
-	TaskManager::destroyScheduler(TabId::app());
+	TaskManager::destroyScheduler(TabIds::background());
+	TaskManager::destroyScheduler(TabIds::app());
 
 	s_instance.reset();
 }
@@ -370,8 +370,8 @@ void Application::handleMessage(MessageSwitchColorScheme* message)
 
 void Application::startMessagingAndScheduling()
 {
-	TaskManager::getScheduler(TabId::app())->startSchedulerLoopThreaded();
-	TaskManager::getScheduler(TabId::background())->startSchedulerLoopThreaded();
+	TaskManager::getScheduler(TabIds::app())->startSchedulerLoopThreaded();
+	TaskManager::getScheduler(TabIds::background())->startSchedulerLoopThreaded();
 
 	MessageQueue* queue = MessageQueue::getInstance().get();
 	queue->addMessageFilter(std::make_shared<MessageFilterErrorCountUpdate>());

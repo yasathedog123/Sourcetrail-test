@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 
 class MessageFocusOut: public Message<MessageFocusOut>
@@ -13,7 +13,7 @@ public:
 	MessageFocusOut(const std::vector<Id>& tokenIds): tokenIds(tokenIds)
 	{
 		setIsLogged(false);
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

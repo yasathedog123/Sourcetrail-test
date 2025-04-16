@@ -3,14 +3,14 @@
 #include "QtBookmarkBrowser.h"
 #include "QtBookmarkCreator.h"
 #include "QtMainWindow.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "utilityQt.h"
 
 using namespace std;
 using namespace utility;
 
 QtBookmarkView::QtBookmarkView(ViewLayout* viewLayout)
-	: BookmarkView(viewLayout), m_controllerProxy(this, TabId::app()) 
+	: BookmarkView(viewLayout), m_controllerProxy(this, TabIds::app()) 
 {
 }
 

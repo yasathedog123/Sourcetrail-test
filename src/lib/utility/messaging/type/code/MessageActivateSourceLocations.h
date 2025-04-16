@@ -2,7 +2,7 @@
 #define MESSAGE_ACTIVATE_SOURCE_LOCATIONS_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 
 class MessageActivateSourceLocations: public Message<MessageActivateSourceLocations>
@@ -11,7 +11,7 @@ public:
 	MessageActivateSourceLocations(const std::vector<Id>& locationIds, bool containsUnsolvedLocations)
 		: locationIds(locationIds), containsUnsolvedLocations(containsUnsolvedLocations)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

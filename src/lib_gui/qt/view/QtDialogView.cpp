@@ -19,7 +19,7 @@
 #include "QtUnknownProgressDialog.h"
 #include "QtWindow.h"
 #include "StorageAccess.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskLambda.h"
 #include "utility.h"
 
@@ -158,7 +158,7 @@ void QtDialogView::startIndexingDialog(
 			});
 			timer->start(200);
 
-			Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([=, this]() {
+			Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([=, this]() {
 							   RefreshInfo info = project->getRefreshInfo(refreshMode);
 
 							   m_onQtThread2([=, this]() {
@@ -179,13 +179,13 @@ void QtDialogView::startIndexingDialog(
 			RefreshInfo info = m_refreshInfos.find(refreshMode)->second;
 			info.shallow = m_shallowIndexingEnabled;
 			Task::dispatch(
-				TabId::app(), std::make_shared<TaskLambda>([=]() { onStartIndexing(info); }));
+				TabIds::app(), std::make_shared<TaskLambda>([=]() { onStartIndexing(info); }));
 
 			m_windowStack.clearWindows();
 		});
 
 		connect(window, &QtIndexingDialog::canceled, [=, this]() {
-			Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([=]() { onCancelIndexing(); }));
+			Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([=]() { onCancelIndexing(); }));
 
 			setUIBlocked(false);
 		});

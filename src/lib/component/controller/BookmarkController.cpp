@@ -11,7 +11,7 @@
 #include "MessageActivateEdge.h"
 #include "MessageActivateNodes.h"
 #include "MessageBookmarkButtonState.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "logging.h"
 #include "utility.h"
 #include "utilityString.h"
@@ -66,7 +66,7 @@ void BookmarkController::createBookmark(
 {
 	LOG_INFO("Attempting to create new bookmark");
 
-	Id tabId = TabId::currentTab();
+	Id tabId = TabIds::currentTab();
 
 	BookmarkCategory bookmarkCategory(0, category.empty() ? s_defaultCategoryName : category);
 
@@ -77,7 +77,7 @@ void BookmarkController::createBookmark(
 		EdgeBookmark bookmark(0, name, comment, TimeStamp::now(), bookmarkCategory);
 		bookmark.setEdgeIds(m_activeEdgeIds[tabId]);
 
-		if (!m_activeNodeIds[TabId::currentTab()].empty())
+		if (!m_activeNodeIds[TabIds::currentTab()].empty())
 		{
 			bookmark.setActiveNodeId(m_activeNodeIds[tabId].front());
 		}
@@ -99,7 +99,7 @@ void BookmarkController::createBookmark(
 		}
 		else
 		{
-			bookmark.setNodeIds(m_activeNodeIds[TabId::currentTab()]);
+			bookmark.setNodeIds(m_activeNodeIds[TabIds::currentTab()]);
 		}
 
 		m_storageAccess->addNodeBookmark(bookmark);
@@ -108,10 +108,10 @@ void BookmarkController::createBookmark(
 	m_bookmarkCache.clear();
 
 	if (!nodeId ||
-		(m_activeNodeIds[TabId::currentTab()].size() == 1 &&
-		 m_activeNodeIds[TabId::currentTab()][0] == nodeId))
+		(m_activeNodeIds[TabIds::currentTab()].size() == 1 &&
+		 m_activeNodeIds[TabIds::currentTab()][0] == nodeId))
 	{
-		MessageBookmarkButtonState(TabId::currentTab(), MessageBookmarkButtonState::ALREADY_CREATED)
+		MessageBookmarkButtonState(TabIds::currentTab(), MessageBookmarkButtonState::ALREADY_CREATED)
 			.dispatch();
 	}
 
@@ -139,9 +139,9 @@ void BookmarkController::deleteBookmark(Id bookmarkId)
 
 	cleanBookmarkCategories();
 
-	if (!getBookmarkForActiveToken(TabId::currentTab()))
+	if (!getBookmarkForActiveToken(TabIds::currentTab()))
 	{
-		MessageBookmarkButtonState(TabId::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
+		MessageBookmarkButtonState(TabIds::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
 			.dispatch();
 	}
 
@@ -154,9 +154,9 @@ void BookmarkController::deleteBookmarkCategory(Id categoryId)
 
 	m_bookmarkCache.clear();
 
-	if (!getBookmarkForActiveToken(TabId::currentTab()))
+	if (!getBookmarkForActiveToken(TabIds::currentTab()))
 	{
-		MessageBookmarkButtonState(TabId::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
+		MessageBookmarkButtonState(TabIds::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
 			.dispatch();
 	}
 
@@ -165,7 +165,7 @@ void BookmarkController::deleteBookmarkCategory(Id categoryId)
 
 void BookmarkController::deleteBookmarkForActiveTokens()
 {
-	if (std::shared_ptr<Bookmark> bookmark = getBookmarkForActiveToken(TabId::currentTab()))
+	if (std::shared_ptr<Bookmark> bookmark = getBookmarkForActiveToken(TabIds::currentTab()))
 	{
 		LOG_INFO(L"Deleting bookmark " + bookmark->getName());
 
@@ -173,7 +173,7 @@ void BookmarkController::deleteBookmarkForActiveTokens()
 
 		cleanBookmarkCategories();
 
-		MessageBookmarkButtonState(TabId::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
+		MessageBookmarkButtonState(TabIds::currentTab(), MessageBookmarkButtonState::CAN_CREATE)
 			.dispatch();
 		update();
 	}
@@ -239,7 +239,7 @@ void BookmarkController::activateBookmark(const std::shared_ptr<Bookmark> bookma
 
 void BookmarkController::showBookmarkCreator(Id nodeId)
 {
-	Id tabId = TabId::currentTab();
+	Id tabId = TabIds::currentTab();
 	if (!m_activeNodeIds[tabId].size() && !m_activeEdgeIds[tabId].size() && !nodeId)
 	{
 		return;
@@ -381,7 +381,7 @@ void BookmarkController::handleMessage(MessageIndexingFinished*  /*message*/)
 
 std::vector<std::wstring> BookmarkController::getActiveTokenDisplayNames() const
 {
-	if (m_activeEdgeIds[TabId::currentTab()].size() > 0)
+	if (m_activeEdgeIds[TabIds::currentTab()].size() > 0)
 	{
 		return getActiveEdgeDisplayNames();
 	}
@@ -495,7 +495,7 @@ std::vector<std::shared_ptr<Bookmark>> BookmarkController::getBookmarks(
 std::vector<std::wstring> BookmarkController::getActiveNodeDisplayNames() const
 {
 	std::vector<std::wstring> names;
-	for (Id nodeId: m_activeNodeIds[TabId::currentTab()])
+	for (Id nodeId: m_activeNodeIds[TabIds::currentTab()])
 	{
 		names.push_back(getNodeDisplayName(nodeId));
 	}
@@ -505,7 +505,7 @@ std::vector<std::wstring> BookmarkController::getActiveNodeDisplayNames() const
 std::vector<std::wstring> BookmarkController::getActiveEdgeDisplayNames() const
 {
 	std::vector<std::wstring> activeEdgeDisplayNames;
-	for (Id activeEdgeId: m_activeEdgeIds[TabId::currentTab()])
+	for (Id activeEdgeId: m_activeEdgeIds[TabIds::currentTab()])
 	{
 		const StorageEdge activeEdge = m_storageAccess->getEdgeById(activeEdgeId);
 		const std::wstring sourceDisplayName = getNodeDisplayName(activeEdge.sourceNodeId);

@@ -2,7 +2,7 @@
 #define MESSAGE_ACTIVATE_LOCAL_SYMBOLS_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 
 class MessageActivateLocalSymbols: public Message<MessageActivateLocalSymbols>
@@ -10,7 +10,7 @@ class MessageActivateLocalSymbols: public Message<MessageActivateLocalSymbols>
 public:
 	MessageActivateLocalSymbols(const std::vector<Id>& symbolIds): symbolIds(symbolIds)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	void addSymbol(Id symbolId)

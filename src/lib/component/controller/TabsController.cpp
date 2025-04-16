@@ -7,7 +7,7 @@
 #include "MessageSearch.h"
 #include "MessageWindowChanged.h"
 #include "ScreenSearchInterfaces.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskLambda.h"
 #include "TaskManager.h"
 #include "TaskScheduler.h"
@@ -86,16 +86,16 @@ void TabsController::showTab(Id tabId)
 	auto it = m_tabs.find(tabId);
 	if (it != m_tabs.end())
 	{
-		TabId::setCurrentTabId(tabId);
+		TabIds::setCurrentTabId(tabId);
 		it->second->setParentLayout(m_mainLayout);
 	}
 	else
 	{
-		TabId::setCurrentTabId(0);
+		TabIds::setCurrentTabId(0);
 		m_mainLayout->showOriginalViews();
 	}
 
-	Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([this]() {
+	Task::dispatch(TabIds::app(), std::make_shared<TaskLambda>([this]() {
 					   m_screenSearchSender->clearMatches();
 				   }));
 }
@@ -103,7 +103,7 @@ void TabsController::showTab(Id tabId)
 void TabsController::removeTab(Id tabId)
 {
 	// use app task scheduler thread to stop running tasks of tab
-	Task::dispatch(TabId::background(), std::make_shared<TaskLambda>([tabId, this]() {
+	Task::dispatch(TabIds::background(), std::make_shared<TaskLambda>([tabId, this]() {
 					   m_screenSearchSender->clearMatches();
 
 					   TaskScheduler* scheduler = TaskManager::getScheduler(tabId).get();
@@ -132,7 +132,7 @@ void TabsController::destroyTab(Id tabId)
 
 void TabsController::onClearTabs()
 {
-	TabId::setCurrentTabId(0);
+	TabIds::setCurrentTabId(0);
 	m_mainLayout->showOriginalViews();
 }
 

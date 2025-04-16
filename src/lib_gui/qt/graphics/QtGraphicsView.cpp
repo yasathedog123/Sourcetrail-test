@@ -131,7 +131,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	m_legendButton->setToolTip(QtActions::showLegend().tooltip());
 	connect(m_legendButton, &QPushButton::clicked, this, &QtGraphicsView::legendClicked);
 
-	m_tabId = TabId::currentTab();
+	m_tabId = TabIds::currentTab();
 }
 
 float QtGraphicsView::getZoomFactor() const
@@ -150,7 +150,7 @@ void QtGraphicsView::setSceneRect(const QRectF& rect)
 	QGraphicsView::setSceneRect(rect);
 	scene()->setSceneRect(rect);
 	m_imageCached = toQImage();
-	m_tabId = TabId::currentTab();
+	m_tabId = TabIds::currentTab();
 }
 
 QtGraphNode* QtGraphicsView::getNodeAtCursorPosition() const

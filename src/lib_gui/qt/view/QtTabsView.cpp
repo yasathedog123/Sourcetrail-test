@@ -13,7 +13,7 @@
 #include "QtTabBar.h"
 #include "QtViewWidgetWrapper.h"
 #include "ResourcePaths.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TabsController.h"
 #include "utilityQt.h"
 
@@ -137,7 +137,7 @@ void QtTabsView::addTab()
 
 void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 {
-	Id tabId = TabId::nextTab();
+	Id tabId = TabIds::nextTab();
 
 	m_tabBar->blockSignals(true);
 

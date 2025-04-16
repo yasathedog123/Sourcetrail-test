@@ -123,8 +123,8 @@ add_library(Sourcetrail_lib
 	component/NetworkFactory.h
 	component/Tab.cpp
 	component/Tab.h
-	component/TabId.cpp
-	component/TabId.h
+	component/TabIds.cpp
+	component/TabIds.h
 
 	data/bookmark/Bookmark.cpp
 	data/bookmark/Bookmark.h

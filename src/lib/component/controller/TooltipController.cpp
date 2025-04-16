@@ -6,7 +6,7 @@
 #include "TooltipView.h"
 
 #include "MessageActivateSourceLocations.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "TaskDecoratorDelay.h"
 #include "TaskLambda.h"
 
@@ -145,7 +145,7 @@ void TooltipController::requestTooltipShow(
 	}
 
 	Task::dispatch(
-		TabId::app(),
+		TabIds::app(),
 		std::make_shared<TaskDecoratorDelay>(delayMS)->addChildTask(
 			std::make_shared<TaskLambda>([requestId, this]() {
 				std::unique_ptr<TooltipRequest> request;
@@ -181,7 +181,7 @@ void TooltipController::requestTooltipHide()
 	m_hideRequest = true;
 
 	Task::dispatch(
-		TabId::app(),
+		TabIds::app(),
 		std::make_shared<TaskDecoratorDelay>(500)->addChildTask(std::make_shared<TaskLambda>([this]() {
 			if (m_hideRequest)
 			{

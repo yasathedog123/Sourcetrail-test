@@ -20,13 +20,13 @@
 #include "QtTable.h"
 #include "QtViewWidgetWrapper.h"
 #include "ResourcePaths.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "utilityQt.h"
 
 QIcon QtErrorView::s_errorIcon;
 
 QtErrorView::QtErrorView(ViewLayout* viewLayout)
-	: ErrorView(viewLayout), m_controllerProxy(this, TabId::app())
+	: ErrorView(viewLayout), m_controllerProxy(this, TabIds::app())
 {
 	s_errorIcon = QIcon(QString::fromStdWString(
 		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr()));

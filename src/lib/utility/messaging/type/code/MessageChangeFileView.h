@@ -5,7 +5,7 @@
 #include "CodeSnippetParams.h"
 #include "FilePath.h"
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 class MessageChangeFileView: public Message<MessageChangeFileView>
 {
@@ -36,7 +36,7 @@ public:
 		, scrollParams(scrollParams)
 		, switchesViewMode(switchesViewMode)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

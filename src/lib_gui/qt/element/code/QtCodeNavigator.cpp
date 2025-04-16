@@ -26,12 +26,12 @@
 #include "ResourcePaths.h"
 #include "SourceLocation.h"
 #include "SourceLocationCollection.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "logging.h"
 #include "utilityQt.h"
 
 QtCodeNavigator::QtCodeNavigator(QWidget* parent)
-	: QWidget(parent),  m_schedulerId(TabId::ignore())
+	: QWidget(parent),  m_schedulerId(TabIds::ignore())
 {
 	QVBoxLayout* layout = new QVBoxLayout();
 	layout->setSpacing(0);

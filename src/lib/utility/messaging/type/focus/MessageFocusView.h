@@ -2,7 +2,7 @@
 #define MESSAGE_FOCUS_VIEW_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 class MessageFocusView: public Message<MessageFocusView>
 {
@@ -17,7 +17,7 @@ public:
 	MessageFocusView(ViewType type): type(type)
 	{
 		setIsLogged(false);
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

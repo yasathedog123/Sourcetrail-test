@@ -16,13 +16,13 @@
 #include "QtMainWindow.h"
 #include "QtSmartSearchBox.h"
 #include "ResourcePaths.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "utilityQt.h"
 
 QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 	: QWidget(utility::getMainWindowforMainView(viewLayout))
 	, CustomTrailView(nullptr)
-	, m_controllerProxy(this, TabId::app())
+	, m_controllerProxy(this, TabIds::app())
 {
 	setWindowTitle(QStringLiteral("Custom Trail"));
 	setWindowFlags(Qt::Window);

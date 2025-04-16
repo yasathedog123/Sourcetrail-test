@@ -734,7 +734,7 @@ void QtMainWindow::saveAsImage()
 		return;
 	}
 	MessageSaveAsImage m(filePath);
-	m.setSchedulerId(TabId::currentTab());
+	m.setSchedulerId(TabIds::currentTab());
 	m.dispatch();
 }
 
@@ -839,7 +839,7 @@ void QtMainWindow::openHistoryAction()
 	if (action)
 	{
 		std::shared_ptr<MessageBase> m = m_history[action->data().toInt()];
-		m->setSchedulerId(TabId::currentTab());
+		m->setSchedulerId(TabIds::currentTab());
 		m->setIsReplayed(false);
 		m->dispatch();
 	}

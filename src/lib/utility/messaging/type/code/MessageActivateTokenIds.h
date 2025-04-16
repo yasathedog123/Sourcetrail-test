@@ -2,7 +2,7 @@
 #define MESSAGE_ACTIVATE_TOKEN_IDS_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 
 class MessageActivateTokenIds: public Message<MessageActivateTokenIds>
@@ -10,7 +10,7 @@ class MessageActivateTokenIds: public Message<MessageActivateTokenIds>
 public:
 	MessageActivateTokenIds(const std::vector<Id>& tokenIds): tokenIds(tokenIds)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

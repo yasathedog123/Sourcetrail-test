@@ -6,7 +6,7 @@
 #include "Project.h"
 #include "QtHelpButtonInfo.h"
 #include "StorageAccess.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 ErrorController::ErrorController(StorageAccess* storageAccess): m_storageAccess(storageAccess) {}
 
@@ -14,19 +14,19 @@ ErrorController::~ErrorController() = default;
 
 void ErrorController::errorFilterChanged(const ErrorFilter& filter)
 {
-	if (m_tabActiveFilePath[TabId::currentTab()].empty())
+	if (m_tabActiveFilePath[TabIds::currentTab()].empty())
 	{
 		MessageActivateErrors(filter).dispatch();
 	}
 	else
 	{
-		MessageActivateErrors(filter, m_tabActiveFilePath[TabId::currentTab()]).dispatch();
+		MessageActivateErrors(filter, m_tabActiveFilePath[TabIds::currentTab()]).dispatch();
 	}
 }
 
 void ErrorController::showError(Id errorId)
 {
-	if (!m_tabShowsErrors[TabId::currentTab()] || m_newErrorsAdded)
+	if (!m_tabShowsErrors[TabIds::currentTab()] || m_newErrorsAdded)
 	{
 		errorFilterChanged(getView()->getErrorFilter());
 	}
@@ -186,14 +186,14 @@ bool ErrorController::showErrors(const ErrorFilter& filter, bool scrollTo)
 	filterUnlimited.limit = 0;
 
 	std::vector<ErrorInfo> errors;
-	if (m_tabActiveFilePath[TabId::currentTab()].empty())
+	if (m_tabActiveFilePath[TabIds::currentTab()].empty())
 	{
 		errors = m_storageAccess->getErrorsLimited(filterUnlimited);
 	}
 	else
 	{
 		errors = m_storageAccess->getErrorsForFileLimited(
-			filter, m_tabActiveFilePath[TabId::currentTab()]);
+			filter, m_tabActiveFilePath[TabIds::currentTab()]);
 	}
 
 	ErrorCountInfo errorCount(errors);

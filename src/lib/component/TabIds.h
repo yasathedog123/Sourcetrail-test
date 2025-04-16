@@ -1,9 +1,9 @@
-#ifndef TAB_ID_H
-#define TAB_ID_H
+#ifndef TAB_IDS_H
+#define TAB_IDS_H
 
-#include "types.h"
+#include "Id.h"
 
-class TabId
+class TabIds
 {
 public:
 	static Id app();
@@ -20,4 +20,4 @@ private:
 	static Id s_currentTabId;
 };
 
-#endif	  // TAB_ID_H
+#endif

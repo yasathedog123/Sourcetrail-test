@@ -5,7 +5,7 @@
 #include "NameHierarchy.h"
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 #include "types.h"
 #include "utilityString.h"
 
@@ -27,7 +27,7 @@ public:
 			setKeepContent(true);
 		}
 
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()

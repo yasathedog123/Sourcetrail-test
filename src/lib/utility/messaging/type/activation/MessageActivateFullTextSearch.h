@@ -3,7 +3,7 @@
 
 #include "Message.h"
 #include "MessageActivateBase.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 class MessageActivateFullTextSearch
 	: public Message<MessageActivateFullTextSearch>
@@ -18,7 +18,7 @@ public:
 	MessageActivateFullTextSearch(const std::wstring& searchTerm, bool caseSensitive = false)
 		: searchTerm(searchTerm), caseSensitive(caseSensitive)
 	{
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	void print(std::wostream& os) const override

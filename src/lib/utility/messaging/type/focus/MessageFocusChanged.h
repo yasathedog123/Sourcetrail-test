@@ -2,7 +2,7 @@
 #define MESSAGE_FOCUS_CHANGED_H
 
 #include "Message.h"
-#include "TabId.h"
+#include "TabIds.h"
 
 class MessageFocusChanged: public Message<MessageFocusChanged>
 {
@@ -17,7 +17,7 @@ public:
 		: type(type), tokenOrLocationId(tokenOrLocationId)
 	{
 		setIsLogged(false);
-		setSchedulerId(TabId::currentTab());
+		setSchedulerId(TabIds::currentTab());
 	}
 
 	static const std::string getStaticType()
