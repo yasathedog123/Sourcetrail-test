@@ -278,12 +278,12 @@ void QtCodeNavigator::setMode(Mode mode)
 	}
 }
 
-Id QtCodeNavigator::getSchedulerId() const
+TabId QtCodeNavigator::getSchedulerId() const
 {
 	return m_schedulerId;
 }
 
-void QtCodeNavigator::setSchedulerId(Id schedulerId)
+void QtCodeNavigator::setSchedulerId(TabId schedulerId)
 {
 	m_schedulerId = schedulerId;
 }

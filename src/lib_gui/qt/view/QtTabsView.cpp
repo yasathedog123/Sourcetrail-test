@@ -17,6 +17,8 @@
 #include "TabsController.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtTabsView::QtTabsView(ViewLayout* viewLayout)
 	: TabsView(viewLayout) 
 {
@@ -96,7 +98,7 @@ void QtTabsView::closeTab()
 	m_onQtThread([=, this]() { removeTab(m_tabBar->currentIndex()); });
 }
 
-void QtTabsView::destroyTab(Id tabId)
+void QtTabsView::destroyTab(TabId tabId)
 {
 	m_onQtThread([=, this]() { getController<TabsController>()->destroyTab(tabId); });
 }
@@ -113,12 +115,12 @@ void QtTabsView::selectTab(bool next)
 	});
 }
 
-void QtTabsView::updateTab(Id tabId, const std::vector<SearchMatch>& matches)
+void QtTabsView::updateTab(TabId tabId, const std::vector<SearchMatch>& matches)
 {
 	m_onQtThread([=, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (tabId == m_tabBar->tabData(i).toInt())
+			if (tabId == qt_variant_cast<TabId>(m_tabBar->tabData(i)))
 			{
 				setTabState(i, matches);
 				return;
@@ -137,7 +139,7 @@ void QtTabsView::addTab()
 
 void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 {
-	Id tabId = TabIds::nextTab();
+	TabId tabId = TabIds::nextTab();
 
 	m_tabBar->blockSignals(true);
 
@@ -145,7 +147,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	int idx = match.isValid() ? static_cast<int>(m_tabBar->currentIndex() + m_insertedTabCount)
 							  : m_tabBar->count() + 1;
 	idx = m_tabBar->insertTab(idx, tr(" Empty Tab "));
-	m_tabBar->setTabData(idx, static_id_cast<qulonglong>(tabId));
+	m_tabBar->setTabData(idx, QVariant::fromValue(tabId));
 
 	QPushButton* typeCircle = new QPushButton();
 	typeCircle->setObjectName(QStringLiteral("type_circle"));
@@ -154,7 +156,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	connect(typeCircle, &QPushButton::clicked, [tabId, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (tabId == m_tabBar->tabData(i).toInt())
+			if (tabId == qt_variant_cast<TabId>(m_tabBar->tabData(i)))
 			{
 				m_tabBar->setCurrentIndex(i);
 				return;
@@ -172,7 +174,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	connect(closeButton, &QPushButton::clicked, [tabId, this]() {
 		for (int i = 0; i < m_tabBar->count(); i++)
 		{
-			if (tabId == m_tabBar->tabData(i).toInt())
+			if (tabId == qt_variant_cast<TabId>(m_tabBar->tabData(i)))
 			{
 				removeTab(i);
 				return;
@@ -200,7 +202,7 @@ void QtTabsView::changedTab(int index)
 {
 	m_insertedTabCount = 0;
 
-	getController<TabsController>()->showTab(m_tabBar->tabData(index).toInt());
+	getController<TabsController>()->showTab(qt_variant_cast<TabId>(m_tabBar->tabData(index)));
 
 	for (int i = 0; i < m_tabBar->count(); i++)
 	{
@@ -219,7 +221,7 @@ void QtTabsView::removeTab(int index)
 {
 	m_insertedTabCount = 0;
 
-	getController<TabsController>()->removeTab(m_tabBar->tabData(index).toInt());
+	getController<TabsController>()->removeTab(qt_variant_cast<TabId>(m_tabBar->tabData(index)));
 	m_tabBar->removeTab(index);
 }
 

@@ -36,7 +36,7 @@ public:
 
 	void updateZoom(float delta);
 
-	Id getSchedulerId() const override
+	TabId getSchedulerId() const override
 	{
 		return m_tabId;
 	}
@@ -153,7 +153,7 @@ private:
 	float m_zoomOutButtonSpeed = -20.0f;
 
 	QImage m_imageCached;
-	Id m_tabId;
+	TabId m_tabId;
 };
 
 #endif	  // QT_GRAPHICS_VIEW_H

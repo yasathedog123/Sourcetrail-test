@@ -1,34 +1,51 @@
 #include "TabIds.h"
 
-Id TabIds::s_nextTabId = 10;
-Id TabIds::s_currentTabId = 0;
+#include <type_traits>
 
-Id TabIds::app()
+using namespace std;
+
+TabId TabIds::s_nextTabId = TabId::USER;
+TabId TabIds::s_currentTabId = TabId::NONE;
+
+namespace
 {
-	return 1;
+
+TabId operator ++(TabId &tabId, int)
+{
+	return static_cast<TabId>(reinterpret_cast<underlying_type_t<TabId> &>(tabId)++);
 }
 
-Id TabIds::background()
-{
-	return 2;
 }
 
-Id TabIds::ignore()
+TabId TabIds::app()
 {
-	return 3;
+	return TabId::APP;
 }
 
-Id TabIds::nextTab()
+TabId TabIds::background()
+{
+	return TabId::BACKGROUND;
+}
+
+TabId TabIds::ignore()
+{
+	return TabId::IGNORE;
+}
+
+TabId TabIds::nextTab()
 {
 	return s_nextTabId++;
 }
 
-Id TabIds::currentTab()
+TabId TabIds::currentTab()
 {
 	return s_currentTabId;
 }
 
-void TabIds::setCurrentTabId(Id currentTabId)
+void TabIds::setCurrentTabId(TabId currentTabId)
 {
 	s_currentTabId = currentTabId;
 }
+
+
+

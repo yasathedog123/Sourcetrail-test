@@ -44,7 +44,7 @@ void TabsController::clear()
 	}
 }
 
-void TabsController::addTab(Id tabId, SearchMatch match)
+void TabsController::addTab(TabId tabId, SearchMatch match)
 {
 	std::lock_guard<std::mutex> lock(m_tabsMutex);
 
@@ -79,7 +79,7 @@ void TabsController::addTab(Id tabId, SearchMatch match)
 	m_isCreatingTab = false;
 }
 
-void TabsController::showTab(Id tabId)
+void TabsController::showTab(TabId tabId)
 {
 	std::lock_guard<std::mutex> lock(m_tabsMutex);
 
@@ -91,7 +91,7 @@ void TabsController::showTab(Id tabId)
 	}
 	else
 	{
-		TabIds::setCurrentTabId(0);
+		TabIds::setCurrentTabId(TabId::NONE);
 		m_mainLayout->showOriginalViews();
 	}
 
@@ -100,7 +100,7 @@ void TabsController::showTab(Id tabId)
 				   }));
 }
 
-void TabsController::removeTab(Id tabId)
+void TabsController::removeTab(TabId tabId)
 {
 	// use app task scheduler thread to stop running tasks of tab
 	Task::dispatch(TabIds::background(), std::make_shared<TaskLambda>([tabId, this]() {
@@ -116,7 +116,7 @@ void TabsController::removeTab(Id tabId)
 				   }));
 }
 
-void TabsController::destroyTab(Id tabId)
+void TabsController::destroyTab(TabId tabId)
 {
 	std::lock_guard<std::mutex> lock(m_tabsMutex);
 
@@ -132,7 +132,7 @@ void TabsController::destroyTab(Id tabId)
 
 void TabsController::onClearTabs()
 {
-	TabIds::setCurrentTabId(0);
+	TabIds::setCurrentTabId(TabId::NONE);
 	m_mainLayout->showOriginalViews();
 }
 

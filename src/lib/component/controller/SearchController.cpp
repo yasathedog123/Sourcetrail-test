@@ -8,7 +8,7 @@
 
 SearchController::SearchController(StorageAccess* storageAccess): m_storageAccess(storageAccess) {}
 
-Id SearchController::getSchedulerId() const
+TabId SearchController::getSchedulerId() const
 {
 	return Controller::getTabId();
 }

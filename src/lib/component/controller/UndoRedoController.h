@@ -70,7 +70,7 @@ public:
 	UndoRedoController(StorageAccess* storageAccess);
 	~UndoRedoController() override = default;
 
-	Id getSchedulerId() const override;
+	TabId getSchedulerId() const override;
 
 	UndoRedoView* getView();
 

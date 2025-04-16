@@ -1,23 +1,36 @@
 #ifndef TAB_IDS_H
 #define TAB_IDS_H
 
-#include "Id.h"
+#include <QMetaType>
+
+enum class TabId : unsigned
+{
+	NONE = 0,
+	
+	APP = 1,
+	BACKGROUND = 2,
+	IGNORE = 3,
+	
+	USER = 10
+};
+
+Q_DECLARE_METATYPE(TabId)
 
 class TabIds
 {
 public:
-	static Id app();
-	static Id background();
-	static Id ignore();
+	static TabId app();
+	static TabId background();
+	static TabId ignore();
 
-	static Id nextTab();
-	static Id currentTab();
+	static TabId nextTab();
+	static TabId currentTab();
 
-	static void setCurrentTabId(Id currentTabId);
+	static void setCurrentTabId(TabId currentTabId);
 
 private:
-	static Id s_nextTabId;
-	static Id s_currentTabId;
+	static TabId s_nextTabId;
+	static TabId s_currentTabId;
 };
 
 #endif

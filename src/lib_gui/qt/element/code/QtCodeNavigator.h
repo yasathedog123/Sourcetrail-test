@@ -53,8 +53,8 @@ public:
 
 	void setMode(Mode mode);
 
-	Id getSchedulerId() const override;
-	void setSchedulerId(Id schedulerId);
+	TabId getSchedulerId() const override;
+	void setSchedulerId(TabId schedulerId);
 
 	const std::set<Id>& getCurrentActiveTokenIds() const;
 	void setCurrentActiveTokenIds(const std::vector<Id>& currentActiveTokenIds);
@@ -140,7 +140,7 @@ private:
 	Mode m_mode = MODE_NONE;
 	Mode m_oldMode = MODE_NONE;
 
-	Id m_schedulerId;
+	TabId m_schedulerId;
 
 	std::set<Id> m_currentActiveTokenIds;
 	std::set<Id> m_currentActiveLocationIds;

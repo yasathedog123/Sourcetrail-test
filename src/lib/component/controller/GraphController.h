@@ -58,7 +58,7 @@ public:
 	GraphController(StorageAccess* storageAccess);
 	~GraphController() override = default;
 
-	Id getSchedulerId() const override;
+	TabId getSchedulerId() const override;
 
 private:
 	void handleMessage(MessageActivateErrors* message) override;

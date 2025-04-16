@@ -5,7 +5,6 @@
 
 #include "MessageBase.h"
 #include "MessageQueue.h"
-#include "types.h"
 
 class MessageListenerBase
 {
@@ -51,9 +50,9 @@ public:
 		m_alive = false;
 	}
 
-	virtual Id getSchedulerId() const
+	virtual TabId getSchedulerId() const
 	{
-		return 0;
+		return TabId::NONE;
 	}
 
 private:

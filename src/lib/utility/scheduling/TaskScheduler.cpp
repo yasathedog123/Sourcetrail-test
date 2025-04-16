@@ -6,7 +6,7 @@
 #include "ScopedFunctor.h"
 #include "logging.h"
 
-TaskScheduler::TaskScheduler(Id schedulerId)
+TaskScheduler::TaskScheduler(TabId schedulerId)
 	: m_schedulerId(schedulerId)
 {
 }

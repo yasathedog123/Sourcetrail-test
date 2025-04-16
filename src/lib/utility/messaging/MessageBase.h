@@ -4,7 +4,8 @@
 #include <ostream>
 #include <sstream>
 
-#include "types.h"
+#include "Id.h"
+#include "TabIds.h"
 #include "utilityString.h"
 
 class MessageBase
@@ -12,7 +13,7 @@ class MessageBase
 public:
 	MessageBase()
 		: m_id(s_nextId++)
-		, m_schedulerId(0)
+		, m_schedulerId(TabId::NONE)
 	{
 	}
 
@@ -26,12 +27,12 @@ public:
 		return m_id;
 	}
 
-	Id getSchedulerId() const
+	TabId getSchedulerId() const
 	{
 		return m_schedulerId;
 	}
 
-	void setSchedulerId(Id schedulerId)
+	void setSchedulerId(TabId schedulerId)
 	{
 		m_schedulerId = schedulerId;
 	}
@@ -110,7 +111,7 @@ private:
 	static Id s_nextId;
 
 	Id m_id;
-	Id m_schedulerId;
+	TabId m_schedulerId;
 
 	bool m_isParallel = false;
 	bool m_isReplayed = false;

@@ -81,8 +81,8 @@ private:
 	std::vector<std::wstring> getDisplayNamesForNodeId(Id nodeId) const;
 
 	std::vector<BookmarkCategory> getAllBookmarkCategories() const;
-
-	std::shared_ptr<Bookmark> getBookmarkForActiveToken(Id tabId) const;
+	
+	std::shared_ptr<Bookmark> getBookmarkForActiveToken(TabId tabId) const;
 	std::shared_ptr<Bookmark> getBookmarkForNodeId(Id nodeId) const;
 
 	bool canCreateBookmark() const;
@@ -114,8 +114,8 @@ private:
 	StorageAccess* m_storageAccess;
 	mutable BookmarkCache m_bookmarkCache;
 
-	mutable std::map<Id, std::vector<Id>> m_activeNodeIds;
-	mutable std::map<Id, std::vector<Id>> m_activeEdgeIds;
+	mutable std::map<TabId, std::vector<Id>> m_activeNodeIds;
+	mutable std::map<TabId, std::vector<Id>> m_activeEdgeIds;
 
 	Bookmark::BookmarkFilter m_filter = Bookmark::FILTER_ALL;
 	Bookmark::BookmarkOrder m_order = Bookmark::ORDER_DATE_DESCENDING;

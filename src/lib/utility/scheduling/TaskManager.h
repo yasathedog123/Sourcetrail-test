@@ -5,20 +5,20 @@
 #include <memory>
 #include <mutex>
 
-#include "types.h"
+#include "TabIds.h"
 
 class TaskScheduler;
 
 class TaskManager
 {
 public:
-	static std::shared_ptr<TaskScheduler> createScheduler(Id schedulerId);
-	static void destroyScheduler(Id schedulerId);
-
-	static std::shared_ptr<TaskScheduler> getScheduler(Id schedulerId);
+	static std::shared_ptr<TaskScheduler> createScheduler(TabId schedulerId);
+	static void destroyScheduler(TabId schedulerId);
+	
+	static std::shared_ptr<TaskScheduler> getScheduler(TabId schedulerId);
 
 private:
-	static std::map<Id, std::shared_ptr<TaskScheduler>> s_schedulers;
+	static std::map<TabId, std::shared_ptr<TaskScheduler>> s_schedulers;
 	static std::mutex s_schedulersMutex;
 };
 

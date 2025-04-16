@@ -11,7 +11,9 @@ template <typename ControllerType>
 class ControllerProxy
 {
 public:
-	ControllerProxy(View* view, Id schedulerId): m_view(view), m_schedulerId(schedulerId) {}
+	ControllerProxy(View* view, TabId schedulerId)
+		: m_view(view), m_schedulerId(schedulerId) 
+	{}
 
 	void execute(std::function<void(ControllerType*)> callback)
 	{
@@ -43,7 +45,7 @@ public:
 
 private:
 	View* m_view;
-	Id m_schedulerId;
+	TabId m_schedulerId;
 };
 
 #endif	  // CONTROLLER_PROXY_H

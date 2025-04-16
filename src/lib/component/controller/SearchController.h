@@ -20,7 +20,7 @@ public:
 	SearchController(StorageAccess* storageAccess);
 	~SearchController() override = default;
 
-	Id getSchedulerId() const override;
+	TabId getSchedulerId() const override;
 
 private:
 	void handleActivation(const MessageActivateBase* message) override;

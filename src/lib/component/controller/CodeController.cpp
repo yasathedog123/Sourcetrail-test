@@ -21,7 +21,7 @@
 
 CodeController::CodeController(StorageAccess* storageAccess): m_storageAccess(storageAccess) {}
 
-Id CodeController::getSchedulerId() const
+TabId CodeController::getSchedulerId() const
 {
 	return Controller::getTabId();
 }

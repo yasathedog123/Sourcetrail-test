@@ -109,7 +109,7 @@ void waitForThread(TaskScheduler& scheduler)
 
 TEST_CASE("scheduler loop starts and stops")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	REQUIRE(!scheduler.loopIsRunning());
 
 	scheduler.startSchedulerLoopThreaded();
@@ -141,7 +141,7 @@ TEST_CASE("tasks get executed without scheduling in correct order")
 
 TEST_CASE("scheduled tasks get processed with callbacks in correct order")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	scheduler.startSchedulerLoopThreaded();
 
 	int order = 0;
@@ -162,7 +162,7 @@ TEST_CASE("scheduled tasks get processed with callbacks in correct order")
 
 TEST_CASE("sequential task group to process tasks in correct order")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	scheduler.startSchedulerLoopThreaded();
 
 	int order = 0;
@@ -192,7 +192,7 @@ TEST_CASE("sequential task group to process tasks in correct order")
 
 TEST_CASE("sequential task group does not evaluate tasks after failure")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	scheduler.startSchedulerLoopThreaded();
 
 	int order = 0;
@@ -220,7 +220,7 @@ TEST_CASE("sequential task group does not evaluate tasks after failure")
 
 TEST_CASE("sequential task group does not evaluate tasks after success")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	scheduler.startSchedulerLoopThreaded();
 
 	int order = 0;
@@ -254,7 +254,7 @@ TEST_CASE("sequential task group does not evaluate tasks after success")
 
 TEST_CASE("task scheduling within task processing")
 {
-	TaskScheduler scheduler(0);
+	TaskScheduler scheduler(TabId::NONE);
 	scheduler.startSchedulerLoopThreaded();
 
 	int order = 0;

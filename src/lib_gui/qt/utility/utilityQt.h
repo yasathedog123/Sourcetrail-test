@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <QVariant>
+
 class FilePath;
 class QColor;
 class QIcon;
@@ -27,6 +29,14 @@ QIcon createButtonIcon(const FilePath& iconPath, const std::string& colorId);
 QtMainWindow* getMainWindowforMainView(ViewLayout* viewLayout);
 
 void copyNewFilesFromDirectory(const QString& src, const QString& dst);
+
+template <typename T>
+	T qt_variant_cast(const QVariant &variant)
+	{
+		Q_ASSERT(variant.canConvert<T>());
+		return qvariant_cast<T>(variant);
+	}
+	
 }	 // namespace utility
 
 #endif	  // UTILITY_QT_H

@@ -7,12 +7,11 @@
 
 #include "Task.h"
 #include "TaskRunner.h"
-#include "types.h"
 
 class TaskScheduler
 {
 public:
-	TaskScheduler(Id schedulerId);
+	TaskScheduler(TabId schedulerId);
 	~TaskScheduler();
 
 	void pushTask(std::shared_ptr<Task> task);
@@ -30,7 +29,7 @@ public:
 private:
 	void processTasks();
 
-	const Id m_schedulerId;
+	const TabId m_schedulerId;
 
 	bool m_loopIsRunning = false;
 	bool m_threadIsRunning = false;

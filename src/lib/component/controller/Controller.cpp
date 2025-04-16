@@ -9,12 +9,12 @@ void Controller::setComponent(Component* component)
 	m_component = component;
 }
 
-Id Controller::getTabId() const
+TabId Controller::getTabId() const
 {
 	if (m_component)
 	{
 		return m_component->getTabId();
 	}
 
-	return 0;
+	return TabId::NONE;
 }

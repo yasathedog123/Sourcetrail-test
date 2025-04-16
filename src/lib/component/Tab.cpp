@@ -4,7 +4,7 @@
 #include "GraphView.h"
 
 Tab::Tab(
-	Id tabId,
+	TabId tabId,
 	const ViewFactory* viewFactory,
 	StorageAccess* storageAccess,
 	ScreenSearchSender* screenSearchSender)
@@ -22,7 +22,7 @@ Tab::~Tab()
 	m_componentManager.teardownTab(m_screenSearchSender);
 }
 
-Id Tab::getSchedulerId() const
+TabId Tab::getSchedulerId() const
 {
 	return m_tabId;
 }

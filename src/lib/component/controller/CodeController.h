@@ -71,7 +71,7 @@ public:
 	CodeController(StorageAccess* storageAccess);
 	~CodeController() override = default;
 
-	Id getSchedulerId() const override;
+	TabId getSchedulerId() const override;
 
 private:
 	struct Reference

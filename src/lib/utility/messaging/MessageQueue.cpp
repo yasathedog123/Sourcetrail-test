@@ -248,7 +248,7 @@ void MessageQueue::sendMessage(std::shared_ptr<MessageBase> message)
 		MessageListenerBase* listener = m_listeners[m_currentListenerIndex];
 
 		if (listener->getType() == message->getType() &&
-			(message->getSchedulerId() == 0 || listener->getSchedulerId() == 0 ||
+			(message->getSchedulerId() == TabId::NONE || listener->getSchedulerId() == TabId::NONE ||
 			 listener->getSchedulerId() == message->getSchedulerId()))
 		{
 			// The listenersMutex gets unlocked so changes to listeners are possible while message handling.
@@ -278,7 +278,7 @@ void MessageQueue::sendMessageAsTask(std::shared_ptr<MessageBase> message, bool 
 			MessageListenerBase* listener = m_listeners[i];
 
 			if (listener->getType() == message->getType() &&
-				(message->getSchedulerId() == 0 || listener->getSchedulerId() == 0 ||
+				(message->getSchedulerId() == TabId::NONE || listener->getSchedulerId() == TabId::NONE ||
 				 listener->getSchedulerId() == message->getSchedulerId()))
 			{
 				Id listenerId = listener->getId();
@@ -294,8 +294,8 @@ void MessageQueue::sendMessageAsTask(std::shared_ptr<MessageBase> message, bool 
 		}
 	}
 
-	Id schedulerId = message->getSchedulerId();
-	if (!schedulerId)
+	TabId schedulerId = message->getSchedulerId();
+	if (schedulerId == TabId::NONE)
 	{
 		schedulerId = TabIds::app();
 	}

@@ -14,7 +14,7 @@ UndoRedoController::UndoRedoController(StorageAccess* storageAccess): m_storageA
 	m_iterator = m_list.end();
 }
 
-Id UndoRedoController::getSchedulerId() const
+TabId UndoRedoController::getSchedulerId() const
 {
 	return Controller::getTabId();
 }

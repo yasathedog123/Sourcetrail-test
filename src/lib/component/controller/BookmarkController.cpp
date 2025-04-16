@@ -66,7 +66,7 @@ void BookmarkController::createBookmark(
 {
 	LOG_INFO("Attempting to create new bookmark");
 
-	Id tabId = TabIds::currentTab();
+	TabId tabId = TabIds::currentTab();
 
 	BookmarkCategory bookmarkCategory(0, category.empty() ? s_defaultCategoryName : category);
 
@@ -239,7 +239,7 @@ void BookmarkController::activateBookmark(const std::shared_ptr<Bookmark> bookma
 
 void BookmarkController::showBookmarkCreator(Id nodeId)
 {
-	Id tabId = TabIds::currentTab();
+	TabId tabId = TabIds::currentTab();
 	if (!m_activeNodeIds[tabId].size() && !m_activeEdgeIds[tabId].size() && !nodeId)
 	{
 		return;
@@ -316,7 +316,7 @@ void BookmarkController::handleActivation(const MessageActivateBase*  /*message*
 
 void BookmarkController::handleMessage(MessageActivateTokens* message)
 {
-	Id tabId = message->getSchedulerId();
+	TabId tabId = message->getSchedulerId();
 	m_activeEdgeIds[tabId].clear();
 
 	if (message->isEdge || message->isBundledEdges)
@@ -401,7 +401,7 @@ std::vector<BookmarkCategory> BookmarkController::getAllBookmarkCategories() con
 	return m_storageAccess->getAllBookmarkCategories();
 }
 
-std::shared_ptr<Bookmark> BookmarkController::getBookmarkForActiveToken(Id tabId) const
+std::shared_ptr<Bookmark> BookmarkController::getBookmarkForActiveToken(TabId tabId) const
 {
 	if (!m_activeEdgeIds[tabId].empty())
 	{

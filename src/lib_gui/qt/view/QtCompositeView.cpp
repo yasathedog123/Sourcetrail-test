@@ -7,7 +7,7 @@
 #include "utilityQt.h"
 
 QtCompositeView::QtCompositeView(
-	ViewLayout* viewLayout, CompositeDirection direction, const std::string& name, Id tabId)
+	ViewLayout* viewLayout, CompositeDirection direction, const std::string& name, TabId tabId)
 	: CompositeView(viewLayout, direction, name, tabId)
 {
 	QBoxLayout* topLayout = new QVBoxLayout();

@@ -11,7 +11,7 @@ class QtCompositeView: public CompositeView
 {
 public:
 	QtCompositeView(
-		ViewLayout* viewLayout, CompositeDirection direction, const std::string& name, Id tabId);
+		ViewLayout* viewLayout, CompositeDirection direction, const std::string& name, TabId tabId);
 	~QtCompositeView() override = default;
 
 	// View implementation

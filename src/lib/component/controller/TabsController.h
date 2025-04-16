@@ -39,11 +39,11 @@ public:
 
 	// Controller implementation
 	void clear() override;
-
-	void addTab(Id tabId, SearchMatch match);
-	void showTab(Id tabId);
-	void removeTab(Id tabId);
-	void destroyTab(Id tabId);
+	
+	void addTab(TabId tabId, SearchMatch match);
+	void showTab(TabId tabId);
+	void removeTab(TabId tabId);
+	void destroyTab(TabId tabId);
 	void onClearTabs();
 
 private:
@@ -62,7 +62,7 @@ private:
 	StorageAccess* m_storageAccess;
 	ScreenSearchSender* m_screenSearchSender;
 
-	std::map<Id, std::shared_ptr<Tab>> m_tabs;
+	std::map<TabId, std::shared_ptr<Tab>> m_tabs;
 	std::mutex m_tabsMutex;
 
 	bool m_isCreatingTab = false;

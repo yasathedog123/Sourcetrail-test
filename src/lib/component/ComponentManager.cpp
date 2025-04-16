@@ -41,9 +41,9 @@ void ComponentManager::clear()
 	reverseErase(m_singleViews);
 }
 
-void ComponentManager::setupMain(ViewLayout* viewLayout, Id appId)
+void ComponentManager::setupMain(ViewLayout* viewLayout, TabId appId)
 {
-	std::shared_ptr<CompositeView> compositeView = m_componentFactory.getViewFactory()->createCompositeView(viewLayout, CompositeView::DIRECTION_HORIZONTAL, "Search", 0);
+	std::shared_ptr<CompositeView> compositeView = m_componentFactory.getViewFactory()->createCompositeView(viewLayout, CompositeView::DIRECTION_HORIZONTAL, "Search", TabId::NONE);
 	m_singleViews.push_back(compositeView);
 
 	std::shared_ptr<UndoRedoView> undoRedoView = m_componentFactory.getViewFactory()->createUndoRedoView(compositeView.get());
@@ -102,7 +102,7 @@ void ComponentManager::setupMain(ViewLayout* viewLayout, Id appId)
 	m_components.push_back(customTrailComponent);
 }
 
-void ComponentManager::setupTab(ViewLayout* viewLayout, Id tabId, ScreenSearchSender* screenSearchSender)
+void ComponentManager::setupTab(ViewLayout* viewLayout, TabId tabId, ScreenSearchSender* screenSearchSender)
 {
 	std::shared_ptr<CompositeView> compositeView =
 		m_componentFactory.getViewFactory()->createCompositeView(

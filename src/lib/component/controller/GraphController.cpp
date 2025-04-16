@@ -27,7 +27,7 @@ GraphController::GraphController(StorageAccess* storageAccess)
 {
 }
 
-Id GraphController::getSchedulerId() const
+TabId GraphController::getSchedulerId() const
 {
 	return Controller::getTabId();
 }
