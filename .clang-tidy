@@ -19,7 +19,7 @@ Checks: >
     modernize-use-default-member-init,
     modernize-use-nullptr,
     readability-convert-member-functions-to-static,
-    # readability-implicit-bool-conversion, # TODO: Later
+    readability-implicit-bool-conversion,
     readability-make-member-function-const,
     readability-qualified-auto,
     readability-redundant-member-init,
@@ -33,7 +33,7 @@ HeaderFilterRegex: '.*'
 FormatStyle:       'file'
 CheckOptions:
     - key: bugprone-string-constructor.StringNames
-      value: ' ::std::basic_string;::std::basic_string_view;QString'
+      value: '::std::basic_string;::std::basic_string_view;QString'
 
     - key: cppcoreguidelines-pro-type-member-init.UseAssignment
       value: '1'
