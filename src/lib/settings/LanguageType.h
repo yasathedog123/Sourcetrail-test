@@ -1,9 +1,11 @@
 #ifndef LANGUAGE_TYPE_H
 #define LANGUAGE_TYPE_H
 
-#include <string>
-
 #include "SourceGroupType.h"
+
+#include <QMetaType>
+
+#include <string>
 
 enum class LanguageType
 {
@@ -20,6 +22,8 @@ enum class LanguageType
 #endif
 	CUSTOM
 };
+
+Q_DECLARE_METATYPE(LanguageType)
 
 std::string languageTypeToString(LanguageType t);
 

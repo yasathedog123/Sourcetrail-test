@@ -13,11 +13,11 @@
 #include "ResourcePaths.h"
 #include "SqliteIndexStorage.h"
 #include "utilityApp.h"
+#include "utilityQt.h"
 #include "utilityString.h"
 
+using namespace utility;
 using namespace boost::chrono;
-
-Q_DECLARE_METATYPE(LanguageType);
 
 QtProjectWizardContentSelect::QtProjectWizardContentSelect(QtProjectWizardWindow* window)
 	: QtProjectWizardContent(window)
@@ -162,12 +162,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 
 	connect(m_languages, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), [this](QAbstractButton* button)
 	{
-		LanguageType selectedLanguage = LanguageType::UNKNOWN;
-		QVariant languageTypeProperty = button->property("language_type");
-		if (languageTypeProperty.canConvert<LanguageType>())
-		{
-			selectedLanguage = languageTypeProperty.value<LanguageType>();
-		}
+		LanguageType selectedLanguage = qt_variant_cast<LanguageType>(button->property("language_type"));
 
 		bool hasRecommended = false;
 		for (auto& it: m_buttons)
