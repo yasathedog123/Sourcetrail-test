@@ -1,19 +1,32 @@
 #ifndef ID_H
 #define ID_H
 
+#include <QMetaType>
+
 #include <cstddef>
 #include <iosfwd>
 #include <string>
 #include <unordered_map>
 
-
 class Id final {
 public:
 	using type = std::size_t;
+	
+	enum class FirstBits : type
+	{
+		ONE   = ~(~type(0) >> 1),
+		TWO   = ~(~type(0) >> 2),
+		THREE = ~(~type(0) >> 3)
+	};
 
-	Id(type value = 0) noexcept
-		: m_value(value)
+	Id() noexcept
+		: m_value(0)
 	{}
+
+	Id(type value) noexcept
+		: m_value(value)
+	{
+	}
 
 	Id operator ++ () noexcept
 	{
@@ -74,16 +87,19 @@ public:
 	// Unusual operations:
 	//
 
-	// In some places certain bit values are added to the id, but the comments don't explain the
-	// intent properly, only that the bits are set to avoid collisions. The most used bit values are:
-	// First bit       : ~(~static_cast<Id::type>(0) >> 1);
-	// First two bits  : ~(~static_cast<Id::type>(0) >> 2);
-	// First three bits: ~(~static_cast<Id::type>(0) >> 3);
-	Id operator + (const type value) const noexcept
+	// In some places certain values are ored/multiplied to the id, but the comments don't explain 
+	// the intent properly, only that it is done to avoid collisions.
+	
+	Id(FirstBits bits)
 	{
-		return m_value + value;
+		m_value = static_cast<type>(bits);
 	}
-
+	
+	Id operator | (FirstBits bits) const noexcept
+	{
+		return m_value | static_cast<type>(bits);
+	}
+	
 	Id operator * (const type value) const noexcept
 	{
 		return m_value * value;
@@ -92,6 +108,8 @@ public:
 private:
 	type m_value;
 };
+
+Q_DECLARE_METATYPE(Id)
 
 template <typename T>
 	T static_id_cast(const Id id) noexcept

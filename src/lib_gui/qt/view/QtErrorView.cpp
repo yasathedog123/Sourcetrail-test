@@ -23,6 +23,8 @@
 #include "TabIds.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QIcon QtErrorView::s_errorIcon;
 
 QtErrorView::QtErrorView(ViewLayout* viewLayout)
@@ -70,8 +72,7 @@ QtErrorView::QtErrorView(ViewLayout* viewLayout)
 				return;
 			}
 
-			const Id errorId = static_cast<Id>(
-				m_model->item(index.row(), Column::ID)->text().toLongLong());
+			const Id errorId = qt_variant_cast<Id>(m_model->item(index.row(), Column::ID)->data(Qt::DisplayRole));
 
 			m_controllerProxy.executeAsTaskWithArgs(&ErrorController::showError, errorId);
 		}
@@ -204,8 +205,8 @@ void QtErrorView::addErrors(
 void QtErrorView::setErrorId(Id errorId)
 {
 	m_onQtThread([=, this]() {
-		QList<QStandardItem*> items = m_model->findItems(
-			QString::number(static_id_cast<Id::type>(errorId)), Qt::MatchExactly, Column::ID);
+		QList<QStandardItem*> items = m_model->findItems(QString::fromStdWString(to_wstring(errorId)), 
+			Qt::MatchExactly, Column::ID);
 
 		if (items.size() == 1)
 		{
@@ -294,7 +295,7 @@ void QtErrorView::addErrorToTable(const ErrorInfo& error)
 	}
 
 	QStandardItem* item = new QStandardItem();
-	item->setData(static_id_cast<qulonglong>(error.id), Qt::DisplayRole);
+	item->setData(QVariant::fromValue(error.id), Qt::DisplayRole);
 	m_model->setItem(rowNumber, Column::ID, item);
 
 	m_model->setItem(

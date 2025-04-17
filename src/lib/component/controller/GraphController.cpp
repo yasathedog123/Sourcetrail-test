@@ -1296,7 +1296,7 @@ void GraphController::bundleNodesAndEdgesMatching(
 	DummyNode* firstNode = bundleNode->bundledNodes.begin()->get();
 
 	// Use token Id of first node and make first bit 1
-	bundleNode->tokenId = firstNode->data->getId() + ~(~Id::type(0) >> 1);
+	bundleNode->tokenId = firstNode->data->getId() | Id::FirstBits::ONE;
 	bundleNode->bundleInfo.layoutVertical = firstNode->bundleInfo.layoutVertical;
 	bundleNode->bundleInfo.isReferenced = firstNode->bundleInfo.isReferenced;
 	bundleNode->bundleInfo.isReferencing = firstNode->bundleInfo.isReferencing;
@@ -1384,7 +1384,7 @@ std::shared_ptr<DummyNode> GraphController::bundleNodesMatching(
 	}
 
 	// Use token Id of first node and make first bit 1
-	bundleNode->tokenId = (*bundleNode->bundledNodes.begin())->data->getId() + ~(~Id::type(0) >> 1);
+	bundleNode->tokenId = (*bundleNode->bundledNodes.begin())->data->getId() | Id::FirstBits::ONE;
 	return bundleNode;
 }
 
@@ -1767,7 +1767,7 @@ void GraphController::groupTrailNodes(GroupType groupType)
 		groupNode->groupLayout = GroupLayout::SQUARE;
 
 		// Use token Id of first node and make first 2 bits 1
-		groupNode->tokenId = node.nodeId + ~(~Id::type(0) >> 2);
+		groupNode->tokenId = node.nodeId | Id::FirstBits::TWO;
 		m_topLevelAncestorIds[groupNode->tokenId] = groupNode->tokenId;
 
 		std::shared_ptr<DummyEdge> targetEdge = std::make_shared<DummyEdge>();
@@ -2321,7 +2321,7 @@ void GraphController::relayoutGraph(
 		if (withCharacterIndex && m_dummyNodes.size())
 		{
 			// Use token Id of first node and make first 2 bits 1
-			Id groupId = m_dummyNodes[0]->tokenId + ~(~Id::type(0) >> 2);
+			Id groupId = m_dummyNodes[0]->tokenId | Id::FirstBits::TWO;
 
 			DummyNode* group = groupAllNodes(GroupType::DEFAULT, groupId);
 			group->groupLayout = GroupLayout::LIST;
@@ -2388,7 +2388,8 @@ void GraphController::forEachDummyEdge(std::function<void(DummyEdge*)> func)
 
 void GraphController::createLegendGraph()
 {
-	Id id = ~Id::type(0) >> 1;
+	Id id(Id::FirstBits::ONE);
+	
 	std::map<Id, Vec2i> nodePositions;
 	std::shared_ptr<Graph> graph = std::make_shared<Graph>();
 

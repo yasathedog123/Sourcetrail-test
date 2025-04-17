@@ -669,8 +669,7 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getFullTextSearchLo
 							{
 								std::lock_guard<std::mutex> lock(collectionMutex);
 								// Set first bit to 1 to avoid collisions
-								const Id locationId = Id(collection->getSourceLocationCount() + 1) +
-									 ~(~Id::type(0) >> 1);
+								const Id locationId = Id(collection->getSourceLocationCount() + 1) | Id::FirstBits::ONE;
 								collection->addSourceLocation(
 									LocationType::FULLTEXT_SEARCH,
 									locationId,
@@ -1923,7 +1922,7 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getErrorSourceLocat
 	for (const ErrorInfo& error: errors)
 	{
 		// Set first bit to 1 to avoid collisions
-		Id locationId = error.id + ~(~Id::type(0) >> 1);
+		Id locationId = error.id | Id::FirstBits::ONE;
 
 		collection->addSourceLocation(
 			LocationType::ERROR,
@@ -3060,7 +3059,7 @@ void PersistentStorage::addBundledEdgesToGraph(
 		}
 
 		// Set first bit to 1 to avoid collisions
-		const Id bundledEdgesId = *componentBundledEdges->getBundledEdgesIds().begin() + ~(~Id::type(0) >> 1);
+		const Id bundledEdgesId = *componentBundledEdges->getBundledEdgesIds().begin() | Id::FirstBits::ONE;
 
 		Edge* edge = graph->createEdge(bundledEdgesId, Edge::EDGE_BUNDLED_EDGES, sourceNode, targetNode);
 		edge->addComponent(componentBundledEdges);
@@ -3110,7 +3109,7 @@ void PersistentStorage::addFileContentsToGraph(Id fileId, Graph* graph) const
 		if (node && !node->getMemberEdge())
 		{
 			// Set first bit to 1 to avoid collisions
-			graph->createEdge(memberEdgeId++ + ~(~Id::type(0) >> 1), Edge::EDGE_MEMBER, fileNode, node);
+			graph->createEdge(memberEdgeId++ | Id::FirstBits::ONE, Edge::EDGE_MEMBER, fileNode, node);
 		}
 	}
 
@@ -3220,7 +3219,7 @@ void PersistentStorage::addInheritanceChainsToGraph(const std::vector<Id>& activ
 				}
 
 				// Set first 2 bits to 1 to avoid collisions
-				const Id inheritanceEdgeId = Id(inheritanceEdgeCount++) + ~(~Id::type(0) >> 2);
+				const Id inheritanceEdgeId = Id(inheritanceEdgeCount++) | Id::FirstBits::TWO;
 
 				Edge* inheritanceEdge = graph->createEdge(
 					inheritanceEdgeId,
@@ -3415,7 +3414,7 @@ void PersistentStorage::buildMemberEdgeIdOrderMap()
 	}
 
 	// Set first 3 bits to 1 to avoid collisions
-	Id baseId = Id(1) + ~(~Id::type(0) >> 3);
+	Id baseId = Id(1) | Id::FirstBits::THREE;
 
 	collection.forEachSourceLocation([&](SourceLocation* location) {
 		auto it = locationIdToElementIdMap.find(location->getLocationId());

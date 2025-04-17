@@ -38,7 +38,7 @@ std::vector<NodeType> getAllNodeTypes()
 NodeTypeSet::MaskType nodeTypeToMask(const NodeType& nodeType)
 {
 	// TODO: convert to mask if ids are not power of two anymore
-	return reinterpret_id_cast<NodeTypeSet::MaskType>(nodeType.getId());
+	return static_id_cast<NodeTypeSet::MaskType>(nodeType.getId());
 }
 
 }
