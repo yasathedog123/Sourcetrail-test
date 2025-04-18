@@ -345,7 +345,7 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 
 	std::vector<Id> locationIds(locations.size(), 0);
 	std::vector<StorageSourceLocationData> locationsToInsert;
-	size_t lastRowId = executeStatementScalar("SELECT MAX(rowid) from source_location", 0);
+	size_t lastRowId = executeStatementScalar("SELECT MAX(rowid) from source_location");
 
 	for (size_t i = 0; i < locations.size(); i++)
 	{
@@ -641,22 +641,19 @@ void SqliteIndexStorage::removeAllErrors()
 
 bool SqliteIndexStorage::isEdge(Id elementId) const
 {
-	int count = executeStatementScalar(
-		"SELECT count(*) FROM edge WHERE id = " + to_string(elementId) + ";", 0);
+	int count = executeStatementScalar("SELECT count(*) FROM edge WHERE id = " + to_string(elementId) + ";");
 	return (count > 0);
 }
 
 bool SqliteIndexStorage::isNode(Id elementId) const
 {
-	int count = executeStatementScalar(
-		"SELECT count(*) FROM node WHERE id = " + to_string(elementId) + ";", 0);
+	int count = executeStatementScalar("SELECT count(*) FROM node WHERE id = " + to_string(elementId) + ";");
 	return (count > 0);
 }
 
 bool SqliteIndexStorage::isFile(Id elementId) const
 {
-	int count = executeStatementScalar(
-		"SELECT count(*) FROM file WHERE id = " + to_string(elementId) + ";", 0);
+	int count = executeStatementScalar("SELECT count(*) FROM file WHERE id = " + to_string(elementId) + ";");
 	return (count > 0);
 }
 
@@ -1118,86 +1115,56 @@ std::vector<ErrorInfo> SqliteIndexStorage::getAllErrorInfos() const
 
 int SqliteIndexStorage::getNodeCount() const
 {
-	return executeStatementScalar("SELECT COUNT(*) FROM node;", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM node;");
 }
 
 int SqliteIndexStorage::getEdgeCount() const
 {
-	return executeStatementScalar("SELECT COUNT(*) FROM edge;", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM edge;");
 }
 
 int SqliteIndexStorage::getFileCount() const
 {
-	return executeStatementScalar("SELECT COUNT(*) FROM file WHERE indexed = 1;", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM file WHERE indexed = 1;");
 }
 
 int SqliteIndexStorage::getCompletedFileCount() const
 {
-	return executeStatementScalar("SELECT COUNT(*) FROM file WHERE indexed = 1 AND complete = 1;", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM file WHERE indexed = 1 AND complete = 1;");
 }
 
 int SqliteIndexStorage::getFileLineSum() const
 {
-	return executeStatementScalar("SELECT SUM(line_count) FROM file;", 0);
+	return executeStatementScalar("SELECT SUM(line_count) FROM file;");
 }
 
 int SqliteIndexStorage::getSourceLocationCount() const
 {
-	return executeStatementScalar("SELECT COUNT(*) FROM source_location;", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM source_location;");
 }
 
 int SqliteIndexStorage::getErrorCount() const
 {
-	return executeStatementScalar(
-		"SELECT COUNT(*) FROM error INNER JOIN occurrence ON (error.id = occurrence.element_id);", 0);
+	return executeStatementScalar("SELECT COUNT(*) FROM error INNER JOIN occurrence ON (error.id = occurrence.element_id);");
 }
 
 std::vector<std::pair<int, SqliteDatabaseIndex>> SqliteIndexStorage::getIndices() 
 {
 	std::vector<std::pair<int, SqliteDatabaseIndex>> indices;
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("edge_source_node_id_index", "edge(source_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("edge_target_node_id_index", "edge(target_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_READ | STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("node_serialized_name_index", "node(serialized_name)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_READ | STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("source_location_file_node_id_index", "source_location(file_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_WRITE, SqliteDatabaseIndex("error_all_data_index", "error(message, fatal)")));
-	indices.push_back(
-		std::make_pair(STORAGE_MODE_WRITE, SqliteDatabaseIndex("file_path_index", "file(path)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_READ | STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("occurrence_element_id_index", "occurrence(element_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_READ | STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex(
-			"occurrence_source_location_id_index", "occurrence(source_location_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex(
-			"element_component_foreign_key_index", "element_component(element_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("edge_source_foreign_key_index", "edge(source_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("edge_target_foreign_key_index", "edge(target_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("source_location_foreign_key_index", "source_location(file_node_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex("occurrence_element_foreign_key_index", "occurrence(element_id)")));
-	indices.push_back(std::make_pair(
-		STORAGE_MODE_CLEAR,
-		SqliteDatabaseIndex(
-			"occurrence_source_location_foreign_key_index", "occurrence(source_location_id)")));
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("edge_source_node_id_index", "edge(source_node_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("edge_target_node_id_index", "edge(target_node_id)")});
+	indices.push_back({STORAGE_MODE_READ | STORAGE_MODE_CLEAR, SqliteDatabaseIndex("node_serialized_name_index", "node(serialized_name)")});
+	indices.push_back({STORAGE_MODE_READ | STORAGE_MODE_CLEAR, SqliteDatabaseIndex("source_location_file_node_id_index", "source_location(file_node_id)")});
+	indices.push_back({STORAGE_MODE_WRITE, SqliteDatabaseIndex("error_all_data_index", "error(message, fatal)")});
+	indices.push_back({STORAGE_MODE_WRITE, SqliteDatabaseIndex("file_path_index", "file(path)")});
+	indices.push_back({STORAGE_MODE_READ | STORAGE_MODE_CLEAR, SqliteDatabaseIndex("occurrence_element_id_index", "occurrence(element_id)")});
+	indices.push_back({STORAGE_MODE_READ | STORAGE_MODE_CLEAR, SqliteDatabaseIndex( "occurrence_source_location_id_index", "occurrence(source_location_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex( "element_component_foreign_key_index", "element_component(element_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("edge_source_foreign_key_index", "edge(source_node_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("edge_target_foreign_key_index", "edge(target_node_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("source_location_foreign_key_index", "source_location(file_node_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex("occurrence_element_foreign_key_index", "occurrence(element_id)")});
+	indices.push_back({STORAGE_MODE_CLEAR, SqliteDatabaseIndex( "occurrence_source_location_foreign_key_index", "occurrence(source_location_id)")});
 
 	return indices;
 }
