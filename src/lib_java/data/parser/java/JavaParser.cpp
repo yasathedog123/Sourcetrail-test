@@ -8,9 +8,9 @@
 #include "ParserClient.h"
 #include "ReferenceKind.h"
 #include "TextAccess.h"
+#include "ToolVersionSupport.h"
 #include "utilityJava.h"
 #include "utilityString.h"
-#include "ToolVersionSupport.h"
 
 void JavaParser::clearCaches()
 {
@@ -46,33 +46,14 @@ JavaParser::JavaParser(
 		methods.push_back({"logInfo", "(ILjava/lang/String;)V", (void*)&JavaParser::LogInfo});
 		methods.push_back({"logWarning", "(ILjava/lang/String;)V", (void*)&JavaParser::LogWarning});
 		methods.push_back({"logError", "(ILjava/lang/String;)V", (void*)&JavaParser::LogError});
-		methods.push_back(
-			{"recordSymbol", "(ILjava/lang/String;III)V", (void*)&JavaParser::RecordSymbol});
-		methods.push_back(
-			{"recordSymbolWithLocation",
-			 "(ILjava/lang/String;IIIIIII)V",
-			 (void*)&JavaParser::RecordSymbolWithLocation});
-		methods.push_back(
-			{"recordSymbolWithLocationAndScope",
-			 "(ILjava/lang/String;IIIIIIIIIII)V",
-			 (void*)&JavaParser::RecordSymbolWithLocationAndScope});
-		methods.push_back(
-			{"recordSymbolWithLocationAndScopeAndSignature",
-			 "(ILjava/lang/String;IIIIIIIIIIIIIII)V",
-			 (void*)&JavaParser::RecordSymbolWithLocationAndScopeAndSignature});
-		methods.push_back(
-			{"recordReference",
-			 "(IILjava/lang/String;Ljava/lang/String;IIII)V",
-			 (void*)&JavaParser::RecordReference});
-		methods.push_back(
-			{"recordQualifierLocation",
-			 "(ILjava/lang/String;IIII)V",
-			 (void*)&JavaParser::RecordQualifierLocation});
-		methods.push_back(
-			{"recordLocalSymbol", "(ILjava/lang/String;IIII)V", (void*)&JavaParser::RecordLocalSymbol});
-		methods.push_back({"recordComment", "(IIIII)V", (void*)&JavaParser::RecordComment});
-		methods.push_back(
-			{"recordError", "(ILjava/lang/String;IIIIII)V", (void*)&JavaParser::RecordError});
+		methods.push_back({"recordSymbol", "(ILjava/lang/String;III)V", (void*)&JavaParser::RecordSymbol});
+		methods.push_back({"recordSymbolWithLocation",  "(ILjava/lang/String;IIIIIII)V", (void*)&JavaParser::RecordSymbolWithLocation});
+		methods.push_back({"recordSymbolWithLocationAndScope", "(ILjava/lang/String;IIIIIIIIIII)V", (void*)&JavaParser::RecordSymbolWithLocationAndScope});
+		methods.push_back({"recordSymbolWithLocationAndScopeAndSignature", "(ILjava/lang/String;IIIIIIIIIIIIIII)V", (void*)&JavaParser::RecordSymbolWithLocationAndScopeAndSignature});
+		methods.push_back({"recordReference", "(IILjava/lang/String;Ljava/lang/String;IIII)V", (void*)&JavaParser::RecordReference});
+		methods.push_back({"recordQualifierLocation", "(ILjava/lang/String;IIII)V", (void*)&JavaParser::RecordQualifierLocation});
+		methods.push_back({"recordLocalSymbol", "(ILjava/lang/String;IIII)V", (void*)&JavaParser::RecordLocalSymbol}); methods.push_back({"recordComment", "(IIIII)V", (void*)&JavaParser::RecordComment});
+		methods.push_back({"recordError", "(ILjava/lang/String;IIIIII)V", (void*)&JavaParser::RecordError});
 
 		m_javaEnvironment->registerNativeMethods("com/sourcetrail/JavaIndexer", methods);
 	}
@@ -313,8 +294,8 @@ void JavaParser::doRecordError(
 	jint  /*endLine*/,
 	jint  /*endColumn*/)
 {
-	bool fatal = jFatal;
-	bool indexed = jIndexed;
+	bool fatal = jFatal != 0;
+	bool indexed = jIndexed != 0;
 
 	m_client->recordError(
 		utility::decodeFromUtf8(m_javaEnvironment->toStdString(jMessage)),

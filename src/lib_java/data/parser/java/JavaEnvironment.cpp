@@ -3,6 +3,8 @@
 #include "JavaEnvironmentFactory.h"
 #include "logging.h"
 
+using namespace std;
+
 JavaEnvironment::~JavaEnvironment()
 {
 	JavaEnvironmentFactory::getInstance()->unregisterEnvironment();
@@ -81,7 +83,7 @@ bool JavaEnvironment::callStaticStringMethod(
 	{
 		jstring jarg1 = m_env->NewStringUTF(arg1.c_str());
 		jstring jret = (jstring)m_env->CallStaticObjectMethod(javaClass, javaMethodId, jarg1);
-		if (jret)
+		if (jret != nullptr) 
 		{
 			const char* buffer = m_env->GetStringUTFChars(jret, JNI_FALSE);
 			ret = std::string(buffer);
@@ -107,7 +109,7 @@ bool JavaEnvironment::callStaticStringMethod(
 		jstring jarg1 = m_env->NewStringUTF(arg1.c_str());
 		jstring jarg2 = m_env->NewStringUTF(arg2.c_str());
 		jstring jret = (jstring)m_env->CallStaticObjectMethod(javaClass, javaMethodId, jarg1, jarg2);
-		if (jret)
+		if (jret != nullptr) 
 		{
 			const char* buffer = m_env->GetStringUTFChars(jret, JNI_FALSE);
 			ret = std::string(buffer);
@@ -133,19 +135,21 @@ jstring JavaEnvironment::toJString(std::string s)
 
 void JavaEnvironment::registerNativeMethods(std::string className, std::vector<NativeMethod> methods)
 {
-	JNINativeMethod* jniMethods = new JNINativeMethod[methods.size()];
+	vector<JNINativeMethod> jniMethods;
 
-	for (size_t i = 0; i < methods.size(); i++)
+	for (NativeMethod &method : methods)
 	{
-		jniMethods[i].name = const_cast<char*>(methods[i].name.c_str());
-		jniMethods[i].signature = const_cast<char*>(methods[i].signature.c_str());
-		jniMethods[i].fnPtr = methods[i].function;
+		jniMethods.push_back({ 
+			.name = const_cast<char*>(method.name.c_str()),
+			.signature = const_cast<char*>(method.signature.c_str()),
+			.fnPtr = method.function
+		});
 	}
 
 	jclass javaClass = m_env->FindClass(className.c_str());
-	if (javaClass)
+	if (javaClass != nullptr)
 	{
-		if (m_env->RegisterNatives(javaClass, jniMethods, static_cast<jint>(methods.size())) < 0)
+		if (m_env->RegisterNatives(javaClass, jniMethods.data(), static_cast<jint>(jniMethods.size())) < 0)
 		{
 			LOG_ERROR("RegisterNatives failed");
 		}
@@ -154,8 +158,6 @@ void JavaEnvironment::registerNativeMethods(std::string className, std::vector<N
 	{
 		LOG_ERROR("class \"" + className + "\" not found while registering native methods");
 	}
-
-	delete[] jniMethods;
 }
 
 JavaEnvironment::JavaEnvironment(JavaVM* jvm, JNIEnv* env): m_jvm(jvm), m_env(env)
@@ -170,7 +172,7 @@ jclass JavaEnvironment::getJavaClass(const std::string& className)
 	{
 		LOG_ERROR("class " + className + " not found in JVM environment");
 		jthrowable exc = m_env->ExceptionOccurred();
-		if (exc)
+		if (exc != nullptr)
 		{
 			m_env->ExceptionDescribe();
 			m_env->ExceptionClear();
