@@ -98,7 +98,7 @@ private:
 	std::map<RefreshMode, RefreshInfo> m_refreshInfos;
 	bool m_shallowIndexingEnabled;
 
-	bool m_resultReady = false;
+	std::atomic<bool> m_resultReady = false;
 	bool m_uiBlocked = false;
 	bool m_dialogsVisible = true;
 };
