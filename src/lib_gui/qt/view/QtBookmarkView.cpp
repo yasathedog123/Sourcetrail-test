@@ -27,7 +27,6 @@ void QtBookmarkView::displayBookmarkCreator(const std::vector<std::wstring>& nam
 	m_onQtThread([=, this]() 
 	{
 		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindowforMainView(getViewLayout()));
-		bookmarkCreator->setupBookmarkCreator();
 
 		std::wstring displayName;
 
@@ -56,7 +55,6 @@ void QtBookmarkView::displayBookmarkCreator(std::shared_ptr<Bookmark> bookmark, 
 	{
 		QtBookmarkCreator* bookmarkCreator = new QtBookmarkCreator(&m_controllerProxy, getMainWindowforMainView(getViewLayout()), bookmark->getId());
 
-		bookmarkCreator->setupBookmarkCreator();
 		bookmarkCreator->setDisplayName(bookmark->getName());
 		bookmarkCreator->setComment(bookmark->getComment());
 		bookmarkCreator->setBookmarkCategories(categories);
@@ -72,10 +70,8 @@ void QtBookmarkView::displayBookmarkBrowser(const std::vector<std::shared_ptr<Bo
 	m_onQtThread([=, this]() 
 	{
 		if (m_bookmarkBrowser == nullptr)
-		{
 			m_bookmarkBrowser = new QtBookmarkBrowser(&m_controllerProxy, getMainWindowforMainView(getViewLayout()));
-			m_bookmarkBrowser->setupBookmarkBrowser();
-		}
+
 		m_bookmarkBrowser->setBookmarks(bookmarks);
 		m_bookmarkBrowser->show();
 		m_bookmarkBrowser->raise();

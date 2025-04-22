@@ -253,6 +253,8 @@ add_library(Sourcetrail_lib_gui
 
 	qt/window/QtAbout.cpp
 	qt/window/QtAbout.h
+	qt/window/QtBookmarkWindow.cpp
+	qt/window/QtBookmarkWindow.h 
 	qt/window/QtBookmarkBrowser.cpp
 	qt/window/QtBookmarkBrowser.h
 	qt/window/QtBookmarkCreator.cpp

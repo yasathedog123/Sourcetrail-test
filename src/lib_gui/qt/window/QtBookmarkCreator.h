@@ -5,47 +5,36 @@
 
 #include "BookmarkController.h"
 #include "ControllerProxy.h"
-#include "QtWindow.h"
-#include "types.h"
+#include "QtBookmarkWindow.h"
 
 class BookmarkCategory;
 class QComboBox;
 class QLineEdit;
 class QTextEdit;
 
-class QtBookmarkCreator: public QtWindow
+class QtBookmarkCreator: public QtBookmarkWindow
 {
 	Q_OBJECT
 
 public:
-	QtBookmarkCreator(
-		ControllerProxy<BookmarkController>* controllerProxy,
-		QWidget* parent = nullptr,
-		Id bookmarkId = 0);
-	~QtBookmarkCreator() override;
-
-	void setupBookmarkCreator();
-
-	void refreshStyle();
-
+	QtBookmarkCreator(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent = nullptr, Id bookmarkId = 0);
+	
 	void setDisplayName(const std::wstring& name);
 	void setComment(const std::wstring& comment);
-
+	
 	void setBookmarkCategories(const std::vector<BookmarkCategory>& categories);
 	void setCurrentBookmarkCategory(const BookmarkCategory& category);
-
+	
 	void setNodeId(Id nodeId);
-
+	
 protected:
 	void handleNext() override;
 	void handleClose() override;
-
+	
 private slots:
 	void onNameChanged(const QString& text);
-
+	
 private:
-	ControllerProxy<BookmarkController>* m_controllerProxy;
-
 	const Id m_editBookmarkId;
 
 	QLineEdit* m_displayName;
