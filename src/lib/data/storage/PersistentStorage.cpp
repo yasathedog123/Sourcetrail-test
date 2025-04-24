@@ -1940,50 +1940,47 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getErrorSourceLocat
 	return collection;
 }
 
-Id PersistentStorage::addNodeBookmark(const NodeBookmark& bookmark)
+void PersistentStorage::addNodeBookmark(const NodeBookmark& bookmark)
 {
 	const Id categoryId = addBookmarkCategory(bookmark.getCategory().getName());
-	const Id id = m_sqliteBookmarkStorage
+	const BookmarkId bookmarkId = m_sqliteBookmarkStorage
 					  .addBookmark(StorageBookmarkData(
 						  bookmark.getName(),
 						  bookmark.getComment(),
 						  bookmark.getTimeStamp().toString(),
 						  categoryId))
-					  .id;
+					  .bookmarkId;
 
 	for (const Id& nodeId: bookmark.getNodeIds())
 	{
 		m_sqliteBookmarkStorage.addBookmarkedNode(
-			StorageBookmarkedNodeData(id, m_sqliteIndexStorage.getNodeById(nodeId).serializedName));
+			StorageBookmarkedNodeData(bookmarkId, m_sqliteIndexStorage.getNodeById(nodeId).serializedName));
 	}
-
-	return id;
 }
 
-Id PersistentStorage::addEdgeBookmark(const EdgeBookmark& bookmark)
+void PersistentStorage::addEdgeBookmark(const EdgeBookmark& bookmark)
 {
 	const Id categoryId = addBookmarkCategory(bookmark.getCategory().getName());
-	const Id id = m_sqliteBookmarkStorage
+	const BookmarkId bookmarkId = m_sqliteBookmarkStorage
 					  .addBookmark(StorageBookmarkData(
 						  bookmark.getName(),
 						  bookmark.getComment(),
 						  bookmark.getTimeStamp().toString(),
 						  categoryId))
-					  .id;
+					  .bookmarkId;
 	for (const Id& edgeId: bookmark.getEdgeIds())
 	{
 		const StorageEdge storageEdge = m_sqliteIndexStorage.getEdgeById(edgeId);
 
 		bool sourceNodeActive = storageEdge.sourceNodeId == bookmark.getActiveNodeId();
 		m_sqliteBookmarkStorage.addBookmarkedEdge(StorageBookmarkedEdgeData(
-			id,
+			bookmarkId,
 			// todo: optimization for multiple edges in same bookmark: use a local cache here
 			m_sqliteIndexStorage.getNodeById(storageEdge.sourceNodeId).serializedName,
 			m_sqliteIndexStorage.getNodeById(storageEdge.targetNodeId).serializedName,
 			storageEdge.type,
 			sourceNodeActive));
 	}
-	return id;
 }
 
 Id PersistentStorage::addBookmarkCategory(const std::wstring& name)
@@ -2002,7 +1999,7 @@ Id PersistentStorage::addBookmarkCategory(const std::wstring& name)
 }
 
 void PersistentStorage::updateBookmark(
-	const Id bookmarkId,
+	const BookmarkId bookmarkId,
 	const std::wstring& name,
 	const std::wstring& comment,
 	const std::wstring& categoryName)
@@ -2012,9 +2009,9 @@ void PersistentStorage::updateBookmark(
 	m_sqliteBookmarkStorage.updateBookmark(bookmarkId, name, comment, categoryId);
 }
 
-void PersistentStorage::removeBookmark(const Id id)
+void PersistentStorage::removeBookmark(const BookmarkId bookmarkId)
 {
-	m_sqliteBookmarkStorage.removeBookmark(id);
+	m_sqliteBookmarkStorage.removeBookmark(bookmarkId);
 }
 
 void PersistentStorage::removeBookmarkCategory(Id id)
@@ -2031,7 +2028,7 @@ std::vector<NodeBookmark> PersistentStorage::getAllNodeBookmarks() const
 		bookmarkCategories[bookmarkCategory.id] = bookmarkCategory;
 	}
 
-	std::unordered_map<Id, std::vector<Id>> bookmarkIdToBookmarkedNodeIds;
+	std::unordered_map<BookmarkId, std::vector<Id>> bookmarkIdToBookmarkedNodeIds;
 	for (const StorageBookmarkedNode& bookmarkedNode: m_sqliteBookmarkStorage.getAllBookmarkedNodes())
 	{
 		bookmarkIdToBookmarkedNodeIds[bookmarkedNode.bookmarkId].push_back(
@@ -2043,12 +2040,12 @@ std::vector<NodeBookmark> PersistentStorage::getAllNodeBookmarks() const
 	for (const StorageBookmark& storageBookmark: m_sqliteBookmarkStorage.getAllBookmarks())
 	{
 		auto itCategories = bookmarkCategories.find(storageBookmark.categoryId);
-		auto itNodeIds = bookmarkIdToBookmarkedNodeIds.find(storageBookmark.id);
+		auto itNodeIds = bookmarkIdToBookmarkedNodeIds.find(storageBookmark.bookmarkId);
 		if (itCategories != bookmarkCategories.end() &&
 			itNodeIds != bookmarkIdToBookmarkedNodeIds.end())
 		{
 			NodeBookmark bookmark(
-				storageBookmark.id,
+				storageBookmark.bookmarkId,
 				storageBookmark.name,
 				storageBookmark.comment,
 				storageBookmark.timestamp,
@@ -2071,7 +2068,7 @@ std::vector<EdgeBookmark> PersistentStorage::getAllEdgeBookmarks() const
 		bookmarkCategories[bookmarkCategory.id] = bookmarkCategory;
 	}
 
-	std::unordered_map<Id, std::vector<StorageBookmarkedEdge>> bookmarkIdToBookmarkedEdges;
+	std::unordered_map<BookmarkId, std::vector<StorageBookmarkedEdge>> bookmarkIdToBookmarkedEdges;
 	for (const StorageBookmarkedEdge& bookmarkedEdge: m_sqliteBookmarkStorage.getAllBookmarkedEdges())
 	{
 		bookmarkIdToBookmarkedEdges[bookmarkedEdge.bookmarkId].push_back(bookmarkedEdge);
@@ -2086,12 +2083,12 @@ std::vector<EdgeBookmark> PersistentStorage::getAllEdgeBookmarks() const
 	for (const StorageBookmark& storageBookmark: m_sqliteBookmarkStorage.getAllBookmarks())
 	{
 		auto itCategories = bookmarkCategories.find(storageBookmark.categoryId);
-		auto itBookmarkedEdges = bookmarkIdToBookmarkedEdges.find(storageBookmark.id);
+		auto itBookmarkedEdges = bookmarkIdToBookmarkedEdges.find(storageBookmark.bookmarkId);
 		if (itCategories != bookmarkCategories.end() &&
 			itBookmarkedEdges != bookmarkIdToBookmarkedEdges.end())
 		{
 			EdgeBookmark bookmark(
-				storageBookmark.id,
+				storageBookmark.bookmarkId,
 				storageBookmark.name,
 				storageBookmark.comment,
 				storageBookmark.timestamp,

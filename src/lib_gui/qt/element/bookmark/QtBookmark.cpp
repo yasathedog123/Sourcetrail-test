@@ -118,7 +118,7 @@ void QtBookmark::setBookmark(const std::shared_ptr<Bookmark> bookmark)
 	}
 }
 
-Id QtBookmark::getBookmarkId() const
+BookmarkId QtBookmark::getBookmarkId() const
 {
 	return m_bookmark->getId();
 }

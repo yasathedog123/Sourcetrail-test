@@ -171,7 +171,7 @@ std::wstring Edge::getAsString() const
 	str << L": \"" << m_from->getName() << L"\" -> \"" + m_to->getName() << L"\"";
 
 	TokenComponentBundledEdges* bundledEdges = getComponent<TokenComponentBundledEdges>();
-	if (bundledEdges)
+	if (bundledEdges != nullptr)
 	{
 		str << L" " << bundledEdges->getBundledEdgesCount();
 	}

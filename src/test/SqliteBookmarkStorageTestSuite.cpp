@@ -39,13 +39,8 @@ TEST_CASE("add bookmarked node")
 		SqliteBookmarkStorage storage(databasePath);
 		storage.setup();
 
-		const Id categoryId =
-			storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
-		const Id bookmarkId =
-			storage
-				.addBookmark(StorageBookmarkData(
-					L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId))
-				.id;
+		const Id categoryId = storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
+		const BookmarkId bookmarkId = storage.addBookmark(StorageBookmarkData(L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId)).bookmarkId;
 
 		for (int i = 0; i < bookmarkCount; i++)
 		{
@@ -69,13 +64,8 @@ TEST_CASE("remove bookmark also removes bookmarked node")
 		SqliteBookmarkStorage storage(databasePath);
 		storage.setup();
 
-		const Id categoryId =
-			storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
-		const Id bookmarkId =
-			storage
-				.addBookmark(StorageBookmarkData(
-					L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId))
-				.id;
+		const Id categoryId = storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
+		const BookmarkId bookmarkId = storage.addBookmark(StorageBookmarkData( L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId)).bookmarkId;
 		storage.addBookmarkedNode(StorageBookmarkedNodeData(bookmarkId, L"test name"));
 
 		storage.removeBookmark(bookmarkId);
@@ -101,13 +91,8 @@ TEST_CASE("edit nodeBookmark")
 		SqliteBookmarkStorage storage(databasePath);
 		storage.setup();
 
-		const Id categoryId =
-			storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
-		const Id bookmarkId =
-			storage
-				.addBookmark(StorageBookmarkData(
-					L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId))
-				.id;
+		const Id categoryId = storage.addBookmarkCategory(StorageBookmarkCategoryData(L"test category")).id;
+		const BookmarkId bookmarkId = storage.addBookmark(StorageBookmarkData(L"test bookmark", L"test comment", TimeStamp::now().toString(), categoryId)).bookmarkId;
 		storage.addBookmarkedNode(StorageBookmarkedNodeData(bookmarkId, L"test name"));
 
 		storage.updateBookmark(bookmarkId, updatedName, updatedComment, categoryId);

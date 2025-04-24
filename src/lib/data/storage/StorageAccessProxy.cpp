@@ -249,24 +249,16 @@ DEF_GETTER_1(
 	std::shared_ptr<SourceLocationCollection>,
 	std::make_shared<SourceLocationCollection>())
 
-Id StorageAccessProxy::addNodeBookmark(const NodeBookmark& bookmark)
+void StorageAccessProxy::addNodeBookmark(const NodeBookmark& bookmark)
 {
 	if (std::shared_ptr<StorageAccess> subject = m_subject.lock())
-	{
-		return subject->addNodeBookmark(bookmark);
-	}
-
-	return -1;
+		subject->addNodeBookmark(bookmark);
 }
 
-Id StorageAccessProxy::addEdgeBookmark(const EdgeBookmark& bookmark)
+void StorageAccessProxy::addEdgeBookmark(const EdgeBookmark& bookmark)
 {
 	if (std::shared_ptr<StorageAccess> subject = m_subject.lock())
-	{
-		return subject->addEdgeBookmark(bookmark);
-	}
-
-	return -1;
+		subject->addEdgeBookmark(bookmark);
 }
 
 Id StorageAccessProxy::addBookmarkCategory(const std::wstring& categoryName)
@@ -280,7 +272,7 @@ Id StorageAccessProxy::addBookmarkCategory(const std::wstring& categoryName)
 }
 
 void StorageAccessProxy::updateBookmark(
-	const Id bookmarkId,
+	const BookmarkId bookmarkId,
 	const std::wstring& name,
 	const std::wstring& comment,
 	const std::wstring& categoryName)
@@ -291,11 +283,11 @@ void StorageAccessProxy::updateBookmark(
 	}
 }
 
-void StorageAccessProxy::removeBookmark(const Id id)
+void StorageAccessProxy::removeBookmark(const BookmarkId bookmarkId)
 {
 	if (std::shared_ptr<StorageAccess> subject = m_subject.lock())
 	{
-		subject->removeBookmark(id);
+		subject->removeBookmark(bookmarkId);
 	}
 }
 

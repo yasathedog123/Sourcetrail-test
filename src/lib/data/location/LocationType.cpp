@@ -26,12 +26,7 @@ LocationType intToEnum(int value)
 	return lookupEnum(value, LOCATION_TYPES, LocationType::TOKEN);
 }
 
-size_t operator << (size_t bits, LocationType type)
+size_t operator << (size_t bits, LocationType locationType)
 {
-	return bits << static_cast<int>(type);
-}
-
-string to_string(LocationType type)
-{
-	return std::to_string(static_cast<int>(type));
+	return bits << static_cast<int>(locationType);
 }

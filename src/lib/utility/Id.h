@@ -90,11 +90,6 @@ public:
 	// In some places certain values are ored/multiplied to the id, but the comments don't explain 
 	// the intent properly, only that it is done to avoid collisions.
 	
-	Id(FirstBits bits)
-	{
-		m_value = static_cast<type>(bits);
-	}
-	
 	Id operator | (FirstBits bits) const noexcept
 	{
 		return m_value | static_cast<type>(bits);

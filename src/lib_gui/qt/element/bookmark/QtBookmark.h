@@ -22,7 +22,7 @@ public:
 	~QtBookmark() override;
 
 	void setBookmark(const std::shared_ptr<Bookmark> bookmark);
-	Id getBookmarkId() const;
+	BookmarkId getBookmarkId() const;
 
 	QTreeWidgetItem* getTreeWidgetItem() const;
 	void setTreeWidgetItem(QTreeWidgetItem* treeWidgetItem);

@@ -17,7 +17,7 @@ class QtBookmarkCreator: public QtBookmarkWindow
 	Q_OBJECT
 
 public:
-	QtBookmarkCreator(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent = nullptr, Id bookmarkId = 0);
+	QtBookmarkCreator(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent = nullptr, BookmarkId bookmarkId = BookmarkId::NONE);
 	
 	void setDisplayName(const std::wstring& name);
 	void setComment(const std::wstring& comment);
@@ -35,7 +35,7 @@ private slots:
 	void onNameChanged(const QString& text);
 	
 private:
-	const Id m_editBookmarkId;
+	const BookmarkId m_editBookmarkId;
 
 	QLineEdit* m_displayName;
 	QTextEdit* m_commentBox;

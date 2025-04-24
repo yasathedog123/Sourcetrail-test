@@ -8,7 +8,7 @@
 
 #include "MessageStatus.h"
 
-QtBookmarkCreator::QtBookmarkCreator(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent, Id bookmarkId)
+QtBookmarkCreator::QtBookmarkCreator(ControllerProxy<BookmarkController>* controllerProxy, QWidget* parent, BookmarkId bookmarkId)
 	: QtBookmarkWindow(controllerProxy, false, parent)
 	, m_editBookmarkId(bookmarkId)
 	, m_nodeId(0)
@@ -18,7 +18,7 @@ QtBookmarkCreator::QtBookmarkCreator(ControllerProxy<BookmarkController>* contro
 
 	{
 		// title
-		QLabel* title = new QLabel(m_editBookmarkId ? tr("Edit Bookmark") : tr("Create Bookmark"));
+		QLabel* title = new QLabel(m_editBookmarkId != BookmarkId::NONE ? tr("Edit Bookmark") : tr("Create Bookmark"));
 		title->setObjectName(QStringLiteral("creator_title_label"));
 		mainLayout->addWidget(title);
 	}
@@ -78,7 +78,7 @@ QtBookmarkCreator::QtBookmarkCreator(ControllerProxy<BookmarkController>* contro
 		layout->addLayout(createButtons());
 		setPreviousVisible(false);
 
-		updateNextButton(m_editBookmarkId ? tr("Save") : tr("Create"));
+		updateNextButton(m_editBookmarkId != BookmarkId::NONE ? tr("Save") : tr("Create"));
 		setNextDefault(true);
 	}
 
@@ -131,7 +131,7 @@ void QtBookmarkCreator::handleNext()
 	std::wstring comment = m_commentBox->toPlainText().toStdWString();
 	std::wstring category = m_categoryBox->currentText().toStdWString();
 
-	if (m_editBookmarkId)
+	if (m_editBookmarkId != BookmarkId::NONE)
 	{
 		m_controllerProxy->executeAsTaskWithArgs(
 			&BookmarkController::editBookmark, m_editBookmarkId, name, comment, category);

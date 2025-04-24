@@ -45,7 +45,7 @@ add_executable(Sourcetrail_test
 	UtilityGradleTestSuite.cpp
 	UtilityMavenTestSuite.cpp
 	UtilityStringTestSuite.cpp
-	UtilityTestSuite.cpp
+	UtilityEnumTestSuite.cpp
 	Vector2TestSuite.cpp
 )
 setDefaultTargetOptions(Sourcetrail_test)

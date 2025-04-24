@@ -5,6 +5,7 @@
 
 #include "FilePath.h"
 #include "Message.h"
+#include "utilityEnum.h"
 
 class MessageLoadProject: public Message<MessageLoadProject>
 {

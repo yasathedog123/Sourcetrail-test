@@ -3,20 +3,19 @@
 
 #include <string>
 
-#include "types.h"
+#include "Bookmark.h"
 
 struct StorageBookmarkedEdgeData
 {
 	StorageBookmarkedEdgeData()
-		: bookmarkId(0)
-		, 
-		 edgeType(0)
+		: bookmarkId(BookmarkId::NONE)
+		, edgeType(0)
 		, sourceNodeActive(false)
 	{
 	}
 
 	StorageBookmarkedEdgeData(
-		Id bookmarkId,
+		BookmarkId bookmarkId,
 		const std::wstring& serializedSourceNodeName,
 		const std::wstring& serializedTargetNodeName,
 		int edgeType,
@@ -29,7 +28,7 @@ struct StorageBookmarkedEdgeData
 	{
 	}
 
-	Id bookmarkId;
+	BookmarkId bookmarkId;
 	std::wstring serializedSourceNodeName;
 	std::wstring serializedTargetNodeName;
 	int edgeType;
@@ -47,7 +46,7 @@ struct StorageBookmarkedEdge: public StorageBookmarkedEdgeData
 
 	StorageBookmarkedEdge(
 		Id id,
-		Id bookmarkId,
+		BookmarkId bookmarkId,
 		const std::wstring& serializedSourceNodeName,
 		const std::wstring& serializedTargetNodeName,
 		int edgeType,

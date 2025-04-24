@@ -3,18 +3,18 @@
 
 #include <string>
 
-#include "types.h"
+#include "Bookmark.h"
 
 struct StorageBookmarkedNodeData
 {
-	StorageBookmarkedNodeData(): bookmarkId(0) {}
+	StorageBookmarkedNodeData(): bookmarkId(BookmarkId::NONE) {}
 
-	StorageBookmarkedNodeData(Id bookmarkId, const std::wstring& serializedNodeName)
+	StorageBookmarkedNodeData(BookmarkId bookmarkId, const std::wstring& serializedNodeName)
 		: bookmarkId(bookmarkId), serializedNodeName(serializedNodeName)
 	{
 	}
 
-	Id bookmarkId;
+	BookmarkId bookmarkId;
 	std::wstring serializedNodeName;
 };
 
@@ -27,7 +27,7 @@ struct StorageBookmarkedNode: public StorageBookmarkedNodeData
 	{
 	}
 
-	StorageBookmarkedNode(Id id, Id bookmarkId, const std::wstring& serializedNodeName)
+	StorageBookmarkedNode(Id id, BookmarkId bookmarkId, const std::wstring& serializedNodeName)
 		: StorageBookmarkedNodeData(bookmarkId, serializedNodeName), id(id)
 	{
 	}

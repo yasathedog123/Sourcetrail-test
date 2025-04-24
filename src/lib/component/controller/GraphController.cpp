@@ -2388,7 +2388,7 @@ void GraphController::forEachDummyEdge(std::function<void(DummyEdge*)> func)
 
 void GraphController::createLegendGraph()
 {
-	Id id(Id::FirstBits::ONE);
+	Id id = Id(0) | Id::FirstBits::ONE;
 	
 	std::map<Id, Vec2i> nodePositions;
 	std::shared_ptr<Graph> graph = std::make_shared<Graph>();

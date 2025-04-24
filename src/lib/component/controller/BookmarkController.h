@@ -37,9 +37,9 @@ public:
 	void undisplayBookmarks();
 	
 	void createBookmark(const std::wstring& name, const std::wstring& comment, const std::wstring& category, Id nodeId);
-	void editBookmark(Id bookmarkId, const std::wstring& name, const std::wstring& comment, const std::wstring& category);
+	void editBookmark(BookmarkId bookmarkId, const std::wstring& name, const std::wstring& comment, const std::wstring& category);
 	
-	void deleteBookmark(Id bookmarkId);
+	void deleteBookmark(BookmarkId bookmarkId);
 	void deleteBookmarkCategory(Id categoryId);
 	void deleteBookmarkForActiveTokens();
 	

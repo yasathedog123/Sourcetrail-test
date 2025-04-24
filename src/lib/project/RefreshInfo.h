@@ -1,7 +1,6 @@
 #ifndef REFRESH_INFO_H
 #define REFRESH_INFO_H
 
-#include <iosfwd>
 #include <set>
 
 #include "FilePath.h"
@@ -13,8 +12,6 @@ enum class RefreshMode
 	UPDATED_AND_INCOMPLETE_FILES,
 	ALL_FILES
 };
-
-std::wostream &operator << (std::wostream &, RefreshMode);
 
 struct RefreshInfo
 {

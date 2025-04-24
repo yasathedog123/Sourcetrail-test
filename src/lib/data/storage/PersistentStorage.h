@@ -174,17 +174,17 @@ public:
 		const ErrorFilter& filter, const FilePath& filePath) const override;
 	std::shared_ptr<SourceLocationCollection> getErrorSourceLocations(
 		const std::vector<ErrorInfo>& errors) const override;
-
-	Id addNodeBookmark(const NodeBookmark& bookmark) override;
-	Id addEdgeBookmark(const EdgeBookmark& bookmark) override;
+	
+	void addNodeBookmark(const NodeBookmark& bookmark) override;
+	void addEdgeBookmark(const EdgeBookmark& bookmark) override;
 	Id addBookmarkCategory(const std::wstring& categoryName) override;
 
 	void updateBookmark(
-		const Id bookmarkId,
+		const BookmarkId bookmarkId,
 		const std::wstring& name,
 		const std::wstring& comment,
 		const std::wstring& categoryName) override;
-	void removeBookmark(const Id id) override;
+	void removeBookmark(const BookmarkId bookmarkId) override;
 	void removeBookmarkCategory(const Id id) override;
 
 	std::vector<NodeBookmark> getAllNodeBookmarks() const override;

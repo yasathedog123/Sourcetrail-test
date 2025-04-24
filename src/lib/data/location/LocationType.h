@@ -20,8 +20,6 @@ enum class LocationType
 template <>
 LocationType intToEnum(int value);
 
-std::size_t operator << (std::size_t, LocationType);
-
-std::string to_string(LocationType);
+std::size_t operator << (std::size_t bits, LocationType locationType);
 
 #endif	  // LOCATION_TYPE_H

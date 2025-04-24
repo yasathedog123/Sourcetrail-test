@@ -74,7 +74,7 @@ void BookmarkController::createBookmark(
 	{
 		LOG_INFO("Creating Edge Bookmark");
 
-		EdgeBookmark bookmark(0, name, comment, TimeStamp::now(), bookmarkCategory);
+		EdgeBookmark bookmark(BookmarkId::NONE, name, comment, TimeStamp::now(), bookmarkCategory);
 		bookmark.setEdgeIds(m_activeEdgeIds[tabId]);
 
 		if (!m_activeNodeIds[TabIds::currentTab()].empty())
@@ -92,7 +92,7 @@ void BookmarkController::createBookmark(
 	{
 		LOG_INFO("Creating Node Bookmark");
 
-		NodeBookmark bookmark(0, name, comment, TimeStamp::now(), bookmarkCategory);
+		NodeBookmark bookmark(BookmarkId::NONE, name, comment, TimeStamp::now(), bookmarkCategory);
 		if (nodeId)
 		{
 			bookmark.addNodeId(nodeId);
@@ -119,7 +119,7 @@ void BookmarkController::createBookmark(
 }
 
 void BookmarkController::editBookmark(
-	Id bookmarkId, const std::wstring& name, const std::wstring& comment, const std::wstring& category)
+	BookmarkId bookmarkId, const std::wstring& name, const std::wstring& comment, const std::wstring& category)
 {
 	LOG_INFO_STREAM(<< "Attempting to update Bookmark " << bookmarkId);
 
@@ -131,7 +131,7 @@ void BookmarkController::editBookmark(
 	update();
 }
 
-void BookmarkController::deleteBookmark(Id bookmarkId)
+void BookmarkController::deleteBookmark(BookmarkId bookmarkId)
 {
 	LOG_INFO_STREAM(<< "Attempting to delete Bookmark " << bookmarkId);
 

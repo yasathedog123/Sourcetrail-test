@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "types.h"
+#include "Bookmark.h"
 
 struct StorageBookmarkData
 {
@@ -26,21 +26,21 @@ struct StorageBookmarkData
 
 struct StorageBookmark: public StorageBookmarkData
 {
-	StorageBookmark():  id(0) {}
+	StorageBookmark():  bookmarkId(BookmarkId::NONE) {}
 
-	StorageBookmark(Id id, const StorageBookmarkData& data): StorageBookmarkData(data), id(id) {}
+	StorageBookmark(BookmarkId bookmarkId, const StorageBookmarkData& data): StorageBookmarkData(data), bookmarkId(bookmarkId) {}
 
 	StorageBookmark(
-		Id id,
+		BookmarkId bookmarkId,
 		const std::wstring& name,
 		const std::wstring& comment,
 		const std::string& timestamp,
 		const Id categoryId)
-		: StorageBookmarkData(name, comment, timestamp, categoryId), id(id)
+		: StorageBookmarkData(name, comment, timestamp, categoryId), bookmarkId(bookmarkId)
 	{
 	}
 
-	Id id;
+	BookmarkId bookmarkId;
 };
 
 #endif	  // STORAGE_BOOKMARK_H

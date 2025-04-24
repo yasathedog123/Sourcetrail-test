@@ -1,12 +1,12 @@
 #ifndef SQLITE_BOOKMARK_STORAGE_H
 #define SQLITE_BOOKMARK_STORAGE_H
 
+#include "Bookmark.h"
 #include "SqliteStorage.h"
 #include "StorageBookmark.h"
 #include "StorageBookmarkCategory.h"
 #include "StorageBookmarkedEdge.h"
 #include "StorageBookmarkedNode.h"
-#include "types.h"
 
 class SqliteBookmarkStorage: public SqliteStorage
 {
@@ -23,14 +23,14 @@ public:
 	StorageBookmarkedEdge addBookmarkedEdge(const StorageBookmarkedEdgeData data);
 
 	void removeBookmarkCategory(Id id);
-	void removeBookmark(const Id id);
+	void removeBookmark(const BookmarkId bookmarkId);
 
 	std::vector<StorageBookmark> getAllBookmarks() const;
 	std::vector<StorageBookmarkedNode> getAllBookmarkedNodes() const;
 	std::vector<StorageBookmarkedEdge> getAllBookmarkedEdges() const;
-
+	
 	void updateBookmark(
-		const Id bookmarkId, const std::wstring& name, const std::wstring& comment, const Id categoryId);
+		const BookmarkId bookmarkId, const std::wstring& name, const std::wstring& comment, const Id categoryId);
 
 	std::vector<StorageBookmarkCategory> getAllBookmarkCategories() const;
 	StorageBookmarkCategory getBookmarkCategoryByName(const std::wstring& name) const;
