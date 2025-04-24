@@ -6,10 +6,10 @@
 #include "MessageActivateOverview.h"
 #include "MessageSearch.h"
 #include "MessageSearchAutocomplete.h"
+#include "QtActions.h"
 #include "QtSearchBarButton.h"
 #include "QtSmartSearchBox.h"
 #include "ResourcePaths.h"
-#include "QtActions.h"
 
 QtSearchBar::QtSearchBar()
 {
@@ -36,7 +36,9 @@ QtSearchBar::QtSearchBar()
 	innerLayout->setContentsMargins(12, 3, 5, 2);
 	m_searchBoxContainer->setLayout(innerLayout);
 
-	m_searchBox = new QtSmartSearchBox(tr("Search"), true, m_searchBoxContainer);
+	// The documenation uses 'case-insensitive' and 'case-sensitive'.
+	// https://github.com/petermost/Sourcetrail/blob/master/DOCUMENTATION.md#user-content-full-text-search
+	m_searchBox = new QtSmartSearchBox(tr("Search (%1 = case-insensitive, %1%1 = case-sensitive)").arg(SearchMatch::FULLTEXT_SEARCH_CHARACTER), true, m_searchBoxContainer);
 	m_searchBox->setToolTip(QtActions::findSymbol().tooltip());
 	m_searchBox->setMinimumWidth(100);
 	m_searchBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);

@@ -191,7 +191,7 @@ bool QtSmartSearchBox::event(QEvent* event)
 				{
 					addMatchAndUpdate(m_highlightedMatch);
 				}
-				else if (m_highlightedMatch.hasChildren && m_highlightedMatch.tokenNames.size())
+				else if (m_highlightedMatch.hasChildren && m_highlightedMatch.tokenNames.size() != 0)
 				{
 					setEditText(QString::fromStdWString(
 						m_highlightedMatch.getFullName() +
@@ -1081,28 +1081,23 @@ void QtSmartSearchBox::hideAutoCompletions()
 void QtSmartSearchBox::startFullTextSearch()
 {
 	if (!m_supportsFullTextSearch)
-	{
 		return;
-	}
 
+	// Cut of first search character:
 	std::wstring term = text().toStdWString().substr(1);
 	if (term.empty())
-	{
 		return;
-	}
 
 	bool caseSensitive = false;
 	if (term.at(0) == SearchMatch::FULLTEXT_SEARCH_CHARACTER)
 	{
+		// Cut of second search character:
 		term = term.substr(1);
 		if (term.empty())
-		{
 			return;
-		}
 
 		caseSensitive = true;
 	}
-
 	emit fullTextSearch(term, caseSensitive);
 }
 
