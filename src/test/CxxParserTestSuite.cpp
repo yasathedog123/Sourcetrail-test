@@ -21,8 +21,6 @@ using namespace std;
 using namespace std::string_literals;
 using namespace utility;
 
-// To see the AST: 'clang <input_file> -Xclang -ast-dump -fsyntax-only [-fno-color-diagnostics]'
-//
 // Note that some new test code snippets are written with raw string literals. They are easier to write,
 // but have the disadvantage that if the indentation changes the tested source code locations don't
 // match anymore!

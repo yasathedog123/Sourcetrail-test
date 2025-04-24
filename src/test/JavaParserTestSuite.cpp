@@ -876,8 +876,7 @@ TEST_CASE("java parser finds usage of string for var type", JAVA_TAG)
 		"	}\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void A.foo() -> java.lang.String <4:3 4:5>"));
+	REQUIRE(containsElement(client->typeUses, L"void A.foo() -> java.lang.String <4:3 4:5>"s));
 }
 
 TEST_CASE("java parser finds type parameter in signature of method", JAVA_TAG)

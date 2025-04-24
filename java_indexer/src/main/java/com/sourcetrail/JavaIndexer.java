@@ -56,10 +56,7 @@ public class JavaIndexer
 		{
 			astVisitorClient.logInfo("indexing source file: " + filePath);
 
-			Path path = Paths.get(filePath);
-
-			ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-
+			var parser = ASTParser.newParser(AST.getJLSLatest());
 			parser.setResolveBindings(true);	  // solve "bindings" like the declaration of the type used in a var decl
 			parser.setKind(ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
 			parser.setBindingsRecovery(true);	  // also return bindings that are not resolved completely
@@ -77,6 +74,7 @@ public class JavaIndexer
 				parser.setCompilerOptions(options);
 			}
 
+			Path path = Paths.get(filePath);
 			parser.setUnitName(path.getFileName().toString());
 
 			List<String> classpath = new ArrayList<>();
@@ -103,43 +101,36 @@ public class JavaIndexer
 				}
 			}
 
-			parser.setEnvironment(
-				classpath.toArray(new String[0]), sources.toArray(new String[0]), null, true);
+			parser.setEnvironment(classpath.toArray(new String[0]), sources.toArray(new String[0]), null, true);
 			parser.setSource(fileContent.toCharArray());
 
-			CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+			var compilationUnit = (CompilationUnit)parser.createAST(null);
 
 			ASTVisitor visitor;
 			if (verbose != 0)
-			{
-				visitor = new VerboseContextAwareAstVisitor(
-					astVisitorClient, path.toFile(), fileContent, cu);
-			}
+				visitor = new VerboseContextAwareAstVisitor(astVisitorClient, path.toFile(), fileContent, compilationUnit);
 			else
-			{
-				visitor = new ContextAwareAstVisitor(
-					astVisitorClient, path.toFile(), fileContent, cu);
-			}
+				visitor = new ContextAwareAstVisitor(astVisitorClient, path.toFile(), fileContent, compilationUnit);
 
 			astVisitorClient.logInfo("starting AST traversal");
 
-			cu.accept(visitor);
+			compilationUnit.accept(visitor);
 
-			for (IProblem problem: cu.getProblems())
+			for (IProblem problem: compilationUnit.getProblems())
 			{
 				if (problem.isError())
 				{
 					Range range = new Range(
-						cu.getLineNumber(problem.getSourceStart()),
-						cu.getColumnNumber(problem.getSourceStart() + 1),
-						cu.getLineNumber(problem.getSourceEnd()),
-						cu.getColumnNumber(problem.getSourceEnd()) + 1);
+						compilationUnit.getLineNumber(problem.getSourceStart()),
+						compilationUnit.getColumnNumber(problem.getSourceStart() + 1),
+						compilationUnit.getLineNumber(problem.getSourceEnd()),
+						compilationUnit.getColumnNumber(problem.getSourceEnd()) + 1);
 
 					astVisitorClient.recordError(problem.getMessage(), false, true, range);
 				}
 			}
 
-			for (Object commentObject: cu.getCommentList())
+			for (Object commentObject: compilationUnit.getCommentList())
 			{
 				if ((commentObject instanceof LineComment) || (commentObject instanceof BlockComment))
 				{
@@ -161,8 +152,7 @@ public class JavaIndexer
 		String packageName = "";
 
 		ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-		parser.setKind(
-			ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
+		parser.setKind(ASTParser.K_COMPILATION_UNIT);	  // specify to parse the entire compilation unit
 		parser.setSource(fileContent.toCharArray());
 		CompilationUnit cu = (CompilationUnit)parser.createAST(null);
 		PackageDeclaration packageDeclaration = cu.getPackage();
