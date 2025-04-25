@@ -38,7 +38,9 @@ QtSearchBar::QtSearchBar()
 
 	// The documenation uses 'case-insensitive' and 'case-sensitive'.
 	// https://github.com/petermost/Sourcetrail/blob/master/DOCUMENTATION.md#user-content-full-text-search
-	m_searchBox = new QtSmartSearchBox(tr("Search (%1 = case-insensitive, %1%1 = case-sensitive)").arg(SearchMatch::FULLTEXT_SEARCH_CHARACTER), true, m_searchBoxContainer);
+	m_searchBox = new QtSmartSearchBox(m_searchBoxContainer);
+	m_searchBox->setPlaceholderText(tr("Search (%1 = case-insensitive, %1%1 = case-sensitive)").arg(SearchMatch::FULLTEXT_SEARCH_CHARACTER));
+	m_searchBox->setFullTextSearchSupport(true);
 	m_searchBox->setToolTip(QtActions::findSymbol().tooltip());
 	m_searchBox->setMinimumWidth(100);
 	m_searchBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -57,8 +59,6 @@ QtSearchBar::QtSearchBar()
 
 	refreshStyle();
 }
-
-QtSearchBar::~QtSearchBar() = default;
 
 QSize QtSearchBar::sizeHint() const
 {

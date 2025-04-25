@@ -73,10 +73,8 @@ void QtSmartSearchBox::startSearch()
 	emit search(utility::toVector(m_matches), getMatchAcceptedNodeTypes());
 }
 
-QtSmartSearchBox::QtSmartSearchBox(const QString& placeholder, bool supportsFullTextSearch, QWidget* parent)
+QtSmartSearchBox::QtSmartSearchBox(QWidget* parent)
 	: QLineEdit(parent)
-	, m_placeholder(placeholder)
-	, m_supportsFullTextSearch(supportsFullTextSearch)
 {
 	setObjectName(QStringLiteral("search_box"));
 	setAttribute(Qt::WA_MacShowFocusRect, false);	 // remove blue focus box on Mac
@@ -94,7 +92,15 @@ QtSmartSearchBox::QtSmartSearchBox(const QString& placeholder, bool supportsFull
 	updatePlaceholder();
 }
 
-QtSmartSearchBox::~QtSmartSearchBox() = default;
+void QtSmartSearchBox::setPlaceholderText(const QString &placeholder)
+{
+	m_placeholder = placeholder;
+}
+
+void QtSmartSearchBox::setFullTextSearchSupport(bool supportsFullTextSearch)
+{
+	m_supportsFullTextSearch = supportsFullTextSearch;
+}
 
 QCompleter* QtSmartSearchBox::getCompleter() const
 {
@@ -1047,11 +1053,11 @@ void QtSmartSearchBox::updatePlaceholder()
 {
 	if (text().isEmpty() && m_elements.empty())
 	{
-		setPlaceholderText(m_placeholder);
+		QLineEdit::setPlaceholderText(m_placeholder);
 	}
 	else
 	{
-		setPlaceholderText(QLatin1String(""));
+		QLineEdit::setPlaceholderText(QLatin1String(""));
 	}
 }
 

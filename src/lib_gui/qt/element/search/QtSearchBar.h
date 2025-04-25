@@ -17,7 +17,6 @@ class QtSearchBar: public QFrame
 
 public:
 	QtSearchBar();
-	~QtSearchBar() override;
 
 	QSize sizeHint() const override;
 

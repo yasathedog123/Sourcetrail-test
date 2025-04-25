@@ -29,28 +29,31 @@ private slots:
 class QtSmartSearchBox: public QLineEdit
 {
 	Q_OBJECT
-
-signals:
-	void autocomplete(const std::wstring& query, NodeTypeSet acceptedNodeTypes);
-	void search(const std::vector<SearchMatch>& matches, NodeTypeSet acceptedNodeTypes);
-	void fullTextSearch(const std::wstring& query, bool caseSensitive);
-
-public slots:
-	void startSearch();
-
+	
 public:
-	QtSmartSearchBox(const QString& placeholder, bool supportsFullTextSearch, QWidget* parent = nullptr);
-	~QtSmartSearchBox() override;
+	explicit QtSmartSearchBox(QWidget* parent = nullptr);
 
+	// Shadow QLineEdit::setPlaceholderText:
+	void setPlaceholderText(const QString &);
+	void setFullTextSearchSupport(bool supportsFullTextSearch);
+	
 	QCompleter* getCompleter() const;
 	std::vector<SearchMatch> getMatches() const;
-
+	
 	void setAutocompletionList(const std::vector<SearchMatch>& autocompletionList);
 	void setMatches(const std::vector<SearchMatch>& matches);
 	void setFocus();
 	void findFulltext();
-
+	
 	void refreshStyle();
+	
+signals:
+	void autocomplete(const std::wstring& query, NodeTypeSet acceptedNodeTypes);
+	void search(const std::vector<SearchMatch>& matches, NodeTypeSet acceptedNodeTypes);
+	void fullTextSearch(const std::wstring& query, bool caseSensitive);
+	
+public slots:
+	void startSearch();
 
 protected:
 	bool event(QEvent* event) override;
@@ -110,8 +113,8 @@ private:
 	NodeTypeSet getMatchAcceptedNodeTypes() const;
 	bool lastMatchIsNoFilter() const;
 
-	const QString m_placeholder;
-	const bool m_supportsFullTextSearch;
+	QString m_placeholder;
+	bool m_supportsFullTextSearch = false;
 
 	bool m_allowTextChange = false;
 	QString m_oldText;
