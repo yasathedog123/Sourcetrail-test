@@ -12,6 +12,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtTabbedView::QtTabbedView(ViewLayout* viewLayout, const std::string& name)
 	: TabbedView(viewLayout, name)
 {
@@ -64,13 +66,9 @@ void QtTabbedView::showView(View* view)
 
 void QtTabbedView::setStyleSheet()
 {
-	utility::setWidgetBackgroundColor(
-		QtViewWidgetWrapper::getWidgetOfView(this),
-		ColorScheme::getInstance()->getColor("tab/background"));
+	setWidgetBackgroundColor(QtViewWidgetWrapper::getWidgetOfView(this), ColorScheme::getInstance()->getColor("tab/background"));
 
-	m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-													   L"tabbed_view/tabbed_view.css"))
-								.c_str());
+	m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"tabbed_view/tabbed_view.css")));
 }
 
 bool QtTabbedView::eventFilter(QObject* obj, QEvent* event)

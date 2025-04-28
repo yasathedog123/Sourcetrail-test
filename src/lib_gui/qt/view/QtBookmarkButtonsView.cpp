@@ -15,6 +15,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtBookmarkButtonsView::QtBookmarkButtonsView(ViewLayout* viewLayout)
 	: BookmarkButtonsView(viewLayout) 
 {
@@ -50,10 +52,9 @@ void QtBookmarkButtonsView::createWidgetWrapper()
 
 void QtBookmarkButtonsView::refreshView()
 {
-	m_onQtThread([=, this]() {
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-														   L"bookmark_view/bookmark_view.css"))
-									.c_str());
+	m_onQtThread([=, this]()
+	{
+		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/bookmark_view.css")));
 	});
 }
 

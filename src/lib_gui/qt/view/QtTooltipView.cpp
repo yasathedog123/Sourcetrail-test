@@ -7,6 +7,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtTooltipView::QtTooltipView(ViewLayout* viewLayout): TooltipView(viewLayout)
 {
 	m_widget = new QtTooltip(utility::getMainWindowforMainView(viewLayout));
@@ -19,10 +21,9 @@ void QtTooltipView::createWidgetWrapper()
 
 void QtTooltipView::refreshView()
 {
-	m_onQtThread([=, this]() {
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-														   L"tooltip_view/tooltip_view.css"))
-									.c_str());
+	m_onQtThread([=, this]()
+	{
+		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"tooltip_view/tooltip_view.css")));
 	});
 }
 

@@ -11,6 +11,8 @@
 #include "QtViewWidgetWrapper.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtCodeView::QtCodeView(ViewLayout* viewLayout): CodeView(viewLayout)
 {
 	m_widget = new QtCodeNavigator();
@@ -261,11 +263,9 @@ void QtCodeView::setNavigationState(const CodeParams& params)
 
 void QtCodeView::setStyleSheet() const
 {
-	utility::setWidgetBackgroundColor(
-		m_widget, ColorScheme::getInstance()->getColor("code/background"));
+	setWidgetBackgroundColor(m_widget, ColorScheme::getInstance()->getColor("code/background"));
 
-	std::string styleSheet = utility::getStyleSheet(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/code_view.css"));
+	QString styleSheet = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/code_view.css"));
 
-	m_widget->setStyleSheet(styleSheet.c_str());
+	m_widget->setStyleSheet(styleSheet);
 }

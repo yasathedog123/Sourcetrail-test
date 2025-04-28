@@ -12,6 +12,8 @@
 #include "QtViewWidgetWrapper.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtRefreshView::QtRefreshView(ViewLayout* viewLayout): RefreshView(viewLayout)
 {
 	m_widget = new QFrame();
@@ -44,7 +46,6 @@ void QtRefreshView::refreshView()
 {
 	m_onQtThread([this]() 
 	{
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath()
-			.concatenate(L"refresh_view/refresh_view.css")).c_str());
+		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"refresh_view/refresh_view.css")));
 	});
 }

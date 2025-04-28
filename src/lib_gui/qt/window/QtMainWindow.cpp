@@ -60,6 +60,8 @@
 #include "utilityQt.h"
 #include "utilityString.h"
 
+using namespace utility;
+
 QtViewToggle::QtViewToggle(View* view, QWidget* parent): QWidget(parent), m_view(view) {}
 
 void QtViewToggle::clear()
@@ -111,7 +113,6 @@ bool MouseReleaseFilter::eventFilter(QObject* obj, QEvent* event)
 	return QObject::eventFilter(obj, event);
 }
 
-
 QtMainWindow::QtMainWindow()
 	: m_windowStack(this)
 {
@@ -119,11 +120,10 @@ QtMainWindow::QtMainWindow()
 	setCentralWidget(nullptr);
 	setDockNestingEnabled(true);
 
-	setWindowIcon(QIcon(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/logo_1024_1024.png").wstr())));
+	setWindowIcon(QIcon(QString::fromStdWString(ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/logo_1024_1024.png").wstr())));
 	setWindowFlags(Qt::Widget);
 
-	QApplication* app = dynamic_cast<QApplication*>(QCoreApplication::instance());
+	QApplication *app = dynamic_cast<QApplication *>(QCoreApplication::instance());
 	app->installEventFilter(new MouseReleaseFilter(this));
 
 	refreshStyle();
@@ -131,9 +131,7 @@ QtMainWindow::QtMainWindow()
 	if constexpr (!utility::Platform::isMac())
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
-		app->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-													  L"main/scrollbar.css"))
-							   .c_str());
+		app->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css")));
 	}
 
 	setupProjectMenu();
@@ -410,9 +408,7 @@ void QtMainWindow::setContentEnabled(bool enabled)
 
 void QtMainWindow::refreshStyle()
 {
-	setStyleSheet(
-		utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/main.css"))
-			.c_str());
+	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/main.css")));
 
 	QFont tooltipFont = QToolTip::font();
 	tooltipFont.setPixelSize(ApplicationSettings::getInstance()->getFontSize());

@@ -11,6 +11,8 @@
 #include "utilityQt.h"
 #include "utilityString.h"
 
+using namespace utility;
+
 void QtListWidget::mouseDoubleClickEvent(QMouseEvent*  /*event*/)
 {
 	QModelIndex index;
@@ -33,9 +35,11 @@ void QtListWidget::wheelEvent(QWheelEvent* event)
 	}
 }
 
-QtListBox::QtListBox(QWidget* parent, const QString& listName): QFrame(parent), m_listName(listName)
+QtListBox::QtListBox(QWidget *parent, const QString &listName)
+	: QFrame(parent)
+	, m_listName(listName)
 {
-	QBoxLayout* layout = new QVBoxLayout();
+	QBoxLayout *layout = new QVBoxLayout();
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 6, 0, 0);
 	layout->setAlignment(Qt::AlignTop);
@@ -45,27 +49,24 @@ QtListBox::QtListBox(QWidget* parent, const QString& listName): QFrame(parent), 
 	m_list->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(m_list, &QListWidget::doubleClicked, this, &QtListBox::doubleClicked);
 
-	setStyleSheet(
-		utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/listbox.css")).c_str());
+	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/listbox.css")));
 	layout->addWidget(m_list, 5);
 
-	QWidget* buttonContainer = new QWidget(this);
+	QWidget *buttonContainer = new QWidget(this);
 	buttonContainer->setObjectName(QStringLiteral("bar"));
 
-	QHBoxLayout* barLayout = new QHBoxLayout();
+	QHBoxLayout *barLayout = new QHBoxLayout();
 	barLayout->setContentsMargins(8, 4, 8, 2);
 	barLayout->setSpacing(0);
 
-	m_addButton = new QtIconButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/plus.png"),
+	m_addButton = new QtIconButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/plus.png"),
 		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/plus_hover.png"));
 	m_addButton->setIconSize(QSize(16, 16));
 	m_addButton->setObjectName(QStringLiteral("plusButton"));
 	m_addButton->setToolTip(QStringLiteral("add line"));
 	barLayout->addWidget(m_addButton);
 
-	m_removeButton = new QtIconButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/minus.png"),
+	m_removeButton = new QtIconButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/minus.png"),
 		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/minus_hover.png"));
 	m_removeButton->setIconSize(QSize(16, 16));
 	m_removeButton->setObjectName(QStringLiteral("minusButton"));
@@ -77,8 +78,7 @@ QtListBox::QtListBox(QWidget* parent, const QString& listName): QFrame(parent), 
 	m_innerBarLayout = new QHBoxLayout();
 	barLayout->addLayout(m_innerBarLayout);
 
-	QPushButton* editButton = new QtIconButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/edit.png"), FilePath());
+	QPushButton *editButton = new QtIconButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/edit.png"), FilePath());
 	editButton->setIconSize(QSize(16, 16));
 	editButton->setObjectName(QStringLiteral("editButton"));
 	editButton->setToolTip(QStringLiteral("edit plain text"));

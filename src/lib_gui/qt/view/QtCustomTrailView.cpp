@@ -19,6 +19,8 @@
 #include "TabIds.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 	: QWidget(utility::getMainWindowforMainView(viewLayout))
 	, CustomTrailView(nullptr)
@@ -447,23 +449,21 @@ void QtCustomTrailView::keyPressEvent(QKeyEvent* event)
 
 void QtCustomTrailView::updateStyleSheet()
 {
-	std::string css = utility::getStyleSheet(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/search_view.css"));
-	css += utility::getStyleSheet(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"custom_trail_view/custom_trail_view.css"));
+	QString css = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/search_view.css"));
+	css += loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"custom_trail_view/custom_trail_view.css"));
 
-	setStyleSheet(css.c_str());
+	setStyleSheet(css);
 
 	QAbstractItemView* popup = m_searchBoxFrom->getCompleter()->popup();
-	if (popup)
+	if (popup != nullptr)
 	{
-		popup->setStyleSheet(css.c_str());
+		popup->setStyleSheet(css);
 	}
 
 	popup = m_searchBoxTo->getCompleter()->popup();
-	if (popup)
+	if (popup != nullptr)
 	{
-		popup->setStyleSheet(css.c_str());
+		popup->setStyleSheet(css);
 	}
 }
 

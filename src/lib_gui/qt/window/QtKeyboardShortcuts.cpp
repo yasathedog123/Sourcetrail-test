@@ -7,6 +7,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 namespace
 {
 
@@ -107,8 +109,7 @@ void QtKeyboardShortcuts::populateWindow(QWidget* widget)
 
 	widget->setLayout(layout);
 
-	widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-		L"keyboard_shortcuts/keyboard_shortcuts.css")).c_str());
+	widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"keyboard_shortcuts/keyboard_shortcuts.css")));
 }
 
 void QtKeyboardShortcuts::windowReady()

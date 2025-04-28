@@ -16,6 +16,8 @@
 #include "ColorScheme.h"
 #include "GraphViewStyle.h"
 
+using namespace utility;
+
 QtHistoryItem::QtHistoryItem(const SearchMatch& match, size_t index, bool isCurrent)
 	: index(index), m_match(match)
 {
@@ -143,8 +145,7 @@ void QtHistoryListWidget::mouseReleaseEvent(QMouseEvent* event)
 	QListWidget::mouseReleaseEvent(event);
 }
 
-
-QtHistoryList::QtHistoryList(const std::vector<SearchMatch>& history, size_t currentIndex)
+QtHistoryList::QtHistoryList(const std::vector<SearchMatch> &history, size_t currentIndex)
 	: m_currentIndex(currentIndex)
 {
 	setWindowFlags(Qt::Popup);
@@ -157,15 +158,13 @@ QtHistoryList::QtHistoryList(const std::vector<SearchMatch>& history, size_t cur
 
 	for (size_t i = 0; i < history.size(); i++)
 	{
-		QListWidgetItem* item = new QListWidgetItem(m_list);
-		QtHistoryItem* line = new QtHistoryItem(history[i], i, i == currentIndex);
+		QListWidgetItem *item = new QListWidgetItem(m_list);
+		QtHistoryItem *line = new QtHistoryItem(history[i], i, i == currentIndex);
 		item->setSizeHint(line->getSizeHint());
 		m_list->setItemWidget(item, line);
 	}
 
-	setStyleSheet(utility::getStyleSheet(
-					  ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/history_list.css"))
-					  .c_str());
+	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/history_list.css")));
 
 	connect(m_list, &QListWidget::itemClicked, this, &QtHistoryList::onItemClicked);
 }

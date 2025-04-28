@@ -16,27 +16,27 @@ class ViewLayout;
 
 namespace utility
 {
-void setWidgetBackgroundColor(QWidget* widget, const std::string& color);
-void setWidgetRetainsSpaceWhenHidden(QWidget* widget);
+void setWidgetBackgroundColor(QWidget *widget, const std::string &color);
+void setWidgetRetainsSpaceWhenHidden(QWidget *widget);
 
-void loadFontsFromDirectory(const FilePath& path, const std::wstring& extension = L".otf");
+void loadFontsFromDirectory(const FilePath &path, const std::wstring &extension = L".otf");
 
-std::string getStyleSheet(const FilePath& path);
+QString loadStyleSheet(const FilePath &path);
 
-QPixmap colorizePixmap(const QPixmap& pixmap, QColor color);
-QIcon createButtonIcon(const FilePath& iconPath, const std::string& colorId);
+QPixmap colorizePixmap(const QPixmap &pixmap, QColor color);
+QIcon createButtonIcon(const FilePath &iconPath, const std::string &colorId);
 
-QtMainWindow* getMainWindowforMainView(ViewLayout* viewLayout);
+QtMainWindow *getMainWindowforMainView(ViewLayout *viewLayout);
 
-void copyNewFilesFromDirectory(const QString& src, const QString& dst);
+void copyNewFilesFromDirectory(const QString &src, const QString &dst);
 
 template <typename T>
-	T qt_variant_cast(const QVariant &variant)
-	{
-		Q_ASSERT(variant.canConvert<T>());
-		return qvariant_cast<T>(variant);
-	}
-	
-}	 // namespace utility
+T qt_variant_cast(const QVariant &variant)
+{
+	Q_ASSERT(variant.canConvert<T>());
+	return qvariant_cast<T>(variant);
+}
 
-#endif	  // UTILITY_QT_H
+}
+
+#endif // UTILITY_QT_H

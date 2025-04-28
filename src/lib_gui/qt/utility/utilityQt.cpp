@@ -23,7 +23,7 @@
 
 namespace utility
 {
-void setWidgetBackgroundColor(QWidget* widget, const std::string& color)
+void setWidgetBackgroundColor(QWidget *widget, const std::string &color)
 {
 	QPalette palette = widget->palette();
 	palette.setColor(widget->backgroundRole(), QColor(color.c_str()));
@@ -31,14 +31,14 @@ void setWidgetBackgroundColor(QWidget* widget, const std::string& color)
 	widget->setAutoFillBackground(true);
 }
 
-void setWidgetRetainsSpaceWhenHidden(QWidget* widget)
+void setWidgetRetainsSpaceWhenHidden(QWidget *widget)
 {
 	QSizePolicy pol = widget->sizePolicy();
 	pol.setRetainSizeWhenHidden(true);
 	widget->setSizePolicy(pol);
 }
 
-void loadFontsFromDirectory(const FilePath& path, const std::wstring& extension)
+void loadFontsFromDirectory(const FilePath &path, const std::wstring &extension)
 {
 	std::vector<std::wstring> extensions;
 	extensions.push_back(extension);
@@ -46,7 +46,7 @@ void loadFontsFromDirectory(const FilePath& path, const std::wstring& extension)
 
 	std::set<int> loadedFontIds;
 
-	for (const FilePath& fontFilePath: fontFilePaths)
+	for (const FilePath &fontFilePath : fontFilePaths)
 	{
 		QFile file(QString::fromStdWString(fontFilePath.wstr()));
 		if (file.open(QIODevice::ReadOnly))
@@ -59,16 +59,16 @@ void loadFontsFromDirectory(const FilePath& path, const std::wstring& extension)
 		}
 	}
 
-	for (int loadedFontId: loadedFontIds)
+	for (int loadedFontId : loadedFontIds)
 	{
-		for (QString& family: QFontDatabase::applicationFontFamilies(loadedFontId))
+		for (QString &family : QFontDatabase::applicationFontFamilies(loadedFontId))
 		{
 			LOG_INFO(L"Loaded FontFamily: " + family.toStdWString());
 		}
 	}
 }
 
-std::string getStyleSheet(const FilePath& path)
+QString loadStyleSheet(const FilePath &path)
 {
 	std::string css = TextAccess::createFromFile(path)->getText();
 
@@ -170,9 +170,7 @@ std::string getStyleSheet(const FilePath& path)
 		{
 			if (!ColorScheme::getInstance()->hasColor(val))
 			{
-				LOG_WARNING(
-					"Color scheme does not provide value for key \"" + val +
-					"\" requested by style \"" + path.str() + "\".");
+				LOG_WARNING("Color scheme does not provide value for key \"" + val + "\" requested by style \"" + path.str() + "\".");
 			}
 			val = ColorScheme::getInstance()->getColor(val);
 		}
@@ -186,9 +184,9 @@ std::string getStyleSheet(const FilePath& path)
 			}
 			if constexpr (utility::Platform::isWindows())
 				val = values[0];
-			else if constexpr(utility::Platform::isMac())
+			else if constexpr (utility::Platform::isMac())
 				val = values[1];
-			else if constexpr(utility::Platform::isLinux())
+			else if constexpr (utility::Platform::isLinux())
 				val = values[2];
 		}
 		else
@@ -201,10 +199,10 @@ std::string getStyleSheet(const FilePath& path)
 		pos = posA + val.size();
 	}
 
-	return css;
+	return QString::fromStdString(css);
 }
 
-QPixmap colorizePixmap(const QPixmap& pixmap, QColor color)
+QPixmap colorizePixmap(const QPixmap &pixmap, QColor color)
 {
 	QImage image = pixmap.toImage();
 	QImage colorImage(image.size(), image.format());
@@ -217,33 +215,31 @@ QPixmap colorizePixmap(const QPixmap& pixmap, QColor color)
 	return QPixmap::fromImage(image);
 }
 
-QIcon createButtonIcon(const FilePath& iconPath, const std::string& colorId)
+QIcon createButtonIcon(const FilePath &iconPath, const std::string &colorId)
 {
-	ColorScheme* scheme = ColorScheme::getInstance().get();
+	ColorScheme *scheme = ColorScheme::getInstance().get();
 
 	QPixmap pixmap(QString::fromStdWString(iconPath.wstr()));
 	QIcon icon(utility::colorizePixmap(pixmap, scheme->getColor(colorId + "/icon").c_str()));
 
 	if (scheme->hasColor(colorId + "/icon_disabled"))
 	{
-		icon.addPixmap(
-			utility::colorizePixmap(pixmap, scheme->getColor(colorId + "/icon_disabled").c_str()),
-			QIcon::Disabled);
+		icon.addPixmap(utility::colorizePixmap(pixmap, scheme->getColor(colorId + "/icon_disabled").c_str()), QIcon::Disabled);
 	}
 
 	return icon;
 }
 
-QtMainWindow* getMainWindowforMainView(ViewLayout* viewLayout)
+QtMainWindow *getMainWindowforMainView(ViewLayout *viewLayout)
 {
-	if (QtMainView* mainView = dynamic_cast<QtMainView*>(viewLayout))
+	if (QtMainView *mainView = dynamic_cast<QtMainView *>(viewLayout))
 	{
 		return mainView->getMainWindow();
 	}
 	return nullptr;
 }
 
-void copyNewFilesFromDirectory(const QString& src, const QString& dst)
+void copyNewFilesFromDirectory(const QString &src, const QString &dst)
 {
 	QDir dir(src);
 	if (!dir.exists())
@@ -267,4 +263,4 @@ void copyNewFilesFromDirectory(const QString& src, const QString& dst)
 		}
 	}
 }
-}	 // namespace utility
+}

@@ -269,12 +269,9 @@ void QtTabsView::setTabState(int idx, const std::vector<SearchMatch>& matches)
 
 void QtTabsView::setStyleSheet()
 {
-	const std::string css = utility::getStyleSheet(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/tabs_view.css"));
-	m_widget->setStyleSheet(css.c_str());
+	m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/tabs_view.css")));
 
-	utility::setWidgetBackgroundColor(
-		m_widget, ColorScheme::getInstance()->getColor("tab/bar/background"));
+	setWidgetBackgroundColor(m_widget, ColorScheme::getInstance()->getColor("tab/bar/background"));
 }
 
 void QtTabsView::closeTabsToRight(int tabNum)

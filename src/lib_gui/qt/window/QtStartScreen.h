@@ -20,7 +20,7 @@ signals:
 	void updateButtons();
 
 private:
-	bool m_projectExists;
+	bool m_projectExists = false;
 	FilePath m_projectFilePath;
 };
 

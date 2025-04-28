@@ -17,6 +17,8 @@
 #include "SourceLocationFile.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 void QtCodeFileListScrollArea::keyPressEvent(QKeyEvent* event)
 {
 	switch (event->key())
@@ -32,7 +34,7 @@ void QtCodeFileListScrollArea::keyPressEvent(QKeyEvent* event)
 	QScrollArea::keyPressEvent(event);
 }
 
-QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
+QtCodeFileList::QtCodeFileList(QtCodeNavigator *navigator)
 	: m_navigator(navigator)
 {
 	m_scrollArea = new QtCodeFileListScrollArea();
@@ -43,7 +45,7 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 	m_filesArea = new QFrame();
 	m_filesArea->setObjectName(QStringLiteral("code_file_list"));
 
-	QVBoxLayout* innerLayout = new QVBoxLayout();
+	QVBoxLayout *innerLayout = new QVBoxLayout();
 	innerLayout->setSpacing(0);
 	innerLayout->setContentsMargins(0, 0, 0, 0);
 	innerLayout->setAlignment(Qt::AlignTop);
@@ -58,9 +60,7 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 	if constexpr (utility::Platform::isMac())
 	{
 		// set style on scrollbar because it always has bright background by default
-		m_lastSnippetScrollBar->setStyleSheet(
-			utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css"))
-				.c_str());
+		m_lastSnippetScrollBar->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css")));
 		m_styleSize = m_lastSnippetScrollBar->styleSheet().size();
 	}
 	else
@@ -69,10 +69,9 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 	}
 
 	m_lastSnippetScrollBar->hide();
-	connect(
-		m_lastSnippetScrollBar, &QScrollBar::valueChanged, this, &QtCodeFileList::scrollLastSnippet);
+	connect(m_lastSnippetScrollBar, &QScrollBar::valueChanged, this, &QtCodeFileList::scrollLastSnippet);
 
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout *layout = new QVBoxLayout();
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(m_scrollArea);
@@ -80,16 +79,8 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 
 	m_scrollSpeedChangeListener.setScrollBar(m_scrollArea->verticalScrollBar());
 
-	connect(
-		m_scrollArea->verticalScrollBar(),
-		&QScrollBar::valueChanged,
-		this,
-		&QtCodeFileList::updateSnippetTitleAndScrollBar);
-	connect(
-		m_scrollArea->verticalScrollBar(),
-		&QScrollBar::valueChanged,
-		m_navigator,
-		&QtCodeNavigator::scrolled);
+	connect(m_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &QtCodeFileList::updateSnippetTitleAndScrollBar);
+	connect(m_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, m_navigator, &QtCodeNavigator::scrolled);
 }
 
 void QtCodeFileList::clear()

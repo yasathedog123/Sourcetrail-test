@@ -9,6 +9,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QLabel* QtIndexingDialog::createTitleLabel(const QString& title, QBoxLayout* layout)
 {
 	QLabel* label = new QLabel(title);
@@ -72,22 +74,17 @@ QLabel* QtIndexingDialog::createFlagLabel(QWidget* parent)
 	return flagLabel;
 }
 
-
-QtIndexingDialog::QtIndexingDialog(bool isSubWindow, QWidget* parent)
+QtIndexingDialog::QtIndexingDialog(bool isSubWindow, QWidget *parent)
 	: QtWindowBase(isSubWindow, parent)
 {
-	m_window->setStyleSheet(
-		m_window->styleSheet() +
-		QStringLiteral("#window { "
-					   "background: #2E3C86;"
-					   "border: none;"
-					   "}"));
+	m_window->setStyleSheet(m_window->styleSheet() + QStringLiteral(
+		"#window { "
+		"background: #2E3C86;"
+		"border: none;"
+		"}"));
 
-	setStyleSheet(
-		(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")) +
-		 utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/"
-																		L"indexing_dialog.css")))
-			.c_str());
+	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css"))
+		+ loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/indexing_dialog.css")));
 
 	m_layout = new QVBoxLayout(this);
 	m_layout->setContentsMargins(20, 20, 20, 0);

@@ -9,6 +9,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtWindow::QtWindow(bool isSubWindow, QWidget* parent)
 	: QtWindowBase(isSubWindow, parent)
 {
@@ -16,14 +18,13 @@ QtWindow::QtWindow(bool isSubWindow, QWidget* parent)
 
 void QtWindow::setup()
 {
-	setStyleSheet(
-		utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")).c_str());
+	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")));
 
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout *layout = new QVBoxLayout();
 	layout->setContentsMargins(10, 10, 10, 10);
 
 	{
-		QHBoxLayout* hlayout = new QHBoxLayout();
+		QHBoxLayout *hlayout = new QHBoxLayout();
 		hlayout->setContentsMargins(0, 0, 0, 0);
 
 		m_title = new QLabel();
@@ -41,12 +42,12 @@ void QtWindow::setup()
 
 	layout->addSpacing(10);
 
-	QWidget* contentWidget = new QWidget();
+	QWidget *contentWidget = new QWidget();
 	contentWidget->setObjectName(QStringLiteral("form"));
 
 	populateWindow(contentWidget);
 
-	QScrollArea* scrollArea = new QScrollArea();
+	QScrollArea *scrollArea = new QScrollArea();
 	scrollArea->setFrameShadow(QFrame::Plain);
 	scrollArea->setObjectName(QStringLiteral("formArea"));
 	scrollArea->setWidgetResizable(true);
@@ -64,7 +65,7 @@ void QtWindow::setup()
 		scrollArea->setObjectName(QStringLiteral("scrollArea"));
 	}
 
-	QHBoxLayout* buttonLayout = createButtons();
+	QHBoxLayout *buttonLayout = createButtons();
 	layout->addLayout(buttonLayout);
 
 	m_content->setLayout(layout);

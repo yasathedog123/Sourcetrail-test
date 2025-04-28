@@ -16,8 +16,8 @@ QtBookmarkWindow::QtBookmarkWindow(ControllerProxy<BookmarkController> *controll
 
 void QtBookmarkWindow::refreshStyleSheet()
 {
-	string windowStyleSheet = getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css"));
-	string bookmarkStyleSheet = getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/bookmark_view.css"));
+	QString windowStyleSheet = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css"));
+	QString bookmarkStyleSheet = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/bookmark_view.css"));
 	
-	setStyleSheet(QString::fromStdString(windowStyleSheet + bookmarkStyleSheet));
+	setStyleSheet(windowStyleSheet + bookmarkStyleSheet);
 }

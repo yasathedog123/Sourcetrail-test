@@ -39,6 +39,8 @@
 #include "ResourcePaths.h"
 #include "utilityQt.h"
 
+using namespace utility;
+
 QtGraphView::QtGraphView(ViewLayout* viewLayout)
 	: GraphView(viewLayout)
 	, m_focusHandler(this)
@@ -228,18 +230,18 @@ void QtGraphView::createWidgetWrapper() {}
 
 void QtGraphView::refreshView()
 {
-	m_onQtThread([this]() {
+	m_onQtThread([this]()
+	{
 		doResize();
 
-		QtGraphicsView* view = getView();
+		QtGraphicsView *view = getView();
 
-		const std::string css = utility::getStyleSheet(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/graph_view.css"));
-		view->setStyleSheet(css.c_str());
+		QString css = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/graph_view.css"));
+		view->setStyleSheet(css);
 		view->setAppZoomFactor(GraphViewStyle::getZoomFactor());
 
-		m_trailWidget->setStyleSheet(css.c_str());
-		m_groupWidget->setStyleSheet(css.c_str());
+		m_trailWidget->setStyleSheet(css);
+		m_groupWidget->setStyleSheet(css);
 
 		updateTrailButtons();
 	});
