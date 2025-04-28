@@ -51,4 +51,4 @@
 * Framework: Switch from Qt5 to Qt6
 
 #### 2021.4.19 - 0.3.0
-[Coati Changelog](unused_coati_software_files/CHANGELOG.md)
+[Coati Changelog](docs/COATI_CHANGELOG.md)

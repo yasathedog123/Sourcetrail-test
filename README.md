@@ -27,7 +27,7 @@ Sourcetrail is licensed under the [GNU General Public License Version 3](LICENSE
 
 ## Note
 
-__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read more in the original [README.md](unused_coati_software_files/README.md)
+__Important:__ This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. If you want to know more about this decision, read this [blog entry](https://web.archive.org/web/20211115131149/https://www.sourcetrail.com/blog/discontinue_sourcetrail/).
 
 This is a fork of the Sourcetrail project and I want to keep this project at least buildable. 
 
