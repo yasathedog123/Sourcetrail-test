@@ -190,9 +190,9 @@ bool SqliteIndexStorage::addFile(const StorageFile& data)
 	bool success = false;
 	{
 		m_insertFileStmt.bind(1, reinterpret_id_cast<int>(data.id));
-		m_insertFileStmt.bind(2, utility::encodeToUtf8(data.filePath).c_str());
-		m_insertFileStmt.bind(3, utility::encodeToUtf8(data.languageIdentifier).c_str());
-		m_insertFileStmt.bind(4, modificationTime.c_str());
+		m_insertFileStmt.bind(2, utility::encodeToUtf8(data.filePath));
+		m_insertFileStmt.bind(3, utility::encodeToUtf8(data.languageIdentifier));
+		m_insertFileStmt.bind(4, modificationTime);
 		m_insertFileStmt.bind(5, data.indexed);
 		m_insertFileStmt.bind(6, data.complete);
 		m_insertFileStmt.bind(7, lineCount);
@@ -202,7 +202,7 @@ bool SqliteIndexStorage::addFile(const StorageFile& data)
 	if (success && content)
 	{
 		m_insertFileContentStmt.bind(1, reinterpret_id_cast<int>(data.id));
-		m_insertFileContentStmt.bind(2, content->getText().c_str());
+		m_insertFileContentStmt.bind(2, content->getText());
 		success = executeStatement(m_insertFileContentStmt);
 	}
 
@@ -407,7 +407,7 @@ void SqliteIndexStorage::addElementComponent(const StorageElementComponent& comp
 {
 	m_insertElementComponentStmt.bind(1, reinterpret_id_cast<int>(component.elementId));
 	m_insertElementComponentStmt.bind(2, component.type);
-	m_insertElementComponentStmt.bind(3, utility::encodeToUtf8(component.data).c_str());
+	m_insertElementComponentStmt.bind(3, utility::encodeToUtf8(component.data));
 	executeStatement(m_insertElementComponentStmt);
 	m_insertElementComponentStmt.reset();
 }
@@ -426,7 +426,7 @@ StorageError SqliteIndexStorage::addError(const StorageErrorData& data)
 
 	Id id = 0;
 	{
-		m_checkErrorExistsStmt.bind(1, utility::encodeToUtf8(sanitizedMessage).c_str());
+		m_checkErrorExistsStmt.bind(1, utility::encodeToUtf8(sanitizedMessage));
 		m_checkErrorExistsStmt.bind(2, int(data.fatal));
 
 		CppSQLite3Query checkQuery = executeQuery(m_checkErrorExistsStmt);
@@ -443,10 +443,10 @@ StorageError SqliteIndexStorage::addError(const StorageErrorData& data)
 		id = static_cast<Id>(m_database.lastRowId());
 
 		m_insertErrorStmt.bind(1, reinterpret_id_cast<int>(id));
-		m_insertErrorStmt.bind(2, utility::encodeToUtf8(sanitizedMessage).c_str());
+		m_insertErrorStmt.bind(2, utility::encodeToUtf8(sanitizedMessage));
 		m_insertErrorStmt.bind(3, data.fatal);
 		m_insertErrorStmt.bind(4, data.indexed);
-		m_insertErrorStmt.bind(5, utility::encodeToUtf8(data.translationUnit).c_str());
+		m_insertErrorStmt.bind(5, utility::encodeToUtf8(data.translationUnit));
 
 		const bool success = executeStatement(m_insertErrorStmt);
 		if (success)
@@ -769,7 +769,7 @@ StorageNode SqliteIndexStorage::getNodeBySerializedName(const std::wstring& seri
 	CppSQLite3Statement stmt = m_database.compileStatement(
 		"SELECT id, type, serialized_name FROM node WHERE serialized_name == ? LIMIT 1;");
 
-	stmt.bind(1, utility::encodeToUtf8(serializedName).c_str());
+	stmt.bind(1, utility::encodeToUtf8(serializedName));
 	CppSQLite3Query q = executeQuery(stmt);
 
 	if (!q.eof())
@@ -1321,7 +1321,7 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			[](CppSQLite3Statement& stmt, const StorageNode& node, size_t index) {
 				stmt.bind(int(index) * 3 + 1, reinterpret_id_cast<int>(node.id));
 				stmt.bind(int(index) * 3 + 2, int(node.type));
-				stmt.bind(int(index) * 3 + 3, utility::encodeToUtf8(node.serializedName).c_str());
+				stmt.bind(int(index) * 3 + 3, utility::encodeToUtf8(node.serializedName));
 			},
 			m_database);
 		m_insertEdgeBatchStatement.compile(
@@ -1347,7 +1347,7 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			2,
 			[](CppSQLite3Statement& stmt, const StorageLocalSymbol& symbol, size_t index) {
 				stmt.bind(int(index) * 2 + 1, reinterpret_id_cast<int>(symbol.id));
-				stmt.bind(int(index) * 2 + 2, utility::encodeToUtf8(symbol.name).c_str());
+				stmt.bind(int(index) * 2 + 2, utility::encodeToUtf8(symbol.name));
 			},
 			m_database);
 		m_insertSourceLocationBatchStatement.compile(

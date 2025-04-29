@@ -71,8 +71,8 @@ StorageBookmarkCategory SqliteBookmarkStorage::addBookmarkCategory(const Storage
 		"INSERT INTO bookmark_category(id, name) "
 		"VALUES (NULL, ?);";
 
-	CppSQLite3Statement stmt = m_database.compileStatement(statement.c_str());
-	stmt.bind(1, utility::encodeToUtf8(data.name).c_str());
+	CppSQLite3Statement stmt = m_database.compileStatement(statement);
+	stmt.bind(1, utility::encodeToUtf8(data.name));
 
 	executeStatement(stmt);
 	return StorageBookmarkCategory(static_cast<Id>(m_database.lastRowId()), data);
@@ -87,10 +87,10 @@ StorageBookmark SqliteBookmarkStorage::addBookmark(const StorageBookmarkData& da
 
 	try
 	{
-		CppSQLite3Statement stmt = m_database.compileStatement(statement.c_str());
-		stmt.bind(1, utility::encodeToUtf8(data.name).c_str());
-		stmt.bind(2, utility::encodeToUtf8(data.comment).c_str());
-		stmt.bind(3, data.timestamp.c_str());
+		CppSQLite3Statement stmt = m_database.compileStatement(statement);
+		stmt.bind(1, utility::encodeToUtf8(data.name));
+		stmt.bind(2, utility::encodeToUtf8(data.comment));
+		stmt.bind(3, data.timestamp);
 		executeStatement(stmt);
 
 		return StorageBookmark(BookmarkId(m_database.lastRowId()), data);
@@ -113,8 +113,8 @@ StorageBookmarkedNode SqliteBookmarkStorage::addBookmarkedNode(const StorageBook
 		"INSERT INTO bookmarked_node(id, serialized_node_name) "
 		"VALUES (" +
 		to_string(id) + ", ?);";
-	CppSQLite3Statement stmt = m_database.compileStatement(statement.c_str());
-	stmt.bind(1, utility::encodeToUtf8(data.serializedNodeName).c_str());
+	CppSQLite3Statement stmt = m_database.compileStatement(statement);
+	stmt.bind(1, utility::encodeToUtf8(data.serializedNodeName));
 	executeStatement(stmt);
 
 	return StorageBookmarkedNode(id, data);
@@ -133,9 +133,9 @@ StorageBookmarkedEdge SqliteBookmarkStorage::addBookmarkedEdge(const StorageBook
 		"VALUES (" +
 		to_string(id) + ", ?, ?, " + std::to_string(data.edgeType) + ", " +
 		std::to_string(data.sourceNodeActive) + ");";
-	CppSQLite3Statement stmt = m_database.compileStatement(statement.c_str());
-	stmt.bind(1, utility::encodeToUtf8(data.serializedSourceNodeName).c_str());
-	stmt.bind(2, utility::encodeToUtf8(data.serializedTargetNodeName).c_str());
+	CppSQLite3Statement stmt = m_database.compileStatement(statement);
+	stmt.bind(1, utility::encodeToUtf8(data.serializedSourceNodeName));
+	stmt.bind(2, utility::encodeToUtf8(data.serializedTargetNodeName));
 	executeStatement(stmt);
 
 	return StorageBookmarkedEdge(id, data);

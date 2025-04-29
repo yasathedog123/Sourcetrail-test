@@ -283,8 +283,7 @@ private:
 		{
 			m_bindValuesFunc = bindValuesFunc;
 
-			std::string valueStr = '(' +
-				utility::join(std::vector<std::string>(valueCount, "?"), ',') + ')';
+			std::string valueStr = '(' + utility::join(std::vector<std::string>(valueCount, "?"), ',') + ')';
 
 			const size_t MAX_VARIABLE_COUNT = 999;
 			size_t batchSize = MAX_VARIABLE_COUNT / valueCount;
@@ -304,8 +303,7 @@ private:
 				}
 				stmt << ';';
 
-				m_stmts.emplace_back(
-					std::make_pair(batchSize, database.compileStatement(stmt.str().c_str())));
+				m_stmts.emplace_back(std::make_pair(batchSize, database.compileStatement(stmt.str())));
 
 				if (batchSize == 1)
 				{

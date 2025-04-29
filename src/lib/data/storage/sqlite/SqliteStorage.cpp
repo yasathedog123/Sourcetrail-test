@@ -14,7 +14,7 @@ SqliteStorage::SqliteStorage(const FilePath& dbFilePath): m_dbFilePath(dbFilePat
 
 	try
 	{
-		m_database.open(utility::encodeToUtf8(m_dbFilePath.wstr()).c_str());
+		m_database.open(utility::encodeToUtf8(m_dbFilePath.wstr()));
 	}
 	catch (CppSQLite3Exception& e)
 	{
@@ -164,7 +164,7 @@ bool SqliteStorage::executeStatement(const std::string& statement) const
 {
 	try
 	{
-		m_database.execDML(statement.c_str());
+		m_database.execDML(statement);
 	}
 	catch (CppSQLite3Exception &e)
 	{
@@ -195,7 +195,7 @@ int SqliteStorage::executeStatementScalar(const std::string& statement, const in
 	int ret = 0;
 	try
 	{
-		ret = m_database.execScalar(statement.c_str(), nullValue);
+		ret = m_database.execScalar(statement, nullValue);
 	}
 	catch (CppSQLite3Exception &e)
 	{
@@ -230,7 +230,7 @@ CppSQLite3Query SqliteStorage::executeQuery(const std::string& statement) const
 {
 	try
 	{
-		return m_database.execQuery(statement.c_str());
+		return m_database.execQuery(statement);
 	}
 	catch (CppSQLite3Exception &e)
 	{
@@ -254,8 +254,7 @@ CppSQLite3Query SqliteStorage::executeQuery(CppSQLite3Statement& statement)
 
 bool SqliteStorage::hasTable(const std::string& tableName) const
 {
-	CppSQLite3Query q = executeQuery(
-		"SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';");
+	CppSQLite3Query q = executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';");
 
 	if (!q.eof())
 	{
@@ -282,14 +281,10 @@ std::string SqliteStorage::getMetaValue(const std::string& key) const
 
 void SqliteStorage::insertOrUpdateMetaValue(const std::string& key, const std::string& value)
 {
-	CppSQLite3Statement stmt = m_database.compileStatement(
-		std::string("INSERT OR REPLACE INTO meta(id, key, value) VALUES("
-					"(SELECT id FROM meta WHERE key = ?), ?, ?"
-					");")
-			.c_str());
+	CppSQLite3Statement stmt = m_database.compileStatement("INSERT OR REPLACE INTO meta(id, key, value) VALUES((SELECT id FROM meta WHERE key = ?), ?, ?);");
 
-	stmt.bind(1, key.c_str());
-	stmt.bind(2, key.c_str());
-	stmt.bind(3, value.c_str());
+	stmt.bind(1, key);
+	stmt.bind(2, key);
+	stmt.bind(3, value);
 	executeStatement(stmt);
 }
