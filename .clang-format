@@ -19,7 +19,7 @@ AllowShortLoopsOnASingleLine: false
 BreakTemplateDeclarations: Yes
 BreakBeforeBinaryOperators: NonAssignment
 
-FixNamespaceComments: false
+FixNamespaceComments: true
 
 # Basically the 'Allman' style, but necessary for 'BeforeLambdaBody'
 BreakBeforeBraces: Custom
