@@ -3110,7 +3110,7 @@ void PersistentStorage::addFileContentsToGraph(Id fileId, Graph* graph) const
 		}
 	}
 
-	fileNode->setChildCount(static_id_cast<size_t>(memberEdgeId));
+	fileNode->setChildCount(static_cast<size_t>(memberEdgeId));
 }
 
 void PersistentStorage::addComponentAccessToGraph(Graph* graph) const

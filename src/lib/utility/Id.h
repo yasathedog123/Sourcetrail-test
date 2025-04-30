@@ -3,14 +3,15 @@
 
 #include <QMetaType>
 
+#include <concepts>
 #include <cstddef>
 #include <iosfwd>
 #include <string>
-#include <unordered_map>
+#include <type_traits>
 
 class Id final {
 public:
-	using type = std::size_t;
+	using type = long long;
 	
 	enum class FirstBits : type
 	{
@@ -30,22 +31,17 @@ public:
 
 	Id operator ++ () noexcept
 	{
-		++m_value;
-		return *this;
+		return ++m_value;
 	}
 
 	Id operator ++ (int) noexcept
 	{
-		Id id(m_value);
-		m_value++;
-		return id;
+		return m_value++;
 	}
 
-	Id &operator += (const type value) noexcept
+	Id operator += (const type value) noexcept
 	{
-		m_value += value;
-
-		return *this;
+		return m_value += value;
 	}
 
 	bool operator < (const Id other) const noexcept
@@ -73,16 +69,14 @@ public:
 		return m_value != 0;
 	}
 
-	template <typename T>
-		friend T static_id_cast(const Id) noexcept;
-
-		template <typename T>
-	friend T reinterpret_id_cast(const Id) noexcept;
-
-
-	template <typename T>
-		friend struct std::hash;
-
+	template <std::integral T>
+	explicit operator T() const noexcept
+	{
+		static_assert(sizeof(T) >= sizeof(type));
+		
+		return m_value;
+	}
+		
 	//
 	// Unusual operations:
 	//
@@ -105,19 +99,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(Id)
-
-template <typename T>
-	T static_id_cast(const Id id) noexcept
-	{
-		// Use brace initializer to get warning about narrowing conversion:
-		return T{ id.m_value };
-	}
-
-template <typename T>
-	T reinterpret_id_cast(const Id id) noexcept
-	{
-		return T( id.m_value );
-	}
 
 std::string to_string(const Id id);
 std::wstring to_wstring(const Id id);

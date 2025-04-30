@@ -6,22 +6,22 @@ using namespace std;
 
 ostream &operator << (ostream &os, const Id id)
 {
-	return os << static_id_cast<Id::type>(id);
+	return os << static_cast<Id::type>(id);
 }
 
 wostream &operator << (wostream &os, const Id id)
 {
-	return os << static_id_cast<Id::type>(id);
+	return os << static_cast<Id::type>(id);
 }
 
 string to_string(const Id id)
 {
-	return std::to_string(static_id_cast<Id::type>(id));
+	return std::to_string(static_cast<Id::type>(id));
 }
 
 wstring to_wstring(const Id id)
 {
-	return std::to_wstring(static_id_cast<Id::type>(id));
+	return std::to_wstring(static_cast<Id::type>(id));
 }
 
 namespace std
@@ -29,7 +29,7 @@ namespace std
 
 size_t hash<Id>::operator()(const Id id) const noexcept
 {
-	return m_hash(id.m_value);
+	return m_hash(static_cast<Id::type>(id));
 }
 
 }

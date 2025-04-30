@@ -345,7 +345,7 @@ std::vector<StorageBookmarkedNode> SqliteBookmarkStorage::doGetAll<StorageBookma
 	while (!q.eof())
 	{
 		const Id id = q.getIntField(0, 0);
-		const int bookmarkId = q.getIntField(1, 0);
+		const auto bookmarkId = q.getIntField(1, 0);
 		const std::string serializedNodeName = q.getStringField(2, "");
 
 		if (id != 0 && bookmarkId != 0 && serializedNodeName != "")
@@ -377,11 +377,11 @@ std::vector<StorageBookmarkedEdge> SqliteBookmarkStorage::doGetAll<StorageBookma
 	while (!q.eof())
 	{
 		const Id id = q.getIntField(0, 0);
-		const int bookmarkId = q.getIntField(1, 0);
+		const auto bookmarkId = q.getIntField(1, 0);
 		const std::string serializedSourceNodeName = q.getStringField(2, "");
 		const std::string serializedTargetNodeName = q.getStringField(3, "");
-		const int edgeType = q.getIntField(4, -1);
-		const int sourceNodeActive = q.getIntField(5, -1);
+		const auto edgeType = q.getIntField(4, -1);
+		const auto sourceNodeActive = q.getIntField(5, -1);
 
 		if (id != 0 && bookmarkId != 0 && serializedSourceNodeName != "" &&
 			serializedTargetNodeName != "" && edgeType != -1 && sourceNodeActive != -1)
