@@ -79,7 +79,7 @@ public:
 	
 	int fieldDataType(int nCol);
 	
-	int getIntField(int nField, int nNullValue = 0);
+	long long getIntField(int nField, int nNullValue = 0);
 	std::string getStringField(int nField, const std::string &szNullValue = "");
 
 	bool eof();
@@ -114,7 +114,7 @@ public:
 	CppSQLite3Query execQuery();
 	
 	void bind(int nParam, const std::string_view szValue);
-	void bind(int nParam, const int nValue);
+	void bind(int nParam, const long long nValue);
 
 	void reset();
 	
@@ -143,11 +143,11 @@ public:
 	
 	CppSQLite3Query execQuery(std::string_view szSQL);
 	
-	int execScalar(std::string_view szSQL, int nNullValue = 0);
+	long long execScalar(std::string_view szSQL, int nNullValue = 0);
 	
 	CppSQLite3Statement compileStatement(std::string_view szSQL);
 	
-	sqlite_int64 lastRowId();
+	long long lastRowId();
 	
 	void interrupt();
 	

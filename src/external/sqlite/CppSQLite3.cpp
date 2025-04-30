@@ -40,6 +40,9 @@
 
 using namespace std;
 
+// We don't use 'sqlite3_int64' in the API, so make sure the size(s) are the same:
+static_assert(sizeof(long long) == sizeof(sqlite3_int64));
+
 namespace
 {
 
@@ -167,7 +170,7 @@ int CppSQLite3Query::numFields()
 	return mnCols;
 }
 
-int CppSQLite3Query::getIntField(int nField, int nNullValue /*=0*/)
+long long CppSQLite3Query::getIntField(int nField, int nNullValue /*=0*/)
 {
 	if (fieldDataType(nField) == SQLITE_NULL)
 	{
@@ -175,7 +178,7 @@ int CppSQLite3Query::getIntField(int nField, int nNullValue /*=0*/)
 	}
 	else
 	{
-		return sqlite3_column_int(mpVM, nField);
+		return sqlite3_column_int64(mpVM, nField);
 	}
 }
 
@@ -365,10 +368,10 @@ void CppSQLite3Statement::bind(int nParam, const string_view szValue)
 	}
 }
 
-void CppSQLite3Statement::bind(int nParam, const int nValue)
+void CppSQLite3Statement::bind(int nParam, const long long nValue)
 {
 	checkVM();
-	int nRes = sqlite3_bind_int(mpVM, nParam, nValue);
+	int nRes = sqlite3_bind_int64(mpVM, nParam, nValue);
 
 	if (nRes != SQLITE_OK)
 	{
@@ -535,7 +538,7 @@ CppSQLite3Query CppSQLite3DB::execQuery(string_view szSQL)
 	}
 }
 
-int CppSQLite3DB::execScalar(string_view szSQL, int nNullValue /*=0*/)
+long long CppSQLite3DB::execScalar(string_view szSQL, int nNullValue /*=0*/)
 {
 	CppSQLite3Query q = execQuery(szSQL);
 
@@ -547,7 +550,7 @@ int CppSQLite3DB::execScalar(string_view szSQL, int nNullValue /*=0*/)
 	return q.getIntField(0, nNullValue);
 }
 
-sqlite_int64 CppSQLite3DB::lastRowId()
+long long CppSQLite3DB::lastRowId()
 {
 	return sqlite3_last_insert_rowid(mpDB);
 }

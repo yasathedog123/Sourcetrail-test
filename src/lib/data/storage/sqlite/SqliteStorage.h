@@ -41,8 +41,8 @@ protected:
 
 	bool executeStatement(const std::string& statement) const;
 	static bool executeStatement(CppSQLite3Statement& statement);
-	int executeStatementScalar(const std::string& statement, const int nullValue = 0) const;
-	static int executeStatementScalar(CppSQLite3Statement& statement, const int nullValue = 0);
+	long long executeStatementScalar(const std::string& statement, const int nullValue = 0) const;
+	static long long executeStatementScalar(CppSQLite3Statement& statement, const int nullValue = 0);
 	CppSQLite3Query executeQuery(const std::string& statement) const;
 	static CppSQLite3Query executeQuery(CppSQLite3Statement& statement);
 

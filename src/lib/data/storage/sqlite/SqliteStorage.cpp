@@ -190,9 +190,9 @@ bool SqliteStorage::executeStatement(CppSQLite3Statement& statement)
 	return true;
 }
 
-int SqliteStorage::executeStatementScalar(const std::string& statement, const int nullValue) const
+long long SqliteStorage::executeStatementScalar(const std::string& statement, const int nullValue) const
 {
-	int ret = 0;
+	long long ret = 0;
 	try
 	{
 		ret = m_database.execScalar(statement, nullValue);
@@ -204,9 +204,9 @@ int SqliteStorage::executeStatementScalar(const std::string& statement, const in
 	return ret;
 }
 
-int SqliteStorage::executeStatementScalar(CppSQLite3Statement& statement, const int nullValue) 
+long long SqliteStorage::executeStatementScalar(CppSQLite3Statement& statement, const int nullValue) 
 {
-	int ret = 0;
+	long long ret = 0;
 	try
 	{
 		CppSQLite3Query q = executeQuery(statement);
