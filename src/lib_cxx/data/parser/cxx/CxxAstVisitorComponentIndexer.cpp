@@ -378,15 +378,11 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 	if (getAstVisitor()->shouldVisitDecl(d))
 	{
 		Id symbolId = getOrCreateSymbolId(d);
-		m_client->recordSymbolKind(
-			symbolId, clang::isa<clang::CXXMethodDecl>(d) ? SymbolKind::METHOD : SymbolKind::FUNCTION);
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getNameInfo().getSourceRange()), ParseLocationType::TOKEN);
-		m_client->recordLocation(
-			symbolId, getParseLocationOfFunctionBody(d), ParseLocationType::SCOPE);
+		m_client->recordSymbolKind(symbolId, clang::isa<clang::CXXMethodDecl>(d) ? SymbolKind::METHOD : SymbolKind::FUNCTION);
+		m_client->recordLocation(symbolId, getParseLocation(d->getNameInfo().getSourceRange()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocationOfFunctionBody(d), ParseLocationType::SCOPE);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
 
 		if (d->isFirstDecl())
 		{
@@ -397,36 +393,26 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 		{
 			if (clang::isa<clang::ClassTemplateSpecializationDecl>(d->getParent()) &&
 				!clang::isa<clang::ClassTemplatePartialSpecializationDecl>(d->getParent()) &&
-				!clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(d->getParent())
-					 ->isExplicitSpecialization())
+				!clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(d->getParent())->isExplicitSpecialization())
 			{
 				// record edge from Foo<int>::bar<float>() to Foo<T>::bar<U>() instead of recording
 				// an edge from Foo<int>::bar<float>() to Foo<int>::bar<U>() because there is not
 				// "written" code for Foo<int>::bar<U>() if Foo<int> is an implicit template
 				// specialization.
-				if (clang::CXXRecordDecl* declaringRecordDecl =
-						clang::dyn_cast_or_null<clang::CXXRecordDecl>(d->getParent()))
+				if (clang::CXXRecordDecl *declaringRecordDecl = clang::dyn_cast_or_null<clang::CXXRecordDecl>(d->getParent()))
 				{
-					if (clang::CXXRecordDecl* declaringRecordTemplateDecl =
-							declaringRecordDecl->getTemplateInstantiationPattern())
+					if (clang::CXXRecordDecl *declaringRecordTemplateDecl = declaringRecordDecl->getTemplateInstantiationPattern())
 					{
-						for (clang::Decl* templateMethodDecl: declaringRecordTemplateDecl->decls())
+						for (clang::Decl *templateMethodDecl : declaringRecordTemplateDecl->decls())
 						{
-							if (clang::FunctionTemplateDecl* functionTemplateDecl =
-									clang::dyn_cast_or_null<clang::FunctionTemplateDecl>(
-										templateMethodDecl))
+							if (clang::FunctionTemplateDecl *functionTemplateDecl = clang::dyn_cast_or_null<clang::FunctionTemplateDecl>(templateMethodDecl))
 							{
-								if (d->getDeclName().isIdentifier() &&
-									functionTemplateDecl->getDeclName().isIdentifier() &&
+								if (d->getDeclName().isIdentifier() && functionTemplateDecl->getDeclName().isIdentifier() &&
 									d->getName() == functionTemplateDecl->getName())
 								{
-									const Id templateMethodId = getOrCreateSymbolId(
-										functionTemplateDecl);
+									const Id templateMethodId = getOrCreateSymbolId(functionTemplateDecl);
 									m_client->recordSymbolKind(templateMethodId, SymbolKind::METHOD);
-									m_client->recordReference(
-										REFERENCE_TEMPLATE_SPECIALIZATION,
-										templateMethodId,
-										symbolId,
+									m_client->recordReference(REFERENCE_TEMPLATE_SPECIALIZATION, templateMethodId, symbolId,
 										getParseLocation(d->getLocation()));
 									break;
 								}
@@ -442,21 +428,17 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 				{
 					Id templateId = getOrCreateSymbolId(primaryTemplate->getTemplatedDecl());
 					m_client->recordSymbolKind(templateId, SymbolKind::FUNCTION);
-					m_client->recordReference(
-						REFERENCE_TEMPLATE_SPECIALIZATION,
-						templateId,
-						symbolId,
-						getParseLocation(d->getLocation()));
+					m_client->recordReference(REFERENCE_TEMPLATE_SPECIALIZATION, templateId, symbolId, getParseLocation(d->getLocation()));
 				}
 			}
 		}
-		// findNonTrivialDestructorCalls(d);
+		recordNonTrivialDestructorCalls(d);
 	}
 }
 
-void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const FunctionDecl *functionDecl)
+void CxxAstVisitorComponentIndexer::recordNonTrivialDestructorCalls(const FunctionDecl *functionDecl)
 {
-	auto recordCall = [this](const FunctionDecl *functionDecl, const CXXDestructorDecl *destructorDecl)
+	auto recordDestructorCall = [this](const FunctionDecl *functionDecl, const CXXDestructorDecl *destructorDecl)
 	{
 		Id referencedSymbolId = getOrCreateSymbolId(destructorDecl);
 		Id contextSymbolId = getOrCreateSymbolId(getAstVisitor()->getComponent<CxxAstVisitorComponentContext>()->getContext());
@@ -499,7 +481,7 @@ void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const Function
 							{
 								if (const CXXDestructorDecl *dtorDecl = recordDecl->getDestructor())
 								{
-									recordCall(functionDecl, dtorDecl);
+									recordDestructorCall(functionDecl, dtorDecl);
 								}
 							}
 						}
@@ -510,7 +492,7 @@ void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const Function
 					{
 						if (const CXXDestructorDecl *dtorDecl = implicitDtor->getDestructorDecl(*m_astContext))
 						{
-							recordCall(functionDecl, dtorDecl);
+							recordDestructorCall(functionDecl, dtorDecl);
 						}
 					}
 				}

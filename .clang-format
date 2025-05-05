@@ -17,7 +17,7 @@ AllowShortLambdasOnASingleLine: None
 AllowShortLoopsOnASingleLine: false
 
 BreakTemplateDeclarations: Yes
-BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBinaryOperators: None
 
 FixNamespaceComments: true
 
