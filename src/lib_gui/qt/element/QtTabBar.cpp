@@ -3,7 +3,6 @@
 #include <QContextMenuEvent>
 
 #include "QtContextMenu.h"
-#include "QtGraphicsView.h"
 #include "logging.h"
 
 
@@ -30,16 +29,15 @@ QSize QtTabBar::minimumTabSizeHint(int index) const
 void QtTabBar::contextMenuEvent(QContextMenuEvent* event)
 {
 	QtContextMenu menu(event, this);
-	QAction* m_closeTabsToRight = new QAction(QStringLiteral("Close tabs to the right"), this);
-	menu.addAction(m_closeTabsToRight);
+	QAction *closeTabsToRight = new QAction(QStringLiteral("Close tabs to the right"), this);
+	menu.addAction(closeTabsToRight);
 
-	connect(m_closeTabsToRight, &QAction::triggered, this, [&]() {
+	connect(closeTabsToRight, &QAction::triggered, this, [&]()
+	{
 		// We don't want to close tabs right of the current active tab.
 		// No, our intend is to close tabs right of the currently hovered tab.
 		auto tabNum = tabAt(event->pos());
-		LOG_INFO(
-			"Handling closeTabs... emitting signal to close tabs right of tab nr. " +
-			std::to_string(tabNum));
+		LOG_INFO("Handling closeTabs... emitting signal to close tabs right of tab nr. " + std::to_string(tabNum));
 		emit signalCloseTabsToRight(tabNum);
 	});
 
