@@ -595,8 +595,6 @@ void QtMainWindow::showStartScreen()
 	}
 
 	QtStartScreen* startScreen = createWindow<QtStartScreen>();
-	startScreen->setupStartScreen();
-
 	connect(startScreen, &QtStartScreen::openOpenProjectDialog, this, &QtMainWindow::openProject);
 	connect(startScreen, &QtStartScreen::openNewProjectDialog, this, &QtMainWindow::newProject);
 }

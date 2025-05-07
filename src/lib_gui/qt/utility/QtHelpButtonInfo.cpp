@@ -9,7 +9,6 @@ QtHelpButtonInfo::QtHelpButtonInfo(const QString& title, const QString& text)
 void QtHelpButtonInfo::displayMessage(QWidget* messageBoxParent)
 {
 	QtMessageBox msgBox(messageBoxParent);
-	msgBox.setWindowTitle(QStringLiteral("Sourcetrail"));
 	msgBox.setIcon(QtMessageBox::Information);
 	msgBox.setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
 	msgBox.setText("<b>" + m_title + "</b>");
