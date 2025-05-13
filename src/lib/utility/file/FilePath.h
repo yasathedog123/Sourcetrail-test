@@ -13,8 +13,9 @@ public:
 	static std::wstring getExecutableExtension();
 
 	FilePath();
-	explicit FilePath(const std::string& filePath);
-	explicit FilePath(const std::wstring& filePath);
+	FilePath(const char filePath[]);
+	FilePath(const std::string& filePath);
+	FilePath(const std::wstring& filePath);
 	FilePath(const FilePath& other);
 	FilePath(FilePath&& other);
 	FilePath(const std::wstring& filePath, const std::wstring& base);

@@ -1,14 +1,5 @@
 #include "CxxParser.h"
 
-#include <clang/Driver/Compilation.h>
-#include <clang/Driver/Driver.h>
-#include <clang/Driver/Options.h>
-#include <clang/Frontend/CompilerInvocation.h>
-#include <clang/Tooling/Tooling.h>
-#include <llvm/Option/ArgList.h>
-#include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/VirtualFileSystem.h>
-
 #include "ASTAction.h"
 #include "ApplicationSettings.h"
 #include "CanonicalFilePathCache.h"
@@ -19,12 +10,20 @@
 #include "FileRegister.h"
 #include "IndexerCommandCxx.h"
 #include "ParserClient.h"
-#include "ResourcePaths.h"
 #include "SingleFrontendActionFactory.h"
 #include "TextAccess.h"
 #include "logging.h"
 #include "utility.h"
 #include "utilityString.h"
+
+#include <clang/Driver/Compilation.h>
+#include <clang/Driver/Driver.h>
+#include <clang/Driver/Options.h>
+#include <clang/Frontend/CompilerInvocation.h>
+#include <clang/Tooling/Tooling.h>
+#include <llvm/Option/ArgList.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Support/VirtualFileSystem.h>
 
 namespace
 {

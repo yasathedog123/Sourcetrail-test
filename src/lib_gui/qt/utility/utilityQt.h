@@ -21,8 +21,6 @@ void setWidgetRetainsSpaceWhenHidden(QWidget *widget);
 
 void loadFontsFromDirectory(const FilePath &path, const std::wstring &extension = L".otf");
 
-QString loadStyleSheet(const FilePath &path);
-
 QPixmap colorizePixmap(const QPixmap &pixmap, QColor color);
 QIcon createButtonIcon(const FilePath &iconPath, const std::string &colorId);
 

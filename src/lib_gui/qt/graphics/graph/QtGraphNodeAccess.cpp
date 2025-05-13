@@ -1,43 +1,42 @@
 #include "QtGraphNodeAccess.h"
 
+#include "GraphViewStyle.h"
+#include "QtDeviceScaledPixmap.h"
+#include "TokenComponentAccess.h"
+#include "utilityQt.h"
+#include "QtResources.h"
+
 #include <QBrush>
 #include <QCursor>
 #include <QFontMetrics>
 #include <QPen>
 
-#include "ResourcePaths.h"
-
-#include "GraphViewStyle.h"
-#include "QtDeviceScaledPixmap.h"
-#include "TokenComponentAccess.h"
-#include "utilityQt.h"
-
 QtGraphNodeAccess::QtGraphNodeAccess(AccessKind accessKind)
-	:  m_accessKind(accessKind) 
+	:  m_accessKind(accessKind)
 {
 	std::wstring accessString = TokenComponentAccess::getAccessString(m_accessKind);
 	this->setName(accessString);
 	this->setCursor(Qt::ArrowCursor);
 	m_text->hide();
 
-	std::wstring iconFileName;
+	std::string iconFileName;
 	switch (m_accessKind)
 	{
 	case AccessKind::PUBLIC:
-		iconFileName = L"public";
+		iconFileName = QtResources::GRAPH_VIEW_PUBLIC;
 		break;
 	case AccessKind::PROTECTED:
-		iconFileName = L"protected";
+		iconFileName = QtResources::GRAPH_VIEW_PROTECTED;
 		break;
 	case AccessKind::PRIVATE:
-		iconFileName = L"private";
+		iconFileName = QtResources::GRAPH_VIEW_PRIVATE;
 		break;
 	case AccessKind::DEFAULT:
-		iconFileName = L"default";
+		iconFileName = QtResources::GRAPH_VIEW_DEFAULT;
 		break;
 	case AccessKind::TEMPLATE_PARAMETER:
 	case AccessKind::TYPE_PARAMETER:
-		iconFileName = L"template";
+		iconFileName = QtResources::GRAPH_VIEW_TEMPLATE;
 		break;
 	default:
 		break;
@@ -45,10 +44,7 @@ QtGraphNodeAccess::QtGraphNodeAccess(AccessKind accessKind)
 
 	if (iconFileName.size() > 0)
 	{
-		QtDeviceScaledPixmap pixmap(
-			QString::fromStdWString(ResourcePaths::getGuiDirectoryPath()
-										.concatenate(L"graph_view/images/" + iconFileName + L".png")
-										.wstr()));
+		QtDeviceScaledPixmap pixmap(QString::fromStdString(iconFileName));
 		pixmap.scaleToHeight(m_accessIconSize);
 
 		m_accessIcon = new QGraphicsPixmapItem(pixmap.pixmap(), this);

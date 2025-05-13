@@ -1,6 +1,10 @@
 #include "utilityQt.h"
 
-#include <set>
+#include "FilePath.h"
+#include "FileSystem.h"
+#include "QtMainView.h"
+#include "logging.h"
+#include "ColorScheme.h"
 
 #include <QDir>
 #include <QFile>
@@ -9,17 +13,7 @@
 #include <QPainter>
 #include <QWidget>
 
-#include "FilePath.h"
-#include "FileSystem.h"
-#include "QtMainView.h"
-#include "ResourcePaths.h"
-#include "TextAccess.h"
-#include "logging.h"
-#include "utilityApp.h"
-#include "utilityString.h"
-
-#include "ApplicationSettings.h"
-#include "ColorScheme.h"
+#include <set>
 
 namespace utility
 {
@@ -66,140 +60,6 @@ void loadFontsFromDirectory(const FilePath &path, const std::wstring &extension)
 			LOG_INFO(L"Loaded FontFamily: " + family.toStdWString());
 		}
 	}
-}
-
-QString loadStyleSheet(const FilePath &path)
-{
-	std::string css = TextAccess::createFromFile(path)->getText();
-
-	size_t pos = 0;
-
-	while (pos != std::string::npos)
-	{
-		size_t posA = css.find('<', pos);
-		size_t posB = css.find('>', pos);
-
-		if (posA == std::string::npos || posB == std::string::npos)
-		{
-			break;
-		}
-
-		std::deque<std::string> seq = utility::split(css.substr(posA + 1, posB - posA - 1), ':');
-		if (seq.size() != 2)
-		{
-			LOG_ERROR(L"Syntax error in file: " + path.wstr());
-			return "";
-		}
-
-		const std::string key = seq.front();
-		std::string val = seq.back();
-
-		if (key == "setting")
-		{
-			if (val.find("font_size") != std::string::npos)
-			{
-				// check for modifier
-				if (val.find('+') != std::string::npos)
-				{
-					const size_t findPos = val.find('+');
-					std::string sub = val.substr(findPos + 1);
-
-					int mod = std::stoi(sub);
-
-					val = std::to_string(ApplicationSettings::getInstance()->getFontSize() + mod);
-				}
-				else if (val.find('-') != std::string::npos)
-				{
-					const size_t findPos = val.find('-');
-					std::string sub = val.substr(findPos + 1);
-
-					int mod = std::stoi(sub);
-
-					val = std::to_string(ApplicationSettings::getInstance()->getFontSize() - mod);
-				}
-				else if (val.find('*') != std::string::npos)
-				{
-					const size_t findPos = val.find('*');
-					std::string sub = val.substr(findPos + 1);
-
-					int mod = std::stoi(sub);
-
-					val = std::to_string(ApplicationSettings::getInstance()->getFontSize() * mod);
-				}
-				else if (val.find('/') != std::string::npos)
-				{
-					const size_t findPos = val.find('/');
-					std::string sub = val.substr(findPos + 1);
-
-					int mod = std::stoi(sub);
-
-					val = std::to_string(ApplicationSettings::getInstance()->getFontSize() / mod);
-				}
-				else
-				{
-					val = std::to_string(ApplicationSettings::getInstance()->getFontSize());
-				}
-			}
-			else if (val == "font_name")
-			{
-				val = ApplicationSettings::getInstance()->getFontName();
-			}
-			else if (val == "gui_path")
-			{
-				val = ResourcePaths::getGuiDirectoryPath().str();
-
-				size_t index = 0;
-				while (true)
-				{
-					index = val.find('\\', index);
-					if (index == std::string::npos)
-					{
-						break;
-					}
-					val.replace(index, 1, "/");
-					index += 3;
-				}
-			}
-			else
-			{
-				LOG_ERROR(L"Syntax error in file: " + path.wstr());
-				return "";
-			}
-		}
-		else if (key == "color")
-		{
-			if (!ColorScheme::getInstance()->hasColor(val))
-			{
-				LOG_WARNING("Color scheme does not provide value for key \"" + val + "\" requested by style \"" + path.str() + "\".");
-			}
-			val = ColorScheme::getInstance()->getColor(val);
-		}
-		else if (key == "platform_wml")
-		{
-			std::vector<std::string> values = utility::splitToVector(val, '|');
-			if (values.size() != 3)
-			{
-				LOG_ERROR(L"Syntax error in file: " + path.wstr());
-				return "";
-			}
-			if constexpr (utility::Platform::isWindows())
-				val = values[0];
-			else if constexpr (utility::Platform::isMac())
-				val = values[1];
-			else if constexpr (utility::Platform::isLinux())
-				val = values[2];
-		}
-		else
-		{
-			LOG_ERROR(L"Syntax error in file: " + path.wstr());
-			return "";
-		}
-
-		css.replace(posA, posB - posA + 1, val);
-		pos = posA + val.size();
-	}
-
-	return QString::fromStdString(css);
 }
 
 QPixmap colorizePixmap(const QPixmap &pixmap, QColor color)

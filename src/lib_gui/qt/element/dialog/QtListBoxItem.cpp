@@ -1,17 +1,15 @@
 #include "QtListBoxItem.h"
 
+#include "QtFileDialog.h"
+#include "QtLineEdit.h"
+#include "QtListBox.h"
+
 #include <QBoxLayout>
 #include <QListWidget>
 #include <QPushButton>
 
-#include "QtFileDialog.h"
-#include "QtIconButton.h"
-#include "QtLineEdit.h"
-#include "QtListBox.h"
-#include "ResourcePaths.h"
-
 QtListBoxItem::QtListBoxItem(QListWidgetItem* item, QWidget* parent)
-	: QWidget(parent), m_item(item) 
+	: QWidget(parent), m_item(item)
 {
 	QBoxLayout* layout = new QHBoxLayout();
 	layout->setSpacing(3);

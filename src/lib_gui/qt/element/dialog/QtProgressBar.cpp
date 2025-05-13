@@ -1,16 +1,15 @@
 #include "QtProgressBar.h"
+#include "QtResources.h"
 
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPixmap>
 #include <QTimer>
 
-#include "ResourcePaths.h"
 
 QtProgressBar::QtProgressBar(QWidget* parent)
 	: QWidget(parent)
-	, m_pixmap(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/progress_bar_element.png").wstr()))
+	, m_pixmap(QString::fromUtf8(QtResources::INDEXING_DIALOG_PROGRESS_BAR_ELEMENT))
 {
 	m_timer = new QTimer(this);
 	connect(m_timer, &QTimer::timeout, this, &QtProgressBar::animate);

@@ -1,13 +1,12 @@
 #include "QtIndexingDialog.h"
 
-#include <QLabel>
-#include <QPushButton>
-
-#include "MessageErrorsHelpMessage.h"
 #include "QtDeviceScaledPixmap.h"
 #include "QtHelpButton.h"
-#include "ResourcePaths.h"
+#include "QtResources.h"
 #include "utilityQt.h"
+
+#include <QLabel>
+#include <QPushButton>
 
 using namespace utility;
 
@@ -46,8 +45,7 @@ QWidget* QtIndexingDialog::createErrorWidget(QBoxLayout* layout)
 	errorCount->setObjectName(QStringLiteral("errorCount"));
 	errorCount->setAttribute(Qt::WA_LayoutUsesWidgetRect);	  // fixes layouting on Mac
 
-	errorCount->setIcon(QPixmap(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr())));
+	errorCount->setIcon(QPixmap(QString::fromUtf8(QtResources::INDEXING_DIALOG_ERROR)));
 	errorLayout->addWidget(errorCount);
 
 	QtHelpButton* helpButton = new QtHelpButton(QtHelpButtonInfo(createErrorHelpButtonInfo()));
@@ -61,8 +59,7 @@ QWidget* QtIndexingDialog::createErrorWidget(QBoxLayout* layout)
 
 QLabel* QtIndexingDialog::createFlagLabel(QWidget* parent)
 {
-	QtDeviceScaledPixmap flag(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/flag.png").wstr()));
+	QtDeviceScaledPixmap flag(QString::fromUtf8(QtResources::INDEXING_DIALOG_FLAG));
 	flag.scaleToWidth(120);
 
 	QLabel* flagLabel = new QLabel(parent);
@@ -83,8 +80,7 @@ QtIndexingDialog::QtIndexingDialog(bool isSubWindow, QWidget *parent)
 		"border: none;"
 		"}"));
 
-	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css"))
-		+ loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/indexing_dialog.css")));
+	setStyleSheet(QtResources::loadStyleSheets(QtResources::WINDOW_CSS, QtResources::INDEXING_DIALOG_CSS));
 
 	m_layout = new QVBoxLayout(this);
 	m_layout->setContentsMargins(20, 20, 20, 0);

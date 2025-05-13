@@ -1,15 +1,5 @@
 #include "QtMainWindow.h"
 
-#include <QApplication>
-#include <QDesktopServices>
-#include <QDir>
-#include <QDockWidget>
-#include <QMenuBar>
-#include <QSettings>
-#include <QTimer>
-#include <QToolBar>
-#include <QToolTip>
-
 #include "Application.h"
 #include "ApplicationSettings.h"
 #include "Bookmark.h"
@@ -48,6 +38,7 @@
 #include "QtLicenseWindow.h"
 #include "QtPreferencesWindow.h"
 #include "QtProjectWizard.h"
+#include "QtResources.h"
 #include "QtStartScreen.h"
 #include "QtViewWidgetWrapper.h"
 #include "ResourcePaths.h"
@@ -59,6 +50,17 @@
 #include "utilityApp.h"
 #include "utilityQt.h"
 #include "utilityString.h"
+
+#include <QApplication>
+#include <QDesktopServices>
+#include <QDir>
+#include <QDockWidget>
+#include <QMenuBar>
+#include <QSettings>
+#include <QTimer>
+#include <QToolBar>
+#include <QToolTip>
+
 
 using namespace utility;
 
@@ -120,7 +122,7 @@ QtMainWindow::QtMainWindow()
 	setCentralWidget(nullptr);
 	setDockNestingEnabled(true);
 
-	setWindowIcon(QIcon(QString::fromStdWString(ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/logo_1024_1024.png").wstr())));
+	setWindowIcon(QIcon(QString::fromUtf8(QtResources::ICON_LOGO_1024_1024)));
 	setWindowFlags(Qt::Widget);
 
 	QApplication *app = dynamic_cast<QApplication *>(QCoreApplication::instance());
@@ -131,7 +133,7 @@ QtMainWindow::QtMainWindow()
 	if constexpr (!utility::Platform::isMac())
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
-		app->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css")));
+		app->setStyleSheet(QtResources::loadStyleSheet(QtResources::MAIN_SCROLLBAR_CSS));
 	}
 
 	setupProjectMenu();
@@ -408,7 +410,7 @@ void QtMainWindow::setContentEnabled(bool enabled)
 
 void QtMainWindow::refreshStyle()
 {
-	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/main.css")));
+	setStyleSheet(QtResources::loadStyleSheet(QtResources::MAIN_CSS));
 
 	QFont tooltipFont = QToolTip::font();
 	tooltipFont.setPixelSize(ApplicationSettings::getInstance()->getFontSize());
@@ -928,7 +930,7 @@ void QtMainWindow::setupViewMenu()
 	m_showTitleBarsAction->setChecked(m_showDockWidgetTitleBars);
 	connect(m_showTitleBarsAction, &QAction::triggered, this, &QtMainWindow::toggleShowDockWidgetTitleBars);
 	menu->addAction(m_showTitleBarsAction);
-	
+
 	menu->addAction(tr("Reset Window Layout"), this, &QtMainWindow::resetWindowLayout);
 
 	menu->addSeparator();

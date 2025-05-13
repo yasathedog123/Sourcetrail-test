@@ -66,7 +66,7 @@ private:
 	// find anything better yet. (sizeHintChanged signal can't be emitted here...)
 	QTreeWidgetItem* m_treeWidgetItem = nullptr;
 
-	std::wstring m_arrowImageName;
+	std::string m_arrowImageName;
 	bool m_hovered = false;
 
 	bool m_ignoreNextResize = false;

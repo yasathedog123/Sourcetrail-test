@@ -8,8 +8,7 @@
 #include "MessageFocusOut.h"
 #include "MessageTabOpenWith.h"
 #include "MessageTooltipShow.h"
-#include "ResourcePaths.h"
-
+#include "QtResources.h"
 #include "TokenComponentFilePath.h"
 
 QtGraphNodeData::QtGraphNodeData(
@@ -87,8 +86,7 @@ void QtGraphNodeData::updateStyle()
 	TokenComponentFilePath* component = m_data->getComponent<TokenComponentFilePath>();
 	if (component && !component->isComplete())
 	{
-		style.iconPath = ResourcePaths::getGuiDirectoryPath().concatenate(
-			L"graph_view/images/file_incomplete.png");
+		style.iconPath = QtResources::GRAPH_VIEW_FILE_INCOMPLETE;
 	}
 
 	setStyle(style);

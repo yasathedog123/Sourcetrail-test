@@ -1,21 +1,20 @@
 #include "QtStatusBar.h"
 
-#include <QHBoxLayout>
-#include <QMovie>
-#include <QProgressBar>
-
 #include "MessageErrorsAll.h"
 #include "MessageIndexingShowDialog.h"
 #include "MessageShowStatus.h"
-#include "ResourcePaths.h"
+#include "QtResources.h"
 #include "utilityQt.h"
+
+#include <QHBoxLayout>
+#include <QMovie>
+#include <QProgressBar>
 
 QtStatusBar::QtStatusBar(): m_text(this), m_ideStatusText(this)
 {
 	addWidget(new QWidget());	 // add some space
 
-	m_movie = std::make_shared<QMovie>(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"statusbar_view/loader.gif").wstr()));
+	m_movie = std::make_shared<QMovie>(QString::fromUtf8(QtResources::STATUSBAR_VIEW_LOADER));
 	// if movie doesn't loop forever, force it to.
 	if (m_movie->loopCount() != -1)
 	{
@@ -54,8 +53,7 @@ QtStatusBar::QtStatusBar(): m_text(this), m_ideStatusText(this)
 			QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
 		m_errorButton.setIcon(
 			utility::colorizePixmap(
-				QPixmap(QString::fromStdWString(
-					ResourcePaths::getGuiDirectoryPath().concatenate(L"statusbar_view/dot.png").wstr())),
+				QPixmap(QString::fromUtf8(QtResources::STATUSBAR_VIEW_DOT)),
 				QColor(0xD0, 0, 0))
 				.scaledToHeight(12));
 		m_errorButton.setCursor(Qt::PointingHandCursor);

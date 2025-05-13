@@ -3,9 +3,9 @@
 #include "ApplicationSettings.h"
 #include "ColorScheme.h"
 #include "GraphViewStyleImpl.h"
-#include "ResourcePaths.h"
 #include "logging.h"
 #include "utilityString.h"
+#include "QtResources.h"
 
 int GraphViewStyle::s_gridCellSize = 5;
 int GraphViewStyle::s_gridCellPadding = 10;
@@ -521,7 +521,7 @@ GraphViewStyle::NodeStyle GraphViewStyle::getStyleOfBundleNode(bool isFocused)
 	return getStyleForNodeType(
 		NodeType::STYLE_BIG_NODE,
 		"bundle",
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/bundle.png"),
+		QtResources::GRAPH_VIEW_BUNDLE,
 		true,
 		false,
 		isFocused,

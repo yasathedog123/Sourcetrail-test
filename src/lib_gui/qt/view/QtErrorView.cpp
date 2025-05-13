@@ -1,5 +1,16 @@
 #include "QtErrorView.h"
 
+#include "ColorScheme.h"
+#include "MessageProjectEdit.h"
+#include "QtHelpButton.h"
+#include "QtResources.h"
+#include "QtResources.h"
+#include "QtSelfRefreshIconButton.h"
+#include "QtTable.h"
+#include "QtViewWidgetWrapper.h"
+#include "TabIds.h"
+#include "utilityQt.h"
+
 #include <QBoxLayout>
 #include <QCheckBox>
 #include <QFrame>
@@ -13,16 +24,6 @@
 #include <QStandardItemModel>
 #include <QStyledItemDelegate>
 
-#include "ColorScheme.h"
-#include "MessageProjectEdit.h"
-#include "QtHelpButton.h"
-#include "QtSelfRefreshIconButton.h"
-#include "QtTable.h"
-#include "QtViewWidgetWrapper.h"
-#include "ResourcePaths.h"
-#include "TabIds.h"
-#include "utilityQt.h"
-
 using namespace utility;
 
 QIcon QtErrorView::s_errorIcon;
@@ -30,8 +31,7 @@ QIcon QtErrorView::s_errorIcon;
 QtErrorView::QtErrorView(ViewLayout* viewLayout)
 	: ErrorView(viewLayout), m_controllerProxy(this, TabIds::app())
 {
-	s_errorIcon = QIcon(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr()));
+	s_errorIcon = QIcon(QString::fromUtf8(QtResources::INDEXING_DIALOG_ERROR));
 
 	setWidgetWrapper(std::make_shared<QtViewWidgetWrapper>(new QFrame()));
 
@@ -126,11 +126,11 @@ QtErrorView::QtErrorView(ViewLayout* viewLayout)
 
 	{
 		m_editButton = new QtSelfRefreshIconButton(
-			QStringLiteral("Edit Project"),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/edit.png"),
+			tr("Edit Project"),
+			QtResources::CODE_VIEW_EDIT,
 			"window/button");
 		m_editButton->setObjectName(QStringLiteral("screen_button"));
-		m_editButton->setToolTip(QStringLiteral("edit project"));
+		m_editButton->setToolTip(tr("edit project"));
 		connect(m_editButton, &QPushButton::clicked, []() { MessageProjectEdit().dispatch(); });
 
 		checkboxes->addWidget(m_editButton);

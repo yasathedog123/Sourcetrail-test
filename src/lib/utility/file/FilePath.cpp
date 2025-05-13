@@ -39,6 +39,11 @@ FilePath::FilePath()
 {
 }
 
+FilePath::FilePath(const char filePath[])
+    : FilePath(string(filePath))
+{
+}
+
 FilePath::FilePath(const std::string& filePath)
 	: m_path(std::make_unique<boost::filesystem::path>(filePath))
 	, m_exists(false)

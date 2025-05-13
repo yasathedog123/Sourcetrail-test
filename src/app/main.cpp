@@ -16,6 +16,7 @@
 #include "MessageIndexingInterrupted.h"
 #include "MessageLoadProject.h"
 #include "MessageStatus.h"
+#include "Platform.h"
 #include "QtApplication.h"
 #include "QtCoreApplication.h"
 #include "QtNetworkFactory.h"
@@ -24,10 +25,6 @@
 #include "ScopedFunctor.h"
 #include "SourceGroupFactory.h"
 #include "SourceGroupFactoryModuleCustom.h"
-#include "UserPaths.h"
-#include "logging.h"
-#include "utility.h"
-#include "utilityApp.h"
 #include "utilityQt.h"
 
 #if BUILD_CXX_LANGUAGE_PACKAGE

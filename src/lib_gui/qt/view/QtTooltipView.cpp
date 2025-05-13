@@ -4,8 +4,8 @@
 #include "QtMainWindow.h"
 #include "QtTooltip.h"
 #include "QtViewWidgetWrapper.h"
-#include "ResourcePaths.h"
 #include "utilityQt.h"
+#include "QtResources.h"
 
 using namespace utility;
 
@@ -23,7 +23,7 @@ void QtTooltipView::refreshView()
 {
 	m_onQtThread([=, this]()
 	{
-		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"tooltip_view/tooltip_view.css")));
+		m_widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::TOOLTIP_VIEW_CSS));
 	});
 }
 

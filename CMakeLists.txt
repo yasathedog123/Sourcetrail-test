@@ -55,7 +55,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.5.7)
+project(Sourcetrail VERSION 2025.5.13)
 configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
 
 include(cmake/Sourcetrail.cmake)
@@ -106,8 +106,8 @@ else()
 	if (BUILD_UNIT_TESTS_PACKAGE)
 		# The test data contains symlinked files and directories which are used from 'FilePathTestSuite' 
 		# and 'FileSystemTestSuite'. CMake, as of this writing (2025-03-07), doesn't copy symlinks 
-		# correctly (https://gitlab.kitware.com/cmake/cmake/-/issues/14609). 
-		# It depends on the underlying platform.
+		# correctly (https://gitlab.kitware.com/cmake/cmake/-/issues/14609) or rather it depends on the 
+		# underlying platform.
 		
 		set(testDataSourceDir "${CMAKE_SOURCE_DIR}/bin/test/data/")
 		set(testDataTargetParentDir "${CMAKE_BINARY_DIR}/test/")
@@ -207,6 +207,9 @@ target_compile_definitions(External_lib_qt
 		QT_NO_QASCONST
 		QT_USE_NODISCARD_FILE_OPEN
 		QT_NO_QSNPRINTF
+		
+		# Prevent creating QPixmap inadvertently with 'const char []':
+		QT_NO_IMAGEFORMAT_XPM
 )
 
 target_link_libraries(External_lib_qt
@@ -260,6 +263,7 @@ add_subdirectory(src/external)
 
 # Lib Gui ----------------------------------------------------------------------
 
+add_subdirectory(src/resources)
 add_subdirectory(src/lib_gui)
 
 # Lib --------------------------------------------------------------------------

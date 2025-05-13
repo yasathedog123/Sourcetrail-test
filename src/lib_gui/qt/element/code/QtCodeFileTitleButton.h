@@ -5,6 +5,9 @@
 #include "QtSelfRefreshIconButton.h"
 #include "TimeStamp.h"
 
+#include <string>
+#include <map>
+
 class QtCodeFileTitleButton: public QtSelfRefreshIconButton
 {
 	Q_OBJECT
@@ -41,6 +44,8 @@ private slots:
 private:
 	void updateIcon();
 	void updateHatching();
+
+	std::map<std::string, QString> m_hatchingBackgroundImages;
 
 	FilePath m_filePath;
 	TimeStamp m_modificationTime;

@@ -4,9 +4,7 @@
 #include <memory>
 
 #include "TimeStamp.h"
-#include "types.h"
-
-class SourceLocationFile;
+#include "SourceLocationFile.h"
 
 struct CodeSnippetParams
 {

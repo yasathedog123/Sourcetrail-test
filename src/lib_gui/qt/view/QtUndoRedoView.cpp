@@ -1,9 +1,8 @@
 #include "QtUndoRedoView.h"
 
-#include "ResourcePaths.h"
 #include "utilityQt.h"
-
 #include "QtViewWidgetWrapper.h"
+#include "QtResources.h"
 
 using namespace utility;
 
@@ -22,7 +21,7 @@ void QtUndoRedoView::refreshView()
 {
 	m_onQtThread([=, this]()
 	{
-		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"undoredo_view/undoredo_view.css")));
+		m_widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::UNDOREDO_VIEW_CSS));
 	});
 }
 

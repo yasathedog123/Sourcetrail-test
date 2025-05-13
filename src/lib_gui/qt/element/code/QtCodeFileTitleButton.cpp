@@ -1,20 +1,20 @@
 #include "QtCodeFileTitleButton.h"
 
-#include <QMouseEvent>
-
 #include "Application.h"
 #include "ApplicationSettings.h"
+#include "ColorScheme.h"
 #include "FileSystem.h"
 #include "MessageActivateFile.h"
 #include "MessageProjectEdit.h"
 #include "MessageTabOpenWith.h"
-#include "ResourcePaths.h"
-#include "utilityString.h"
-
-#include "Application.h"
-#include "ColorScheme.h"
 #include "Project.h"
 #include "QtContextMenu.h"
+#include "QtResources.h"
+
+#include <QMouseEvent>
+
+using namespace std;
+using namespace utility;
 
 QtCodeFileTitleButton::QtCodeFileTitleButton(QWidget* parent)
 	: QtSelfRefreshIconButton(QLatin1String(""), FilePath(), "code/file/title", parent)
@@ -29,11 +29,15 @@ QtCodeFileTitleButton::QtCodeFileTitleButton(QWidget* parent)
 
 	connect(this, &QtCodeFileTitleButton::clicked, this, &QtCodeFileTitleButton::clickedTitle);
 
-	m_openInTabAction = new QAction(QStringLiteral("Open in New Tab"), this);
-	m_openInTabAction->setStatusTip(QStringLiteral("Opens the file in a new tab"));
-	m_openInTabAction->setToolTip(QStringLiteral("Opens the file in a new tab"));
+	m_openInTabAction = new QAction(tr("Open in New Tab"), this);
+	m_openInTabAction->setStatusTip(tr("Opens the file in a new tab"));
+	m_openInTabAction->setToolTip(tr("Opens the file in a new tab"));
 	m_openInTabAction->setEnabled(false);
 	connect(m_openInTabAction, &QAction::triggered, this, &QtCodeFileTitleButton::openInTab);
+
+	m_hatchingBackgroundImages["bright"] = QtResources::CODE_VIEW_PATTERN_BRIGHT;
+	m_hatchingBackgroundImages["dark"] = QtResources::CODE_VIEW_PATTERN_DARK;
+	m_hatchingBackgroundImages["grey"] = QtResources::CODE_VIEW_PATTERN_GREY;
 }
 
 const FilePath& QtCodeFileTitleButton::getFilePath() const
@@ -63,7 +67,7 @@ void QtCodeFileTitleButton::setProject(const std::wstring& name)
 	m_filePath = FilePath();
 
 	setText(QString::fromStdWString(name));
-	setToolTip(QStringLiteral("edit project"));
+	setToolTip(tr("edit project"));
 
 	updateIcon();
 }
@@ -243,16 +247,15 @@ void QtCodeFileTitleButton::updateIcon()
 {
 	if (m_filePath.empty())
 	{
-		setIconPath(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/edit.png"));
+		setIconPath(QtResources::CODE_VIEW_EDIT);
 	}
 	else if (!m_isComplete)
 	{
-		setIconPath(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/file_incomplete.png"));
+		setIconPath(QtResources::GRAPH_VIEW_FILE_INCOMPLETE);
 	}
 	else
 	{
-		setIconPath(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/file.png"));
+		setIconPath(QtResources::CODE_VIEW_FILE);
 	}
 }
 
@@ -260,14 +263,10 @@ void QtCodeFileTitleButton::updateHatching()
 {
 	if (!m_isIndexed)
 	{
-		FilePath hatchingFilePath = ResourcePaths::getGuiDirectoryPath().concatenate(
-			L"code_view/images/pattern_" +
-			utility::decodeFromUtf8(
-				ColorScheme::getInstance()->getColor("code/file/title/hatching")) +
-			L".png");
+		string hatchingColor = ColorScheme::getInstance()->getColor("code/file/title/hatching");
+		QString hatchingBackgroundImage = m_hatchingBackgroundImages[hatchingColor];
 
-		setStyleSheet(QString::fromStdWString(
-			L"#title_button { background-image: url(" + hatchingFilePath.wstr() + L"); }"));
+		setStyleSheet("#title_button { background-image: url(" + hatchingBackgroundImage + "); }");
 	}
 	else
 	{

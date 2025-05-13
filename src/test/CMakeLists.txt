@@ -29,6 +29,7 @@ add_executable(Sourcetrail_test
 	NetworkProtocolHelperTestSuite.cpp
 	PlatformTestSuite.cpp
 	PythonIndexerTestSuite.cpp
+	QtResourcesTestSuite.cpp
 	RefreshInfoGeneratorTestSuite.cpp
 	SearchIndexTestSuite.cpp
 	SettingsMigratorTestSuite.cpp
@@ -64,6 +65,7 @@ set_target_properties(Sourcetrail_test
 target_link_libraries(Sourcetrail_test
 	PRIVATE
 		Sourcetrail_lib
+		Sourcetrail_res_gui
 		Catch2::Catch2
 )
 

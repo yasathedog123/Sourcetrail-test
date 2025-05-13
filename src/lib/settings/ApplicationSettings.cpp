@@ -1,15 +1,12 @@
 #include "ApplicationSettings.h"
 
-#include "AppPath.h"
 #include "Logger.h"
 #include "ResourcePaths.h"
 #include "SettingsMigrationLambda.h"
 #include "SettingsMigrationMoveKey.h"
 #include "SettingsMigrator.h"
 #include "Status.h"
-#include "TimeStamp.h"
 #include "UserPaths.h"
-#include "Version.h"
 #include "utility.h"
 #include "utilityFile.h"
 
@@ -141,7 +138,7 @@ bool ApplicationSettings::operator==(const ApplicationSettings& other) const
 		utility::isPermutation<FilePath>(getFrameworkSearchPaths(), other.getFrameworkSearchPaths());
 }
 
-size_t ApplicationSettings::getMaxRecentProjectsCount() 
+size_t ApplicationSettings::getMaxRecentProjectsCount()
 {
 	return 7;
 }

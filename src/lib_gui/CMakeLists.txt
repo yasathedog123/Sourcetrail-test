@@ -313,15 +313,6 @@ add_library(Sourcetrail_lib_gui
 	utility/utilityPathDetection.cpp
 	utility/utilityPathDetection.h
 )
-setDefaultTargetOptions(Sourcetrail_lib_gui)
-
-# Instruct CMake to run moc automatically when needed.
-# Setting these properties on 'External_lib_qt' doesn't work
-set_target_properties(Sourcetrail_lib_gui
-	PROPERTIES
-		AUTOMOC ON
-		AUTORCC ON
-)
 
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
@@ -457,6 +448,13 @@ if (BUILD_PYTHON_LANGUAGE_PACKAGE)
 	)
 endif()
 
+setDefaultTargetOptions(Sourcetrail_lib_gui)
+
+set_target_properties(Sourcetrail_lib_gui
+	PROPERTIES
+		AUTOMOC ON
+)
+
 target_include_directories(Sourcetrail_lib_gui
 	PUBLIC
 		"${CMAKE_CURRENT_BINARY_DIR}"
@@ -466,4 +464,5 @@ target_link_libraries(Sourcetrail_lib_gui
 	PUBLIC
 		Sourcetrail_lib
 		External_lib_qt
+		Sourcetrail_res_gui
 )

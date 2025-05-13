@@ -1,14 +1,14 @@
 #include "QtScreenSearchView.h"
 
-#include <QToolBar>
-
 #include "QtMainView.h"
 #include "QtMainWindow.h"
 #include "QtScreenSearchBox.h"
 #include "QtViewWidgetWrapper.h"
-#include "ResourcePaths.h"
 #include "TabIds.h"
 #include "utilityQt.h"
+#include "QtResources.h"
+
+#include <QToolBar>
 
 using namespace utility;
 
@@ -42,7 +42,7 @@ void QtScreenSearchView::refreshView()
 {
 	m_onQtThread([=, this]()
 	{
-		m_bar->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"screen_search_view/screen_search_view.css")));
+		m_bar->setStyleSheet(QtResources::loadStyleSheet(QtResources::SCREEN_SEARCH_VIEW_CSS));
 	});
 }
 

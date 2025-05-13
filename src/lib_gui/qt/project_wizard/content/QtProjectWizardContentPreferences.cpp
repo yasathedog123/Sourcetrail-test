@@ -1,24 +1,24 @@
 #include "QtProjectWizardContentPreferences.h"
 
+#include "ApplicationSettings.h"
+#include "FileLogger.h"
+#include "FileSystem.h"
+#include "MessageSwitchColorScheme.h"
+#include "QtActions.h"
+#include "ResourcePaths.h"
+#include "TextCodec.h"
+#include "logging.h"
+#include "utility.h"
+#include "utilityApp.h"
+#include "utilityPathDetection.h"
+#include "utilityQt.h"
+
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFontComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QTimer>
-
-#include "ApplicationSettings.h"
-#include "FileLogger.h"
-#include "FileSystem.h"
-#include "MessageSwitchColorScheme.h"
-#include "QtActions.h"
-#include "TextCodec.h"
-#include "ResourcePaths.h"
-#include "logging.h"
-#include "utility.h"
-#include "utilityApp.h"
-#include "utilityPathDetection.h"
-#include "utilityQt.h"
 
 using namespace utility;
 

@@ -3,7 +3,6 @@
 #include <set>
 
 #include "Application.h"
-#include "ApplicationSettings.h"
 #include "JavaEnvironment.h"
 #include "JavaEnvironmentFactory.h"
 #include "MessageStatus.h"

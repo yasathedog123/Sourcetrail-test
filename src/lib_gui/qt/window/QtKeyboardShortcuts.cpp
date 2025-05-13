@@ -1,11 +1,11 @@
 #include "QtKeyboardShortcuts.h"
 
+#include "QtActions.h"
+#include "QtResources.h"
+#include "utilityQt.h"
+
 #include <QHeaderView>
 #include <QLabel>
-
-#include "QtActions.h"
-#include "ResourcePaths.h"
-#include "utilityQt.h"
 
 using namespace utility;
 
@@ -109,7 +109,7 @@ void QtKeyboardShortcuts::populateWindow(QWidget* widget)
 
 	widget->setLayout(layout);
 
-	widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"keyboard_shortcuts/keyboard_shortcuts.css")));
+	widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::KEYBOARD_SHORTCUTS_CSS));
 }
 
 void QtKeyboardShortcuts::windowReady()

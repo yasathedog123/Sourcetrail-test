@@ -1,12 +1,5 @@
 #include "QtGraphNode.h"
 
-#include <QBrush>
-#include <QCursor>
-#include <QFont>
-#include <QFontMetrics>
-#include <QGraphicsSceneEvent>
-#include <QPen>
-
 #include "GraphFocusHandler.h"
 #include "MessageCodeShowDefinition.h"
 #include "MessageGraphNodeHide.h"
@@ -14,11 +7,17 @@
 #include "QtDeviceScaledPixmap.h"
 #include "QtGraphEdge.h"
 #include "QtGraphNodeComponent.h"
-#include "QtGraphNodeExpandToggle.h"
 #include "QtRoundedRectItem.h"
-#include "ResourcePaths.h"
 #include "utilityQt.h"
 #include "utilityString.h"
+#include "QtResources.h"
+
+#include <QBrush>
+#include <QCursor>
+#include <QFont>
+#include <QFontMetrics>
+#include <QGraphicsSceneEvent>
+#include <QPen>
 
 void QtGraphNode::blendIn()
 {
@@ -643,8 +642,7 @@ void QtGraphNode::setStyle(const GraphViewStyle::NodeStyle& style)
 
 	if (style.hasHatching)
 	{
-		QtDeviceScaledPixmap pattern(QString::fromStdWString(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/pattern.png").wstr()));
+		QtDeviceScaledPixmap pattern(QString::fromUtf8(QtResources::GRAPH_VIEW_PATTERN));
 		pattern.scaleToHeight(12);
 		QPixmap pixmap = utility::colorizePixmap(pattern.pixmap(), style.color.hatching.c_str());
 

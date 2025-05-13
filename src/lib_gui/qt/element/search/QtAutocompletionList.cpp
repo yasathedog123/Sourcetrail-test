@@ -1,14 +1,14 @@
 #include "QtAutocompletionList.h"
 
-#include <QPainter>
-#include <QScrollBar>
-
 #include "ApplicationSettings.h"
 #include "ColorScheme.h"
 #include "GraphViewStyle.h"
 #include "QtDeviceScaledPixmap.h"
-#include "ResourcePaths.h"
 #include "utilityString.h"
+#include "QtResources.h"
+
+#include <QPainter>
+#include <QScrollBar>
 
 QtAutocompletionModel::QtAutocompletionModel(QObject* parent): QAbstractTableModel(parent) {}
 
@@ -370,8 +370,7 @@ void QtAutocompletionDelegate::calculateCharSizes(QFont font)
 		500.0f;
 	m_charHeight2 = static_cast<float>(metrics2.height());
 
-	m_arrow = QtDeviceScaledPixmap(
-		QString::fromStdString(ResourcePaths::getGuiDirectoryPath().str() + "search_view/images/arrow.png"));
+	m_arrow = QtDeviceScaledPixmap(QString::fromUtf8(QtResources::SEARCH_VIEW_ARROW));
 	m_arrow.scaleToWidth(static_cast<int>(m_charWidth2));
 	m_arrow.colorize(ColorScheme::getInstance()->getColor("search/popup/by_text").c_str());
 }

@@ -1,17 +1,18 @@
 #include "IndexerCommandCxx.h"
 
-#include <QJsonArray>
-#include <QJsonObject>
-
 #include "MessageStatus.h"
 #include "OrderedCache.h"
+#include "Platform.h"
 #include "ResourcePaths.h"
 #include "logging.h"
-#include "utilityApp.h"
 #include "utilitySourceGroupCxx.h"
 #include "utilityString.h"
+
 #include <clang/Tooling/CompilationDatabase.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
+
+#include <QJsonArray>
+#include <QJsonObject>
 
 std::vector<FilePath> IndexerCommandCxx::getSourceFilesFromCDB(const FilePath& cdbPath)
 {

@@ -1,10 +1,5 @@
 #include "QtTabsView.h"
 
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QStyle>
-#include <QVariant>
-
 #include "Application.h"
 #include "ColorScheme.h"
 #include "GraphViewStyle.h"
@@ -12,15 +7,20 @@
 #include "QtSelfRefreshIconButton.h"
 #include "QtTabBar.h"
 #include "QtViewWidgetWrapper.h"
-#include "ResourcePaths.h"
 #include "TabIds.h"
 #include "TabsController.h"
 #include "utilityQt.h"
+#include "QtResources.h"
+
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QStyle>
+#include <QVariant>
 
 using namespace utility;
 
 QtTabsView::QtTabsView(ViewLayout* viewLayout)
-	: TabsView(viewLayout) 
+	: TabsView(viewLayout)
 {
 	m_widget = new QWidget();
 
@@ -42,8 +42,7 @@ QtTabsView::QtTabsView(ViewLayout* viewLayout)
 
 	connect(m_tabBar, &QTabBar::currentChanged, this, &QtTabsView::changedTab);
 
-	QPushButton* addButton = new QtSelfRefreshIconButton(QStringLiteral(""), 
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/add.png"), "tab/bar/button");
+	QPushButton* addButton = new QtSelfRefreshIconButton(QStringLiteral(""), QtResources::TABS_VIEW_ADD, "tab/bar/button");
 	addButton->setObjectName(QStringLiteral("add_button"));
 	addButton->setToolTip(QtActions::newTab().tooltip());
 	addButton->setIconSize(QSize(14, 14));
@@ -164,8 +163,7 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 		}
 	});
 
-	QPushButton* closeButton = new QtSelfRefreshIconButton(QString(), 
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/images/close.png"), "tab/bar/button");
+	QPushButton* closeButton = new QtSelfRefreshIconButton(QString(), QtResources::TABS_VIEW_CLOSE, "tab/bar/button");
 	closeButton->setObjectName(QStringLiteral("close_button"));
 	closeButton->setToolTip(QtActions::closeTab().tooltip());
 	closeButton->setIconSize(QSize(10, 10));
@@ -269,7 +267,7 @@ void QtTabsView::setTabState(int idx, const std::vector<SearchMatch>& matches)
 
 void QtTabsView::setStyleSheet()
 {
-	m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"tabs_view/tabs_view.css")));
+	m_widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::TABS_VIEW_CSS));
 
 	setWidgetBackgroundColor(m_widget, ColorScheme::getInstance()->getColor("tab/bar/background"));
 }

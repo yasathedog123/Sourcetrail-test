@@ -2,7 +2,7 @@
 
 #include "QtActions.h"
 #include "QtMessageBox.h"
-#include "ResourcePaths.h"
+#include "QtResources.h"
 #include "utilityQt.h"
 
 #include <QHBoxLayout>
@@ -10,10 +10,9 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
-
 QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	: m_controllerProxy(controllerProxy)
-	, m_arrowImageName(L"arrow_line_down.png")
+	, m_arrowImageName(QtResources::BOOKMARK_VIEW_ARROW_LINE_DOWN)
 {
 	setObjectName(QStringLiteral("bookmark"));
 
@@ -54,8 +53,7 @@ QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	m_editButton->setToolTip(tr("Edit bookmark..."));
 	m_editButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 	m_editButton->setIconSize(QSize(20, 20));
-	m_editButton->setIcon(QPixmap(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/images/bookmark_edit_icon.png").wstr())));
+	m_editButton->setIcon(QPixmap(QString::fromUtf8(QtResources::BOOKMARK_VIEW_BOOKMARK_EDIT_ICON)));
 	utility::setWidgetRetainsSpaceWhenHidden(m_editButton);
 	m_editButton->hide();
 	buttonsLayout->addWidget(m_editButton);
@@ -65,10 +63,7 @@ QtBookmark::QtBookmark(ControllerProxy<BookmarkController>* controllerProxy)
 	m_deleteButton->setToolTip(tr("Delete bookmark..."));
 	m_deleteButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 	m_deleteButton->setIconSize(QSize(20, 20));
-	m_deleteButton->setIcon(QPixmap(
-		QString::fromStdWString(ResourcePaths::getGuiDirectoryPath()
-									.concatenate(L"bookmark_view/images/bookmark_delete_icon.png")
-									.wstr())));
+	m_deleteButton->setIcon(QPixmap(QString::fromUtf8(QtResources::BOOKMARK_VIEW_BOOKMARK_DELETE_ICON)));
 	utility::setWidgetRetainsSpaceWhenHidden(m_deleteButton);
 	m_deleteButton->hide();
 	buttonsLayout->addWidget(m_deleteButton);
@@ -144,13 +139,13 @@ void QtBookmark::commentToggled()
 
 	if (!m_comment->isVisible())
 	{
-		m_arrowImageName = L"arrow_line_up.png";
+		m_arrowImageName = QtResources::BOOKMARK_VIEW_ARROW_LINE_UP;
 		m_comment->show();
 		m_comment->setMinimumHeight(m_comment->heightForWidth(m_comment->width()));
 	}
 	else
 	{
-		m_arrowImageName = L"arrow_line_down.png";
+		m_arrowImageName = QtResources::BOOKMARK_VIEW_ARROW_LINE_DOWN;
 		m_comment->hide();
 	}
 
@@ -240,10 +235,8 @@ void QtBookmark::elideButtonText()
 
 void QtBookmark::updateArrow()
 {
-	QPixmap pixmap(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/images/" + m_arrowImageName).wstr()));
-	m_toggleCommentButton->setIcon(
-		QIcon(utility::colorizePixmap(pixmap, m_hovered ? "#707070" : "black")));
+	QPixmap pixmap(QString::fromStdString(m_arrowImageName));
+	m_toggleCommentButton->setIcon(QIcon(utility::colorizePixmap(pixmap, m_hovered ? "#707070" : "black")));
 }
 
 std::string QtBookmark::getDateString() const

@@ -1,16 +1,10 @@
 #include "QtProjectWizard.h"
-#include "QtMessageBox.h"
 
-#include <QFileDialog>
-#include <QListWidget>
-#include <QScrollArea>
-#include <QSysInfo>
-#include <QTimer>
-
-#include "language_packages.h"
-
+#include "Application.h"
 #include "MessageLoadProject.h"
 #include "MessageStatus.h"
+#include "Platform.h"
+#include "QtMessageBox.h"
 #include "QtProjectWizardContent.h"
 #include "QtProjectWizardContentCustomCommand.h"
 #include "QtProjectWizardContentExtensions.h"
@@ -23,16 +17,19 @@
 #include "QtProjectWizardContentSourceGroupData.h"
 #include "QtProjectWizardContentSourceGroupInfoText.h"
 #include "QtProjectWizardContentUnloadable.h"
-#include "ResourcePaths.h"
+#include "QtResources.h"
 #include "SourceGroupSettingsCustomCommand.h"
 #include "SourceGroupSettingsUnloadable.h"
+#include "language_packages.h"
 #include "utility.h"
-#include "utilityApp.h"
 #include "utilityPathDetection.h"
-#include "utilityString.h"
 #include "utilityUuid.h"
 
-#include "Application.h"
+#include <QFileDialog>
+#include <QListWidget>
+#include <QScrollArea>
+#include <QSysInfo>
+#include <QTimer>
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
 #	include "QtProjectWizardContentCStandard.h"
@@ -447,17 +444,11 @@ void QtProjectWizard::populateWindow(QWidget* widget)
 		buttonsLayout->setContentsMargins(0, 0, 0, 0);
 		buttonsLayout->setSpacing(0);
 
-		QPushButton* addButton = new QtIconButton(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_add.png"),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_add_hover.png"));
+		QPushButton* addButton = new QtIconButton(QtResources::WINDOW_SOURCE_GROUP_ADD, QtResources::WINDOW_SOURCE_GROUP_ADD_HOVER);
 
-		m_removeButton = new QtIconButton(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_delete.png"),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_delete_hover.png"));
+		m_removeButton = new QtIconButton(QtResources::WINDOW_SOURCE_GROUP_DELETE, QtResources::WINDOW_SOURCE_GROUP_DELETE_HOVER);
 
-		m_duplicateButton = new QtIconButton(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_copy.png"),
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"window/source_group_copy_hover.png"));
+		m_duplicateButton = new QtIconButton(QtResources::WINDOW_SOURCE_GROUP_COPY, QtResources::WINDOW_SOURCE_GROUP_COPY_HOVER);
 
 		addButton->setIconSize(QSize(20, 20));
 		m_removeButton->setIconSize(QSize(20, 20));

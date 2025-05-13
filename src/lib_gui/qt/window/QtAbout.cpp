@@ -1,15 +1,15 @@
 #include "QtAbout.h"
 
+#include "QtDeviceScaledPixmap.h"
+#include "SqliteIndexStorage.h"
+#include "Version.h"
+#include "utilityQt.h"
+#include "QtResources.h"
+
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
-
-#include "QtDeviceScaledPixmap.h"
-#include "ResourcePaths.h"
-#include "SqliteIndexStorage.h"
-#include "Version.h"
-#include "utilityQt.h"
 
 using namespace utility;
 using namespace std::string_literals;
@@ -26,7 +26,7 @@ QSize QtAbout::sizeHint() const
 
 void QtAbout::setupAbout()
 {
-	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"about/about.css")));
+	setStyleSheet(QtResources::loadStyleSheet(QtResources::ABOUT_CSS));
 
 	QVBoxLayout *windowLayout = new QVBoxLayout();
 	windowLayout->setContentsMargins(10, 10, 10, 0);
@@ -34,7 +34,7 @@ void QtAbout::setupAbout()
 	m_content->setLayout(windowLayout);
 
 	{
-		QtDeviceScaledPixmap sourcetrailLogo(QString::fromStdWString(ResourcePaths::getGuiDirectoryPath().wstr() + L"about/logo_sourcetrail.png"));
+		QtDeviceScaledPixmap sourcetrailLogo(QString::fromUtf8(QtResources::ABOUT_LOGO_SOURCETRAIL));
 		sourcetrailLogo.scaleToHeight(150);
 		QLabel *sourcetrailLogoLabel = new QLabel(this);
 		sourcetrailLogoLabel->setPixmap(sourcetrailLogo.pixmap());

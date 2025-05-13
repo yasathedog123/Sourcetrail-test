@@ -1,21 +1,18 @@
 #include "QtCodeFileList.h"
 
-#include <QScrollBar>
-#include <QTimer>
-#include <QVBoxLayout>
-
 #include "FilePath.h"
-#include "ResourcePaths.h"
-#include "utility.h"
-#include "utilityApp.h"
-
 #include "ColorScheme.h"
 #include "QtCodeFile.h"
 #include "QtCodeFileTitleBar.h"
 #include "QtCodeNavigator.h"
 #include "QtCodeSnippet.h"
-#include "SourceLocationFile.h"
 #include "utilityQt.h"
+#include "QtResources.h"
+#include "Platform.h"
+
+#include <QScrollBar>
+#include <QTimer>
+#include <QVBoxLayout>
 
 using namespace utility;
 
@@ -60,7 +57,7 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator *navigator)
 	if constexpr (utility::Platform::isMac())
 	{
 		// set style on scrollbar because it always has bright background by default
-		m_lastSnippetScrollBar->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css")));
+		m_lastSnippetScrollBar->setStyleSheet(QtResources::loadStyleSheet(QtResources::MAIN_SCROLLBAR_CSS));
 		m_styleSize = m_lastSnippetScrollBar->styleSheet().size();
 	}
 	else
@@ -591,7 +588,7 @@ void QtCodeFileList::updateLastSnippetScrollBar(QScrollBar* mirroredScrollBar)
 				mirroredScrollBar->width(),
 				mirroredScrollBar->height());
 			m_lastSnippetScrollBar->show();
-			
+
 			if constexpr (utility::Platform::isMac())
 			{
 				// set style on scrollbar because it always has bright background by default

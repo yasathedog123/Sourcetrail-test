@@ -1,9 +1,8 @@
 #include "QtCodeView.h"
 
 #include "CodeController.h"
-#include "ResourcePaths.h"
 #include "tracing.h"
-
+#include "QtResources.h"
 #include "ColorScheme.h"
 #include "QtCodeArea.h"
 #include "QtCodeNavigator.h"
@@ -265,7 +264,5 @@ void QtCodeView::setStyleSheet() const
 {
 	setWidgetBackgroundColor(m_widget, ColorScheme::getInstance()->getColor("code/background"));
 
-	QString styleSheet = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/code_view.css"));
-
-	m_widget->setStyleSheet(styleSheet);
+	m_widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::CODE_VIEW_CSS));
 }

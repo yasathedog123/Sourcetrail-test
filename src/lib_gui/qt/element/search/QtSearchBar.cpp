@@ -1,15 +1,15 @@
 #include "QtSearchBar.h"
 
-#include <QHBoxLayout>
-
 #include "MessageActivateFullTextSearch.h"
 #include "MessageActivateOverview.h"
 #include "MessageSearch.h"
 #include "MessageSearchAutocomplete.h"
 #include "QtActions.h"
+#include "QtResources.h"
 #include "QtSearchBarButton.h"
 #include "QtSmartSearchBox.h"
-#include "ResourcePaths.h"
+
+#include <QHBoxLayout>
 
 QtSearchBar::QtSearchBar()
 {
@@ -21,7 +21,7 @@ QtSearchBar::QtSearchBar()
 	layout->setAlignment(Qt::AlignTop);
 	setLayout(layout);
 
-	m_homeButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/home.png"));
+	m_homeButton = new QtSearchBarButton(QtResources::SEARCH_VIEW_HOME);
 	m_homeButton->setObjectName(QStringLiteral("home_button"));
 	m_homeButton->setToolTip(QtActions::toOverview().tooltip());
 	layout->addWidget(m_homeButton);
@@ -50,7 +50,7 @@ QtSearchBar::QtSearchBar()
 	connect(m_searchBox, &QtSmartSearchBox::search, this, &QtSearchBar::requestSearch);
 	connect(m_searchBox, &QtSmartSearchBox::fullTextSearch, this, &QtSearchBar::requestFullTextSearch);
 
-	m_searchButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/images/search.png"));
+	m_searchButton = new QtSearchBarButton(QtResources::SEARCH_VIEW_SEARCH);
 	m_searchButton->setObjectName(QStringLiteral("search_button"));
 	m_searchButton->setToolTip(QtActions::executeFindSymbol().tooltip());
 	layout->addWidget(m_searchButton);

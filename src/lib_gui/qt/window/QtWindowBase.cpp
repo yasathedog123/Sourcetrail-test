@@ -1,8 +1,8 @@
 #include "QtWindowBase.h"
 
 #include "ApplicationSettings.h"
-#include "ResourcePaths.h"
 #include "compatibilityQt.h"
+#include "QtResources.h"
 
 #include <QGraphicsDropShadowEffect>
 #include <QMouseEvent>
@@ -80,15 +80,13 @@ void QtWindowBase::setSizeGripStyle(bool isBlack)
 		return;
 	}
 
-	const std::wstring path = isBlack ? L"size_grip_black.png" : L"size_grip_white.png";
+	const std::string path = isBlack ? QtResources::WINDOW_SIZE_GRIP_BLACK : QtResources::WINDOW_SIZE_GRIP_WHITE;
 
-	m_sizeGrip->setStyleSheet(QString::fromStdWString(
-		L"QSizeGrip {"
+	m_sizeGrip->setStyleSheet(QString::fromStdString(
+		"QSizeGrip {"
 		"	max-height: 16px;"
 		"	max-width: 16px;"
-		"	border-image: url(" +
-		ResourcePaths::getGuiDirectoryPath().wstr() + L"window/" + path +
-		L");"
+		"	border-image: url(" + path + ");"
 		"}"));
 }
 
@@ -119,7 +117,7 @@ void QtWindowBase::moveToCenter()
 void QtWindowBase::setVisible(bool visible)
 {
 	QWidget::setVisible(visible);
-	
+
 	if (visible)
 		setFocus();
 }

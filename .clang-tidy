@@ -10,7 +10,7 @@ Checks: >
     bugprone-string-constructor,
     bugprone-unique-ptr-array-mismatch,
     # cppcoreguidelines-pro-type-member-init,
-    # llvm-include-order,
+    llvm-include-order,
     # misc-include-cleaner, # Breaks to many files and replaces the Qt header with lower level ones,
     misc-unused-parameters,
     modernize-use-bool-literals,

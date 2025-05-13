@@ -1,24 +1,23 @@
 #include "QtBookmarkButtonsView.h"
-#include "QtMessageBox.h"
-
-#include <QFrame>
-#include <QHBoxLayout>
-#include <QPushButton>
-
 #include "MessageBookmarkBrowse.h"
 #include "MessageBookmarkCreate.h"
 #include "MessageBookmarkDelete.h"
 #include "MessageBookmarkEdit.h"
 #include "QtActions.h"
+#include "QtMessageBox.h"
+#include "QtResources.h"
 #include "QtSearchBarButton.h"
 #include "QtViewWidgetWrapper.h"
-#include "ResourcePaths.h"
 #include "utilityQt.h"
+
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QPushButton>
 
 using namespace utility;
 
 QtBookmarkButtonsView::QtBookmarkButtonsView(ViewLayout* viewLayout)
-	: BookmarkButtonsView(viewLayout) 
+	: BookmarkButtonsView(viewLayout)
 {
 	m_widget = new QFrame();
 	m_widget->setObjectName(QStringLiteral("bookmark_bar"));
@@ -29,7 +28,7 @@ QtBookmarkButtonsView::QtBookmarkButtonsView(ViewLayout* viewLayout)
 	layout->setAlignment(Qt::AlignTop);
 	m_widget->setLayout(layout);
 
-	m_createBookmarkButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/images/edit_bookmark_icon.png"));
+	m_createBookmarkButton = new QtSearchBarButton(QtResources::BOOKMARK_VIEW_BOOKMARK_EDIT_BOOKMARK_ICON);
 	m_createBookmarkButton->setObjectName(QStringLiteral("bookmark_button"));
 	m_createBookmarkButton->setToolTip(QtActions::bookmarkActiveSymbol().tooltip());
 	m_createBookmarkButton->setEnabled(false);
@@ -37,7 +36,7 @@ QtBookmarkButtonsView::QtBookmarkButtonsView(ViewLayout* viewLayout)
 
 	connect(m_createBookmarkButton, &QPushButton::clicked, this, &QtBookmarkButtonsView::createBookmarkClicked);
 
-	m_showBookmarksButton = new QtSearchBarButton(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/images/bookmark_list_icon.png"));
+	m_showBookmarksButton = new QtSearchBarButton(QtResources::BOOKMARK_VIEW_BOOKMARK_LIST_ICON);
 	m_showBookmarksButton->setObjectName(QStringLiteral("show_bookmark_button"));
 	m_showBookmarksButton->setToolTip(QtActions::bookmarkManager().tooltip());
 	layout->addWidget(m_showBookmarksButton);
@@ -54,7 +53,7 @@ void QtBookmarkButtonsView::refreshView()
 {
 	m_onQtThread([=, this]()
 	{
-		m_widget->setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/bookmark_view.css")));
+		m_widget->setStyleSheet(QtResources::loadStyleSheet(QtResources::BOOKMARK_VIEW_CSS));
 	});
 }
 
@@ -63,8 +62,7 @@ void QtBookmarkButtonsView::setCreateButtonState(const MessageBookmarkButtonStat
 	m_onQtThread([=, this]() {
 		m_createButtonState = state;
 
-		m_createBookmarkButton->setIconPath(ResourcePaths::getGuiDirectoryPath().concatenate(
-			L"bookmark_view/images/edit_bookmark_icon.png"));
+		m_createBookmarkButton->setIconPath(QtResources::BOOKMARK_VIEW_BOOKMARK_EDIT_BOOKMARK_ICON);
 
 		if (state == MessageBookmarkButtonState::CAN_CREATE)
 		{
@@ -78,8 +76,7 @@ void QtBookmarkButtonsView::setCreateButtonState(const MessageBookmarkButtonStat
 		{
 			m_createBookmarkButton->setEnabled(true);
 
-			m_createBookmarkButton->setIconPath(ResourcePaths::getGuiDirectoryPath().concatenate(
-				L"bookmark_view/images/bookmark_active.png"));
+			m_createBookmarkButton->setIconPath(QtResources::BOOKMARK_VIEW_BOOKMARK_ACTIVE);
 		}
 		else
 		{

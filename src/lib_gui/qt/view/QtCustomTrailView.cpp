@@ -1,5 +1,14 @@
 #include "QtCustomTrailView.h"
 
+#include "ColorScheme.h"
+#include "MessageActivateTrail.h"
+#include "NodeTypeSet.h"
+#include "QtMainWindow.h"
+#include "QtResources.h"
+#include "QtSmartSearchBox.h"
+#include "TabIds.h"
+#include "utilityQt.h"
+
 #include <QBoxLayout>
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -10,14 +19,6 @@
 #include <QRadioButton>
 #include <QSlider>
 
-#include "ColorScheme.h"
-#include "MessageActivateTrail.h"
-#include "NodeTypeSet.h"
-#include "QtMainWindow.h"
-#include "QtSmartSearchBox.h"
-#include "ResourcePaths.h"
-#include "TabIds.h"
-#include "utilityQt.h"
 
 using namespace utility;
 
@@ -66,7 +67,7 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 
 		m_searchBoxFrom = new QtSmartSearchBox();
 		m_searchBoxFrom->setPlaceholderText(tr("Start Symbol"));
-		
+
 		m_searchBoxTo = new QtSmartSearchBox();
 		m_searchBoxTo->setPlaceholderText(tr("Target Symbol"));
 
@@ -449,8 +450,7 @@ void QtCustomTrailView::keyPressEvent(QKeyEvent* event)
 
 void QtCustomTrailView::updateStyleSheet()
 {
-	QString css = loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"search_view/search_view.css"));
-	css += loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"custom_trail_view/custom_trail_view.css"));
+	QString css = QtResources::loadStyleSheets(QtResources::SEARCH_VIEW_CSS, QtResources::CUSTOM_TRAIL_VIEW_CSS);
 
 	setStyleSheet(css);
 
@@ -467,7 +467,7 @@ void QtCustomTrailView::updateStyleSheet()
 	}
 }
 
-QWidget* QtCustomTrailView::createSearchBox(QtSmartSearchBox* searchBox) 
+QWidget* QtCustomTrailView::createSearchBox(QtSmartSearchBox* searchBox)
 {
 	QWidget* searchBoxContainer = new QWidget();
 	searchBoxContainer->setObjectName(QStringLiteral("search_box_container"));
@@ -501,8 +501,7 @@ QVBoxLayout* QtCustomTrailView::addFilters(
 	mainLayout->addLayout(filterALayout);
 	mainLayout->addLayout(filterBLayout);
 
-	QPixmap pixmap(QString::fromStdString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"custom_trail_view/images/circle.png").str()));
+	QPixmap pixmap(QString::fromUtf8(QtResources::CUSTOM_TRAIL_VIEW_CIRCLE));
 	for (size_t i = 0; i < filters.size(); i++)
 	{
 		QCheckBox* checkBox = new QCheckBox(filters[i]);
@@ -548,7 +547,7 @@ QVBoxLayout* QtCustomTrailView::addFilters(
 	return vLayout;
 }
 
-QHBoxLayout* QtCustomTrailView::addCheckButtons(const std::vector<QCheckBox*>& checkBoxes) 
+QHBoxLayout* QtCustomTrailView::addCheckButtons(const std::vector<QCheckBox*>& checkBoxes)
 {
 	QHBoxLayout* buttonLayout = new QHBoxLayout();
 

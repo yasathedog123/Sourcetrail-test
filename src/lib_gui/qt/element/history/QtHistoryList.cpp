@@ -1,20 +1,18 @@
 #include "QtHistoryList.h"
 
+#include "ColorScheme.h"
+#include "GraphViewStyle.h"
+#include "MessageHistoryToPosition.h"
+#include "MessageTabOpenWith.h"
+#include "QtDeviceScaledPixmap.h"
+#include "QtResources.h"
+#include "utilityQt.h"
+#include "utilityString.h"
+
 #include <QBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QScrollBar>
-
-#include "MessageHistoryToPosition.h"
-#include "MessageTabOpenWith.h"
-#include "ResourcePaths.h"
-#include "utilityString.h"
-
-#include "QtDeviceScaledPixmap.h"
-#include "utilityQt.h"
-
-#include "ColorScheme.h"
-#include "GraphViewStyle.h"
 
 using namespace utility;
 
@@ -67,8 +65,7 @@ QtHistoryItem::QtHistoryItem(const SearchMatch& match, size_t index, bool isCurr
 
 	if (isCurrent)
 	{
-		QtDeviceScaledPixmap pixmap(QString::fromStdWString(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/images/arrow.png").wstr()));
+		QtDeviceScaledPixmap pixmap(QString::fromUtf8(QtResources::HISTORY_LIST_ARROW));
 		pixmap.scaleToHeight(size.height() / 3);
 
 		QLabel* arrow = new QLabel(this);
@@ -164,7 +161,7 @@ QtHistoryList::QtHistoryList(const std::vector<SearchMatch> &history, size_t cur
 		m_list->setItemWidget(item, line);
 	}
 
-	setStyleSheet(loadStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/history_list.css")));
+	setStyleSheet(QtResources::loadStyleSheet(QtResources::HISTORY_LIST_CSS));
 
 	connect(m_list, &QListWidget::itemClicked, this, &QtHistoryList::onItemClicked);
 }

@@ -1,6 +1,4 @@
 #include "utilityJava.h"
-#include "utilityApp.h"
-#include "utilityGradle.h"
 
 #include "Application.h"
 #include "ApplicationSettings.h"
@@ -8,10 +6,12 @@
 #include "JavaEnvironment.h"
 #include "JavaEnvironmentFactory.h"
 #include "MessageStatus.h"
+#include "Platform.h"
 #include "ResourcePaths.h"
 #include "ScopedFunctor.h"
 #include "TextAccess.h"
 #include "logging.h"
+#include "utilityGradle.h"
 #include "utilityString.h"
 
 namespace

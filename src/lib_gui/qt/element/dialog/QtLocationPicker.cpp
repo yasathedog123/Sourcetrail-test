@@ -1,17 +1,17 @@
 #include "QtLocationPicker.h"
 
+#include "QtFileDialog.h"
+#include "QtIconButton.h"
+#include "utilityFile.h"
+#include "QtResources.h"
+
 #include <QEvent>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPainter>
 #include <QStyleOption>
 
-#include "QtFileDialog.h"
-#include "QtIconButton.h"
-#include "ResourcePaths.h"
-#include "utilityFile.h"
-
-QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent) 
+QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent)
 {
 	setObjectName(QStringLiteral("picker"));
 
@@ -26,9 +26,7 @@ QtLocationPicker::QtLocationPicker(QWidget* parent): QWidget(parent)
 	connect(m_data, &QtLineEdit::textChanged, this, &QtLocationPicker::onDataTextChanged);
 	layout->addWidget(m_data);
 
-	m_button = new QtIconButton(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/dots.png"),
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"window/dots_hover.png"));
+	m_button = new QtIconButton(QtResources::WINDOW_DOTS, QtResources::WINDOW_DOTS_HOVER);
 	m_button->setIconSize(QSize(16, 16));
 	m_button->setObjectName(QStringLiteral("dotsButton"));
 	m_button->setToolTip(QStringLiteral("pick file"));

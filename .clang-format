@@ -2,12 +2,15 @@
 Language: Cpp
 Standard: Latest
 ColumnLimit: 150
-UseTab: Always
-TabWidth: 4
-IndentWidth: 4
 AccessModifierOffset: -4
 
 AlignAfterOpenBracket: DontAlign
+
+TabWidth: 4
+IndentWidth: 4
+UseTab: Always
+# UseTab: AlignWithSpaces
+AlignConsecutiveAssignments: Consecutive
 
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false

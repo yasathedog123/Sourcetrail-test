@@ -1,20 +1,21 @@
 #include "QtProjectWizardContentSelect.h"
-#include "QtMessageBox.h"
-
-#include <regex>
-
-#include <QButtonGroup>
-#include <QLabel>
-#include <QPushButton>
 
 #include "LanguageType.h"
 #include "QtFlowLayout.h"
+#include "QtMessageBox.h"
 #include "QtProjectWizardWindow.h"
+#include "QtResources.h"
 #include "ResourcePaths.h"
 #include "SqliteIndexStorage.h"
 #include "utilityApp.h"
 #include "utilityQt.h"
 #include "utilityString.h"
+
+#include <QButtonGroup>
+#include <QLabel>
+#include <QPushButton>
+
+#include <regex>
 
 using namespace utility;
 using namespace boost::chrono;
@@ -78,21 +79,21 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 
 	// define which icons should be used for which kind of source group
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	m_sourceGroupTypeIconName[SourceGroupType::C_EMPTY] = L"empty_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::CXX_EMPTY] = L"empty_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::CXX_CDB] = L"cdb_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::CXX_VS] = L"vs_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::CXX_CODEBLOCKS] = L"cbp_icon";
-#endif	  // BUILD_CXX_LANGUAGE_PACKAGE
+	m_sourceGroupTypeIconName[SourceGroupType::C_EMPTY]        = QtResources::ICON_EMPTY_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::CXX_EMPTY]      = QtResources::ICON_EMPTY_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::CXX_CDB]        = QtResources::ICON_CDB_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::CXX_VS]         = QtResources::ICON_VS_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::CXX_CODEBLOCKS] = QtResources::ICON_CBP_ICON;
+#endif // BUILD_CXX_LANGUAGE_PACKAGE
 #if BUILD_JAVA_LANGUAGE_PACKAGE
-	m_sourceGroupTypeIconName[SourceGroupType::JAVA_EMPTY] = L"empty_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::JAVA_MAVEN] = L"mvn_icon";
-	m_sourceGroupTypeIconName[SourceGroupType::JAVA_GRADLE] = L"gradle_icon";
-#endif	  // BUILD_JAVA_LANGUAGE_PACKAGE
+	m_sourceGroupTypeIconName[SourceGroupType::JAVA_EMPTY]  = QtResources::ICON_EMPTY_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::JAVA_MAVEN]  = QtResources::ICON_MVN_ICON;
+	m_sourceGroupTypeIconName[SourceGroupType::JAVA_GRADLE] = QtResources::ICON_GRADLE_ICON;
+#endif // BUILD_JAVA_LANGUAGE_PACKAGE
 #if BUILD_PYTHON_LANGUAGE_PACKAGE
-	m_sourceGroupTypeIconName[SourceGroupType::PYTHON_EMPTY] = L"empty_icon";
+	m_sourceGroupTypeIconName[SourceGroupType::PYTHON_EMPTY] = QtResources::ICON_EMPTY_ICON;
 #endif	  // BUILD_PYTHON_LANGUAGE_PACKAGE
-	m_sourceGroupTypeIconName[SourceGroupType::CUSTOM_COMMAND] = L"empty_icon";
+	m_sourceGroupTypeIconName[SourceGroupType::CUSTOM_COMMAND] = QtResources::ICON_EMPTY_ICON;
 
 	// define descriptions for each kind of Source Group
 #if BUILD_CXX_LANGUAGE_PACKAGE
@@ -203,11 +204,8 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 			}
 
 			QToolButton* b = createSourceGroupButton(
-				utility::insertLineBreaksAtBlankSpaces(name, 15).c_str(),
-				QString::fromStdWString(
-					ResourcePaths::getGuiDirectoryPath()
-						.concatenate(L"icon/" + m_sourceGroupTypeIconName[sourceGroupIt.type] + L".png")
-						.wstr()));
+				utility::insertLineBreaksAtBlankSpaces(name, 15).c_str(), 
+				QString::fromStdString(m_sourceGroupTypeIconName[sourceGroupIt.type]));
 
 			if (sourceGroupIt.recommended)
 			{
