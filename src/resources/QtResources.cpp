@@ -172,7 +172,10 @@ static string readFile(const QString &path)
 	if (file.open(QFile::ReadOnly | QFile::Text))
 		return file.readAll().toStdString();
 	else
+	{
+		LOG_ERROR("Resource file not found: " + path.toStdString());
 		return "";
+	}
 }
 
 QString QtResources::loadStyleSheet(const QString &path)
@@ -182,6 +185,8 @@ QString QtResources::loadStyleSheet(const QString &path)
 	size_t currentPos = 0;
 	while (currentPos < css.length()) // Previous condition 'currentPos != string::npos' seems wrong!
 	{
+		// Look for tags '<key:value>':
+
 		const size_t leftBracketPos = css.find('<', currentPos);
 		const size_t rightBracketPos = css.find('>', currentPos);
 
