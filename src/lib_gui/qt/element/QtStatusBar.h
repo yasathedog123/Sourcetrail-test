@@ -1,16 +1,15 @@
 #ifndef QT_STATUS_BAR_H
 #define QT_STATUS_BAR_H
 
-#include <memory>
-#include <string>
+#include "ErrorCountInfo.h"
+#include "QtVerticalLine.h"
 
 #include <QLabel>
+#include <QProgressBar>
 #include <QPushButton>
 #include <QStatusBar>
 
-#include "ErrorCountInfo.h"
-
-class QProgressBar;
+#include <string>
 
 class QtStatusBar: public QStatusBar
 {
@@ -26,7 +25,9 @@ public:
 
 	void showIndexingProgress(size_t progressPercent);
 	void hideIndexingProgress();
-
+	
+	void setTextEncoding(const std::string &encoding);
+	
 protected:
 	void resizeEvent(QResizeEvent* event) override;
 
@@ -36,23 +37,28 @@ private slots:
 	static void clickedIndexingProgress();
 
 private:
-	QWidget* addPermanentVLine();
+	// loader widgets:
+	QMovie *m_movie;
+	QLabel *m_loader;
+	
+	// status text widgets:
+	QPushButton *m_text;
 
-	std::shared_ptr<QMovie> m_movie;
-
-	std::string m_textString;
-
-	QPushButton m_text;
-	QLabel m_loader;
-	QPushButton m_errorButton;
-
-	QLabel m_ideStatusText;
-
-	QPushButton* m_indexingStatus;
-	QProgressBar* m_indexingProgress;
-
-	QWidget* m_vlineError;
-	QWidget* m_vlineIndexing;
+	// indexing widgets:	
+	QtVerticalLine *m_vlineIndexing;
+	QPushButton *m_indexingStatus;
+	QProgressBar *m_indexingProgress;
+	
+	// error(s) widgets:
+	QtVerticalLine *m_vlineError;
+	QPushButton *m_errorButton;
+	
+	// ide status widgets:
+	QLabel *m_ideStatusText;
+	
+	// encoding widgets:
+	QtVerticalLine *m_vlineTextEncoding;
+	QLabel *m_textEncoding;
 };
 
 #endif	  // QT_STATUS_BAR_H

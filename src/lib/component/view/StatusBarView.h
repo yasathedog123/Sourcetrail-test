@@ -21,6 +21,8 @@ public:
 	virtual void showIndexingProgress(size_t progressPercent) = 0;
 	virtual void hideIndexingProgress() = 0;
 
+	virtual void showTextEncoding(const std::string &encoding) = 0;
+	
 protected:
 	StatusBarController* getController();
 };

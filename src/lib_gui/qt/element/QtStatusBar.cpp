@@ -1,5 +1,6 @@
 #include "QtStatusBar.h"
 
+#include "ApplicationSettings.h"
 #include "MessageErrorsAll.h"
 #include "MessageIndexingShowDialog.h"
 #include "MessageShowStatus.h"
@@ -10,154 +11,155 @@
 #include <QMovie>
 #include <QProgressBar>
 
-QtStatusBar::QtStatusBar(): m_text(this), m_ideStatusText(this)
+using namespace utility;
+
+QtStatusBar::QtStatusBar()
 {
-	addWidget(new QWidget());	 // add some space
+	addWidget(new QWidget()); // add some space
 
-	m_movie = std::make_shared<QMovie>(QString::fromUtf8(QtResources::STATUSBAR_VIEW_LOADER));
-	// if movie doesn't loop forever, force it to.
-	if (m_movie->loopCount() != -1)
+	// loader animation
 	{
-		connect(m_movie.get(), &QMovie::finished, m_movie.get(), &QMovie::start);
+		m_movie = new QMovie(this);
+		m_movie->setFileName(QString::fromUtf8(QtResources::STATUSBAR_VIEW_LOADER));
+		
+		// Set the movie to loop forever:
+		if (m_movie->loopCount() != -1)
+			connect(m_movie, &QMovie::finished, m_movie, &QMovie::start);
+		m_movie->start();
+
+		m_loader = new QLabel(this);	
+		m_loader->setMovie(m_movie);
+		m_loader->hide();
+		addWidget(m_loader);
 	}
-	m_movie->start();
-
-	m_loader.setMovie(m_movie.get());
-	m_loader.hide();
-	addWidget(&m_loader);
-
-	m_text.setFlat(true);
-	m_text.setAttribute(Qt::WA_LayoutUsesWidgetRect);	 // fixes layouting on Mac
-	m_text.setSizePolicy(QSizePolicy::Ignored, m_text.sizePolicy().verticalPolicy());
-	m_text.setCursor(Qt::PointingHandCursor);
-	addWidget(&m_text, 1);
-	setText("", false, false);
-
-	connect(&m_text, &QPushButton::clicked, this, &QtStatusBar::showStatus);
-
-	// ide status
+	
+	// status text
 	{
-		addPermanentVLine();
-		addPermanentWidget(&m_ideStatusText);
+		m_text = new QPushButton(this);
+		m_text->setFlat(true);
+		m_text->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
+		m_text->setSizePolicy(QSizePolicy::Ignored, m_text->sizePolicy().verticalPolicy());
+		m_text->setCursor(Qt::PointingHandCursor);
+		addWidget(m_text, 1);
+		setText("", false, false);
+	
+		connect(m_text, &QPushButton::clicked, this, &QtStatusBar::showStatus);
 	}
-
-	// errors
-	{
-		m_vlineError = addPermanentVLine();
-		m_vlineError->hide();
-
-		m_errorButton.hide();
-		m_errorButton.setFlat(true);
-		m_errorButton.setAttribute(Qt::WA_LayoutUsesWidgetRect);	// fixes layouting on Mac
-		m_errorButton.setStyleSheet(
-			QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
-		m_errorButton.setIcon(
-			utility::colorizePixmap(
-				QPixmap(QString::fromUtf8(QtResources::STATUSBAR_VIEW_DOT)),
-				QColor(0xD0, 0, 0))
-				.scaledToHeight(12));
-		m_errorButton.setCursor(Qt::PointingHandCursor);
-		addPermanentWidget(&m_errorButton);
-
-		connect(&m_errorButton, &QPushButton::clicked, this, &QtStatusBar::showErrors);
-	}
-
+		
 	// indexing status
 	{
-		m_vlineIndexing = addPermanentVLine();
+		m_vlineIndexing = new QtVerticalLine(this);
 		m_vlineIndexing->hide();
-
+		addPermanentWidget(m_vlineIndexing);
+		
 		m_indexingStatus = new QPushButton(this);
 		m_indexingStatus->setFlat(true);
 		m_indexingStatus->setMinimumWidth(150);
-		m_indexingStatus->setStyleSheet(
-			QStringLiteral("QPushButton { margin-right: 0; spacing: none; }"));
-		m_indexingStatus->setAttribute(Qt::WA_LayoutUsesWidgetRect);	// fixes layouting on Mac
+		m_indexingStatus->setStyleSheet(QStringLiteral("QPushButton { margin-right: 0; spacing: none; }"));
+		m_indexingStatus->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
 		m_indexingStatus->setCursor(Qt::PointingHandCursor);
-
+		
 		connect(m_indexingStatus, &QPushButton::clicked, this, &QtStatusBar::clickedIndexingProgress);
-
-		QHBoxLayout* layout = new QHBoxLayout();
+		
+		QHBoxLayout *layout = new QHBoxLayout();
 		layout->setContentsMargins(0, 0, 0, 0);
-
-		layout->addWidget(new QLabel(QStringLiteral("Indexing:")));
-
-		m_indexingProgress = new QProgressBar();
+		
+		layout->addWidget(new QLabel(tr("Indexing:")));
+		
+		m_indexingProgress = new QProgressBar(this);
 		m_indexingProgress->setMinimum(0);
 		m_indexingProgress->setMaximum(100);
 		m_indexingProgress->setValue(100);
 		layout->addWidget(m_indexingProgress);
-
+		
 		m_indexingStatus->setLayout(layout);
 		m_indexingStatus->hide();
-
+		
 		addPermanentWidget(m_indexingStatus);
+	}
+	
+	// errors
+	{
+		m_vlineError = new QtVerticalLine(this);
+		m_vlineError->hide();
+		addPermanentWidget(m_vlineError);
+		
+		m_errorButton = new QPushButton(this);
+		m_errorButton->hide();
+		m_errorButton->setFlat(true);
+		m_errorButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
+		m_errorButton->setStyleSheet(QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
+		m_errorButton->setIcon(colorizePixmap(QPixmap(QString::fromUtf8(QtResources::STATUSBAR_VIEW_DOT)), QColor(0xD0, 0, 0)).scaledToHeight(12));
+		m_errorButton->setCursor(Qt::PointingHandCursor);
+		addPermanentWidget(m_errorButton);
+		
+		connect(m_errorButton, &QPushButton::clicked, this, &QtStatusBar::showErrors);
+	}
+
+	// ide status
+	{
+		addPermanentWidget(new QtVerticalLine(this));
+		
+		m_ideStatusText = new QLabel(this);
+		m_ideStatusText->setToolTip(tr("IDE Status"));
+		addPermanentWidget(m_ideStatusText);
+	}
+
+	// text encoding
+	{
+		m_vlineTextEncoding = new QtVerticalLine(this);
+		addPermanentWidget(m_vlineTextEncoding);
+		
+		m_textEncoding = new QLabel(this);
+		m_textEncoding->setToolTip(tr("Text Encoding"));
+		addPermanentWidget(m_textEncoding);
+		
+		setTextEncoding(ApplicationSettings::getInstance()->getTextEncoding());
 	}
 }
 
-void QtStatusBar::setText(const std::string& text, bool isError, bool showLoader)
+void QtStatusBar::setText(const std::string &text, bool isError, bool showLoader)
 {
 	if (isError)
-	{
-		m_text.setStyleSheet(QStringLiteral(
-			"QPushButton { color: #D00000; margin-right: 0; spacing: none; text-align: left; }"));
-	}
+		m_text->setStyleSheet(QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; text-align: left; }"));
 	else
-	{
-		m_text.setStyleSheet(
-			QStringLiteral("QPushButton { margin-right: 0; spacing: none; text-align: left; }"));
-	}
+		m_text->setStyleSheet(QStringLiteral("QPushButton { margin-right: 0; spacing: none; text-align: left; }"));
 
 	if (showLoader)
-	{
-		m_loader.show();
-	}
+		m_loader->show();
 	else
-	{
-		m_loader.hide();
-	}
+		m_loader->hide();
 
-	m_textString = text;
-	m_text.setText(m_text.fontMetrics().elidedText(
-		QString::fromStdString(m_textString), Qt::ElideRight, m_text.width()));
+	m_text->setText(m_text->fontMetrics().elidedText(QString::fromStdString(text), Qt::ElideRight, m_text->width()));
 }
 
 void QtStatusBar::setErrorCount(ErrorCountInfo errorCount)
 {
 	if (errorCount.total > 0)
 	{
-		m_errorButton.setText(
-			QString::number(errorCount.total) + " error" + (errorCount.total > 1 ? "s" : "") +
-			(errorCount.fatal > 0 ? " (" + QString::number(errorCount.fatal) + " fatal)"
-								  : QLatin1String("")));
-
-		m_errorButton.setMinimumWidth(
-			m_errorButton.fontMetrics().boundingRect(QString(m_errorButton.text().size(), 'a')).width());
+		QString errorText = tr("%1 error%2").arg(errorCount.total).arg(errorCount.total > 1 ? "s" : "");
+		QString fatalText = tr("(%1 fatal)").arg(errorCount.fatal);
+		m_errorButton->setText(errorText + (errorCount.fatal > 0 ? " " + fatalText : ""));
+		m_errorButton->setMinimumWidth(m_errorButton->fontMetrics().boundingRect(QString(m_errorButton->text().size(), 'a')).width());
 
 		if (errorCount.fatal > 0)
-		{
-			m_errorButton.setStyleSheet(
-				QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
-		}
+			m_errorButton->setStyleSheet(QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
 		else
-		{
-			m_errorButton.setStyleSheet(
-				QStringLiteral("QPushButton { margin-right: 0; spacing: none; }"));
-		}
+			m_errorButton->setStyleSheet(QStringLiteral("QPushButton { margin-right: 0; spacing: none; }"));
 
-		m_errorButton.show();
+		m_errorButton->show();
 		m_vlineError->show();
 	}
 	else
 	{
-		m_errorButton.hide();
+		m_errorButton->hide();
 		m_vlineError->hide();
 	}
 }
 
-void QtStatusBar::setIdeStatus(const std::string& text)
+void QtStatusBar::setIdeStatus(const std::string &text)
 {
-	m_ideStatusText.setText(QString::fromStdString(text));
+	m_ideStatusText->setText(QString::fromStdString(text));
 }
 
 void QtStatusBar::showIndexingProgress(size_t progressPercent)
@@ -174,10 +176,14 @@ void QtStatusBar::hideIndexingProgress()
 	m_vlineIndexing->hide();
 }
 
-void QtStatusBar::resizeEvent(QResizeEvent*  /*event*/)
+void QtStatusBar::setTextEncoding(const std::string &encoding)
 {
-	m_text.setText(m_text.fontMetrics().elidedText(
-		QString::fromStdString(m_textString), Qt::ElideRight, m_text.width()));
+	m_textEncoding->setText(QString::fromStdString(encoding));
+}
+
+void QtStatusBar::resizeEvent(QResizeEvent * /*event*/)
+{
+	m_text->setText(m_text->fontMetrics().elidedText(m_text->text(), Qt::ElideRight, m_text->width()));
 }
 
 void QtStatusBar::showStatus()
@@ -193,13 +199,4 @@ void QtStatusBar::showErrors()
 void QtStatusBar::clickedIndexingProgress()
 {
 	MessageIndexingShowDialog().dispatch();
-}
-
-QWidget* QtStatusBar::addPermanentVLine()
-{
-	QFrame* vline = new QFrame(this);
-	vline->setFrameShape(QFrame::VLine);
-	vline->setStyleSheet(QStringLiteral("color: #777"));
-	addPermanentWidget(vline);
-	return vline;
 }

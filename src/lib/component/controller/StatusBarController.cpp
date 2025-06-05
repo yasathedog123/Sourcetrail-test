@@ -80,6 +80,11 @@ void StatusBarController::handleMessage(MessageStatus* message)
 	}
 }
 
+void StatusBarController::handleMessage(MessageTextEncodingChanged *message)
+{
+	getView()->showTextEncoding(message->textEncoding);
+}
+
 void StatusBarController::setStatus(const std::string& status, bool isError, bool showLoader)
 {
 	if (!status.empty())

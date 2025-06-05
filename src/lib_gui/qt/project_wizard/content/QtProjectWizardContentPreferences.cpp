@@ -4,6 +4,7 @@
 #include "FileLogger.h"
 #include "FileSystem.h"
 #include "MessageSwitchColorScheme.h"
+#include "MessageTextEncodingChanged.h"
 #include "QtActions.h"
 #include "ResourcePaths.h"
 #include "TextCodec.h"
@@ -537,7 +538,8 @@ void QtProjectWizardContentPreferences::save()
 	appSettings->setCodeTabWidth(m_tabWidth->currentIndex() + 1);
 
 	appSettings->setTextEncoding(m_textEncoding->currentText().toStdString());
-
+	MessageTextEncodingChanged(appSettings->getTextEncoding()).dispatch();
+	
 	appSettings->setColorSchemeName(
 		m_colorSchemePaths[m_colorSchemes->currentIndex()].withoutExtension().fileName());
 	m_oldColorSchemeIndex = -1;

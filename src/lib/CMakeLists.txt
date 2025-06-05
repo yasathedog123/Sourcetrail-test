@@ -537,6 +537,7 @@ add_library(Sourcetrail_lib
 	utility/messaging/type/MessageStatus.h
 	utility/messaging/type/MessageStatusFilterChanged.h
 	utility/messaging/type/MessageSwitchColorScheme.h
+	utility/messaging/type/MessageTextEncodingChanged.h
 	utility/messaging/type/MessageTooltipHide.h
 	utility/messaging/type/MessageTooltipShow.h
 	utility/messaging/type/MessageWindowChanged.h

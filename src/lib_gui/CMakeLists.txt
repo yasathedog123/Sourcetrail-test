@@ -91,6 +91,8 @@ add_library(Sourcetrail_lib_gui
 	qt/element/QtTabBar.h
 	qt/element/QtTable.cpp
 	qt/element/QtTable.h
+	qt/element/QtVerticalLine.h 
+	qt/element/QtVerticalLine.cpp
 
 	qt/graphics/base/QtCountCircleItem.cpp
 	qt/graphics/base/QtCountCircleItem.h

@@ -12,7 +12,7 @@ Sourcetrail is licensed under the [GNU General Public License Version 3](LICENSE
 !["Sourcetrail User Interface"](docs/readme/user_interface.png "Sourcetrail User Interface")
 
 ## Important
-This project was archived by the original autors and maintainers of Sourcetrail by the end of 2021. You can read more about this decision in this [blog entry](https://web.archive.org/web/20211115131149/https://www.sourcetrail.com/blog/discontinue_sourcetrail/).
+This project was archived by the original authors and maintainers of Sourcetrail by the end of 2021. You can read more about this decision in this [blog entry](https://web.archive.org/web/20211115131149/https://www.sourcetrail.com/blog/discontinue_sourcetrail/).
 
 This is a **fork** of the Sourcetrail project and I want to keep this project at least buildable.
 

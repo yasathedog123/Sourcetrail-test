@@ -1,7 +1,6 @@
 #ifndef QT_STATUS_BAR_VIEW_H
 #define QT_STATUS_BAR_VIEW_H
 
-#include <memory>
 #include <string>
 
 #include "ErrorCountInfo.h"
@@ -28,10 +27,12 @@ public:
 	void showIndexingProgress(size_t progressPercent) override;
 	void hideIndexingProgress() override;
 
+	void showTextEncoding(const std::string &encoding) override;
+	
 private:
 	QtThreadedLambdaFunctor m_onQtThread;
 
-	QtStatusBar* m_widget;
+	QtStatusBar* m_statusBar;
 };
 
 #endif	  // !QT_STATUS_BAR_VIEW_H
