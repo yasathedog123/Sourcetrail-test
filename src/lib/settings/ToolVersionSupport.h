@@ -16,6 +16,8 @@ class ClangVersionSupport final : public ToolVersionSupport {
 
 		static std::string getLatestCStandard();
 		static std::vector<std::string> getAvailableCStandards();
+		
+		static std::string getLatestMsCompatibilityVersion();
 };
 
 class EclipseVersionSupport final : public ToolVersionSupport {

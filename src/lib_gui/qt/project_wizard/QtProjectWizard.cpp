@@ -20,6 +20,7 @@
 #include "QtResources.h"
 #include "SourceGroupSettingsCustomCommand.h"
 #include "SourceGroupSettingsUnloadable.h"
+#include "ToolVersionSupport.h"
 #include "language_packages.h"
 #include "utility.h"
 #include "utilityPathDetection.h"
@@ -108,7 +109,7 @@ void addMsvcCompatibilityFlagsOnDemand(std::shared_ptr<SourceGroupSettingsWithCx
 		std::vector<std::string> flags = settings->getCompilerFlags();
 		flags.push_back("-fms-extensions");
 		flags.push_back("-fms-compatibility");
-		flags.push_back("-fms-compatibility-version=19");
+		flags.push_back("-fms-compatibility-version=" + ClangVersionSupport::getLatestMsCompatibilityVersion());
 		settings->setCompilerFlags(flags);
 	}
 }

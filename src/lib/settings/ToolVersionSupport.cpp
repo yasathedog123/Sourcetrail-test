@@ -158,6 +158,12 @@ vector<string> ClangVersionSupport::getAvailableCStandards()
 	return concat(getDraftCStandards(), getReleasedCStandards());
 }
 
+string ClangVersionSupport::getLatestMsCompatibilityVersion()
+{
+	// Can be found by calling 'cl /?':
+	return "19.44"s;	
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Eclipse version support:
