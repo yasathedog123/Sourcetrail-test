@@ -29,24 +29,21 @@
 // 	return false;
 // }
 
-namespace
-{
-
 using StandardKey = QKeySequence::StandardKey;
-constexpr QKeySequence::SequenceFormat KEY_FORMAT = QKeySequence::SequenceFormat::NativeText;
+static constexpr QKeySequence::SequenceFormat KEY_FORMAT = QKeySequence::SequenceFormat::NativeText;
 
-constexpr char MOUSE_LEFT_CLICK[] = "Left Click";
-constexpr char MOUSE_LEFT_DOUBLE_CLICK[] = "Left Double Click";
+static constexpr char MOUSE_LEFT_CLICK[] = "Left Click";
+static constexpr char MOUSE_LEFT_DOUBLE_CLICK[] = "Left Double Click";
 
-constexpr char MOUSE_WHEEL_UP[]   = "Mouse Wheel Up";
-constexpr char MOUSE_WHEEL_DOWN[] = "Mouse Wheel Down";
+static constexpr char MOUSE_WHEEL_UP[]   = "Mouse Wheel Up";
+static constexpr char MOUSE_WHEEL_DOWN[] = "Mouse Wheel Down";
 
-QString toString(const QKeySequence &sequence)
+static QString toString(const QKeySequence &sequence)
 {
 	return sequence.toString(KEY_FORMAT);
 }
 
-QList<QString> toStringList(const QList<QKeySequence> &sequences)
+static QList<QString> toStringList(const QList<QKeySequence> &sequences)
 {
 	QList<QString> strings;
 	
@@ -56,7 +53,7 @@ QList<QString> toStringList(const QList<QKeySequence> &sequences)
 	return strings;
 }
 
-QKeySequence addModifier(Qt::KeyboardModifiers modifiers, const QKeySequence &keySequence)
+static QKeySequence addModifier(Qt::KeyboardModifiers modifiers, const QKeySequence &keySequence)
 {
 	Q_ASSERT(!keySequence.isEmpty());
 
@@ -67,25 +64,22 @@ QKeySequence addModifier(Qt::KeyboardModifiers modifiers, const QKeySequence &ke
 		return keySequence;
 }
 
-inline QString removeAcceleratorEllipsis(QString s)
+static inline QString removeAcceleratorEllipsis(QString s)
 {
 	return s.remove('&').remove("...");
 }
 
-inline QString appendShortcut(QString s, QString shortcut)
+const char QtActions::SHORTCUT_SEPARATOR[] = " | ";
+
+QString QtActions::appendShortcut(const QString &s, const QString &shortcut)
 {
 	return s + QString(" (%1)").arg(shortcut);
 }
 
-inline QString appendShortcut(QString s, QString shortcut1, QString shortcut2)
+QString QtActions::appendShortcut(const QString &s, const QString &shortcut1, const QString &shortcut2)
 {
 	return s + QString(" (%1%2%3)").arg(shortcut1, QtActions::SHORTCUT_SEPARATOR, shortcut2);
 }
-
-} // namespace
-
-
-const char QtActions::SHORTCUT_SEPARATOR[] = " | ";
 
 QtActions::Info::Info(QString text, QString shortcut)
 	: QtActions::Info(text, QList({shortcut}))

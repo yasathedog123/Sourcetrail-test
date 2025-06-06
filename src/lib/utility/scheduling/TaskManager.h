@@ -6,8 +6,7 @@
 #include <mutex>
 
 #include "TabIds.h"
-
-class TaskScheduler;
+#include "TaskScheduler.h"
 
 class TaskManager
 {

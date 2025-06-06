@@ -11,6 +11,9 @@ class QtActions final {
 public:
 	static const char SHORTCUT_SEPARATOR[];
 	
+	static QString appendShortcut(const QString &s, const QString &shortcut);
+	static QString appendShortcut(const QString &s, const QString &shortcut1, const QString &shortcut2);
+	
 	class Info {
 		public:
 			Info(QString text, QString shortcut);

@@ -1,11 +1,11 @@
 #include "Application.h"
 
-#include "AppPath.h"
+#include "CppSQLite3.h"
+
 #include "ApplicationSettings.h"
 #include "ColorScheme.h"
 #include "DialogView.h"
 #include "FileLogger.h"
-#include "FileSystem.h"
 #include "GraphViewStyle.h"
 #include "IDECommunicationController.h"
 #include "LogManager.h"
@@ -16,13 +16,13 @@
 #include "MessageQueue.h"
 #include "MessageQuitApplication.h"
 #include "MessageStatus.h"
+#include "MessageTextEncodingChanged.h"
 #include "NetworkFactory.h"
 #include "ProjectSettings.h"
 #include "SharedMemoryGarbageCollector.h"
 #include "StorageCache.h"
 #include "TabIds.h"
 #include "TaskManager.h"
-#include "TaskScheduler.h"
 #include "UserPaths.h"
 #include "Version.h"
 #include "ViewFactory.h"
@@ -30,13 +30,10 @@
 #include "tracing.h"
 #include "utilityUuid.h"
 
-#include "CppSQLite3.h"
-
 std::shared_ptr<Application> Application::s_instance;
 std::string Application::s_uuid;
 
-void Application::createInstance(
-	const Version& version, ViewFactory* viewFactory, NetworkFactory* networkFactory)
+void Application::createInstance(const Version& version, ViewFactory* viewFactory, NetworkFactory* networkFactory)
 {
 	bool hasGui = (viewFactory != nullptr);
 
@@ -50,7 +47,7 @@ void Application::createInstance(
 	loadSettings();
 
 	SharedMemoryGarbageCollector* collector = SharedMemoryGarbageCollector::createInstance();
-	if (collector)
+	if (collector != nullptr)
 	{
 		collector->run(Application::getUUID());
 	}
@@ -95,7 +92,7 @@ void Application::destroyInstance()
 
 std::string Application::getUUID()
 {
-	if (!s_uuid.size())
+	if (s_uuid.size() == 0)
 	{
 		s_uuid = utility::getUuidString();
 	}
@@ -109,10 +106,11 @@ void Application::loadSettings()
 
 	std::shared_ptr<ApplicationSettings> settings = ApplicationSettings::getInstance();
 	settings->load(UserPaths::getAppSettingsFilePath());
+	MessageTextEncodingChanged(settings->getTextEncoding()).dispatch();
 
 	LogManager::getInstance()->setLoggingEnabled(settings->getLoggingEnabled());
 	Logger* logger = LogManager::getInstance()->getLoggerByType("FileLogger");
-	if (logger)
+	if (logger != nullptr)
 	{
 		auto *fileLogger = dynamic_cast<FileLogger*>(logger);
 		fileLogger->setLogDirectory(settings->getLogDirectoryPath());
@@ -138,7 +136,7 @@ Application::~Application()
 	}
 
 	SharedMemoryGarbageCollector* collector = SharedMemoryGarbageCollector::getInstance();
-	if (collector)
+	if (collector != nullptr)
 	{
 		collector->stop();
 	}
@@ -423,7 +421,7 @@ void Application::updateRecentProjects(const FilePath& projectSettingsFilePath)
 	{
 		ApplicationSettings* appSettings = ApplicationSettings::getInstance().get();
 		std::vector<FilePath> recentProjects = appSettings->getRecentProjects();
-		if (recentProjects.size())
+		if (recentProjects.size() != 0)
 		{
 			std::vector<FilePath>::iterator it = std::find(
 				recentProjects.begin(), recentProjects.end(), projectSettingsFilePath);
@@ -497,7 +495,7 @@ void Application::updateTitle()
 bool Application::checkSharedMemory()
 {
 	std::string error = SharedMemory::checkSharedMemory(getUUID());
-	if (error.size())
+	if (error.size() != 0)
 	{
 		MessageStatus(
 			"Error on accessing shared memory. Indexing not possible. "

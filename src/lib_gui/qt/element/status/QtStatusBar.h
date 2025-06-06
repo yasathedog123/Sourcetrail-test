@@ -2,11 +2,11 @@
 #define QT_STATUS_BAR_H
 
 #include "ErrorCountInfo.h"
+#include "QtFlatButton.h"
 #include "QtVerticalLine.h"
 
 #include <QLabel>
 #include <QProgressBar>
-#include <QPushButton>
 #include <QStatusBar>
 
 #include <string>
@@ -42,16 +42,16 @@ private:
 	QLabel *m_loader;
 	
 	// status text widgets:
-	QPushButton *m_text;
+	QtFlatButton *m_text;
 
 	// indexing widgets:	
 	QtVerticalLine *m_vlineIndexing;
-	QPushButton *m_indexingStatus;
+	QtFlatButton *m_indexingStatus;
 	QProgressBar *m_indexingProgress;
 	
 	// error(s) widgets:
 	QtVerticalLine *m_vlineError;
-	QPushButton *m_errorButton;
+	QtFlatButton *m_errorButton;
 	
 	// ide status widgets:
 	QLabel *m_ideStatusText;

@@ -1,15 +1,14 @@
 #include "QtStatusBar.h"
 
-#include "ApplicationSettings.h"
 #include "MessageErrorsAll.h"
 #include "MessageIndexingShowDialog.h"
 #include "MessageShowStatus.h"
+#include "QtActions.h"
 #include "QtResources.h"
 #include "utilityQt.h"
 
 #include <QHBoxLayout>
 #include <QMovie>
-#include <QProgressBar>
 
 using namespace utility;
 
@@ -35,11 +34,8 @@ QtStatusBar::QtStatusBar()
 	
 	// status text
 	{
-		m_text = new QPushButton(this);
-		m_text->setFlat(true);
-		m_text->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
+		m_text = new QtFlatButton(this);
 		m_text->setSizePolicy(QSizePolicy::Ignored, m_text->sizePolicy().verticalPolicy());
-		m_text->setCursor(Qt::PointingHandCursor);
 		addWidget(m_text, 1);
 		setText("", false, false);
 	
@@ -52,12 +48,9 @@ QtStatusBar::QtStatusBar()
 		m_vlineIndexing->hide();
 		addPermanentWidget(m_vlineIndexing);
 		
-		m_indexingStatus = new QPushButton(this);
-		m_indexingStatus->setFlat(true);
+		m_indexingStatus = new QtFlatButton(this);
 		m_indexingStatus->setMinimumWidth(150);
 		m_indexingStatus->setStyleSheet(QStringLiteral("QPushButton { margin-right: 0; spacing: none; }"));
-		m_indexingStatus->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
-		m_indexingStatus->setCursor(Qt::PointingHandCursor);
 		
 		connect(m_indexingStatus, &QPushButton::clicked, this, &QtStatusBar::clickedIndexingProgress);
 		
@@ -84,13 +77,10 @@ QtStatusBar::QtStatusBar()
 		m_vlineError->hide();
 		addPermanentWidget(m_vlineError);
 		
-		m_errorButton = new QPushButton(this);
+		m_errorButton = new QtFlatButton(this);
 		m_errorButton->hide();
-		m_errorButton->setFlat(true);
-		m_errorButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // fixes layouting on Mac
 		m_errorButton->setStyleSheet(QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
 		m_errorButton->setIcon(colorizePixmap(QPixmap(QString::fromUtf8(QtResources::STATUSBAR_VIEW_DOT)), QColor(0xD0, 0, 0)).scaledToHeight(12));
-		m_errorButton->setCursor(Qt::PointingHandCursor);
 		addPermanentWidget(m_errorButton);
 		
 		connect(m_errorButton, &QPushButton::clicked, this, &QtStatusBar::showErrors);
@@ -111,10 +101,8 @@ QtStatusBar::QtStatusBar()
 		addPermanentWidget(m_vlineTextEncoding);
 		
 		m_textEncoding = new QLabel(this);
-		m_textEncoding->setToolTip(tr("Text Encoding"));
+		m_textEncoding->setToolTip(QtActions::appendShortcut(tr("Text Encoding"), QtActions::preferences().shortcut()));
 		addPermanentWidget(m_textEncoding);
-		
-		setTextEncoding(ApplicationSettings::getInstance()->getTextEncoding());
 	}
 }
 

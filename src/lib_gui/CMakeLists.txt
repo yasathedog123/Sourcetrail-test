@@ -83,16 +83,19 @@ add_library(Sourcetrail_lib_gui
 	qt/element/dialog/QtTextEdit.cpp
 	qt/element/dialog/QtTextEdit.h
 
+	qt/element/status/QtStatusBar.cpp
+	qt/element/status/QtStatusBar.h
+	qt/element/status/QtFlatButton.h 
+	qt/element/status/QtFlatButton.cpp
+	qt/element/status/QtVerticalLine.h 
+	qt/element/status/QtVerticalLine.cpp
+	
 	qt/element/QtTooltip.cpp
 	qt/element/QtTooltip.h
-	qt/element/QtStatusBar.cpp
-	qt/element/QtStatusBar.h
 	qt/element/QtTabBar.cpp
 	qt/element/QtTabBar.h
 	qt/element/QtTable.cpp
 	qt/element/QtTable.h
-	qt/element/QtVerticalLine.h 
-	qt/element/QtVerticalLine.cpp
 
 	qt/graphics/base/QtCountCircleItem.cpp
 	qt/graphics/base/QtCountCircleItem.h
@@ -325,6 +328,7 @@ target_include_directories(Sourcetrail_lib_gui
 		qt/element/history
 		qt/element/search
 		qt/element/dialog
+		qt/element/status
 		qt/element
 		qt/graphics/base
 		qt/graphics/component
