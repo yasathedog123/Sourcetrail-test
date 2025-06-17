@@ -128,12 +128,12 @@ ProcessOutput executeProcess(const std::string& command, const std::vector<std::
 			s_runningProcesses.insert(process);
 		}
 
-		ScopedFunctor remover(
-			[process]()
-			{
-				std::lock_guard<std::mutex> lock(s_runningProcessesMutex);
-				s_runningProcesses.erase(process);
-			});
+		[[maybe_unused]]
+		ScopedFunctor remover([process]()
+		{
+			std::lock_guard<std::mutex> lock(s_runningProcessesMutex);
+			s_runningProcesses.erase(process);
+		});
 
 		bool outputReceived = false;
 		std::vector<char> buf(128);

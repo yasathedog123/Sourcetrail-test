@@ -99,7 +99,11 @@ std::set<FilePath> fetchRootDirectories(const std::set<FilePath>& sourceFilePath
 		DialogView::UseCase::PROJECT_SETUP);
 	dialogView->showUnknownProgressDialog("Preparing Project", "Gathering Root\nDirectories");
 
-	ScopedFunctor dialogHider([&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+	[[maybe_unused]]
+	ScopedFunctor dialogHider([&dialogView]()
+	{
+		dialogView->hideUnknownProgressDialog();
+	});
 
 	std::set<FilePath> rootDirectories;
 

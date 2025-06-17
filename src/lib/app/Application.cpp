@@ -388,8 +388,6 @@ void Application::loadWindow(bool showStartWindow)
 
 	if (!m_loadedWindow)
 	{
-		auto appSettings = ApplicationSettings::getInstance();
-
 		updateTitle();
 
 		m_mainView->loadWindow(showStartWindow);

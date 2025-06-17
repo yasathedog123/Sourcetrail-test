@@ -456,7 +456,6 @@ QtGraphNode* GraphFocusHandler::findChildNodeRecursive(const std::list<QtGraphNo
 QtGraphNode* GraphFocusHandler::findSibling(const QtGraphNode* node, Direction direction)
 {
 	QtGraphNode* nextSibling = nullptr;
-	Vec2i pos = node->getPosition();
 	Vec4i rect = node->getBoundingRect();
 	int minDist = 0;
 

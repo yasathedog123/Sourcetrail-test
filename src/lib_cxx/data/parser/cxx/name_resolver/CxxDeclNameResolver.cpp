@@ -98,6 +98,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 {
 	if (declaration)
 	{
+		[[maybe_unused]]
 		ScopedSwitcher<const clang::NamedDecl*> switcher(m_currentDecl, declaration);
 
 		std::string declNameString = declaration->getNameAsString();

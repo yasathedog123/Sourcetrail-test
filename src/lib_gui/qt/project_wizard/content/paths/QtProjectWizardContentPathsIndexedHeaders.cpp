@@ -17,7 +17,6 @@
 std::vector<FilePath> QtProjectWizardContentPathsIndexedHeaders::getIndexedPathsDerivedFromCodeblocksProject(
 	std::shared_ptr<const SourceGroupSettingsCxxCodeblocks> settings)
 {
-	const FilePath projectPath = settings->getProjectDirectoryPath();
 	std::set<FilePath> indexedHeaderPaths;
 	{
 		const FilePath codeblocksProjectPath = settings->getCodeblocksProjectPathExpandedAndAbsolute();

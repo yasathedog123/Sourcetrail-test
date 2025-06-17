@@ -45,7 +45,6 @@ FilePath getJavaInPath()
 
 FilePath getJavaInJavaHome()
 {
-	string command;
 	char* p = getenv("JAVA_HOME");
 	if (p == nullptr)
 	{

@@ -175,8 +175,12 @@ void QtProjectWizardContentPathsHeaderSearch::validateIncludesButtonClicked()
 				{
 					dialogView->setParentWindow(m_window);
 					dialogView->showUnknownProgressDialog("Processing", "Gathering Source Files");
-					ScopedFunctor dialogHider(
-						[&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+					
+					[[maybe_unused]]
+					ScopedFunctor dialogHider([&dialogView]()
+					{
+						dialogView->hideUnknownProgressDialog();
+					});
 
 					FileManager fileManager;
 					fileManager.update(
@@ -200,7 +204,12 @@ void QtProjectWizardContentPathsHeaderSearch::validateIncludesButtonClicked()
 				}
 				{
 					dialogView->setParentWindow(m_window);
-					ScopedFunctor dialogHider([&dialogView]() { dialogView->hideProgressDialog(); });
+					
+					[[maybe_unused]]
+					ScopedFunctor dialogHider([&dialogView]()
+					{
+						dialogView->hideProgressDialog();
+					});
 
 					unresolvedIncludes = IncludeProcessing::getUnresolvedIncludeDirectives(
 						sourceFilePaths,
@@ -249,8 +258,11 @@ void QtProjectWizardContentPathsHeaderSearch::finishedSelectDetectIncludesRootPa
 				{
 					dialogView->setParentWindow(m_window);
 					dialogView->showUnknownProgressDialog("Processing", "Gathering Source Files");
-					ScopedFunctor dialogHider(
-						[&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+					[[maybe_unused]]
+					ScopedFunctor dialogHider([&dialogView]()
+					{
+						dialogView->hideUnknownProgressDialog();
+					});
 
 					FileManager fileManager;
 					fileManager.update(
@@ -272,7 +284,12 @@ void QtProjectWizardContentPathsHeaderSearch::finishedSelectDetectIncludesRootPa
 				}
 				{
 					dialogView->setParentWindow(m_window);
-					ScopedFunctor dialogHider([&dialogView]() { dialogView->hideProgressDialog(); });
+					
+					[[maybe_unused]]
+					ScopedFunctor dialogHider([&dialogView]()
+					{
+						dialogView->hideProgressDialog();
+					});
 
 					detectedHeaderSearchPaths = IncludeProcessing::getHeaderSearchDirectories(
 						sourceFilePaths,

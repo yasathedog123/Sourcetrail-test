@@ -82,7 +82,11 @@ bool SourceGroupJavaMaven::prepareMavenData()
 		dialogView->showUnknownProgressDialog(
 			"Preparing Project", "Maven\nGenerating Source Files");
 
-		ScopedFunctor dialogHider([&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+		[[maybe_unused]]
+		ScopedFunctor dialogHider([&dialogView]()
+		{
+			dialogView->hideUnknownProgressDialog();
+		});
 
 		const std::string errorMessage = utility::mavenGenerateSources(
 			mavenPath, mavenSettingsPath, projectRootPath);

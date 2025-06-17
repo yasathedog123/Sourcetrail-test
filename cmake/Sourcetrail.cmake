@@ -38,6 +38,7 @@ function(setGccTargetOptions targetName)
 			# -Woverloaded-virtual
 			# -Wundef
 			-Wuninitialized
+			-Wunused
 			-Winit-self
 			# -Wunused-macros
 			# -Wuseless-cast
@@ -90,6 +91,7 @@ function(setClangTargetOptions targetName)
 			-Wextra
 			-Wpedantic
 
+			-Wunused
 			#
 			# Warnings which should be errors:
 			#

@@ -76,7 +76,11 @@ bool SourceGroupJavaGradle::prepareGradleData()
 		std::shared_ptr<DialogView> dialogView = Application::getInstance()->getDialogView(
 			DialogView::UseCase::PROJECT_SETUP);
 
-		ScopedFunctor dialogHider([&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+		[[maybe_unused]]
+		ScopedFunctor dialogHider([&dialogView]()
+		{
+			dialogView->hideUnknownProgressDialog();
+		});
 
 		dialogView->showUnknownProgressDialog(
 			"Preparing Project", "Gradle\nExporting Dependencies");

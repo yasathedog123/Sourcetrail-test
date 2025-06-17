@@ -93,7 +93,9 @@ void TaskGroupParallel::doTerminate()
 void TaskGroupParallel::processTaskThreaded(std::shared_ptr<TaskInfo> taskInfo,
 	std::shared_ptr<Blackboard> blackboard)
 {
-	ScopedFunctor functor([&]() {
+	[[maybe_unused]]
+	ScopedFunctor functor([&]()
+	{
 		m_activeTaskCount--;
 	});
 

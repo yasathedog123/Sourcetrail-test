@@ -138,7 +138,12 @@ void TaskScheduler::processTasks()
 
 		{
 			m_tasksMutex.unlock();
-			ScopedFunctor functor([this]() { m_tasksMutex.lock(); });
+			
+			[[maybe_unused]]
+			ScopedFunctor functor([this]()
+			{
+				m_tasksMutex.lock();
+			});
 
 			while (true)
 			{

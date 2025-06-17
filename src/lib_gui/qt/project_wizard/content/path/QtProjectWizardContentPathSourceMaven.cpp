@@ -76,7 +76,11 @@ std::vector<FilePath> QtProjectWizardContentPathSourceMaven::getFilePaths() cons
 		QtDialogView* dialogView = dynamic_cast<QtDialogView*>(
 			Application::getInstance()->getDialogView(DialogView::UseCase::PROJECT_SETUP).get());
 
-		ScopedFunctor scopedFunctor([&dialogView]() { dialogView->hideUnknownProgressDialog(); });
+		[[maybe_unused]]
+		ScopedFunctor scopedFunctor([&dialogView]()
+		{
+			dialogView->hideUnknownProgressDialog();
+		});
 
 		dialogView->setParentWindow(m_window);
 		dialogView->showUnknownProgressDialog(

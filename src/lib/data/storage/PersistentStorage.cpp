@@ -1856,7 +1856,6 @@ std::vector<ErrorInfo> PersistentStorage::getErrorsForFileLimited(
 
 	std::unordered_map<Id, std::set<Id>> includedMap = getFileIdToIncludedFileIdMap();
 	std::set<Id> fileIdsToProcess = includedMap[getFileNodeId(filePath)];
-	std::set<Id> processedFileIds;
 
 	while (fileIdsToProcess.size())
 	{
@@ -2485,8 +2484,6 @@ TooltipInfo PersistentStorage::getTooltipInfoForSourceLocationIdsAndLocalSymbolI
 	const std::vector<Id>& locationIds, const std::vector<Id>& localSymbolIds) const
 {
 	TRACE();
-
-	const TextCodec codec(ApplicationSettings::getInstance()->getTextEncoding());
 
 	TooltipInfo info;
 

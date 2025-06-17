@@ -121,7 +121,6 @@ void Project::load(std::shared_ptr<DialogView> dialogView)
 		return;
 	}
 
-	const FilePath projectSettingsPath = m_settings->getFilePath();
 	const FilePath dbPath = m_settings->getDBFilePath();
 	const FilePath tempDbPath = m_settings->getTempDBFilePath();
 	const FilePath bookmarkDbPath = m_settings->getBookmarkDBFilePath();

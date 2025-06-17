@@ -107,6 +107,7 @@ std::string SharedMemory::checkSharedMemory(const std::string& name)
 
 	try
 	{
+		[[maybe_unused]]
 		SharedMemory memory("test_" + name, 65536 /* 64 kB */, CREATE_AND_DELETE);
 	}
 	catch (boost::interprocess::interprocess_exception& e)
@@ -185,6 +186,7 @@ SharedMemory::SharedMemory(const std::string& name, size_t initialMemorySize, Ac
 		{
 			boost::interprocess::named_mutex mutex(
 				boost::interprocess::open_only, getMutexName().c_str());
+			[[maybe_unused]]
 			boost::interprocess::scoped_lock<boost::interprocess::named_mutex> lock(
 				mutex, boost::interprocess::try_to_lock);
 		}
@@ -243,6 +245,7 @@ bool SharedMemory::checkSharedMutex()
 		}
 
 		// locking kept failing, try to get ownership
+		[[maybe_unused]]
 		boost::interprocess::scoped_lock<boost::interprocess::named_mutex> lock(
 			mutex, boost::interprocess::accept_ownership);
 		return true;

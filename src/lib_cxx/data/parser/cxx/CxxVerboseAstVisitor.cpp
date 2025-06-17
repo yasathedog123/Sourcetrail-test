@@ -48,7 +48,9 @@ bool CxxVerboseAstVisitor::TraverseDecl(clang::Decl* d)
 		LOG_INFO_STREAM_BARE(<< "Indexer - " << stream.str());
 
 		{
+			[[maybe_unused]]
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
+			
 			return CxxAstVisitor::TraverseDecl(d);
 		}
 	}
@@ -65,7 +67,9 @@ bool CxxVerboseAstVisitor::TraverseStmt(clang::Stmt* stmt)
 			<< loc.startLineNumber << ":" << loc.startColumnNumber << ", " << loc.endLineNumber
 			<< ":" << loc.endColumnNumber << ">");
 		{
+			[[maybe_unused]]
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
+			
 			return CxxAstVisitor::TraverseStmt(stmt);
 		}
 	}
@@ -82,7 +86,9 @@ bool CxxVerboseAstVisitor::TraverseTypeLoc(clang::TypeLoc tl)
 			<< loc.startLineNumber << ":" << loc.startColumnNumber << ", " << loc.endLineNumber
 			<< ":" << loc.endColumnNumber << ">");
 		{
+			[[maybe_unused]]
 			ScopedSwitcher<unsigned int> switcher(m_indentation, m_indentation + 1);
+			
 			return CxxAstVisitor::TraverseTypeLoc(tl);
 		}
 	}

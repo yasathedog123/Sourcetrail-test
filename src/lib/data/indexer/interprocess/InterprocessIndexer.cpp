@@ -44,7 +44,9 @@ void InterprocessIndexer::work()
 			}
 		});
 
-		ScopedFunctor threadStopper([&]() {
+		[[maybe_unused]]
+		ScopedFunctor threadStopper([&]()
+		{
 			updaterThreadRunning = false;
 			if (updaterThread)
 			{

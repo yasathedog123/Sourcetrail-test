@@ -134,12 +134,18 @@ int main(int argc, char* argv[])
 	if (commandLineParser.runWithoutGUI())
 	{
 		// headless Sourcetrail
+		[[maybe_unused]]
 		QtCoreApplication qtApp(argc, argv);
 
 		setupLogging();
 
 		Application::createInstance(version, nullptr, nullptr);
-		ScopedFunctor f([]() { Application::destroyInstance(); });
+		
+		[[maybe_unused]]
+		ScopedFunctor f([]()
+		{
+			Application::destroyInstance();
+		});
 
 		ApplicationSettingsPrefiller::prefillPaths(ApplicationSettings::getInstance().get());
 		addLanguagePackages();
@@ -173,6 +179,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+		[[maybe_unused]]
 		QtApplication qtApp(argc, argv);
 
 		setupLogging();
@@ -181,7 +188,12 @@ int main(int argc, char* argv[])
 		QtNetworkFactory networkFactory;
 
 		Application::createInstance(version, &viewFactory, &networkFactory);
-		ScopedFunctor f([]() { Application::destroyInstance(); });
+		
+		[[maybe_unused]]
+		ScopedFunctor f([]()
+		{
+			Application::destroyInstance();
+		});
 
 		auto applicationSettings = ApplicationSettings::getInstance();
 		ApplicationSettingsPrefiller::prefillPaths(applicationSettings.get());

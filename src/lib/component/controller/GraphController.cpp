@@ -1436,7 +1436,6 @@ void GraphController::bundleNodesByType()
 	TRACE();
 
 	std::list<std::shared_ptr<DummyNode>> nodes(m_dummyNodes.begin(), m_dummyNodes.end());
-	std::vector<std::shared_ptr<DummyNode>> oldNodes = std::move(m_dummyNodes);
 	m_dummyNodes.clear();
 
 	bool hasNonFileBundle = false;
@@ -1775,8 +1774,6 @@ void GraphController::groupTrailNodes(GroupType groupType)
 
 		std::shared_ptr<DummyEdge> originEdge = std::make_shared<DummyEdge>();
 		originEdge->targetId = groupNode->tokenId;
-
-		std::vector<Id> hiddenEdgeIds;
 
 		for (TrailNode& node: group)
 		{
