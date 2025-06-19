@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 2025.6.19
+* GUI: Allow removing projects from the `Recent Projects` list
+* GUI: Fix highlighting of `Text` and `On-Screen` search results for UTF-16/UTF-32 text
+* GUI: Show configured text encoding in the status bar
+* Internal: Switch to ['UTF-8 Everywhere'](https://utf8everywhere.org/)
+* Internal: Switch to Qt resource system for most GUI resources
+
 #### 2025.5.1
 * GUI: Fix handling of Esc/Return keys for dialogs (Indexing, Bookmark, etc.) (Fixes [issue 27](https://github.com/petermost/Sourcetrail/issues/27))
 * GUI: Activate bookmark with double click and close bookmark manager
@@ -47,7 +54,7 @@
 #### 2024.6.0
 * C/C++: Add indexing of the deduced type of auto variables
 
-#### 2024.05.9
+#### 2024.5.9
 * C/C++: Add indexing of user defined conversion operators
 * C/C++: Update support for C++ standards C++20, C++23
 * C/C++: Update detection of 'Global Include Paths' for Visual Studio 2017, 2019, 2022
