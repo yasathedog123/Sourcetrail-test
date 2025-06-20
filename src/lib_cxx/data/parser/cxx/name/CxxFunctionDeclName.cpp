@@ -7,12 +7,12 @@ CxxFunctionDeclName::CxxFunctionDeclName(
 	std::vector<std::string> templateParameterNames,
 	std::unique_ptr<CxxTypeName> returnTypeName,
 	std::vector<std::unique_ptr<CxxTypeName>> parameterTypeNames,
-	const bool isConst,
+	CxxQualifierFlags qualifierFlags,
 	const bool isStatic)
 	: CxxDeclName(std::move(name), std::move(templateParameterNames))
 	, m_returnTypeName(std::move(returnTypeName))
 	, m_parameterTypeNames(std::move(parameterTypeNames))
-	, m_isConst(isConst)
+	, m_qualifierFlags(qualifierFlags)
 	, m_isStatic(isStatic)
 {
 }
@@ -37,9 +37,9 @@ NameHierarchy CxxFunctionDeclName::toNameHierarchy() const
 		postfix << m_parameterTypeNames[i]->toString();
 	}
 	postfix << ')';
-	if (m_isConst)
+	if (!m_qualifierFlags.empty())
 	{
-		postfix << " const";
+		postfix << " " << m_qualifierFlags.toString();
 	}
 
 	NameHierarchy ret = CxxDeclName::toNameHierarchy();

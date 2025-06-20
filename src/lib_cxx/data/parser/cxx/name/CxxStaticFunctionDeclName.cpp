@@ -11,7 +11,7 @@ CxxStaticFunctionDeclName::CxxStaticFunctionDeclName(
 		  std::move(templateParameterNames),
 		  std::move(returnTypeName),
 		  std::move(parameterTypeNames),
-		  false,
+		  CxxQualifierFlags::QualifierType::NONE,
 		  true)
 	, m_translationUnitFileName(std::move(translationUnitFileName))
 {

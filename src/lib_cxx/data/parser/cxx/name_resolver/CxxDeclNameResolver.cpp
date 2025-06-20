@@ -238,19 +238,18 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 			}
 
 			bool isStatic = false;
-			bool isConst = false;
+			CxxQualifierFlags constQualifier;
 
-			if (clang::isa<clang::CXXMethodDecl>(declaration))
+			if (const clang::CXXMethodDecl* methodDecl = clang::dyn_cast<const clang::CXXMethodDecl>(declaration))
 			{
-				const clang::CXXMethodDecl* methodDecl = clang::dyn_cast<const clang::CXXMethodDecl>(
-					declaration);
 				isStatic = methodDecl->isStatic();
-				isConst = methodDecl->isConst();
+				if (methodDecl->isConstexpr())
+					constQualifier.addQualifier(CxxQualifierFlags::QualifierType::CONSTEXPR);
+				else if (methodDecl->isConst())
+					constQualifier.addQualifier(CxxQualifierFlags::QualifierType::CONST);
 			}
 			else
-			{
 				isStatic = functionDecl->getStorageClass() == clang::SC_Static;
-			}
 
 			CxxTypeNameResolver typenNameResolver(this);
 			typenNameResolver.ignoreContextDecl(functionDecl);
@@ -293,28 +292,21 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 				std::move(templateArguments),
 				std::move(returnTypeName),
 				std::move(parameterTypeNames),
-				isConst,
+				constQualifier,
 				isStatic);
 		}
-		else if (clang::isa<clang::FunctionTemplateDecl>(declaration))
+		else if (const clang::FunctionTemplateDecl *functionTemplateDecl = clang::dyn_cast<clang::FunctionTemplateDecl>(declaration))
 		{
-			const clang::FunctionTemplateDecl* functionTemplateDecl =
-				clang::dyn_cast<clang::FunctionTemplateDecl>(declaration);
 			return getDeclName(functionTemplateDecl->getTemplatedDecl());
 		}
-		else if (clang::isa<clang::FieldDecl>(declaration))
+		else if (const clang::FieldDecl *fieldDecl = clang::dyn_cast<clang::FieldDecl>(declaration))
 		{
-			const clang::FieldDecl* fieldDecl = clang::dyn_cast<clang::FieldDecl>(declaration);
 			CxxTypeNameResolver typenNameResolver(this);
 			typenNameResolver.ignoreContextDecl(fieldDecl);
-			std::unique_ptr<CxxTypeName> typeName = CxxTypeName::makeUnsolvedIfNull(
-				typenNameResolver.getName(fieldDecl->getType()));
-			return std::make_unique<CxxVariableDeclName>(
-				std::move(declNameString), std::vector<std::string>(), std::move(typeName), false);
+			std::unique_ptr<CxxTypeName> typeName = CxxTypeName::makeUnsolvedIfNull(typenNameResolver.getName(fieldDecl->getType()));
+			return std::make_unique<CxxVariableDeclName>(std::move(declNameString), std::vector<std::string>(), std::move(typeName), false);
 		}
-		else if (
-			clang::isa<clang::NamespaceDecl>(declaration) &&
-			clang::dyn_cast<clang::NamespaceDecl>(declaration)->isAnonymousNamespace())
+		else if (clang::isa<clang::NamespaceDecl>(declaration) && clang::dyn_cast<clang::NamespaceDecl>(declaration)->isAnonymousNamespace())
 		{
 #if LLVM_VERSION_MAJOR >= 19
 			declaration = clang::dyn_cast<clang::NamespaceDecl>(declaration)->getFirstDecl();
@@ -340,9 +332,8 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 		{
 			return std::make_unique<CxxDeclName>(getNameForAnonymousSymbol("parameter", declaration));
 		}
-		else if (clang::isa<clang::VarDecl>(declaration))
+		else if (const clang::VarDecl *varDecl = clang::dyn_cast<clang::VarDecl>(declaration))
 		{
-			const clang::VarDecl* varDecl = clang::dyn_cast<clang::VarDecl>(declaration);
 			if (varDecl->getParentFunctionOrMethod() == nullptr)
 			{
 				bool isStatic = false;
@@ -359,12 +350,10 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 
 				CxxTypeNameResolver typenNameResolver(this);
 				typenNameResolver.ignoreContextDecl(varDecl);
-				std::unique_ptr<CxxTypeName> typeName = CxxTypeName::makeUnsolvedIfNull(
-					typenNameResolver.getName(varDecl->getType()));
+				std::unique_ptr<CxxTypeName> typeName = CxxTypeName::makeUnsolvedIfNull(typenNameResolver.getName(varDecl->getType(), varDecl));
 
 				std::string varName = declNameString;
-				if (utility::getSymbolKind(varDecl) == SymbolKind::GLOBAL_VARIABLE &&
-					varDecl->getStorageClass() == clang::SC_Static)
+				if (utility::getSymbolKind(varDecl) == SymbolKind::GLOBAL_VARIABLE && varDecl->getStorageClass() == clang::SC_Static)
 				{
 					// if a global variable is static it is only visible in the current translation
 					// unit. Therefore if multiple instances of that global variable may be
@@ -374,10 +363,9 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 					// causes different instances of the variable that all MUST contain the same
 					// value to be merged into a single node in Sourcetrail.
 					std::string scopeFileName;
-					if (varDecl->getType().isConstQualified())
+					if (varDecl->isConstexpr() || varDecl->getType().isConstQualified())
 					{
-						scopeFileName = getCanonicalFilePathCache()->getDeclarationFileName(
-							declaration);
+						scopeFileName = getCanonicalFilePathCache()->getDeclarationFileName(declaration);
 					}
 					else
 					{

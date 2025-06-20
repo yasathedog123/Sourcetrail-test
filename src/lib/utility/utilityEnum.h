@@ -25,15 +25,38 @@ E lookupEnum(int i, const E (&enums)[N], E &&defaultValue)
 }
 
 template <EnumType E>
+constexpr std::underlying_type_t<E> underlying_type_cast(E e)
+{
+	return static_cast<std::underlying_type_t<E>>(e);
+}
+
+template <EnumType E>
 std::string to_string(E e)
 {
-	return std::to_string(static_cast<std::underlying_type_t<E>>(e));
+	return std::to_string(underlying_type_cast(e));
 }
 
 template <EnumType E>
 std::ostream &operator << (std::ostream &stream, E e)
 {
-	return stream << static_cast<std::underlying_type_t<E>>(e);
+	return stream << underlying_type_cast(e);
+}
+
+// Support for enum bit operations:
+
+template <typename E>
+concept EnumFlagType = EnumType<E> && std::is_unsigned_v<std::underlying_type_t<E>>;
+
+template <EnumFlagType E>
+constexpr E operator | (E e1, E e2)
+{
+	return static_cast<E>(underlying_type_cast(e1) | underlying_type_cast(e2));
+}
+
+template <EnumFlagType E>
+constexpr E operator & (E e1, E e2)
+{
+	return static_cast<E>(underlying_type_cast(e1) & underlying_type_cast(e2));
 }
 
 #endif

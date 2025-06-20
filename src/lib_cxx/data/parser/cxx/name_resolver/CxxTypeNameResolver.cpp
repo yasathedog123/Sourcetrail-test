@@ -21,12 +21,15 @@ CxxTypeNameResolver::CxxTypeNameResolver(CanonicalFilePathCache* canonicalFilePa
 
 CxxTypeNameResolver::CxxTypeNameResolver(const CxxNameResolver* other): CxxNameResolver(other) {}
 
-std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::QualType& qualType)
+std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::QualType& qualType, const VarDecl *varDecl)
 {
 	std::unique_ptr<CxxTypeName> typeName = getName(qualType.getTypePtr());
-	if (typeName && qualType.isConstQualified())
+	if (typeName)
 	{
-		typeName->addQualifier(CxxQualifierFlags::QUALIFIER_CONST);
+		if (varDecl != nullptr && varDecl->isConstexpr())
+			typeName->addQualifier(CxxQualifierFlags::QualifierType::CONSTEXPR);
+		else if (qualType.isConstQualified())
+			typeName->addQualifier(CxxQualifierFlags::QualifierType::CONST);
 	}
 	return typeName;
 }

@@ -21,7 +21,7 @@ using namespace std;
 using namespace std::string_literals;
 using namespace utility;
 
-// Note that some new test code snippets are written with raw string literals. They are easier to write,
+// Note that some new test code snippets are written with raw string literals (R""). They are easier to write,
 // but have the disadvantage that if the indentation changes the tested source code locations don't
 // match anymore!
 
@@ -1226,9 +1226,8 @@ TEST_CASE("cxx parser finds lambda definition and call in function")
 		"	[](){}();\n"
 		"}\n");
 
-	// Original: REQUIRE(containsElement(client->functions, "void lambdaCaller::lambda at 3:2() const <3:5 <3:2 3:2> 3:7>"s));
 	REQUIRE(containsElement(client->functions, "void lambdaCaller() <1:1 <1:1 <1:6 1:17> 1:19> 4:1>"s));
-	REQUIRE(containsElement(client->calls, "void lambdaCaller() -> void lambdaCaller::lambda at 3:2() const <3:8 3:8>"s));
+	REQUIRE(containsElement(client->calls, "void lambdaCaller() -> void lambdaCaller::lambda at 3:2() constexpr <3:8 3:8>"s));
 }
 
 TEST_CASE("cxx parser finds mutable lambda definition")
@@ -1239,7 +1238,6 @@ TEST_CASE("cxx parser finds mutable lambda definition")
 		"	[](int foo) mutable { return foo; };\n"
 		"}\n");
 
-	// Original: REQUIRE(containsElement(client->functions, "int lambdaWrapper::lambda at 3:2(int) <3:14 <3:2 3:2> 3:36>"s));
 	REQUIRE(containsElement(client->functions, "void lambdaWrapper() <1:1 <1:1 <1:6 1:18> 1:20> 4:1>"s));
 }
 
@@ -1596,13 +1594,9 @@ TEST_CASE("cxx parser finds implicit copy constructor")
 		"	TestClass b(a);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->methods, "public void TestClass::TestClass() <1:7 <1:7 1:15> 1:15>"));
-	REQUIRE(utility::containsElement<std::string>(
-		client->methods,
-		"public void TestClass::TestClass(const TestClass &) <1:7 <1:7 1:15> 1:15>"));
-	REQUIRE(utility::containsElement<std::string>(
-		client->methods, "public void TestClass::TestClass(TestClass &&) <1:7 <1:7 1:15> 1:15>"));
+	REQUIRE(containsElement(client->methods, "public void TestClass::TestClass() constexpr <1:7 <1:7 1:15> 1:15>"s));
+	REQUIRE(containsElement(client->methods, "public void TestClass::TestClass(const TestClass &) constexpr <1:7 <1:7 1:15> 1:15>"s));
+	REQUIRE(containsElement(client->methods, "public void TestClass::TestClass(TestClass &&) constexpr <1:7 <1:7 1:15> 1:15>"s));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2045,8 +2039,7 @@ TEST_CASE("cxx parser finds implicit constructor without definition call")
 		"	App app;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->calls, "int main() -> void App::App() <6:6 6:8>"));
+	REQUIRE(containsElement(client->calls, "int main() -> void App::App() constexpr <6:6 6:8>"s));
 }
 
 TEST_CASE("cxx parser finds explicit constructor call")
@@ -2121,8 +2114,7 @@ TEST_CASE("cxx parser finds call of implicitly defined destructor at delete keyw
 		"	delete f; \n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->calls, "void foo() -> void Foo::~Foo() <8:2 8:7>"));
+	REQUIRE(containsElement(client->calls, "void foo() -> void Foo::~Foo() constexpr <8:2 8:7>"s));
 }
 
 TEST_CASE("cxx parser finds explicit constructor call of field")
@@ -2138,8 +2130,7 @@ TEST_CASE("cxx parser finds explicit constructor call of field")
 		"	Item item;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->calls, "void App::App() -> void Item::Item() <7:10 7:13>"));
+	REQUIRE(containsElement(client->calls, "void App::App() -> void Item::Item() constexpr <7:10 7:13>"s));
 }
 
 TEST_CASE("cxx parser finds function call in member initialization")
@@ -3849,8 +3840,7 @@ TEST_CASE("cxx parser finds lambda calling a function")
 		"	}();\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->calls, "void lambdaCaller::lambda at 4:2() const -> void func() <6:3 6:6>"));
+	REQUIRE(containsElement(client->calls, "void lambdaCaller::lambda at 4:2() constexpr -> void func() <6:3 6:6>"s));
 }
 
 TEST_CASE("cxx parser finds local variable in lambda capture")
@@ -4011,8 +4001,7 @@ TEST_CASE("cxx parser finds implicit constructor call in initialization")
 		"	A m_a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->calls, "void B::B() -> void A::A() <6:2 6:2>"));
+	REQUIRE(containsElement(client->calls, "void B::B() -> void A::A() constexpr <6:2 6:2>"s));
 }
 
 TEST_CASE("cxx parser parses multiple files")
@@ -4030,7 +4019,11 @@ TEST_CASE("cxx parser parses multiple files")
 		includeFilters,
 		workingDirectory,
 		std::vector<std::string> {
-			"--target=x86_64-pc-windows-msvc", "-std=c++1z", sourceFilePath.str()});
+			"--target=x86_64-pc-windows-msvc", 
+			"-std=" + ClangVersionSupport::getLatestCppStandard(), 
+			sourceFilePath.str()
+		}
+	);
 
 	std::shared_ptr<IntermediateStorage> storage = std::make_shared<IntermediateStorage>();
 	CxxParser parser(

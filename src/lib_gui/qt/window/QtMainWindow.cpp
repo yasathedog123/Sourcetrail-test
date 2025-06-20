@@ -1024,10 +1024,10 @@ void QtMainWindow::setupHelpMenu()
 	menu->addAction(tr("Bug Tracker..."), this, &QtMainWindow::showBugtracker);
 
 	menu->addSeparator();
-
-	menu->addAction(tr("License..."), this, &QtMainWindow::showLicenses);
+	
 	menu->addAction(tr("About Sourcetrail..."), this, &QtMainWindow::about);
 	menu->addAction(tr("About Qt..."), this, QApplication::aboutQt);
+	menu->addAction(tr("License..."), this, &QtMainWindow::showLicenses);
 
 	menu->addSeparator();
 

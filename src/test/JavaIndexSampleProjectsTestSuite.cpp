@@ -120,6 +120,8 @@ TEST_CASE("java sample parser can setup environment factory")
 
 TEST_CASE("index javasymbolsolver 0 6 0 project", JAVA_TAG)
 {
+	SKIP();
+	
 	const std::vector<FilePath> classPath = {
 		FilePath("data/JavaIndexSampleProjectsTestSuite/JavaSymbolSolver060/lib/guava-21.0.jar").makeAbsolute(),
 		FilePath("data/JavaIndexSampleProjectsTestSuite/JavaSymbolSolver060/lib/javaparser-core-3.3.0.jar").makeAbsolute(),

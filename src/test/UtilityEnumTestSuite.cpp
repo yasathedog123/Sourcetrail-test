@@ -7,7 +7,7 @@
 using namespace std;
 using namespace string_literals;
 
-enum class Color : int{
+enum class Color : unsigned {
 	NONE = 0,
 	
 	RED = 1,
@@ -60,5 +60,12 @@ TEST_CASE("enum stream operator")
 	REQUIRE(wstream.str() == "1"s);
 }
 
-	
-	
+TEST_CASE("enum bit or operator")
+{
+	REQUIRE((Color::RED | Color::GREEN) == Color::BLUE);
+}
+
+TEST_CASE("enum bit and operator")
+{
+	REQUIRE((Color::BLUE & Color::RED) == Color::RED);
+}
