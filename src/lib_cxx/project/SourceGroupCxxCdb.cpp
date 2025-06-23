@@ -114,8 +114,7 @@ std::shared_ptr<IndexerCommandProvider> SourceGroupCxxCdb::getIndexerCommandProv
 		if (info.filesToIndex.find(sourcePath) != info.filesToIndex.end() &&
 			sourceFilePaths.find(sourcePath) != sourceFilePaths.end())
 		{
-			std::vector<std::string> cdbFlags = utility::convert<std::string, std::string>(
-				command.CommandLine, [](const std::string& s) { return s; });
+			std::vector<std::string> cdbFlags = command.CommandLine;
 
 			utility::removeIncludePchFlag(cdbFlags);
 

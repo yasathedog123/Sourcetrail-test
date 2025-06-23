@@ -248,13 +248,12 @@ std::vector<T> utility::createVectorFromElements(const Args&... args)
 }
 
 template <typename SourceType, typename TargetType>
-std::vector<TargetType> utility::convert(
-	const std::vector<SourceType>& sourceContainer,
-	std::function<TargetType(const SourceType&)> conversion)
+std::vector<TargetType> utility::convert(const std::vector<SourceType> &sourceContainer, std::function<TargetType(const SourceType &)> conversion)
 {
 	std::vector<TargetType> targetContainer;
 	targetContainer.reserve(sourceContainer.size());
-	for (const SourceType& sourceElement: sourceContainer)
+	
+	for (const SourceType &sourceElement : sourceContainer)
 	{
 		targetContainer.emplace_back(conversion(sourceElement));
 	}
@@ -262,37 +261,14 @@ std::vector<TargetType> utility::convert(
 }
 
 template <typename SourceType, typename TargetType>
-std::vector<TargetType> utility::convert(const std::vector<SourceType>& sourceContainer)
+std::vector<TargetType> utility::convert(const std::vector<SourceType> &sourceContainer)
 {
 	std::vector<TargetType> targetContainer;
 	targetContainer.reserve(sourceContainer.size());
-	for (const SourceType& sourceElement: sourceContainer)
+	
+	for (const SourceType &sourceElement : sourceContainer)
 	{
 		targetContainer.emplace_back(TargetType(sourceElement));
-	}
-	return targetContainer;
-}
-
-template <typename SourceType, typename TargetType>
-std::set<TargetType> utility::convert(
-	const std::set<SourceType>& sourceContainer,
-	std::function<TargetType(const SourceType&)> conversion)
-{
-	std::set<TargetType> targetContainer;
-	for (const SourceType& sourceElement: sourceContainer)
-	{
-		targetContainer.insert(conversion(sourceElement));
-	}
-	return targetContainer;
-}
-
-template <typename SourceType, typename TargetType>
-std::set<TargetType> utility::convert(const std::set<SourceType>& sourceContainer)
-{
-	std::set<TargetType> targetContainer;
-	for (const SourceType& sourceElement: sourceContainer)
-	{
-		targetContainer.insert(TargetType(sourceElement));
 	}
 	return targetContainer;
 }
