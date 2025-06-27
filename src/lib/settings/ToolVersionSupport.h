@@ -13,7 +13,7 @@ class ClangVersionSupport final : public ToolVersionSupport {
 	public:
 		static std::string getLatestCppStandard();
 		static std::vector<std::string> getAvailableCppStandards();
-
+		
 		static std::string getLatestCStandard();
 		static std::vector<std::string> getAvailableCStandards();
 		
