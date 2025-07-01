@@ -109,18 +109,18 @@ std::shared_ptr<IndexerCommandProvider> SourceGroupCxxCdb::getIndexerCommandProv
 
 		if (info.filesToIndex.find(sourcePath) != info.filesToIndex.end() && sourceFilePaths.find(sourcePath) != sourceFilePaths.end())
 		{
-			std::vector<std::string> cdbFlags = command.CommandLine;
+			std::vector<std::string> commandLine = command.CommandLine;
 			
-			utility::removeIncludePchFlag(cdbFlags);
-			utility::replaceMsvcArguments(&cdbFlags);
+			utility::removeIncludePchFlag(commandLine);
+			utility::replaceMsvcArguments(&commandLine);
 
-			if (command.CommandLine.size() != cdbFlags.size())
+			if (command.CommandLine.size() != commandLine.size())
 			{
-				utility::append(cdbFlags, includePchFlags);
+				utility::append(commandLine, includePchFlags);
 			}
 
 			provider->addCommand(std::make_shared<IndexerCommandCxx>(sourcePath, utility::concat(indexedHeaderPaths, {sourcePath}), excludeFilters,
-				std::set<FilePathFilter>(), FilePath(command.Directory), utility::concat(cdbFlags, compilerFlags)));
+				std::set<FilePathFilter>(), FilePath(command.Directory), utility::concat(commandLine, compilerFlags)));
 		}
 	}
 

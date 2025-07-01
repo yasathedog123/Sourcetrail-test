@@ -196,71 +196,63 @@ std::vector<std::string> getIncludePchFlags(const SourceGroupSettingsWithCxxPchO
 	return {};
 }
 
-static bool getArgumentValue(const string &argument, string_view argumentKey, string *argumentValue)
+static optional<string> getArgumentValue(const string &argument, string_view argumentKey)
 {
-	if (argument.starts_with(argumentKey))
-	{
-		*argumentValue = argument.substr(argumentKey.length());
-		return true;
-	}
-	else
-		return false;
+	return argument.starts_with(argumentKey) ? make_optional(argument.substr(argumentKey.length())) : nullopt;
 }
 
-void replaceMsvcArguments(vector<string> *arguments)
+void replaceMsvcArguments(vector<string> *commandLineArguments)
 {
 	// Replace/Remove arguments only if these are for the Microsoft compiler, otherwise the check for '/' will remove Linux paths:
 
-	if (arguments->size() >= 1 && !(*arguments)[0].ends_with("cl.exe"s))
+	if (commandLineArguments->size() >= 1 && !(*commandLineArguments)[0].ends_with("cl.exe"s))
 		return;
 
-	string clangArgument;
-	string argumentValue;
-	vector<string> clangArguments;
+	optional<string> argumentValue;
 
-	// Keep/Replace only those options which are necessary to parse the code correctly:
+	// - Keep/Replace only those options which are necessary to parse the code correctly
+	//
+	// From https://learn.microsoft.com/en-us/cpp/build/reference/compiler-options:
+	// - All compiler options are case-sensitive.
+	// - You may use either a forward slash (/) or a dash (-) to specify a compiler option.
 
-	for (const string &argument : *arguments)
+	auto argument = commandLineArguments->begin();
+	while(argument != commandLineArguments->end())
 	{
-		// Documentation excerpt (https://learn.microsoft.com/en-us/cpp/build/reference/compiler-options):
-		// - All compiler options are case-sensitive.
-		// - You may use either a forward slash (/) or a dash (-) to specify a compiler option.
-
-		clangArgument.clear();
+		if (argument == commandLineArguments->begin())
+			++argument; // skip command
 
 		// Preprocessor symbols:
 
-		if (getArgumentValue(argument, "/D"sv, &argumentValue))
-			clangArgument = "-D"s + argumentValue;
-		else if (getArgumentValue(argument, "/U"sv, &argumentValue))
-			clangArgument = "-U"s + argumentValue;
-		else if (getArgumentValue(argument, "/FI"sv, &argumentValue) || getArgumentValue(argument, "-FI"sv, &argumentValue))
-			clangArgument = "-include "s + argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/D"sv)))
+			*argument++ = "-D"s + *argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/U"sv)))
+			*argument++ = "-U"s + *argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/FI"sv)) || (argumentValue = getArgumentValue(*argument, "-FI"sv)))
+			*argument++ = "-include "s + *argumentValue;
 
 		// Preprocessor include directories:
 
-		else if (getArgumentValue(argument, "/I"sv, &argumentValue))
-			clangArgument = "-I"s + argumentValue;
-		else if (getArgumentValue(argument, "/external:I"sv, &argumentValue) || getArgumentValue(argument, "-external:I"sv, &argumentValue))
-			clangArgument = "-isystem "s + argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/I"sv)))
+			*argument++ = "-I"s + *argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/external:I"sv)) || (argumentValue = getArgumentValue(*argument, "-external:I"sv)))
+			*argument++ = "-isystem "s + *argumentValue;
 
 		// C/C++ language version selection (no support for previews):
 
-		else if (argument.starts_with("/std:c++latest"sv) || argument.starts_with("-std:c++latest"sv))
-			clangArgument = "-std="s + ClangVersionSupport::getLatestCppStandard();
-		else if (argument.starts_with("/std:clatest"sv) || argument.starts_with("-std:clatest"sv))
-			clangArgument = "-std="s + ClangVersionSupport::getLatestCStandard();
-		else if (getArgumentValue(argument, "/std:c++"sv, &argumentValue) || getArgumentValue(argument, "-std:c++"sv, &argumentValue))
-			clangArgument = "-std=c++"s + argumentValue;
-		else if (getArgumentValue(argument, "/std:c"sv, &argumentValue) || getArgumentValue(argument, "-std:c"sv, &argumentValue))
-			clangArgument = "-std=c"s + argumentValue;
-
-		if (!clangArgument.empty())
-			clangArguments.push_back(clangArgument);
-		else if (!argument.starts_with('/'))
-			clangArguments.push_back(argument);
+		else if (argument->starts_with("/std:c++latest"sv) || argument->starts_with("-std:c++latest"sv))
+			*argument++ = "-std="s + ClangVersionSupport::getLatestCppStandard();
+		else if (argument->starts_with("/std:clatest"sv) || argument->starts_with("-std:clatest"sv))
+			*argument++ = "-std="s + ClangVersionSupport::getLatestCStandard();
+		else if ((argumentValue = getArgumentValue(*argument, "/std:c++"sv)) || (argumentValue = getArgumentValue(*argument, "-std:c++"sv)))
+			*argument++ = "-std=c++"s + *argumentValue;
+		else if ((argumentValue = getArgumentValue(*argument, "/std:c"sv)) || (argumentValue = getArgumentValue(*argument, "-std:c"sv)))
+			*argument++ = "-std=c"s + *argumentValue;
+		else if (argument->starts_with('/'))
+			argument = commandLineArguments->erase(argument);
+		else
+			++argument;
 	}
-	*arguments = std::move(clangArguments);
 }
 
 }	 // namespace utility

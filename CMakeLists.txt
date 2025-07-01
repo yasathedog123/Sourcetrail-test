@@ -42,7 +42,7 @@ configure_file(cmake/language_packages.h.in src/lib/language_packages.h)
 
 # prohibit in-source-builds
 if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
-	message(FATAL_ERROR "In-source-builds are strongly discouraged and not supported!")
+	message(FATAL_ERROR "In-source-builds are not supported!")
 endif()
 
 # Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
@@ -55,13 +55,14 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.6.26)
-configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
-
-include(cmake/Sourcetrail.cmake)
-
+project(Sourcetrail VERSION 2025.6.30)
 cmake_print_variables(CMAKE_C_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER)
+
+include(cmake/Sourcetrail.cmake)
+configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
+
+configure_file(script/generate_coverage_report.sh generate_coverage_report.sh COPYONLY)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
