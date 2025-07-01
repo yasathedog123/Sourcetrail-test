@@ -56,10 +56,10 @@ bool SourceGroupSettingsWithJavaMaven::equals(const SourceGroupSettingsBase* oth
 	const SourceGroupSettingsWithJavaMaven* otherPtr =
 		dynamic_cast<const SourceGroupSettingsWithJavaMaven*>(other);
 
-	return (
-		otherPtr && m_mavenProjectFilePath == otherPtr->m_mavenProjectFilePath && otherPtr &&
-		m_mavenSettingsFilePath == otherPtr->m_mavenSettingsFilePath &&
-		m_shouldIndexMavenTests == otherPtr->m_shouldIndexMavenTests);
+	return (otherPtr != nullptr
+		&& m_mavenProjectFilePath == otherPtr->m_mavenProjectFilePath
+		&& m_mavenSettingsFilePath == otherPtr->m_mavenSettingsFilePath
+		&& m_shouldIndexMavenTests == otherPtr->m_shouldIndexMavenTests);
 }
 
 void SourceGroupSettingsWithJavaMaven::load(const ConfigManager* config, const std::string& key)
