@@ -75,6 +75,17 @@ function(setGccTargetOptions targetName)
 			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
 			# $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_BACKTRACE>
 	)
+	
+	# Add code coverage options:
+	
+	target_compile_options(${targetName}
+		PRIVATE
+			$<$<CONFIG:Debug>:--coverage -fprofile-abs-path>
+	)
+	target_link_options(${targetName}
+		PRIVATE
+			$<$<CONFIG:Debug>:--coverage>
+	)			
 endfunction()
 
 function(setClangTargetOptions targetName)
