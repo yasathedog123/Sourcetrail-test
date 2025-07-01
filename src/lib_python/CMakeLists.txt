@@ -21,6 +21,6 @@ add_custom_command(
 	
 	TARGET Sourcetrail_lib_python
 	PRE_BUILD
-	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/script/"
+	WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/scripts/"
 	COMMAND ${BASH_COMMAND} download_python_indexer.sh ${CMAKE_BINARY_DIR}
 )

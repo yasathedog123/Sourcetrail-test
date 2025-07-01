@@ -55,14 +55,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.6.30)
+project(Sourcetrail VERSION 2025.7.1)
 cmake_print_variables(CMAKE_C_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER)
 
 include(cmake/Sourcetrail.cmake)
-configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
-
-configure_file(script/generate_coverage_report.sh generate_coverage_report.sh COPYONLY)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
@@ -91,6 +88,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 
 # Prepare Data ----------------------------------------------------------------
+
+configure_file(scripts/generate_coverage_report.sh generate_coverage_report.sh COPYONLY)
 
 get_property(isMultiConfigGenerator GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if (isMultiConfigGenerator)
@@ -304,6 +303,8 @@ add_subdirectory(src/external)
 
 # Lib Gui ----------------------------------------------------------------------
 
+configure_file(cmake/productVersion.h.in src/lib_gui/productVersion.h)
+
 add_subdirectory(src/resources)
 add_subdirectory(src/lib_gui)
 
@@ -449,6 +450,9 @@ endif()
 add_subdirectory(src/indexer)
 
 # App --------------------------------------------------------------------------
+
+configure_file(scripts/Sourcetrail.sh app/Sourcetrail.sh COPYONLY)
+configure_file(scripts/_gdbinit app/.gdbinit COPYONLY)
 
 add_subdirectory(src/app)
 

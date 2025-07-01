@@ -122,7 +122,7 @@ Depending on the platform and the selected indexer, additional software/packages
     * [OpenJDK](https://jdk.java.net/)
     * [Maven](https://maven.apache.org/)
 * **Linux:** 
-    * **Qt6:** Install additional packages with `script/install-qt6-dependencies.sh`.
+    * **Qt6:** Install additional packages with `scripts/install-qt6-dependencies.sh`.
 * **Windows:**
     * [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/) 
 * **macOS:**
