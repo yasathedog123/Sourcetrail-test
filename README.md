@@ -190,9 +190,9 @@ System build is not tested and therefore not supported.
 
 |Name|System/Vcpkg|Notes|
 |----|------------|-----|
-|Eclipse JDT|3.40|Java 23 Support|
+|Eclipse JDT|3.42|Java 24 Support|
 |Maven|Locally installed version|
-|Gradle|8.12|
+|Gradle|8.14.2|
 
 **Miscellaneous**
 

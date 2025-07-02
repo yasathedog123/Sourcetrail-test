@@ -169,6 +169,7 @@ vector<string> EclipseVersionSupport::getAvailableJavaStandards()
 	// See org.eclipse.jdt.core.JavaCore for the VERSION_?? values
 	// https://github.com/eclipse-jdt/eclipse.jdt.core/blob/master/org.eclipse.jdt.core/model/org/eclipse/jdt/core/JavaCore.java
 	const vector<string> availableStandards = {
+		"24",  // VERSION_24 = "24"
 		"23",  // VERSION_23 = "23"
 		"22",  // VERSION_22 = "22"
 		"21",  // VERSION_21 = "21"

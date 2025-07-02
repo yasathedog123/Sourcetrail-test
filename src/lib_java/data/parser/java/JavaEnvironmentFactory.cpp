@@ -80,6 +80,14 @@ void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::s
 	options.push_back({ .optionString = const_cast<char*>(classPathOption.c_str()) });
 	options.push_back({ .optionString = const_cast<char*>("-Xms64m") });
 
+	// Prevent JVM warning:
+	// WARNING: A restricted method in java.lang.System has been called
+	// WARNING: java.lang.System::load has been called by ... in an unnamed module ...
+	// WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+	// WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+	// See https://docs.oracle.com/en/java/javase/24/core/restricted-methods.html for further details.
+	options.push_back({ .optionString = const_cast<char*>("--enable-native-access=ALL-UNNAMED") });
+
 	// options.push_back({ const_cast<char*>("-verbose:jni") });
 
 	// Allow attaching a debugger (default Eclipse port):
@@ -95,7 +103,7 @@ void JavaEnvironmentFactory::createInstance(const std::string &classPath, std::s
 	vm_args.version = JNI_VERSION_1_8;
 	vm_args.nOptions = static_cast<jint>(options.size());
 	vm_args.options = options.data();
-	vm_args.ignoreUnrecognized = false;	   // invalid options make the JVM init fail
+	vm_args.ignoreUnrecognized = JNI_FALSE; // invalid options make the JVM init fail
 
 	jint rc = createInstanceFunction(&jvm, (void**)&env, &vm_args);
 
