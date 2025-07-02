@@ -92,7 +92,6 @@ const char *resourceNames[] = {
 	QtResources::ICON_PROJECT_256_256,
 	QtResources::ICON_PROJECT,
 	QtResources::ICON_PYTHON_ICON,
-	QtResources::ICON_SOURCETRAIL,
 	QtResources::ICON_VS_ICON,
 
 	QtResources::INDEXING_DIALOG_CSS,

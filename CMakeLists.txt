@@ -412,6 +412,10 @@ endif()
 
 # Lib Java ---------------------------------------------------------------------
 
+# To set the `JAVA_HOME` environment variable automatically on Linux, you can use this line:
+# export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+# See https://www.xmodulo.com/set-java_home-environment-variable-linux.html for further details
+
 if (BUILD_JAVA_LANGUAGE_PACKAGE)
 	# Java (Latest LTS version):
 	find_package(Java 21 REQUIRED)
@@ -451,8 +455,9 @@ add_subdirectory(src/indexer)
 
 # App --------------------------------------------------------------------------
 
-configure_file(scripts/Sourcetrail.sh app/Sourcetrail.sh COPYONLY)
-configure_file(scripts/_gdbinit app/.gdbinit COPYONLY)
+configure_file(src/app/Sourcetrail.ico app/Sourcetrail.ico COPYONLY)
+configure_file(scripts/Sourcetrail.sh  app/Sourcetrail.sh COPYONLY)
+configure_file(scripts/_gdbinit        app/.gdbinit COPYONLY)
 
 add_subdirectory(src/app)
 

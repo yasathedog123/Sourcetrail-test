@@ -92,7 +92,6 @@ const char QtResources::ICON_MVN_ICON[]        = ":/icon/mvn_icon.png";
 const char QtResources::ICON_PROJECT_256_256[] = ":/icon/project_256_256.png";
 const char QtResources::ICON_PROJECT[]         = ":/icon/project.ico";
 const char QtResources::ICON_PYTHON_ICON[]     = ":/icon/python_icon.png";
-const char QtResources::ICON_SOURCETRAIL[]     = ":/icon/sourcetrail.ico";
 const char QtResources::ICON_VS_ICON[]         = ":/icon/vs_icon.png";
 
 const char QtResources::INDEXING_DIALOG_CSS[]                  = ":/indexing_dialog/indexing_dialog.css";

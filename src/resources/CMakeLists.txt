@@ -86,7 +86,6 @@ qt_add_resources(Sourcetrail_res_gui Sourcetrail_resources
 		icon/project_256_256.png
 		icon/project.ico
 		icon/python_icon.png
-		icon/sourcetrail.ico
 		icon/vs_icon.png
 		
 		indexing_dialog/indexing_dialog.css

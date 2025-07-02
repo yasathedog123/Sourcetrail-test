@@ -85,7 +85,6 @@ public:
 	static const char ICON_PROJECT_256_256[];
 	static const char ICON_PROJECT[];
 	static const char ICON_PYTHON_ICON[];
-	static const char ICON_SOURCETRAIL[];
 	static const char ICON_VS_ICON[];
 
 	static const char INDEXING_DIALOG_CSS[];
