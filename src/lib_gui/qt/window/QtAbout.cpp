@@ -64,15 +64,17 @@ void QtAbout::setupAbout()
 
 		QLabel* developerLabel = new QLabel(
 			"<b>Authors:</b><br />"
-			"<a href=\"https://github.com/petermost/Sourcetrail/blob/master/docs/COATI_AUTHORS.txt\" "
+			"<a href=\"https://github.com/petermost/Sourcetrail/blob/master/docs/COATI_AUTHORS.txt\""
 			"style=\"color: white;\">The Coati Software Developer</a><br />"
 			"<br />"
 			"<b>Maintainer:</b><br />"
 			"Peter Most<br />"
+			"<a href=\"https://www.pera-software.com\""
+			"style=\"color: white;\">PERA Software Solutions GmbH</a><br />"
 			"<br />"
 			"<b>Repository:</b><br />"
-			"<a href=\"https://github.com/petermost/Sourcetrail\" "
-			"style=\"color: white;\">github.com/petermost/Sourcetrail</a><br />");
+			"<a href=\"http://sourcetrail.de\""
+			"style=\"color: white;\">sourcetrail.de</a><br />");
 
 		developerLabel->setObjectName(QStringLiteral("small"));
 		developerLabel->setOpenExternalLinks(true);

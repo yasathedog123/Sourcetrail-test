@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 
+include(CMakePrintHelpers)
+include(cmake/Sourcetrail.cmake)
+
 # Detect vcpkg build scenario here, so we don't depend on CMakePresets settings:
 if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
 	message(STATUS "Vcpkg Build")
@@ -30,7 +33,12 @@ else()
 	add_compile_definitions(IS_VCPKG_BUILD=0)
 endif()
 
-include(CMakePrintHelpers)
+# Project ----------------------------------------------------------------------
+
+project(Sourcetrail VERSION 2025.7.9)
+cmake_print_variables(CMAKE_C_COMPILER)
+cmake_print_variables(CMAKE_CXX_COMPILER)
+
 
 # Configure which language(s)/package(s) should be supported:
 option(BUILD_CXX_LANGUAGE_PACKAGE    "Add C/C++ support to the Sourcetrail indexer." OFF)
@@ -52,14 +60,6 @@ endif()
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# Project ----------------------------------------------------------------------
-
-project(Sourcetrail VERSION 2025.7.2)
-cmake_print_variables(CMAKE_C_COMPILER)
-cmake_print_variables(CMAKE_CXX_COMPILER)
-
-include(cmake/Sourcetrail.cmake)
 
 # set Standard build type to Release
 set(CMAKE_BUILD_TYPE_INIT "Release")
@@ -498,7 +498,7 @@ set(CPACK_PACKAGE_DESCRIPTION "Free and open-source cross-platform source explor
 
 set(CPACK_PACKAGE_CONTACT "P. Most <pmost@pera-software.com>")
 set(CPACK_PACKAGE_VENDOR "PERA Software Solutions GmbH")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/petermost/Sourcetrail")
+set(CPACK_PACKAGE_HOMEPAGE_URL "http://sourcetrail.de")
 set(CPACK_PACKAGE_ICON "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico")
 
 if (isVcpkgBuild)
