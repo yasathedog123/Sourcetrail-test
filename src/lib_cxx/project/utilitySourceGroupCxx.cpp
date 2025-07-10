@@ -217,7 +217,7 @@ void replaceMsvcArguments(vector<string> *commandLineArguments)
 	// - You may use either a forward slash (/) or a dash (-) to specify a compiler option.
 
 	auto argument = commandLineArguments->begin();
-	while(argument != commandLineArguments->end())
+	while (argument != commandLineArguments->end())
 	{
 		if (argument == commandLineArguments->begin())
 			++argument; // skip command
