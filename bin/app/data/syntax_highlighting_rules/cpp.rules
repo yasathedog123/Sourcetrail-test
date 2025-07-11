@@ -110,6 +110,7 @@
 			"\\b_Bool\\b",
 			"\\b_Complex\\b",
 			"\\b_Imaginary\\b",
+			"\\bauto\\b",
 			"\\bbool\\b",
 			"\\bchar\\b",
 			"\\bchar16_t\\b",
