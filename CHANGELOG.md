@@ -1,4 +1,9 @@
 ### Changelog
+#### 2025.7.11
+- C/C++: Add indexing of `constexpr`
+- C/C++: Replace most `msvc` compiler switches with the correct `clang` switches (Fixes a long standing issue ["no such file or directory (sourcetrail is treating MSVC options as file/dir)"](https://github.com/CoatiSoftware/Sourcetrail/issues/744)
+- Java: Add support for Java 24
+- C/C++/Java: Revised the list of keywords for syntax highlighting
 
 #### 2025.6.19
 * GUI: Allow removing projects from the `Recent Projects` list

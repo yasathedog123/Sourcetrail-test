@@ -27,7 +27,9 @@ static constexpr char multiLineRawString[] = R"(
 	}
 )";
 
-void callFunction(const std::string &);
+void callFunction(const std::string &)
+{
+}
 
 void testFunctionForTooltipWithUmlauteInSignature(/* äöüÄÖÜß€😀 */ )
 {
