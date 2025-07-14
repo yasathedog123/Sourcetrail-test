@@ -6,7 +6,6 @@
 #include "FileLogger.h"
 #include "InterprocessIndexer.h"
 #include "MessageIndexingStatus.h"
-#include "MessageStatus.h"
 #include "ParserClientImpl.h"
 #include "StorageProvider.h"
 #include "TimeStamp.h"
@@ -41,7 +40,7 @@ void TaskBuildIndex::doEnter(std::shared_ptr<Blackboard> blackboard)
 
 	std::string logFilePath;
 	Logger* logger = LogManager::getInstance()->getLoggerByType("FileLogger");
-	if (logger)
+	if (logger != nullptr)
 	{
 		logFilePath = dynamic_cast<FileLogger*>(logger)->getLogFilePath().str();
 	}
@@ -49,25 +48,19 @@ void TaskBuildIndex::doEnter(std::shared_ptr<Blackboard> blackboard)
 	// start indexer processes
 	for (size_t i = 0; i < m_processCount; i++)
 	{
-		{
-			std::lock_guard<std::mutex> lock(m_runningThreadCountMutex);
-			m_runningThreadCount++;
-		}
+		m_runningThreadCount++;
 
 		const ProcessId processId = static_cast<ProcessId>(i + 1);	// 0 remains reserved for the main process
 
-		m_interprocessIntermediateStorageManagers.push_back(
-			std::make_shared<InterprocessIntermediateStorageManager>(m_appUUID, processId, true));
+		m_interprocessIntermediateStorageManagers.push_back(std::make_shared<InterprocessIntermediateStorageManager>(m_appUUID, processId, true));
 
 		if (m_multiProcessIndexing)
 		{
-			m_processThreads.push_back(
-				new std::thread(&TaskBuildIndex::runIndexerProcess, this, processId, logFilePath));
+			m_processThreads.push_back(new std::thread(&TaskBuildIndex::runIndexerProcess, this, processId, logFilePath));
 		}
 		else
 		{
-			m_processThreads.push_back(
-				new std::thread(&TaskBuildIndex::runIndexerThread, this, processId));
+			m_processThreads.push_back(new std::thread(&TaskBuildIndex::runIndexerThread, this, processId));
 		}
 	}
 
@@ -76,16 +69,11 @@ void TaskBuildIndex::doEnter(std::shared_ptr<Blackboard> blackboard)
 
 Task::TaskState TaskBuildIndex::doUpdate(std::shared_ptr<Blackboard> blackboard)
 {
-	size_t runningThreadCount = 0;
-	{
-		std::lock_guard<std::mutex> lock(m_runningThreadCountMutex);
-		runningThreadCount = m_runningThreadCount;
-	}
+	size_t runningThreadCount = m_runningThreadCount;
 
 	blackboard->get<bool>("indexer_command_queue_stopped", m_indexerCommandQueueStopped);
 
-	const std::vector<FilePath> indexingFiles =
-		m_interprocessIndexingStatusManager.getCurrentlyIndexedSourceFilePaths();
+	const std::vector<FilePath> indexingFiles = m_interprocessIndexingStatusManager.getCurrentlyIndexedSourceFilePaths();
 	if (!indexingFiles.empty())
 	{
 		updateIndexingDialog(blackboard, indexingFiles);
@@ -208,10 +196,7 @@ void TaskBuildIndex::runIndexerProcess(ProcessId processId, const std::string& l
 		LOG_INFO_STREAM(<< "Indexer process " << processId << " returned with " + std::to_string(result));
 	}
 
-	{
-		std::lock_guard<std::mutex> lock(m_runningThreadCountMutex);
-		m_runningThreadCount--;
-	}
+	m_runningThreadCount--;
 }
 
 void TaskBuildIndex::runIndexerThread(ProcessId processId)
@@ -228,10 +213,7 @@ void TaskBuildIndex::runIndexerThread(ProcessId processId)
 		}
 	} while (!m_indexerCommandQueueStopped && !m_interrupted);
 
-	{
-		std::lock_guard<std::mutex> lock(m_runningThreadCountMutex);
-		m_runningThreadCount--;
-	}
+	m_runningThreadCount--;
 }
 
 bool TaskBuildIndex::fetchIntermediateStorages(std::shared_ptr<Blackboard> blackboard)
@@ -262,7 +244,7 @@ bool TaskBuildIndex::fetchIntermediateStorages(std::shared_ptr<Blackboard> black
 			m_interprocessIntermediateStorageManagers[static_cast<size_t>(finishedProcessId) - 1];
 
 		const size_t storageCount = storageManager->getIntermediateStorageCount();
-		if (!storageCount)
+		if (storageCount == 0)
 		{
 			break;
 		}
@@ -270,21 +252,18 @@ bool TaskBuildIndex::fetchIntermediateStorages(std::shared_ptr<Blackboard> black
 		LOG_INFO_STREAM(<< storageManager->getProcessId() << " - storage count: " << storageCount);
 		m_storageProvider->insert(storageManager->popIntermediateStorage());
 		poppedStorageCount++;
-	} while (TimeStamp::now().deltaMS(t) <
-			 500);	  // don't process all storages at once to allow for status updates in-between
+	} while (TimeStamp::now().deltaMS(t) < 500); // don't process all storages at once to allow for status updates in-between
 
 	if (poppedStorageCount > 0)
 	{
-		blackboard->update<int>(
-			"indexed_source_file_count", [=](int count) { return count + poppedStorageCount; });
+		blackboard->update<int>("indexed_source_file_count", [=](int count) { return count + poppedStorageCount; });
 		return true;
 	}
 
 	return false;
 }
 
-void TaskBuildIndex::updateIndexingDialog(
-	std::shared_ptr<Blackboard> blackboard, const std::vector<FilePath>& sourcePaths)
+void TaskBuildIndex::updateIndexingDialog(std::shared_ptr<Blackboard> blackboard, const std::vector<FilePath>& sourcePaths)
 {
 	// TODO: factor in unindexed files...
 	int sourceFileCount = 0;
@@ -294,11 +273,10 @@ void TaskBuildIndex::updateIndexingDialog(
 
 	m_indexingFileCount += sourcePaths.size();
 
-	m_dialogView->updateIndexingDialog(
-		m_indexingFileCount, indexedSourceFileCount, sourceFileCount, sourcePaths);
+	m_dialogView->updateIndexingDialog(m_indexingFileCount, indexedSourceFileCount, sourceFileCount, sourcePaths);
 
 	int progress = 0;
-	if (sourceFileCount)
+	if (sourceFileCount != 0)
 	{
 		progress = indexedSourceFileCount * 100 / sourceFileCount;
 	}

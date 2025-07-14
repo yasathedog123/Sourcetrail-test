@@ -1,15 +1,15 @@
 #ifndef TASK_BUILD_INDEX_H
 #define TASK_BUILD_INDEX_H
 
-#include <thread>
 
 #include "MessageIndexingInterrupted.h"
 #include "MessageListener.h"
 #include "Task.h"
-
-#include "InterprocessIndexerCommandManager.h"
 #include "InterprocessIndexingStatusManager.h"
 #include "InterprocessIntermediateStorageManager.h"
+
+#include <atomic>
+#include <thread>
 
 class DialogView;
 class StorageProvider;
@@ -61,8 +61,7 @@ protected:
 	std::vector<std::shared_ptr<InterprocessIntermediateStorageManager>>
 		m_interprocessIntermediateStorageManagers;
 
-	size_t m_runningThreadCount = 0;
-	std::mutex m_runningThreadCountMutex;
+	std::atomic<size_t> m_runningThreadCount = 0;
 };
 
 #endif	  // TASK_PARSE_H
