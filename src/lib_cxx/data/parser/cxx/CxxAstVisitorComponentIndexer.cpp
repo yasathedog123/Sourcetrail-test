@@ -239,13 +239,13 @@ void CxxAstVisitorComponentIndexer::visitClassTemplateSpecializationDecl(
 
 		llvm::PointerUnion<clang::ClassTemplateDecl*, clang::ClassTemplatePartialSpecializationDecl*> pu =
 			d->getSpecializedTemplateOrPartial();
-		if (pu.is<clang::ClassTemplateDecl*>())
+		if (clang::isa<clang::ClassTemplateDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::ClassTemplateDecl*>()->getTemplatedDecl();
+			specializedFromDecl = clang::cast<clang::ClassTemplateDecl*>(pu)->getTemplatedDecl();
 		}
-		else if (pu.is<clang::ClassTemplatePartialSpecializationDecl*>())
+		else if (clang::isa<clang::ClassTemplatePartialSpecializationDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::ClassTemplatePartialSpecializationDecl*>();
+			specializedFromDecl = clang::cast<clang::ClassTemplatePartialSpecializationDecl*>(pu);
 		}
 
 		m_client->recordReference(
@@ -314,13 +314,13 @@ void CxxAstVisitorComponentIndexer::visitVarTemplateSpecializationDecl(
 		// todo: use context and childcontext!!
 		llvm::PointerUnion<clang::VarTemplateDecl*, clang::VarTemplatePartialSpecializationDecl*> pu =
 			d->getSpecializedTemplateOrPartial();
-		if (pu.is<clang::VarTemplateDecl*>())
+		if (clang::isa<clang::VarTemplateDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::VarTemplateDecl*>();
+			specializedFromDecl = clang::cast<clang::VarTemplateDecl*>(pu);
 		}
-		else if (pu.is<clang::VarTemplatePartialSpecializationDecl*>())
+		else if (clang::isa<clang::VarTemplatePartialSpecializationDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::VarTemplatePartialSpecializationDecl*>();
+			specializedFromDecl = clang::cast<clang::VarTemplatePartialSpecializationDecl*>(pu);
 		}
 
 		m_client->recordReference(

@@ -18,7 +18,7 @@ using namespace utility;
 // #define LLVM_VERSION_MAJOR 19
 //
 // C++
-// /usr/bin/clang-19 -std=xxx empty.cpp
+// /usr/bin/clang-20 -std=xxx empty.cpp
 // vcpkg_installed/x64-arm64-linux-windows-osx-static-md/tools/llvm/clang-18 -std=xxx empty.cpp
 //
 // Released standards:
@@ -71,7 +71,7 @@ static vector<string> getDraftCppStandards()
 }
 
 // C
-// /usr/bin/clang-19 -std=xxx empty.c
+// /usr/bin/clang-20 -std=xxx empty.c
 // vcpkg_installed/x64-arm64-linux-windows-osx-static-md/tools/llvm/clang-18 -std=xxx empty.c
 //
 // Released standards:

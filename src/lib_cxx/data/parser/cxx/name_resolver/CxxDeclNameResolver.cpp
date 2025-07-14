@@ -173,22 +173,19 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						{
 							llvm::PointerUnion<clang::ClassTemplateDecl*, clang::ClassTemplatePartialSpecializationDecl*>
 								pu = templateSpecialitarionDecl->getSpecializedTemplateOrPartial();
-							if (pu.is<clang::ClassTemplateDecl*>())
+							if (clang::isa<clang::ClassTemplateDecl*>(pu))
 							{
-								return getDeclName(pu.get<clang::ClassTemplateDecl*>());
+								return getDeclName(clang::cast<clang::ClassTemplateDecl*>(pu));
 							}
-							else if (pu.is<clang::ClassTemplatePartialSpecializationDecl*>())
+							else if (clang::isa<clang::ClassTemplatePartialSpecializationDecl*>(pu))
 							{
-								return getDeclName(
-									pu.get<clang::ClassTemplatePartialSpecializationDecl*>());
+								return getDeclName(clang::cast<clang::ClassTemplatePartialSpecializationDecl*>(pu));
 							}
 						}
 
-						templateArguments.push_back(
-							getTemplateArgumentName(templateArgumentList.get(i)));
+						templateArguments.push_back(getTemplateArgumentName(templateArgumentList.get(i)));
 					}
-					return std::make_unique<CxxDeclName>(
-						std::move(declNameString), std::move(templateArguments));
+					return std::make_unique<CxxDeclName>(std::move(declNameString), std::move(templateArguments));
 				}
 			}
 		}
@@ -403,14 +400,13 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						{
 							llvm::PointerUnion<clang::VarTemplateDecl*, clang::VarTemplatePartialSpecializationDecl*>
 								pu = templateSpecializationDeclaration->getSpecializedTemplateOrPartial();
-							if (pu.is<clang::VarTemplateDecl*>())
+							if (clang::isa<clang::VarTemplateDecl*>(pu))
 							{
-								return getDeclName(pu.get<clang::VarTemplateDecl*>());
+								return getDeclName(clang::cast<clang::VarTemplateDecl*>(pu));
 							}
-							else if (pu.is<clang::VarTemplatePartialSpecializationDecl*>())
+							else if (clang::isa<clang::VarTemplatePartialSpecializationDecl*>(pu))
 							{
-								return getDeclName(
-									pu.get<clang::VarTemplatePartialSpecializationDecl*>());
+								return getDeclName(clang::cast<clang::VarTemplatePartialSpecializationDecl*>(pu));
 							}
 						}
 						templateParameterNames.push_back(getTemplateArgumentName(templateArgument));
