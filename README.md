@@ -156,13 +156,13 @@ $ cmake --build .
 
 ### Linux
 
-To compile it under (K)ubuntu 24.10, "Oracular Oriole", install the following packages:
+To compile it under (K)ubuntu 25.04, "Plucky Puffin", install the following packages:
 
-**General packages:** cmake, ninja-build, libboost1.83-all-dev, qt6-base-dev, qt6-svg-dev, libsqlite3-dev, libtinyxml-dev
+**General packages:** cmake, ninja-build, libboost1.88-all-dev, libboost-charconv1.88-dev, qt6-base-dev, qt6-svg-dev, libsqlite3-dev, libtinyxml-dev
 
-**C++ packages:** clang-19, libclang-19-dev
+**C++ packages:** clang-20, libclang-20-dev
 
-**Java packages:** maven, openjdk-23-jdk
+**Java packages:** maven, openjdk-24-jdk
 
 **Unit test packages:** catch2, libgtest-dev
 
@@ -184,33 +184,33 @@ System build is not tested and therefore not supported.
 ### macOS
 System build is not tested and therefore not supported.
 
-### Used/Supported libraries: ###
+### Used/Tested/Supported libraries: ###
 
 **C++**
 
 |Name|System|Vcpkg|Notes| 
 |----|------|-----|-----|
-|Clang|19.1.1|18.1.6|C++23 Support|
+|Clang|20.1.2|18.1.6|C++23 Support|
 
 **Java**
 
 |Name|System/Vcpkg|Notes|
 |----|------------|-----|
 |Eclipse JDT|3.42|Java 24 Support|
-|Maven|Locally installed version|
+|Maven|3.9.9|
 |Gradle|8.14.2|
 
 **Miscellaneous**
 
 |Name|System|Vcpkg|
 |----|------|-----|
-|Qt|6.6.2|6.8.3|
-|Boost|1.83.0|1.88.0|
-|SQLite3|3.46.1|3.47.2|
+|Qt|6.8.3|6.8.3|
+|Boost|1.88.0|1.88.0|
+|SQLite3|3.46.1|3.50.2|
 |TinyXML|2.6.2|2.6.2|
 
 **Tests**
 |Name|System|Vcpkg|
 |----|------|-----|
-|Catch2|3.4.0|3.8.1|
-|GTest|1.15.2|1.17.0|
+|Catch2|3.7.1|3.8.1|
+|GTest|1.15.0|1.17.0|

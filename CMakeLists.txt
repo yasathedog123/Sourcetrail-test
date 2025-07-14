@@ -35,7 +35,7 @@ endif()
 
 # Project ----------------------------------------------------------------------
 
-project(Sourcetrail VERSION 2025.7.11)
+project(Sourcetrail VERSION 2025.7.14 HOMEPAGE_URL "http://sourcetrail.de")
 cmake_print_variables(CMAKE_C_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER)
 
@@ -221,13 +221,12 @@ target_link_libraries(External_lib_boost
 		
 		# Prevent linker error in vcpkg build:
 		External_lib_icu
-
 )
 
 # Qt ---------------------------------------------------------------------------
 
-set (QT_MIN_VERSION 6.6.2)
-set (QT_MAX_VERSION_HEX 0x060802)
+set (QT_MIN_VERSION 6.8.3)
+# set (QT_MAX_VERSION_HEX 0x060802)
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED 
 	COMPONENTS
@@ -265,7 +264,7 @@ if (isVcpkgBuild)
 	find_package(unofficial-sqlite3 CONFIG REQUIRED)
 	if (NOT DEFINED SQLite3_VERSION)
 		# Use quotes to indicate a version literal:
-		set(SQLite3_VERSION "\"3.47.2\"")
+		set(SQLite3_VERSION "\"3.50.2\"")
 	endif()
 	add_library(External_lib_sqlite3 ALIAS unofficial::sqlite3::sqlite3)
 else()
@@ -337,7 +336,7 @@ if (BUILD_CXX_LANGUAGE_PACKAGE)
 	# For further details see https://llvm.org/docs/CMake.html#embedding-llvm-in-your-project
 
 	set(CLANG_MIN_VERSION 18)
-	set(CLANG_MAX_VERSION 20)
+	set(CLANG_MAX_VERSION 21)
 	
 	find_package(Clang CONFIG REQUIRED) # Minimum version and/or version range xx...<yy doesn't work.
 	message(STATUS "Found LLVM ${LLVM_VERSION}: ${LLVM_INCLUDE_DIRS}")
@@ -498,7 +497,7 @@ set(CPACK_PACKAGE_DESCRIPTION "Free and open-source cross-platform source explor
 
 set(CPACK_PACKAGE_CONTACT "P. Most <pmost@pera-software.com>")
 set(CPACK_PACKAGE_VENDOR "PERA Software Solutions GmbH")
-set(CPACK_PACKAGE_HOMEPAGE_URL "http://sourcetrail.de")
+set(CPACK_PACKAGE_HOMEPAGE_URL ${PROJECT_HOMEPAGE_URL})
 set(CPACK_PACKAGE_ICON "${CMAKE_BINARY_DIR}/app/Sourcetrail.ico")
 
 if (isVcpkgBuild)
