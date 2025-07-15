@@ -10,6 +10,8 @@ add_library(Sourcetrail_lib_gui
 	qt/element/bookmark/QtBookmarkCategory.cpp
 	qt/element/bookmark/QtBookmarkCategory.h
 
+	qt/element/button/QtExpanderButton.h 
+	qt/element/button/QtExpanderButton.cpp
 	qt/element/button/QtHelpButton.cpp
 	qt/element/button/QtHelpButton.h
 	qt/element/button/QtHoverButton.cpp
