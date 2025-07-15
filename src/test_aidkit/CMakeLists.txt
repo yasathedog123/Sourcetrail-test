@@ -1,6 +1,8 @@
 add_executable(AidKit_test
 	enum_class_test.cpp
 	shared_data_test.cpp
+	
+	qt/StringsTest.cpp
 )
 setDefaultTargetOptions(AidKit_test)
 
