@@ -34,8 +34,8 @@
 		"patterns" : [
 			"\\balignas\\b",
 			"\\balignof\\b",
-			"\\band\\b",
 			"\\band_eq\\b",
+			"\\band\\b",
 			"\\basm\\b",
 			"\\bauto\\b",
 			"\\bbitand\\b",
@@ -43,10 +43,16 @@
 			"\\bbreak\\b",
 			"\\bcase\\b",
 			"\\bcatch\\b",
+			"\\bco_await\\b",
+			"\\bco_return\\b",
+			"\\bco_yield\\b",
 			"\\bcompl\\b",
-			"\\bconst\\b",
+			"\\bconcept\\b",
 			"\\bconst_cast\\b",
+			"\\bconst\\b",
+			"\\bconsteval\\b",
 			"\\bconstexpr\\b",
+			"\\bconstinit\\b",
 			"\\bcontinue\\b",
 			"\\bdecltype\\b",
 			"\\bdefault\\b",
@@ -65,15 +71,16 @@
 			"\\bif\\b",
 			"\\binline\\b",
 			"\\bmutable\\b",
+			"\\bnamespace\\b",
 			"\\bnew\\b",
 			"\\bnoexcept\\b",
 			"\\bnoreturn\\b",
-			"\\bnot\\b",
 			"\\bnot_eq\\b",
+			"\\bnot\\b",
 			"\\bnullptr\\b",
 			"\\boperator\\b",
-			"\\bor\\b",
 			"\\bor_eq\\b",
+			"\\bor\\b",
 			"\\boverride\\b",
 			"\\bprivate\\b",
 			"\\bprotected\\b",
@@ -83,9 +90,9 @@
 			"\\brequires\\b",
 			"\\breturn\\b",
 			"\\bsizeof\\b",
-			"\\bstatic\\b",
 			"\\bstatic_assert\\b",
 			"\\bstatic_cast\\b",
+			"\\bstatic\\b",
 			"\\bswitch\\b",
 			"\\btemplate\\b",
 			"\\bthis\\b",
@@ -100,8 +107,8 @@
 			"\\bvirtual\\b",
 			"\\bvolatile\\b",
 			"\\bwhile\\b",
-			"\\bxor\\b",
-			"\\bxor_eq\\b"
+			"\\bxor_eq\\b",
+			"\\bxor\\b"
 		]
 	},
 	{
@@ -133,7 +140,10 @@
 	},
 	{
 		"type" : "directive",
-		"patterns" : [ "#[a-z]+\\b" ]
+		"patterns" : [ 
+			"#[a-z]+\\b",
+			"\\[\\[.*?\\]\\]"
+		]
 	},
 	{
 		"type" : "number",

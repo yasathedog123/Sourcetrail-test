@@ -143,11 +143,11 @@
 			</line_number>
 
 			<syntax>
-				<text>#F7F7F7</text>
+				<text>#FFFFFF</text>
 				<directive>#ff00ff</directive>
-				<keyword>#1F9C62</keyword>
-				<type>#D95233</type>
-				<comment>#00ff00</comment>
+				<keyword>#00FF00</keyword>
+				<type>#ffff00</type>
+				<comment>#808080</comment>
 				<number>#00ffff</number>
 				<quotation>#00ffff</quotation>
 				<function>#D69C36</function>
