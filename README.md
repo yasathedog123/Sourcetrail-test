@@ -26,7 +26,43 @@ This is a **fork** of the Sourcetrail project and I want to keep this project at
 # :star: Sponsoring
 
 If you like the changes I've done so far, then please consider [sponsoring me](https://github.com/sponsors/petermost). 
-As a sponser you have access to **binary releases**.
+As a sponser you have access to the following **binary releases**:
+
+|Platform|Packaging|Build|
+|--------|---------|-----|
+|Linux   |ZIP Archive, Debian Package|Vcpkg, System|
+|Windows | ZIP Archive|Vcpkg|
+
+### Used/Tested/Supported libraries: ###
+
+**C++**
+
+|Name|System|Vcpkg|Notes| 
+|----|------|-----|-----|
+|Clang|20.1.2|18.1.6|C++23 Support|
+
+**Java**
+
+|Name|System/Vcpkg|Notes|
+|----|------------|-----|
+|Eclipse JDT|3.42|Java 24 Support|
+|Maven|3.9.9|
+|Gradle|8.14.2|
+
+**Miscellaneous**
+
+|Name|System|Vcpkg|
+|----|------|-----|
+|Qt|6.8.3|6.8.3|
+|Boost|1.88.0|1.88.0|
+|SQLite3|3.46.1|3.50.2|
+|TinyXML|2.6.2|2.6.2|
+
+**Tests**
+|Name|System|Vcpkg|
+|----|------|-----|
+|Catch2|3.7.1|3.8.1|
+|GTest|1.15.0|1.17.0|
 
 ### Changes
 
@@ -183,34 +219,3 @@ System build is not tested and therefore not supported.
 
 ### macOS
 System build is not tested and therefore not supported.
-
-### Used/Tested/Supported libraries: ###
-
-**C++**
-
-|Name|System|Vcpkg|Notes| 
-|----|------|-----|-----|
-|Clang|20.1.2|18.1.6|C++23 Support|
-
-**Java**
-
-|Name|System/Vcpkg|Notes|
-|----|------------|-----|
-|Eclipse JDT|3.42|Java 24 Support|
-|Maven|3.9.9|
-|Gradle|8.14.2|
-
-**Miscellaneous**
-
-|Name|System|Vcpkg|
-|----|------|-----|
-|Qt|6.8.3|6.8.3|
-|Boost|1.88.0|1.88.0|
-|SQLite3|3.46.1|3.50.2|
-|TinyXML|2.6.2|2.6.2|
-
-**Tests**
-|Name|System|Vcpkg|
-|----|------|-----|
-|Catch2|3.7.1|3.8.1|
-|GTest|1.15.0|1.17.0|
