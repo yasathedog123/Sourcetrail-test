@@ -204,7 +204,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 			}
 
 			QToolButton* b = createSourceGroupButton(
-				utility::insertLineBreaksAtBlankSpaces(name, 15).c_str(), 
+				QString::fromStdString(utility::insertLineBreaksAtBlankSpaces(name, 15)),
 				QString::fromStdString(m_sourceGroupTypeIconName[sourceGroupIt.type]));
 
 			if (sourceGroupIt.recommended)
@@ -212,7 +212,7 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 				b->setStyleSheet(QStringLiteral("font-weight: bold"));
 			}
 
-			b->setProperty("source_group_type", int(sourceGroupIt.type));
+			b->setProperty("source_group_type", QVariant::fromValue(sourceGroupIt.type));
 			b->setProperty("recommended", sourceGroupIt.recommended);
 			sourceGroupButtons->addButton(b);
 			flayout->addWidget(b);
@@ -223,23 +223,13 @@ void QtProjectWizardContentSelect::populate(QGridLayout* layout, int&  /*row*/)
 
 	for (auto& it: m_buttons)
 	{
-		connect(
-			it.second,
-			qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked),
-			[this](QAbstractButton* button)
-			{
-				SourceGroupType selectedType = SourceGroupType::UNKNOWN;
-				bool ok = false;
-				int selectedTypeInt = button->property("source_group_type").toInt(&ok);
-				if (ok)
-				{
-					selectedType = SourceGroupType(selectedTypeInt);
-				}
+		connect(it.second, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked), [this](QAbstractButton *button)
+		{
+			SourceGroupType selectedType = qt_variant_cast<SourceGroupType>(button->property("source_group_type"));
+			m_description->setText(QString::fromStdString(m_sourceGroupTypeDescriptions[selectedType]));
 
-				m_description->setText(m_sourceGroupTypeDescriptions[selectedType].c_str());
-
-				m_window->setNextEnabled(true);
-			});
+			m_window->setNextEnabled(true);
+		});
 	}
 
 	QWidget* container = new QWidget();
@@ -283,11 +273,9 @@ void QtProjectWizardContentSelect::save()
 	{
 		if (QAbstractButton* b = it.second->checkedButton())
 		{
-			bool ok = false;
-			int selectedTypeInt = b->property("source_group_type").toInt(&ok);
-			if (ok)
+			selectedType = qt_variant_cast<SourceGroupType>(b->property("source_group_type"));
+			if (selectedType != SourceGroupType::UNKNOWN)
 			{
-				selectedType = SourceGroupType(selectedTypeInt);
 				break;
 			}
 		}
