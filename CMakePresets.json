@@ -43,6 +43,15 @@
 		},
 		{
 			"hidden": true,
+			"name": "relwithdebinfo-presets",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
+				"CMAKE_VERBOSE_MAKEFILE": "FALSE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
+			}
+		},
+		{
+			"hidden": true,
 			"name": "vcpkg-default-presets",
 			"inherits": [
 				"default-presets"
@@ -88,6 +97,14 @@
 				"sourcetrail-presets"
 			]
 		},
+		{
+			"name": "system-ninja-relwithdebinfo",
+			"inherits": [
+				"relwithdebinfo-presets",
+				"system-default-presets",
+				"sourcetrail-presets"
+			]
+		},
 
 
 
@@ -103,6 +120,14 @@
 			"name": "vcpkg-ninja-release",
 			"inherits": [
 				"release-presets",
+				"vcpkg-default-presets",
+				"sourcetrail-presets"
+			]
+		},
+		{
+			"name": "vcpkg-ninja-relwithdebinfo",
+			"inherits": [
+				"relwithdebinfo-presets",
 				"vcpkg-default-presets",
 				"sourcetrail-presets"
 			]
