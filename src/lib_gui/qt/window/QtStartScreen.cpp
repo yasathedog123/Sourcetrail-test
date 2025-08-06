@@ -56,14 +56,19 @@ FilePath QtRecentProjectButton::projectPath() const
 
 void QtRecentProjectButton::contextMenuEvent(QContextMenuEvent *event)
 {
+	QtContextMenu menu(event, this);
+
+	QAction *openAction = new QAction(tr("Open"));
+	menu.addAction(openAction);
+	connect(openAction, &QAction::triggered, this, &QtRecentProjectButton::clicked);
+
 	// Allow removing entries from recent projects:
 
 	QIcon removeIcon(QString::fromUtf8(QtResources::STARTSCREEN_DELETE_ICON));
 	QAction *removeAction = new QAction(removeIcon, tr("Remove"));
 	connect(removeAction, &QAction::triggered, this, &QtRecentProjectButton::removeClicked);
-
-	QtContextMenu menu(event, this);
 	menu.addAction(removeAction);
+
 	menu.show();
 }
 
