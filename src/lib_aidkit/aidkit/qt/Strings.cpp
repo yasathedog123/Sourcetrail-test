@@ -28,7 +28,7 @@ QChar operator ""_qc(char c)
 
 QString operator ""_qs(const char *str, size_t len)
 {
-	return QString::fromUtf8(str, static_cast<int>(len));
+	return QString::fromUtf8(str, static_cast<qsizetype>(len));
 }
 
 ostream &operator<<(ostream &output, const QString &qstring)

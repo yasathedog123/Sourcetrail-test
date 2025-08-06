@@ -50,7 +50,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	m_zoomLabelTimer = std::make_shared<QTimer>(this);
 	connect(m_zoomLabelTimer.get(), &QTimer::timeout, this, &QtGraphicsView::hideZoomLabel);
 
-	m_openInTabAction = new QAction(QtActions::openInNewTabWithMouse().text(), this);
+	m_openInTabAction = new QAction(QtActions::openInNewTabWithMouse().menuText(), this);
 	m_openInTabAction->setStatusTip(tr("Open this node in a new tab"));
 	m_openInTabAction->setToolTip(tr("Open this node in a new tab"));
 	connect(m_openInTabAction, &QAction::triggered, this, &QtGraphicsView::openInTab);
@@ -60,42 +60,42 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	m_copyNodeNameAction->setToolTip(tr("Copies the name of this node to the clipboard"));
 	connect(m_copyNodeNameAction, &QAction::triggered, this, &QtGraphicsView::copyNodeName);
 
-	m_collapseAction = new QAction(QtActions::collapseNodeWithMouse().text(), this);
+	m_collapseAction = new QAction(QtActions::collapseNodeWithMouse().menuText(), this);
 	m_collapseAction->setStatusTip(tr("Hide the unconnected members of the node"));
 	m_collapseAction->setToolTip(tr("Hide the unconnected members of the node"));
 	connect(m_collapseAction, &QAction::triggered, this, &QtGraphicsView::collapseNode);
 
-	m_expandAction = new QAction(QtActions::expandNodeWithMouse().text(), this);
+	m_expandAction = new QAction(QtActions::expandNodeWithMouse().menuText(), this);
 	m_expandAction->setStatusTip(tr("Show unconnected members of the node"));
 	m_expandAction->setToolTip(tr("Show unconnected members of the node"));
 	connect(m_expandAction, &QAction::triggered, this, &QtGraphicsView::expandNode);
 
-	m_showInIDEAction = new QAction(QtActions::showInIDEWithMouse().text(), this);
+	m_showInIDEAction = new QAction(QtActions::showInIDEWithMouse().menuText(), this);
 	m_showInIDEAction->setStatusTip(tr("Show definition of this symbol in the IDE (via plug-in)"));
 	m_showInIDEAction->setToolTip(tr("Show definition of this symbol in the IDE (via plug-in)"));
 	connect(m_showInIDEAction, &QAction::triggered, this, &QtGraphicsView::showInIDE);
 
-	m_showDefinitionAction = new QAction(QtActions::showDefinitionWithMouse().text(), this);
+	m_showDefinitionAction = new QAction(QtActions::showDefinitionWithMouse().menuText(), this);
 	m_showDefinitionAction->setStatusTip(tr("Show definition of this symbol in the code"));
 	m_showDefinitionAction->setToolTip(tr("Show definition of this symbol in the code"));
 	connect(m_showDefinitionAction, &QAction::triggered, this, &QtGraphicsView::showDefinition);
 
-	m_hideNodeAction = new QAction(QtActions::hideNodeWithMouse().text(), this);
+	m_hideNodeAction = new QAction(QtActions::hideNodeWithMouse().menuText(), this);
 	m_hideNodeAction->setStatusTip(tr("Hide the node from this graph"));
 	m_hideNodeAction->setToolTip(tr("Hide the node from this graph"));
 	connect(m_hideNodeAction, &QAction::triggered, this, &QtGraphicsView::hideNode);
 
-	m_hideEdgeAction = new QAction(QtActions::hideEdgeWithMouse().text(), this);
+	m_hideEdgeAction = new QAction(QtActions::hideEdgeWithMouse().menuText(), this);
 	m_hideEdgeAction->setStatusTip(tr("Hide the edge from this graph"));
 	m_hideEdgeAction->setToolTip(tr("Hide the edge from this graph"));
 	connect(m_hideEdgeAction, &QAction::triggered, this, &QtGraphicsView::hideEdge);
 
-	m_bookmarkNodeAction = new QAction(tr("Bookmark Node..."), this);
+	m_bookmarkNodeAction = new QAction(QtActions::bookmarkNode().menuText(), this);
 	m_bookmarkNodeAction->setStatusTip(tr("Create a bookmark for this node"));
 	m_bookmarkNodeAction->setToolTip(tr("Create a bookmark for this node"));
 	connect(m_bookmarkNodeAction, &QAction::triggered, this, &QtGraphicsView::bookmarkNode);
 
-	m_exportGraphAction = new QAction(tr("Save as Image..."), this);
+	m_exportGraphAction = new QAction(QtActions::saveAsImage().menuText(), this);
 	m_exportGraphAction->setStatusTip(tr("Save this graph as image file"));
 	m_exportGraphAction->setToolTip(tr("Save this graph as image file"));
 	connect(m_exportGraphAction, &QAction::triggered, this, &QtGraphicsView::exportGraph);

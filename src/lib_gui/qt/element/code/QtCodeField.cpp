@@ -98,7 +98,7 @@ QtCodeField::QtCodeField(
 	setFont(font);
 	setTabStopDistance(appSettings->getCodeTabWidth() * fontMetrics().boundingRect('9').width());
 
-	m_openInTabAction = new QAction(QtActions::openInNewTabWithMouse().text(), this);
+	m_openInTabAction = new QAction(QtActions::openInNewTabWithMouse().menuText(), this);
 	m_openInTabAction->setStatusTip(tr("Opens the node in a new tab"));
 	m_openInTabAction->setToolTip(tr("Opens the node in a new tab"));
 	m_openInTabAction->setEnabled(false);

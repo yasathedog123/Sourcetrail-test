@@ -24,6 +24,7 @@ namespace aidkit::qt {
 
 QChar operator ""_qc(char c);
 QString operator ""_qs(const char *str, std::size_t len);
+
 std::ostream &operator<<(std::ostream &output, const QString &qstring);
 
 }

@@ -9,48 +9,22 @@
 
 using namespace utility;
 
-namespace
-{
-
-QString joinToString(const QList<QString> &list)
-{
-	QString str;
-
-	auto it = list.begin();
-	if (it != list.end()) {
-		str.append(*it++);
-		while (it != list.end())
-			str.append(QtActions::SHORTCUT_SEPARATOR).append(*it++);
-	}
-	return str;
-}
-
-struct Shortcut
-{
-	const QString name;
-	const QString shortcut;
-
-	Shortcut(const QtActions::Info &info)
-		:name(info.plainText()), shortcut(joinToString(info.shortcuts()))
-	{
-	}
-};
-
-void addShortcuts(QtShortcutTable* table, const std::vector<Shortcut>& shortcuts)
+static void addShortcuts(QtShortcutTable* table, const std::vector<QtActions::Info> &shortcuts)
 {
 	table->setRowCount(static_cast<int>(shortcuts.size()));
 
-	for (size_t i = 0; i < shortcuts.size(); ++i)
+	for (size_t row = 0; row < shortcuts.size(); ++row)
 	{
-		table->setItem(static_cast<int>(i), 0, new QTableWidgetItem(shortcuts[i].name));
-		table->setItem(static_cast<int>(i), 1, new QTableWidgetItem(shortcuts[i].shortcut));
+		table->setItem(static_cast<int>(row), 0, new QTableWidgetItem(shortcuts[row].name()));
+		table->setItem(static_cast<int>(row), 1, new QTableWidgetItem(shortcuts[row].shortcuts()));
 	}
 	table->updateSize();
 }
 
+QtShortcutTable::QtShortcutTable(QWidget* parent)
+	: QTableWidget(parent)
+{
 }
-
-QtShortcutTable::QtShortcutTable(QWidget* parent): QTableWidget(parent) {}
 
 void QtShortcutTable::updateSize()
 {
@@ -114,8 +88,8 @@ void QtKeyboardShortcuts::populateWindow(QWidget* widget)
 
 void QtKeyboardShortcuts::windowReady()
 {
-	updateTitle(QStringLiteral("Keyboard Shortcuts"));
-	updateCloseButton(QStringLiteral("Close"));
+	updateTitle(tr("Keyboard Shortcuts"));
+	updateCloseButton(tr("Close"));
 
 	setNextVisible(false);
 	setPreviousVisible(false);

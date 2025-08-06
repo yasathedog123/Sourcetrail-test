@@ -1,5 +1,7 @@
 #include "QtActions.h"
 
+#include <aidkit/qt/Strings.hpp>
+
 #include <QKeyEvent>
 
 // Notes:
@@ -29,18 +31,19 @@
 // 	return false;
 // }
 
-using StandardKey = QKeySequence::StandardKey;
-static constexpr QKeySequence::SequenceFormat KEY_FORMAT = QKeySequence::SequenceFormat::NativeText;
+using namespace aidkit::qt;
 
-static constexpr char MOUSE_LEFT_CLICK[] = "Left Click";
+static constexpr char MOUSE_LEFT_CLICK[]        = "Left Click";
 static constexpr char MOUSE_LEFT_DOUBLE_CLICK[] = "Left Double Click";
 
 static constexpr char MOUSE_WHEEL_UP[]   = "Mouse Wheel Up";
 static constexpr char MOUSE_WHEEL_DOWN[] = "Mouse Wheel Down";
 
+static constexpr char MOUSE_MIDDLE_CLICK[] = "Middle Click";
+
 static QString toString(const QKeySequence &sequence)
 {
-	return sequence.toString(KEY_FORMAT);
+	return sequence.toString(QKeySequence::SequenceFormat::NativeText);
 }
 
 static QList<QString> toStringList(const QList<QKeySequence> &sequences)
@@ -51,6 +54,19 @@ static QList<QString> toStringList(const QList<QKeySequence> &sequences)
 		strings.append(toString(sequence));
 	
 	return strings;
+}
+
+static QString toString(const QList<QString> &list)
+{
+	QString str;
+
+	auto it = list.begin();
+	if (it != list.end()) {
+		str.append(*it++);
+		while (it != list.end())
+			str.append(" | ").append(*it++);
+	}
+	return str;
 }
 
 static QKeySequence addModifier(Qt::KeyboardModifiers modifiers, const QKeySequence &keySequence)
@@ -69,47 +85,25 @@ static inline QString removeAcceleratorEllipsis(QString s)
 	return s.remove('&').remove("...");
 }
 
-const char QtActions::SHORTCUT_SEPARATOR[] = " | ";
-
-QString QtActions::appendShortcut(const QString &s, const QString &shortcut)
-{
-	return s + QString(" (%1)").arg(shortcut);
-}
-
-QString QtActions::appendShortcut(const QString &s, const QString &shortcut1, const QString &shortcut2)
-{
-	return s + QString(" (%1%2%3)").arg(shortcut1, QtActions::SHORTCUT_SEPARATOR, shortcut2);
-}
-
-QtActions::Info::Info(QString text, QString shortcut)
-	: QtActions::Info(text, QList({shortcut}))
+QtActions::Info::Info(const QString &text, const QString &shortcut)
+	: Info(text, QList({shortcut}))
 {
 }
 
-QtActions::Info::Info(QString text, QList<QString> shortcuts)
-{
-	m_text = appendShortcut(text, shortcuts.first());
-	m_tooltip = m_text;
-	m_shortcuts = shortcuts;
-}
-
-QtActions::Info::Info(QString text, QKeySequence shortcut)
-	: QtActions::Info(text, QList({shortcut}))
+QtActions::Info::Info(const QString &text, const QList<QString> &shortcuts)
+	: m_text(text)
+	, m_shortcuts(shortcuts)
 {
 }
 
-QtActions::Info::Info(QString text, QList<QKeySequence> shortcuts)
+QtActions::Info::Info(const QString &text, const QKeySequence &shortcut)
+	: Info(text, QList({shortcut}))
 {
-	m_text = text;
-	m_tooltip = appendShortcut(removeAcceleratorEllipsis(m_text), toString(shortcuts.first()));
-	m_shortcuts = toStringList(shortcuts);
 }
 
-QtActions::Info::Info(QString text, QString shortcut1, QString shortcut2)
+QtActions::Info::Info(const QString &text, const QList<QKeySequence> &shortcuts)
+	: Info(text, toStringList(shortcuts))
 {
-	m_text = appendShortcut(text, shortcut1, shortcut2);
-	m_tooltip = m_text;
-	m_shortcuts = QList<QString>({shortcut1, shortcut2});
 }
 
 QString QtActions::Info::text() const
@@ -117,7 +111,19 @@ QString QtActions::Info::text() const
 	return m_text;
 }
 
-QString QtActions::Info::plainText() const
+QString QtActions::Info::tooltip() const
+{
+	return "%1 (%2)"_qs.arg(removeAcceleratorEllipsis(m_text), toString(m_shortcuts));
+}
+
+QString QtActions::Info::menuText() const
+{
+	// Separate the label and shortcut with '\t' which right-alignes the shortcut:
+
+	return "%1\t%2"_qs.arg(m_text, toString(m_shortcuts));
+}
+
+QString QtActions::Info::name() const
 {
 	return removeAcceleratorEllipsis(m_text);
 }
@@ -127,38 +133,29 @@ QString QtActions::Info::shortcut() const
 	return m_shortcuts.first();
 }
 
-QList<QString> QtActions::Info::shortcuts() const
+QString QtActions::Info::shortcuts() const
 {
-	return m_shortcuts;
+	return toString(m_shortcuts);
 }
-
-QString QtActions::Info::tooltip() const
-{
-	return m_tooltip;
-}
-
-
-
-
 
 QtActions::Info QtActions::newProject()
 {
-	return Info(tr("&New Project..."), StandardKey::New);
+	return Info(tr("&New Project..."), QKeySequence::New);
 }
 
 QtActions::Info QtActions::openProject()
 {
-	return Info(tr("&Open Project..."), StandardKey::Open);
+	return Info(tr("&Open Project..."), QKeySequence::Open);
 }
 
 QtActions::Info QtActions::exit()
 {
-	return Info(tr("E&xit"), StandardKey::Quit);
+	return Info(tr("E&xit"), QKeySequence::Quit);
 }
 
 QtActions::Info QtActions::refresh()
 {
-	return Info(tr("&Refresh..."), StandardKey::Refresh);
+	return Info(tr("&Refresh..."), QKeySequence::Refresh);
 }
 
 QtActions::Info QtActions::fullRefresh()
@@ -168,7 +165,7 @@ QtActions::Info QtActions::fullRefresh()
 
 QtActions::Info QtActions::findSymbol()
 {
-	return Info(tr("&Find Symbol"), StandardKey::Find);
+	return Info(tr("&Find Symbol"), QKeySequence::Find);
 }
 
 QtActions::Info QtActions::executeFindSymbol()
@@ -213,28 +210,35 @@ QtActions::Info QtActions::toOverview()
 
 QtActions::Info QtActions::saveGraphAsImage()
 {
-	return Info(tr("&Save Graph as Image..."), StandardKey::SaveAs);
+	return Info(tr("&Save Graph as Image..."), QKeySequence::SaveAs);
+}
+
+QtActions::Info QtActions::saveAsImage()
+{
+	return Info(tr("Save as Image..."), QKeySequence::SaveAs);
 }
 
 QtActions::Info QtActions::preferences()
 {
-	// Alternative: StandardKey::Preferences is only defined for MacOS!
+	// Alternative: QKeySequence::Preferences is only defined for MacOS!
 
 	return Info(tr("Preferences..."), Qt::ControlModifier | Qt::Key_Comma);
 }
 
 QtActions::Info QtActions::newTab()
 {
-	return Info(tr("New Tab"), StandardKey::AddTab);
+	return Info(tr("New Tab"), QKeySequence::AddTab);
 }
 
 QtActions::Info QtActions::closeTab()
 {
-	return Info(tr("Close Tab"), QList<QKeySequence>({
-		StandardKey::Close,
+	return Info(tr("Close Tab"), QList<QString>({
+		toString(QKeySequence::Close),
 
 		// Handled in QtMainWindow::keyPressEvent:
-		Qt::ControlModifier | Qt::Key_F4
+		toString(Qt::ControlModifier | Qt::Key_F4),
+
+		MOUSE_MIDDLE_CLICK
 	}));
 }
 
@@ -254,12 +258,12 @@ QtActions::Info QtActions::selectPreviousTab()
 
 QtActions::Info QtActions::largerFont()
 {
-	return Info(tr("Larger Font"), StandardKey::ZoomIn);
+	return Info(tr("Larger Font"), QKeySequence::ZoomIn);
 }
 
 QtActions::Info QtActions::smallerFont()
 {
-	return Info(tr("Smaller Font"), StandardKey::ZoomOut);
+	return Info(tr("Smaller Font"), QKeySequence::ZoomOut);
 }
 
 QtActions::Info QtActions::resetFontSize()
@@ -419,7 +423,7 @@ QtActions::Info QtActions::collapseNodeWithMouse()
 QtActions::Info QtActions::back()
 {
 	return Info(tr("Back"), QList<QKeySequence>({
-		StandardKey::Back,
+		QKeySequence::Back,
 		Qt::Key_Z,
 		Qt::Key_Y,
 		Qt::Key_Backspace
@@ -429,7 +433,7 @@ QtActions::Info QtActions::back()
 QtActions::Info QtActions::forward()
 {
 	return Info(tr("Forward"), QList<QKeySequence>({
-		StandardKey::Forward,
+		QKeySequence::Forward,
 		Qt::ShiftModifier | Qt::Key_Z,
 		Qt::ShiftModifier | Qt::Key_Y
 	}));
@@ -437,7 +441,12 @@ QtActions::Info QtActions::forward()
 
 QtActions::Info QtActions::bookmarkActiveSymbol()
 {
-	return Info(tr("Bookmark Active Symbol..."), StandardKey::Save);
+	return Info(tr("Bookmark Active Symbol..."), QKeySequence::Save);
+}
+
+QtActions::Info QtActions::bookmarkNode()
+{
+	return Info(tr("Bookmark Node..."), QKeySequence::Save);
 }
 
 QtActions::Info QtActions::bookmarkManager()
@@ -447,7 +456,7 @@ QtActions::Info QtActions::bookmarkManager()
 
 QtActions::Info QtActions::activateBookmark()
 {
-	Info info(tr("Activate bookmark"), MOUSE_LEFT_CLICK, MOUSE_LEFT_DOUBLE_CLICK);
+	Info info(tr("Activate bookmark"), QList<QString>({MOUSE_LEFT_CLICK, MOUSE_LEFT_DOUBLE_CLICK}));
 	
 	return info;
 }
@@ -478,6 +487,28 @@ QtActions::Info QtActions::screenSearchClose()
 	return Info(tr("Close"), Qt::Key_Escape);
 }
 
+// 'Help' keys:
+
+QtActions::Info QtActions::showKeyboardShortcuts()
+{
+	return Info(tr("Keyboard Shortcuts..."), Qt::Key_F1);
+}
+
+QtActions::Info QtActions::showLegend()
+{
+	return Info(tr("Show legend"), Qt::ShiftModifier | Qt::Key_F1);
+}
+
+// Miscellaneous:
+
+QtActions::Info QtActions::textEncoding()
+{
+	return Info(tr("Text Encoding"), QtActions::preferences().shortcut());
+}
+
+// Pseudo mouse keys:
+
+
 QtActions::Info QtActions::showInIDEWithMouse()
 {
 	return Info(tr("Show Definition in IDE"), toString(Qt::ControlModifier) + MOUSE_LEFT_CLICK);
@@ -503,13 +534,4 @@ QtActions::Info QtActions::hideEdgeWithMouse()
 	return Info(tr("Hide Edge"), toString(Qt::AltModifier) + MOUSE_LEFT_CLICK);
 }
 
-QtActions::Info QtActions::showKeyboardShortcuts()
-{
-	return Info(tr("Keyboard Shortcuts..."), Qt::Key_F1);
-}
-
-QtActions::Info QtActions::showLegend()
-{
-	return Info(tr("Show legend"), Qt::ShiftModifier | Qt::Key_F1);
-}
 

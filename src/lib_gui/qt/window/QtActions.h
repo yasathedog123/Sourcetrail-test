@@ -5,37 +5,33 @@
 #include <QKeySequence>
 #include <QList>
 
-class QtActions final {
+class QtActions final
+{
 	Q_DECLARE_TR_FUNCTIONS(QtActions)
-	
+
 public:
-	static const char SHORTCUT_SEPARATOR[];
-	
-	static QString appendShortcut(const QString &s, const QString &shortcut);
-	static QString appendShortcut(const QString &s, const QString &shortcut1, const QString &shortcut2);
-	
-	class Info {
-		public:
-			Info(QString text, QString shortcut);
-			Info(QString text, QList<QString> shortcuts);
-			
-			Info(QString text, QKeySequence shortcut);
-			Info(QString text, QList<QKeySequence> shortcuts);
-			
-			Info(QString text, QString shortcut1, QString shortcut2);
-			
-			QString text() const;
-			QString plainText() const; // without '&' and/or '...'
-			
-			QString shortcut() const;
-			QList<QString> shortcuts() const;
-			
-			QString tooltip() const;
-			
-		private:
-			QString m_text;
-			QString m_tooltip;
-			QList<QString> m_shortcuts;
+	class Info
+	{
+	public:
+		Info(const QString &text, const QString &shortcut);
+		Info(const QString &text, const QList<QString> &shortcuts);
+
+		Info(const QString &text, const QKeySequence &shortcut);
+		Info(const QString &text, const QList<QKeySequence> &shortcuts);
+
+		QString text() const;
+		QString shortcut() const;
+		QString tooltip() const;
+		QString menuText() const;
+
+		// For 'Keyboard shortcuts...' table:
+		QString name() const; // without '&' and/or '...'
+		QString shortcuts() const;
+
+	private:
+		const QString m_text;
+		const QString m_tooltip;
+		const QList<QString> m_shortcuts;
 	};
 	// Project keys:
 
@@ -44,7 +40,7 @@ public:
 	static Info exit();
 
 	// Edit keys:
-	
+
 	static Info refresh();
 	static Info fullRefresh();
 	static Info findSymbol();
@@ -57,10 +53,12 @@ public:
 	static Info customTrailDialog();
 	static Info toOverview();
 	static Info saveGraphAsImage();
+	static Info saveAsImage();
+
 	static Info preferences();
 
 	// View keys:
-	
+
 	static Info newTab();
 	static Info closeTab();
 	static Info selectNextTab();
@@ -68,7 +66,7 @@ public:
 	static Info largerFont();
 	static Info smallerFont();
 	static Info resetFontSize();
-	
+
 	static Info switchGraphCodeFocus();
 	static Info moveCodeFocus();
 	static Info moveReferenceFocus();
@@ -82,13 +80,13 @@ public:
 	static Info activateNodeNewTab();
 	static Info scrollGraphArea();
 	static Info refreshUI();
-	
+
 	static Info zoomIn();
 	static Info zoomOut();
 	static Info resetZoom();
 
 	// History keys:
-	
+
 	static Info back();
 	static Info forward();
 
@@ -97,16 +95,26 @@ public:
 	static Info bookmarkActiveSymbol();
 	static Info bookmarkManager();
 	static Info activateBookmark();
-	
+	static Info bookmarkNode();
+
 	// Screen search keys:
-	
+
 	static Info findOnScreen();
 	static Info screenSearchNext();
 	static Info screenSearchPrevious();
 	static Info screenSearchClose();
-	
+
+	// 'Help' keys:
+
+	static Info showKeyboardShortcuts();
+	static Info showLegend();
+
+	// Miscellaneous:
+
+	static Info textEncoding();
+
 	// Pseudo mouse keys:
-	
+
 	static Info zoomInWithMouse();
 	static Info zoomOutWithMouse();
 	static Info expandNodeWithMouse();
@@ -116,11 +124,6 @@ public:
 	static Info showDefinitionWithMouse();
 	static Info hideNodeWithMouse();
 	static Info hideEdgeWithMouse();
-	
-	// 'Help' keys:
-	
-	static Info showKeyboardShortcuts();
-	static Info showLegend();
 };
 
 #endif

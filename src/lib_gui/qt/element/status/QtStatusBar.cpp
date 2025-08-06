@@ -101,7 +101,7 @@ QtStatusBar::QtStatusBar()
 		addPermanentWidget(m_vlineTextEncoding);
 		
 		m_textEncoding = new QLabel(this);
-		m_textEncoding->setToolTip(QtActions::appendShortcut(tr("Text Encoding"), QtActions::preferences().shortcut()));
+		m_textEncoding->setToolTip(QtActions::textEncoding().tooltip());
 		addPermanentWidget(m_textEncoding);
 	}
 }

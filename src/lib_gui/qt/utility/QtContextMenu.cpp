@@ -1,15 +1,16 @@
 #include "QtContextMenu.h"
 
+#include "MessageHistoryRedo.h"
+#include "MessageHistoryUndo.h"
+#include "logging.h"
+#include "QtActions.h"
+
 #include <QApplication>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QDesktopServices>
 #include <QDir>
 #include <QUrl>
-
-#include "MessageHistoryRedo.h"
-#include "MessageHistoryUndo.h"
-#include "logging.h"
 
 QtContextMenu* QtContextMenu::s_instance;
 
@@ -61,16 +62,16 @@ void QtContextMenu::addFileActions(const FilePath& filePath)
 
 QtContextMenu* QtContextMenu::getInstance()
 {
-	if (!s_instance)
+	if (s_instance == nullptr)
 	{
 		s_instance = new QtContextMenu();
 
-		s_undoAction = new QAction(tr("Back"), s_instance);
+		s_undoAction = new QAction(QtActions::back().menuText(), s_instance);
 		s_undoAction->setStatusTip(tr("Go back to last active symbol"));
 		s_undoAction->setToolTip(tr("Go back to last active symbol"));
 		connect(s_undoAction, &QAction::triggered, s_instance, &QtContextMenu::undoActionTriggered);
 
-		s_redoAction = new QAction(tr("Forward"), s_instance);
+		s_redoAction = new QAction(QtActions::forward().menuText(), s_instance);
 		s_redoAction->setStatusTip(tr("Go forward to next active symbol"));
 		s_redoAction->setToolTip(tr("Go forward to next active symbol"));
 		connect(s_redoAction, &QAction::triggered, s_instance, &QtContextMenu::redoActionTriggered);

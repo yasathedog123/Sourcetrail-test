@@ -57,7 +57,8 @@ QtTabsView::QtTabsView(ViewLayout* viewLayout)
 	layout->addWidget(back);
 
 	connect(addButton, &QPushButton::clicked, this, &QtTabsView::addTab);
-	connect(m_tabBar, &QtTabBar::signalCloseTabsToRight, this, &QtTabsView::closeTabsToRight);
+	connect(m_tabBar, &QtTabBar::closeTabsToRight, this, &QtTabsView::closeTabsToRight);
+	connect(m_tabBar, &QtTabBar::closeTab, this, &QtTabsView::removeTab);
 }
 
 void QtTabsView::createWidgetWrapper()
