@@ -180,7 +180,7 @@ QtActions::Info QtActions::findText()
 
 QtActions::Info QtActions::nextReference()
 {
-	return Info(tr("Next Reference"), Qt::ControlModifier | Qt::Key_G);
+	return Info(tr("Next Reference"), Qt::ControlModifier | KEY_NEXT_PREVIOUS_REFERENCE);
 }
 
 QtActions::Info QtActions::previousReference()
@@ -190,7 +190,7 @@ QtActions::Info QtActions::previousReference()
 
 QtActions::Info QtActions::nextLocalReference()
 {
-	return Info(tr("Next Local Reference"), Qt::ControlModifier | Qt::Key_L);
+	return Info(tr("Next Local Reference"), Qt::ControlModifier | KEY_VIM_RIGHT);
 }
 
 QtActions::Info QtActions::previousLocalReference()
@@ -200,12 +200,12 @@ QtActions::Info QtActions::previousLocalReference()
 
 QtActions::Info QtActions::customTrailDialog()
 {
-	return Info(tr("Custom Trail..."), Qt::ControlModifier | Qt::Key_U);
+	return Info(tr("Custom Trail..."), Qt::ControlModifier | KEY_CUSTOM_TRAIL_DIALOG);
 }
 
 QtActions::Info QtActions::toOverview()
 {
-	return Info(tr("&To overview"), Qt::ControlModifier | Qt::Key_Home);
+	return Info(tr("&To overview"), Qt::ControlModifier | KEY_OVERVIEW);
 }
 
 QtActions::Info QtActions::saveGraphAsImage()
@@ -218,11 +218,17 @@ QtActions::Info QtActions::saveAsImage()
 	return Info(tr("Save as Image..."), QKeySequence::SaveAs);
 }
 
+QtActions::Info QtActions::copyToClipboard()
+{
+	// Alternative: QKeySequence::Copy
+	return Info(tr("Save to Clipboard"), Qt::ControlModifier | KEY_COPY_TO_CLIPBOARD);
+}
+
 QtActions::Info QtActions::preferences()
 {
 	// Alternative: QKeySequence::Preferences is only defined for MacOS!
 
-	return Info(tr("Preferences..."), Qt::ControlModifier | Qt::Key_Comma);
+	return Info(tr("Preferences..."), Qt::ControlModifier | KEY_PREFERENCES);
 }
 
 QtActions::Info QtActions::newTab()
@@ -236,7 +242,7 @@ QtActions::Info QtActions::closeTab()
 		toString(QKeySequence::Close),
 
 		// Handled in QtMainWindow::keyPressEvent:
-		toString(Qt::ControlModifier | Qt::Key_F4),
+		toString(Qt::ControlModifier | KEY_CLOSE_TAB),
 
 		MOUSE_MIDDLE_CLICK
 	}));
@@ -268,7 +274,7 @@ QtActions::Info QtActions::smallerFont()
 
 QtActions::Info QtActions::resetFontSize()
 {
-	return Info(tr("Reset Font Size"), Qt::ControlModifier | Qt::Key_0);
+	return Info(tr("Reset Font Size"), Qt::ControlModifier | KEY_RESET);
 }
 
 QtActions::Info QtActions::switchGraphCodeFocus()
@@ -279,34 +285,34 @@ QtActions::Info QtActions::switchGraphCodeFocus()
 QtActions::Info QtActions::moveCodeFocus()
 {
 	return Info(tr("Move Focus Within Code"), {
-		Qt::Key_W,    Qt::Key_A,     Qt::Key_S,  Qt::Key_D,
-		Qt::Key_H,    Qt::Key_J,     Qt::Key_K,  Qt::Key_L,
-		Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down
+		Qt::Key_Left,  Qt::Key_Right,  Qt::Key_Up,  Qt::Key_Down,
+		KEY_VIM_LEFT,  KEY_VIM_RIGHT,  KEY_VIM_UP,  KEY_VIM_DOWN,
+		KEY_GAME_LEFT, KEY_GAME_RIGHT, KEY_GAME_UP, KEY_GAME_DOWN
 	});
 }
 
 QtActions::Info QtActions::moveReferenceFocus()
 {
 	return Info(tr("Move Focus to Closest Reference"), {
-		Qt::ShiftModifier | Qt::Key_W,    Qt::ShiftModifier | Qt::Key_A,     Qt::ShiftModifier | Qt::Key_S,  Qt::ShiftModifier | Qt::Key_D,
-		Qt::ShiftModifier | Qt::Key_H,    Qt::ShiftModifier | Qt::Key_J,     Qt::ShiftModifier | Qt::Key_K,  Qt::ShiftModifier | Qt::Key_L,
-		Qt::ShiftModifier | Qt::Key_Left, Qt::ShiftModifier | Qt::Key_Right, Qt::ShiftModifier | Qt::Key_Up, Qt::ShiftModifier | Qt::Key_Down
+		Qt::ShiftModifier | Qt::Key_Left,  Qt::ShiftModifier | Qt::Key_Right,  Qt::ShiftModifier | Qt::Key_Up,  Qt::ShiftModifier | Qt::Key_Down,
+		Qt::ShiftModifier | KEY_VIM_LEFT,  Qt::ShiftModifier | KEY_VIM_RIGHT,  Qt::ShiftModifier | KEY_VIM_UP,  Qt::ShiftModifier | KEY_VIM_DOWN,
+		Qt::ShiftModifier | KEY_GAME_LEFT, Qt::ShiftModifier | KEY_GAME_RIGHT, Qt::ShiftModifier | KEY_GAME_UP, Qt::ShiftModifier | KEY_GAME_DOWN,
 	});
 }
 
 QtActions::Info QtActions::activateLocation()
 {
 	return Info(tr("Activate Location"), QList<QKeySequence>({
-		Qt::Key_Return,
-		Qt::Key_E
+		KEY_ACTIVATE_FOCUS_1,
+		KEY_ACTIVATE_FOCUS_2
 	}));
 }
 
 QtActions::Info QtActions::activateLocationNewTab()
 {
 	return Info(tr("Activate Location in New Tab"), QList<QKeySequence>({
-		Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_Return,
-		Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_E
+		Qt::ControlModifier | Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_1,
+		Qt::ControlModifier | Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_2
 	}));
 }
 
@@ -323,34 +329,34 @@ QtActions::Info QtActions::scrollCodeArea()
 QtActions::Info QtActions::moveNodeFocus()
 {
 	return Info(tr("Move Focus Within Nodes"), {
-		Qt::Key_W,    Qt::Key_A,     Qt::Key_S,  Qt::Key_D,
-		Qt::Key_H,    Qt::Key_J,     Qt::Key_K,  Qt::Key_L,
-		Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down
+		Qt::Key_Left,  Qt::Key_Right,  Qt::Key_Up,  Qt::Key_Down,
+		KEY_VIM_LEFT,  KEY_VIM_RIGHT,  KEY_VIM_UP,  KEY_VIM_DOWN,
+		KEY_GAME_LEFT, KEY_GAME_RIGHT, KEY_GAME_UP, KEY_GAME_DOWN
 	});
 }
 
 QtActions::Info QtActions::moveEdgeFocus()
 {
 	return Info(tr("Move Focus Within Edges"), {
-		Qt::ShiftModifier | Qt::Key_W,    Qt::ShiftModifier | Qt::Key_A,     Qt::ShiftModifier | Qt::Key_S,  Qt::ShiftModifier | Qt::Key_D,
-		Qt::ShiftModifier | Qt::Key_H,    Qt::ShiftModifier | Qt::Key_J,     Qt::ShiftModifier | Qt::Key_K,  Qt::ShiftModifier | Qt::Key_L,
-		Qt::ShiftModifier | Qt::Key_Left, Qt::ShiftModifier | Qt::Key_Right, Qt::ShiftModifier | Qt::Key_Up, Qt::ShiftModifier | Qt::Key_Down
+		Qt::ShiftModifier | Qt::Key_Left,  Qt::ShiftModifier | Qt::Key_Right,  Qt::ShiftModifier | Qt::Key_Up,  Qt::ShiftModifier | Qt::Key_Down,
+		Qt::ShiftModifier | KEY_VIM_LEFT,  Qt::ShiftModifier | KEY_VIM_RIGHT,  Qt::ShiftModifier | KEY_VIM_UP,  Qt::ShiftModifier | KEY_VIM_DOWN,
+		Qt::ShiftModifier | KEY_GAME_LEFT, Qt::ShiftModifier | KEY_GAME_RIGHT, Qt::ShiftModifier | KEY_GAME_UP, Qt::ShiftModifier | KEY_GAME_DOWN
 	});
 }
 
 QtActions::Info QtActions::activateNodeEdge()
 {
 	return Info(tr("Activate Node/Edge"), QList<QKeySequence>({
-		Qt::Key_Return,
-		Qt::Key_E
+		KEY_ACTIVATE_FOCUS_1,
+		KEY_ACTIVATE_FOCUS_2
 	}));
 }
 
 QtActions::Info QtActions::expandOrCollapseNode()
 {
 	return Info(tr("Expand/Collapse Node"), QList<QKeySequence>({
-		Qt::ShiftModifier | Qt::Key_Return,
-		Qt::ShiftModifier | Qt::Key_E
+		Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_1,
+		Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_2
 	}));
 
 }
@@ -358,8 +364,8 @@ QtActions::Info QtActions::expandOrCollapseNode()
 QtActions::Info QtActions::activateNodeNewTab()
 {
 	return Info(tr("Activate Node in New Tab"), QList<QKeySequence>({
-		Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_Return,
-		Qt::ControlModifier | Qt::ShiftModifier | Qt::Key_E
+		Qt::ControlModifier | Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_1,
+		Qt::ControlModifier | Qt::ShiftModifier | KEY_ACTIVATE_FOCUS_2
 	}));
 }
 
@@ -375,7 +381,7 @@ QtActions::Info QtActions::scrollGraphArea()
 
 QtActions::Info QtActions::refreshUI()
 {
-	return Info(tr("Refresh UI"), Qt::ControlModifier | Qt::AltModifier | Qt::Key_R);
+	return Info(tr("Refresh UI"), Qt::ControlModifier | Qt::AltModifier | KEY_REFRESH_UI);
 }
 
 QtActions::Info QtActions::zoomIn()
@@ -406,7 +412,7 @@ QtActions::Info QtActions::zoomOutWithMouse()
 
 QtActions::Info QtActions::resetZoom()
 {
-	return Info(tr("Reset Zoom"), Qt::Key_0);
+	return Info(tr("Reset Zoom"), KEY_RESET);
 }
 
 
@@ -424,9 +430,9 @@ QtActions::Info QtActions::back()
 {
 	return Info(tr("Back"), QList<QKeySequence>({
 		QKeySequence::Back,
-		Qt::Key_Z,
-		Qt::Key_Y,
-		Qt::Key_Backspace
+		KEY_HISTORY_UNDO_REDO_1,
+		KEY_HISTORY_UNDO_REDO_2,
+		KEY_HISTORY_UNDO,
 	}));
 }
 
@@ -434,8 +440,8 @@ QtActions::Info QtActions::forward()
 {
 	return Info(tr("Forward"), QList<QKeySequence>({
 		QKeySequence::Forward,
-		Qt::ShiftModifier | Qt::Key_Z,
-		Qt::ShiftModifier | Qt::Key_Y
+		Qt::ShiftModifier | KEY_HISTORY_UNDO_REDO_1,
+		Qt::ShiftModifier | KEY_HISTORY_UNDO_REDO_2
 	}));
 }
 
@@ -451,7 +457,7 @@ QtActions::Info QtActions::bookmarkNode()
 
 QtActions::Info QtActions::bookmarkManager()
 {
-	return Info(tr("Bookmark Manager..."), Qt::ControlModifier | Qt::Key_B);
+	return Info(tr("Bookmark Manager..."), Qt::ControlModifier | KEY_BOOKMARK);
 }
 
 QtActions::Info QtActions::activateBookmark()
@@ -464,11 +470,11 @@ QtActions::Info QtActions::activateBookmark()
 QtActions::Info QtActions::findOnScreen()
 {
 	return Info(tr("&Find On-Screen"), QList<QKeySequence>({
-		Qt::ControlModifier | Qt::Key_D,
+		Qt::ControlModifier | KEY_GAME_RIGHT,
 
 		// Handled in QtMainWindow::keyPressEvent:
-		Qt::Key_Slash,
-		Qt::Key_Question
+		KEY_SCREEN_SEARCH_1,
+		KEY_SCREEN_SEARCH_2
 	}));
 }
 
@@ -491,12 +497,12 @@ QtActions::Info QtActions::screenSearchClose()
 
 QtActions::Info QtActions::showKeyboardShortcuts()
 {
-	return Info(tr("Keyboard Shortcuts..."), Qt::Key_F1);
+	return Info(tr("Keyboard Shortcuts..."), KEY_HELP);
 }
 
 QtActions::Info QtActions::showLegend()
 {
-	return Info(tr("Show legend"), Qt::ShiftModifier | Qt::Key_F1);
+	return Info(tr("Show legend"), Qt::ShiftModifier | KEY_HELP);
 }
 
 // Miscellaneous:

@@ -100,7 +100,7 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	m_exportGraphAction->setToolTip(tr("Save this graph as image file"));
 	connect(m_exportGraphAction, &QAction::triggered, this, &QtGraphicsView::exportGraph);
 
-	m_copyGraphAction = new QAction(tr("Save to Clipboard"), this);
+	m_copyGraphAction = new QAction(QtActions::copyToClipboard().menuText(), this);
 	m_copyGraphAction->setStatusTip(tr("Save this graph as image to the Clipboard"));
 	m_copyGraphAction->setToolTip(tr("Save this graph as image to the Clipboard"));
 	connect(m_copyGraphAction, &QAction::triggered, this, &QtGraphicsView::copyGraph);
@@ -294,8 +294,8 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 			m_up = true;
 			break;
 		}
-	case Qt::Key_K:
-	case Qt::Key_W:
+	case KEY_VIM_UP:
+	case KEY_GAME_UP:
 		if (!ctrl && !alt)
 		{
 			m_focusHandler->focusNext(GraphFocusHandler::Direction::UP, shift);
@@ -308,8 +308,8 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 			m_down = true;
 			break;
 		}
-	case Qt::Key_J:
-	case Qt::Key_S:
+	case KEY_VIM_DOWN:
+	case KEY_GAME_DOWN:
 		if (!alt && !ctrl)
 		{
 			m_focusHandler->focusNext(GraphFocusHandler::Direction::DOWN, shift);
@@ -322,8 +322,8 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 			m_left = true;
 			break;
 		}
-	case Qt::Key_H:
-	case Qt::Key_A:
+	case KEY_VIM_LEFT:
+	case KEY_GAME_LEFT:
 		if (!alt && !ctrl)
 		{
 			m_focusHandler->focusNext(GraphFocusHandler::Direction::LEFT, shift);
@@ -336,16 +336,16 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 			m_right = true;
 			break;
 		}
-	case Qt::Key_L:
-	case Qt::Key_D:
+	case KEY_VIM_RIGHT:
+	case KEY_GAME_RIGHT:
 		if (!alt && !ctrl)
 		{
 			m_focusHandler->focusNext(GraphFocusHandler::Direction::RIGHT, shift);
 		}
 		break;
 
-	case Qt::Key_E:
-	case Qt::Key_Return:
+	case KEY_ACTIVATE_FOCUS_1:
+	case KEY_ACTIVATE_FOCUS_2:
 		if (ctrl && shift)
 		{
 			m_focusHandler->activateFocus(true);
@@ -360,8 +360,8 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 		}
 		break;
 
-	case Qt::Key_Y:
-	case Qt::Key_Z:
+	case KEY_HISTORY_UNDO_REDO_1:
+	case KEY_HISTORY_UNDO_REDO_2:
 		if (!alt && !ctrl)
 		{
 			if (shift)
@@ -375,7 +375,7 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 		}
 		break;
 
-	case Qt::Key_0:
+	case KEY_RESET:
 		setZoomFactor(1.0f);
 		updateTransform();
 		break;
@@ -403,11 +403,11 @@ void QtGraphicsView::keyReleaseEvent(QKeyEvent* event)
 	switch (event->key())
 	{
 	case Qt::Key_Up:
-	case Qt::Key_W:
+	case KEY_GAME_UP:
 		m_up = false;
 		break;
 	case Qt::Key_Down:
-	case Qt::Key_S:
+	case KEY_GAME_DOWN:
 		m_down = false;
 		break;
 	case Qt::Key_Left:

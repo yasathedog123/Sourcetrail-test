@@ -765,34 +765,34 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 	{
 	case Qt::Key_Up:
 		moveView(CodeFocusHandler::Direction::UP);
-	case Qt::Key_K:
-	case Qt::Key_W:
+	case KEY_VIM_UP:
+	case KEY_GAME_UP:
 		moveFocus(CodeFocusHandler::Direction::UP);
 		break;
 
 	case Qt::Key_Down:
 		moveView(CodeFocusHandler::Direction::DOWN);
-	case Qt::Key_J:
-	case Qt::Key_S:
+	case KEY_VIM_DOWN:
+	case KEY_GAME_DOWN:
 		moveFocus(CodeFocusHandler::Direction::DOWN);
 		break;
 
 	case Qt::Key_Left:
 		moveView(CodeFocusHandler::Direction::LEFT);
-	case Qt::Key_H:
-	case Qt::Key_A:
+	case KEY_VIM_LEFT:
+	case KEY_GAME_LEFT:
 		moveFocus(CodeFocusHandler::Direction::LEFT);
 		break;
 
 	case Qt::Key_Right:
 		moveView(CodeFocusHandler::Direction::RIGHT);
-	case Qt::Key_L:
-	case Qt::Key_D:
+	case KEY_VIM_RIGHT:
+	case KEY_GAME_RIGHT:
 		moveFocus(CodeFocusHandler::Direction::RIGHT);
 		break;
 
-	case Qt::Key_E:
-	case Qt::Key_Return:
+	case KEY_ACTIVATE_FOCUS_1:
+	case KEY_ACTIVATE_FOCUS_2:
 		if (currentFocus.area && currentFocus.locationId)
 		{
 			if (ctrl && shift)
@@ -814,8 +814,8 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		}
 		break;
 
-	case Qt::Key_Y:
-	case Qt::Key_Z:
+	case KEY_HISTORY_UNDO_REDO_1:
+	case KEY_HISTORY_UNDO_REDO_2:
 		if (!alt && !ctrl)
 		{
 			if (shift)
@@ -829,7 +829,7 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		}
 		break;
 
-	case Qt::Key_C:
+	case KEY_COPY_TO_CLIPBOARD:
 		if (ctrl && !alt && !shift)
 		{
 			m_current->copySelection();

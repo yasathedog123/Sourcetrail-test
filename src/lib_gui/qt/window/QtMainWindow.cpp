@@ -441,7 +441,7 @@ void QtMainWindow::keyPressEvent(QKeyEvent* event)
 {
 	switch (event->key())
 	{
-	case Qt::Key_Backspace:
+	case KEY_HISTORY_UNDO:
 		MessageHistoryUndo().dispatch();
 		break;
 
@@ -450,19 +450,19 @@ void QtMainWindow::keyPressEvent(QKeyEvent* event)
 		emit hideIndexingDialog();
 		break;
 
-	case Qt::Key_Slash:
-	case Qt::Key_Question:
+	case KEY_SCREEN_SEARCH_1:
+	case KEY_SCREEN_SEARCH_2:
 		emit showScreenSearch();
 		break;
 
-	case Qt::Key_R:
+	case KEY_REFRESH_UI:
 		if (event->modifiers() & (Qt::ControlModifier | Qt::AltModifier))
 		{
 			MessageRefreshUI().dispatch();
 		}
 		break;
 
-	case Qt::Key_F4:
+	case KEY_CLOSE_TAB:
 		if (event->modifiers() & Qt::ControlModifier)
 		{
 			closeTab();
