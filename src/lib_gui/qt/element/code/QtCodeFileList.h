@@ -97,7 +97,6 @@ private:
 	QScrollBar* m_mirroredSnippetScrollBar = nullptr;
 
 	QtScrollSpeedChangeListener m_scrollSpeedChangeListener;
-	int m_styleSize = 0;
 };
 
 #endif	  // QT_CODE_FILE_LIST

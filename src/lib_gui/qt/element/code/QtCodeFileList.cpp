@@ -58,7 +58,6 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator *navigator)
 	{
 		// set style on scrollbar because it always has bright background by default
 		m_lastSnippetScrollBar->setStyleSheet(QtResources::loadStyleSheet(QtResources::MAIN_SCROLLBAR_CSS));
-		m_styleSize = m_lastSnippetScrollBar->styleSheet().size();
 	}
 	else
 	{
@@ -592,7 +591,6 @@ void QtCodeFileList::updateLastSnippetScrollBar(QScrollBar* mirroredScrollBar)
 			{
 				// set style on scrollbar because it always has bright background by default
 				QString style = m_lastSnippetScrollBar->styleSheet();
-				style.resize(m_styleSize);
 				m_lastSnippetScrollBar->setStyleSheet(
 					style +
 					("\nQScrollBar:horizontal { background: " +
