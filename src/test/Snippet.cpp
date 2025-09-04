@@ -27,6 +27,41 @@ static constexpr char multiLineRawString[] = R"(
 	}
 )";
 
+[[maybe_unused]]
+static constexpr int integerLiterals[] = {
+	42,
+	42u,
+	42U,
+
+	052,
+	052u,
+	052U,
+
+	0x2A,
+	0x2Au,
+	0x2AU,
+	0X2Au,
+	0X2AU,
+
+	0b101010,
+	0B101010,
+
+	42l,
+	42L,
+
+	42ll,
+	42LL
+
+	// 42z,
+	// 42Z
+};
+
+static constexpr float floatLiteral = 13.4f;
+static constexpr double doubleLiteral = 13.4;
+
+static constexpr double scientificLiteral_1 = 1.22e11;
+static constexpr double scientificLiteral_2 = 1.22e-11;
+
 void callFunction(const std::string &)
 {
 }

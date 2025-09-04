@@ -13,6 +13,8 @@ UseTab: Always
 # UseTab: AlignWithSpaces
 # AlignConsecutiveAssignments: Consecutive
 
+IndentCaseLabels: true
+
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
@@ -24,6 +26,16 @@ BreakTemplateDeclarations: Yes
 BreakBeforeBinaryOperators: None
 
 FixNamespaceComments: true
+
+LambdaBodyIndentation: OuterScope
+
+# Constructor settings:
+PackConstructorInitializers: Never
+BreakConstructorInitializers: BeforeComma
+
+PenaltyBreakOpenParenthesis: 1
+
+# BinPackArguments: false (Breaks connect calls!)
 
 # Basically the 'Allman' style, but necessary for 'BeforeLambdaBody'
 BreakBeforeBraces: Custom
@@ -77,13 +89,3 @@ BraceWrapping:
 # Setting this option to any value other than Leave could lead to incorrect code formatting due to clang-format’s lack of
 # complete semantic information. As such, extra care should be taken to review code changes made by this option.
 #RemoveParentheses: MultipleParentheses
-
-LambdaBodyIndentation: OuterScope
-
-# Constructor settings:
-PackConstructorInitializers: Never
-BreakConstructorInitializers: BeforeComma
-
-PenaltyBreakOpenParenthesis: 1
-
-# BinPackArguments: false (Breaks connect calls!)

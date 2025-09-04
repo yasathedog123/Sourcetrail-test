@@ -147,7 +147,7 @@
 	},
 	{
 		"type" : "number",
-		"patterns" : [ "\\b[0-9]+\\b" ]
+		"patterns" : [ "\\b[0-9a-fA-FxXbBuUlLfFeEpP'+\\-._]+\\b" ]
 	},
 	{
 		"type" : "quotation",
