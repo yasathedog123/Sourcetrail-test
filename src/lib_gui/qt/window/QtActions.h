@@ -5,58 +5,57 @@
 #include <QKeySequence>
 #include <QList>
 
-// This list contains only the keys which are specifically handled in various keyPressEvent/keyReleaseEvent:
+class QKeyEvent;
 
-constexpr Qt::Key KEY_HELP                     = Qt::Key_F1;
-constexpr Qt::Key KEY_COPY_TO_CLIPBOARD        = Qt::Key_C;
-constexpr Qt::Key KEY_RESET                    = Qt::Key_0;
-constexpr Qt::Key KEY_BOOKMARK                 = Qt::Key_B;
-constexpr Qt::Key KEY_OVERVIEW                 = Qt::Key_Home;
-constexpr Qt::Key KEY_CLOSE_TAB                = Qt::Key_F4;
-constexpr Qt::Key KEY_REFRESH_UI               = Qt::Key_R;
-constexpr Qt::Key KEY_PREFERENCES              = Qt::Key_Comma;
-constexpr Qt::Key KEY_CUSTOM_TRAIL_DIALOG      = Qt::Key_U;
-constexpr Qt::Key KEY_NEXT_PREVIOUS_REFERENCE  = Qt::Key_G;
+enum class Action {
+	Unknown,
 
-// History keys:
+	MoveFocusUp,
+	MoveFocusDown,
+	MoveFocusLeft,
+	MoveFocusRight,
+	SwitchGraphCodeFocus,
 
-constexpr Qt::Key KEY_HISTORY_UNDO        = Qt::Key_Backspace;
-constexpr Qt::Key KEY_HISTORY_UNDO_REDO_1 = Qt::Key_Y;
-constexpr Qt::Key KEY_HISTORY_UNDO_REDO_2 = Qt::Key_Z;
+	MoveViewUp,
+	MoveViewDown,
+	MoveViewLeft,
+	MoveViewRight,
 
-constexpr Qt::Key KEY_ACTIVATE_FOCUS_1 = Qt::Key_Return;
-constexpr Qt::Key KEY_ACTIVATE_FOCUS_2 = Qt::Key_E;
+	MoveReferenceFocusUp,
+	MoveReferenceFocusDown,
+	MoveReferenceFocusLeft,
+	MoveReferenceFocusRight,
 
-constexpr Qt::Key KEY_SCREEN_SEARCH_1 = Qt::Key_Slash;
-constexpr Qt::Key KEY_SCREEN_SEARCH_2 = Qt::Key_Question;
+	ActivateFocus,
+	ActivateFocusInNewTab,
+	ExpandFocus,
 
-// Vim keys:
+	RedoHistory,
+	UndoHistory,
 
-constexpr Qt::Key KEY_VIM_UP    = Qt::Key_K;
-constexpr Qt::Key KEY_VIM_DOWN  = Qt::Key_J;
-constexpr Qt::Key KEY_VIM_LEFT  = Qt::Key_H;
-constexpr Qt::Key KEY_VIM_RIGHT = Qt::Key_L;
+	ZoomIn,
+	ZoomOut,
+	ResetZoom,
 
-// Game/WASD keys:
-
-constexpr Qt::Key KEY_GAME_UP    = Qt::Key_W;
-constexpr Qt::Key KEY_GAME_DOWN  = Qt::Key_S;
-constexpr Qt::Key KEY_GAME_LEFT  = Qt::Key_A;
-constexpr Qt::Key KEY_GAME_RIGHT = Qt::Key_D;
+	Cancel,
+	CloseTab,
+	RefreshUI,
+	SearchScreen,
+	CopySelection
+};
 
 class QtActions final
 {
 	Q_DECLARE_TR_FUNCTIONS(QtActions)
 
 public:
+	static Action detectAction(const QKeyEvent *event);
+
 	class Info
 	{
 	public:
 		Info(const QString &text, const QString &shortcut);
-		Info(const QString &text, const QList<QString> &shortcuts);
-
-		Info(const QString &text, const QKeySequence &shortcut);
-		Info(const QString &text, const QList<QKeySequence> &shortcuts);
+		Info(const QString &text, const std::initializer_list<QString> shortcuts);
 
 		QString text() const;
 		QString shortcut() const;

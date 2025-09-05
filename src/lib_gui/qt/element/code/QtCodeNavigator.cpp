@@ -680,165 +680,153 @@ void QtCodeNavigator::showEvent(QShowEvent*  /*event*/)
 	scrollTo(m_scrollParams, false, true);
 }
 
-void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
+void QtCodeNavigator::keyPressEvent(QKeyEvent *event)
 {
-	bool shift = event->modifiers() & Qt::ShiftModifier;
-	bool alt = event->modifiers() & Qt::AltModifier;
-	bool ctrl = event->modifiers() & Qt::ControlModifier;
-	const CodeFocusHandler::Focus& currentFocus = getCurrentFocus();
+	const CodeFocusHandler::Focus &currentFocus = getCurrentFocus();
 
 	FilePath currentFilePath;
-	if (currentFocus.file)
+	if (currentFocus.file != nullptr)
 	{
 		currentFilePath = currentFocus.file->getFilePath();
 	}
-	else if (currentFocus.area)
+	else if (currentFocus.area != nullptr)
 	{
 		currentFilePath = currentFocus.area->getFilePath();
 	}
 
-	auto moveFocus = [=, this](CodeFocusHandler::Direction direction) {
-		if (!alt && !ctrl)
+	auto moveReferenceFocus = [=](CodeFocusHandler::Direction direction)
+	{
+		MessageToNextCodeReference(currentFilePath, currentFocus.lineNumber, currentFocus.columnNumber,
+			direction == CodeFocusHandler::Direction::DOWN || direction == CodeFocusHandler::Direction::RIGHT)
+			.dispatch();
+	};
+
+	auto moveFocus = [=, this](CodeFocusHandler::Direction direction)
+	{
+		m_current->moveFocus(currentFocus, direction);
+		scrollToFocus();
+	};
+
+	auto moveView = [=, this](CodeFocusHandler::Direction direction)
+	{
+		QAbstractScrollArea *scrollArea = currentFocus.area;
+		int step = currentFocus.area ? currentFocus.area->lineHeight() * 3 : 50;
+		if (direction == CodeFocusHandler::Direction::DOWN || direction == CodeFocusHandler::Direction::UP)
 		{
-			if (shift)
+			if (m_mode == MODE_LIST)
 			{
-				MessageToNextCodeReference(
-					currentFilePath,
-					currentFocus.lineNumber,
-					currentFocus.columnNumber,
-					direction == CodeFocusHandler::Direction::DOWN ||
-						direction == CodeFocusHandler::Direction::RIGHT)
-					.dispatch();
+				scrollArea = m_list->getScrollArea();
 			}
 			else
 			{
-				m_current->moveFocus(currentFocus, direction);
-				scrollToFocus();
+				step = 3;
+			}
+		}
+
+		if (scrollArea != nullptr)
+		{
+			QScrollBar *horizontalScrollBar = scrollArea->horizontalScrollBar();
+			QScrollBar *verticalScrollBar = scrollArea->verticalScrollBar();
+
+			if (direction == CodeFocusHandler::Direction::DOWN)
+			{
+				verticalScrollBar->setValue(verticalScrollBar->value() + step);
+			}
+			else if (direction == CodeFocusHandler::Direction::UP)
+			{
+				verticalScrollBar->setValue(verticalScrollBar->value() - step);
+			}
+			else if (direction == CodeFocusHandler::Direction::RIGHT)
+			{
+				horizontalScrollBar->setValue(horizontalScrollBar->value() + step);
+			}
+			else if (direction == CodeFocusHandler::Direction::LEFT)
+			{
+				horizontalScrollBar->setValue(horizontalScrollBar->value() - step);
 			}
 		}
 	};
 
-	auto moveView = [=, this](CodeFocusHandler::Direction direction) {
-		if (!alt && !shift && ctrl)
-		{
-			QAbstractScrollArea* scrollArea = currentFocus.area;
-			int step = currentFocus.area ? currentFocus.area->lineHeight() * 3 : 50;
-			if (direction == CodeFocusHandler::Direction::DOWN ||
-				direction == CodeFocusHandler::Direction::UP)
+	Action action;
+	switch (action = QtActions::detectAction(event))
+	{
+		case Action::MoveViewUp:
+			moveView(CodeFocusHandler::Direction::UP);
+			break;
+		case Action::MoveFocusUp:
+			moveFocus(CodeFocusHandler::Direction::UP);
+			break;
+		case Action::MoveReferenceFocusUp:
+			moveReferenceFocus(CodeFocusHandler::Direction::UP);
+			break;
+
+		case Action::MoveViewDown:
+			moveView(CodeFocusHandler::Direction::DOWN);
+			break;
+		case Action::MoveFocusDown:
+			moveFocus(CodeFocusHandler::Direction::DOWN);
+			break;
+		case Action::MoveReferenceFocusDown:
+			moveReferenceFocus(CodeFocusHandler::Direction::DOWN);
+			break;
+
+		case Action::MoveViewLeft:
+			moveView(CodeFocusHandler::Direction::LEFT);
+			break;
+		case Action::MoveFocusLeft:
+			moveFocus(CodeFocusHandler::Direction::LEFT);
+			break;
+		case Action::MoveReferenceFocusLeft:
+			moveReferenceFocus(CodeFocusHandler::Direction::LEFT);
+			break;
+
+		case Action::MoveViewRight:
+			moveView(CodeFocusHandler::Direction::RIGHT);
+			break;
+		case Action::MoveFocusRight:
+			moveFocus(CodeFocusHandler::Direction::RIGHT);
+			break;
+		case Action::MoveReferenceFocusRight:
+			moveReferenceFocus(CodeFocusHandler::Direction::RIGHT);
+			break;
+
+		case Action::ActivateFocus:
+		case Action::ActivateFocusInNewTab:
+			if (currentFocus.area != nullptr && currentFocus.locationId)
 			{
-				if (m_mode == MODE_LIST)
+				if (action == Action::ActivateFocusInNewTab)
 				{
-					scrollArea = m_list->getScrollArea();
+					MessageTabOpenWith(0, currentFocus.locationId).dispatch();
 				}
 				else
 				{
-					step = 3;
+					currentFocus.area->activateLocationId(currentFocus.locationId, false);
 				}
 			}
-
-			if (scrollArea)
+			else if (currentFocus.scopeLine != nullptr)
 			{
-				QScrollBar* horizontalScrollBar = scrollArea->horizontalScrollBar();
-				QScrollBar* verticalScrollBar = scrollArea->verticalScrollBar();
-
-				if (direction == CodeFocusHandler::Direction::DOWN)
-				{
-					verticalScrollBar->setValue(verticalScrollBar->value() + step);
-				}
-				else if (direction == CodeFocusHandler::Direction::UP)
-				{
-					verticalScrollBar->setValue(verticalScrollBar->value() - step);
-				}
-				else if (direction == CodeFocusHandler::Direction::RIGHT)
-				{
-					horizontalScrollBar->setValue(horizontalScrollBar->value() + step);
-				}
-				else if (direction == CodeFocusHandler::Direction::LEFT)
-				{
-					horizontalScrollBar->setValue(horizontalScrollBar->value() - step);
-				}
+				emit currentFocus.scopeLine->clicked();
 			}
-		}
-	};
-
-	switch (event->key())
-	{
-	case Qt::Key_Up:
-		moveView(CodeFocusHandler::Direction::UP);
-	case KEY_VIM_UP:
-	case KEY_GAME_UP:
-		moveFocus(CodeFocusHandler::Direction::UP);
-		break;
-
-	case Qt::Key_Down:
-		moveView(CodeFocusHandler::Direction::DOWN);
-	case KEY_VIM_DOWN:
-	case KEY_GAME_DOWN:
-		moveFocus(CodeFocusHandler::Direction::DOWN);
-		break;
-
-	case Qt::Key_Left:
-		moveView(CodeFocusHandler::Direction::LEFT);
-	case KEY_VIM_LEFT:
-	case KEY_GAME_LEFT:
-		moveFocus(CodeFocusHandler::Direction::LEFT);
-		break;
-
-	case Qt::Key_Right:
-		moveView(CodeFocusHandler::Direction::RIGHT);
-	case KEY_VIM_RIGHT:
-	case KEY_GAME_RIGHT:
-		moveFocus(CodeFocusHandler::Direction::RIGHT);
-		break;
-
-	case KEY_ACTIVATE_FOCUS_1:
-	case KEY_ACTIVATE_FOCUS_2:
-		if (currentFocus.area && currentFocus.locationId)
-		{
-			if (ctrl && shift)
+			else if (currentFocus.file != nullptr)
 			{
-				MessageTabOpenWith(0, currentFocus.locationId).dispatch();
+				currentFocus.file->toggleCollapsed();
 			}
-			else
-			{
-				currentFocus.area->activateLocationId(currentFocus.locationId, false);
-			}
-		}
-		else if (currentFocus.scopeLine)
-		{
-			emit currentFocus.scopeLine->clicked();
-		}
-		else if (currentFocus.file)
-		{
-			currentFocus.file->toggleCollapsed();
-		}
-		break;
+			break;
 
-	case KEY_HISTORY_UNDO_REDO_1:
-	case KEY_HISTORY_UNDO_REDO_2:
-		if (!alt && !ctrl)
-		{
-			if (shift)
-			{
-				MessageHistoryRedo().dispatch();
-			}
-			else
-			{
-				MessageHistoryUndo().dispatch();
-			}
-		}
-		break;
+		case Action::RedoHistory:
+			MessageHistoryRedo().dispatch();
+			break;
 
-	case KEY_COPY_TO_CLIPBOARD:
-		if (ctrl && !alt && !shift)
-		{
+		case Action::UndoHistory:
+			MessageHistoryUndo().dispatch();
+			break;
+
+		case Action::CopySelection:
 			m_current->copySelection();
-		}
-		break;
+			break;
 
-	default:
-		QWidget::keyPressEvent(event);
-		return;
+		default:
+			QWidget::keyPressEvent(event);
 	}
 }
 

@@ -33,6 +33,13 @@
 #include <QPropertyAnimation>
 #include <QSvgGenerator>
 
+constexpr float ZOOM_IN_BUTTON_SPEED = 20.0f;
+constexpr float ZOOM_OUT_BUTTON_SPEED = -20.0f;
+
+constexpr int SCROLL_DELTA = 30;
+constexpr float ZOOM_DELTA = 50.0f;
+
+
 QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	: QGraphicsView(parent)
 	, m_focusHandler(focusHandler)
@@ -116,13 +123,13 @@ QtGraphicsView::QtGraphicsView(GraphFocusHandler* focusHandler, QWidget* parent)
 	m_zoomInButton = new QtSelfRefreshIconButton("", QtResources::GRAPH_VIEW_ZOOM_IN, "search/button", this);
 	m_zoomInButton->setObjectName(QStringLiteral("zoom_in_button"));
 	m_zoomInButton->setAutoRepeat(true);
-	m_zoomInButton->setToolTip(QtActions::zoomInWithMouse().tooltip());
+	m_zoomInButton->setToolTip(QtActions::zoomIn().tooltip());
 	connect(m_zoomInButton, &QPushButton::pressed, this, &QtGraphicsView::zoomInPressed);
 
 	m_zoomOutButton = new QtSelfRefreshIconButton("", QtResources::GRAPH_VIEW_ZOOM_OUT, "search/button", this);
 	m_zoomOutButton->setObjectName(QStringLiteral("zoom_out_button"));
 	m_zoomOutButton->setAutoRepeat(true);
-	m_zoomOutButton->setToolTip(QtActions::zoomOutWithMouse().tooltip());
+	m_zoomOutButton->setToolTip(QtActions::zoomOut().tooltip());
 	connect(m_zoomOutButton, &QPushButton::pressed, this, &QtGraphicsView::zoomOutPressed);
 
 	m_legendButton = new QtSelfRefreshIconButton("", QtResources::GRAPH_VIEW_LEGEND, "search/button", this);
@@ -242,8 +249,7 @@ void QtGraphicsView::resizeEvent(QResizeEvent* event)
 	m_zoomState->setGeometry(QRect(31, event->size().height() - 27, 65, 19));
 	m_zoomInButton->setGeometry(QRect(8, event->size().height() - 50, 19, 19));
 	m_zoomOutButton->setGeometry(QRect(8, event->size().height() - 27, 18, 19));
-	m_legendButton->setGeometry(
-		QRect(event->size().width() - 24, event->size().height() - 24, 18, 18));
+	m_legendButton->setGeometry(QRect(event->size().width() - 24, event->size().height() - 24, 18, 18));
 
 	m_zoomInButton->setIconSize(QSize(15, 15));
 	m_zoomOutButton->setIconSize(QSize(15, 15));
@@ -281,116 +287,83 @@ void QtGraphicsView::mouseReleaseEvent(QMouseEvent* event)
 
 void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 {
-	bool moved = moves();
-	bool shift = event->modifiers() & Qt::ShiftModifier;
-	bool alt = event->modifiers() & Qt::AltModifier;
-	bool ctrl = event->modifiers() & Qt::ControlModifier;
+	bool moved = m_lastAction != Action::Unknown;
 
-	switch (event->key())
+	Action action;
+	switch (action = QtActions::detectAction(event))
 	{
-	case Qt::Key_Up:
-		if (ctrl && !alt)
-		{
-			m_up = true;
+		case Action::ZoomIn:
+		case Action::ZoomOut:
+		case Action::MoveViewUp:
+		case Action::MoveViewDown:
+		case Action::MoveViewLeft:
+		case Action::MoveViewRight:
+			m_lastAction = action;
 			break;
-		}
-	case KEY_VIM_UP:
-	case KEY_GAME_UP:
-		if (!ctrl && !alt)
-		{
-			m_focusHandler->focusNext(GraphFocusHandler::Direction::UP, shift);
-		}
-		break;
 
-	case Qt::Key_Down:
-		if (ctrl && !alt)
-		{
-			m_down = true;
+		case Action::MoveFocusUp:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::UP, false);
 			break;
-		}
-	case KEY_VIM_DOWN:
-	case KEY_GAME_DOWN:
-		if (!alt && !ctrl)
-		{
-			m_focusHandler->focusNext(GraphFocusHandler::Direction::DOWN, shift);
-		}
-		break;
 
-	case Qt::Key_Left:
-		if (ctrl && !shift && !alt)
-		{
-			m_left = true;
+		case Action::MoveReferenceFocusUp:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::UP, true);
 			break;
-		}
-	case KEY_VIM_LEFT:
-	case KEY_GAME_LEFT:
-		if (!alt && !ctrl)
-		{
-			m_focusHandler->focusNext(GraphFocusHandler::Direction::LEFT, shift);
-		}
-		break;
 
-	case Qt::Key_Right:
-		if (ctrl && !shift && !alt)
-		{
-			m_right = true;
+		case Action::MoveFocusDown:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::DOWN, false);
 			break;
-		}
-	case KEY_VIM_RIGHT:
-	case KEY_GAME_RIGHT:
-		if (!alt && !ctrl)
-		{
-			m_focusHandler->focusNext(GraphFocusHandler::Direction::RIGHT, shift);
-		}
-		break;
 
-	case KEY_ACTIVATE_FOCUS_1:
-	case KEY_ACTIVATE_FOCUS_2:
-		if (ctrl && shift)
-		{
+		case Action::MoveReferenceFocusDown:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::DOWN, true);
+			break;
+
+		case Action::MoveFocusLeft:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::LEFT, false);
+			break;
+
+		case Action::MoveReferenceFocusLeft:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::LEFT, true);
+			break;
+
+		case Action::MoveFocusRight:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::RIGHT, false);
+			break;
+
+		case Action::MoveReferenceFocusRight:
+			m_focusHandler->focusNext(GraphFocusHandler::Direction::RIGHT, true);
+			break;
+
+		case Action::ActivateFocusInNewTab:
 			m_focusHandler->activateFocus(true);
-		}
-		else if (shift)
-		{
+			break;
+
+		case Action::ExpandFocus:
 			m_focusHandler->expandFocus();
-		}
-		else
-		{
+			break;
+
+		case Action::ActivateFocus:
 			m_focusHandler->activateFocus(false);
-		}
-		break;
+			break;
 
-	case KEY_HISTORY_UNDO_REDO_1:
-	case KEY_HISTORY_UNDO_REDO_2:
-		if (!alt && !ctrl)
-		{
-			if (shift)
-			{
-				MessageHistoryRedo().dispatch();
-			}
-			else
-			{
-				MessageHistoryUndo().dispatch();
-			}
-		}
-		break;
+		case Action::RedoHistory:
+			MessageHistoryRedo().dispatch();
+			break;
 
-	case KEY_RESET:
-		setZoomFactor(1.0f);
-		updateTransform();
-		break;
-	case Qt::Key_Shift:
-		m_shift = true;
-		break;
-	case Qt::Key_Control:
-		m_ctrl = true;
-		break;
-	default:
-		QGraphicsView::keyPressEvent(event);
-		return;
+		case Action::UndoHistory:
+			MessageHistoryUndo().dispatch();
+			break;
+
+		case Action::ResetZoom:
+			setZoomFactor(1.0f);
+			updateTransform();
+			break;
+
+		default:
+			QGraphicsView::keyPressEvent(event);
+			return;
 	}
 
-	if (!moved && moves())
+	if (!moved && m_lastAction != Action::Unknown)
 	{
 		m_timer->start(20);
 	}
@@ -398,35 +371,25 @@ void QtGraphicsView::keyPressEvent(QKeyEvent* event)
 	m_timerStopper->start(1000);
 }
 
-void QtGraphicsView::keyReleaseEvent(QKeyEvent* event)
+void QtGraphicsView::keyReleaseEvent(QKeyEvent *event)
 {
-	switch (event->key())
+	switch (QtActions::detectAction(event))
 	{
-	case Qt::Key_Up:
-	case KEY_GAME_UP:
-		m_up = false;
-		break;
-	case Qt::Key_Down:
-	case KEY_GAME_DOWN:
-		m_down = false;
-		break;
-	case Qt::Key_Left:
-		m_left = false;
-		break;
-	case Qt::Key_Right:
-		m_right = false;
-		break;
-	case Qt::Key_Shift:
-		m_shift = false;
-		break;
-	case Qt::Key_Control:
-		m_ctrl = false;
-		break;
-	default:
-		return;
+		case Action::ZoomIn:
+		case Action::ZoomOut:
+		case Action::MoveViewUp:
+		case Action::MoveViewDown:
+		case Action::MoveViewLeft:
+		case Action::MoveViewRight:
+			m_lastAction = Action::Unknown;
+			break;
+
+		default:
+			QGraphicsView::keyReleaseEvent(event);
+			return;
 	}
 
-	if (!moves())
+	if (m_lastAction == Action::Unknown)
 	{
 		m_timer->stop();
 	}
@@ -440,7 +403,7 @@ void QtGraphicsView::wheelEvent(QWheelEvent* event)
 
 	if (zoomDefault != (shiftPressed | ctrlPressed))
 	{
-		if (event->angleDelta().y() != 0.0f)
+		if (event->angleDelta().y() != 0)
 		{
 			updateZoom(static_cast<float>(event->angleDelta().y()));
 		}
@@ -579,42 +542,37 @@ void QtGraphicsView::focusOutEvent(QFocusEvent*  /*event*/)
 
 void QtGraphicsView::updateTimer()
 {
-	const int ds = 30;
-	const float dz = 50.0f;
-
 	int x = 0;
 	int y = 0;
 
-	if (m_shift && m_ctrl)
+	switch (m_lastAction)
 	{
-		if (m_up)
-		{
-			updateZoom(dz);
-		}
-		else if (m_down)
-		{
-			updateZoom(-dz);
-		}
-	}
-	else if (m_ctrl)
-	{
-		if (m_up)
-		{
-			y -= ds;
-		}
-		else if (m_down)
-		{
-			y += ds;
-		}
+		case Action::ZoomIn:
+			updateZoom(ZOOM_DELTA);
+			break;
 
-		if (m_left)
-		{
-			x -= ds;
-		}
-		else if (m_right)
-		{
-			x += ds;
-		}
+		case Action::ZoomOut:
+			updateZoom(-ZOOM_DELTA);
+			break;
+
+		case Action::MoveViewUp:
+			y -= SCROLL_DELTA;
+			break;
+
+		case Action::MoveViewDown:
+			y += SCROLL_DELTA;
+			break;
+
+		case Action::MoveViewLeft:
+			x -= SCROLL_DELTA;
+			break;
+
+		case Action::MoveViewRight:
+			x += SCROLL_DELTA;
+			break;
+
+		default:
+			return;
 	}
 
 	if (x != 0)
@@ -774,12 +732,12 @@ void QtGraphicsView::bookmarkNode()
 
 void QtGraphicsView::zoomInPressed()
 {
-	updateZoom(m_zoomInButtonSpeed);
+	updateZoom(ZOOM_IN_BUTTON_SPEED);
 }
 
 void QtGraphicsView::zoomOutPressed()
 {
-	updateZoom(m_zoomOutButtonSpeed);
+	updateZoom(ZOOM_OUT_BUTTON_SPEED);
 }
 
 void QtGraphicsView::hideZoomLabel()
@@ -790,11 +748,6 @@ void QtGraphicsView::hideZoomLabel()
 void QtGraphicsView::legendClicked()
 {
 	MessageActivateLegend().dispatch();
-}
-
-bool QtGraphicsView::moves() const
-{
-	return m_up || m_down || m_left || m_right;
 }
 
 void QtGraphicsView::setZoomFactor(float zoomFactor)

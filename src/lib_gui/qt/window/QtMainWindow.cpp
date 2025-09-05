@@ -437,45 +437,41 @@ void QtMainWindow::showEvent(QShowEvent*  /*e*/)
 	m_windowTitleProgress.setWindow(this);
 }
 
-void QtMainWindow::keyPressEvent(QKeyEvent* event)
+void QtMainWindow::keyPressEvent(QKeyEvent *event)
 {
-	switch (event->key())
+	switch (QtActions::detectAction(event))
 	{
-	case KEY_HISTORY_UNDO:
-		MessageHistoryUndo().dispatch();
-		break;
+		case Action::UndoHistory:
+			MessageHistoryUndo().dispatch();
+			break;
 
-	case Qt::Key_Escape:
-		emit hideScreenSearch();
-		emit hideIndexingDialog();
-		break;
+		case Action::Cancel:
+			emit hideScreenSearch();
+			emit hideIndexingDialog();
+			break;
 
-	case KEY_SCREEN_SEARCH_1:
-	case KEY_SCREEN_SEARCH_2:
-		emit showScreenSearch();
-		break;
+		case Action::SearchScreen:
+			emit showScreenSearch();
+			break;
 
-	case KEY_REFRESH_UI:
-		if (event->modifiers() & (Qt::ControlModifier | Qt::AltModifier))
-		{
+		case Action::RefreshUI:
 			MessageRefreshUI().dispatch();
-		}
-		break;
+			break;
 
-	case KEY_CLOSE_TAB:
-		if (event->modifiers() & Qt::ControlModifier)
-		{
+		case Action::CloseTab:
 			closeTab();
-		}
-		break;
+			break;
 
-	case Qt::Key_Space:
-		PRINT_TRACES();
-		break;
+		case Action::SwitchGraphCodeFocus:
+			MessageFocusView(MessageFocusView::ViewType::TOGGLE).dispatch();
+			break;
 
-	case Qt::Key_Tab:
-		MessageFocusView(MessageFocusView::ViewType::TOGGLE).dispatch();
-		break;
+		default:
+			if (event->key() == Qt::Key_Space)
+				PRINT_TRACES();
+			else
+				QMainWindow::keyPressEvent(event);
+			break;
 	}
 }
 

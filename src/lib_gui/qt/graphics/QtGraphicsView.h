@@ -1,14 +1,13 @@
 #ifndef QT_GRAPHICS_VIEW_H
 #define QT_GRAPHICS_VIEW_H
 
-#include <memory>
+#include "MessageListener.h"
+#include "MessageSaveAsImage.h"
+#include "QtActions.h"
 
 #include <QGraphicsView>
 
-#include "MessageListener.h"
-#include "MessageSaveAsImage.h"
-#include "types.h"
-
+#include <memory>
 
 class GraphFocusHandler;
 class QPushButton;
@@ -93,8 +92,6 @@ private slots:
 	static void legendClicked();
 
 private:
-	bool moves() const;
-
 	void setZoomFactor(float zoomFactor);
 	void updateTransform();
 
@@ -107,13 +104,7 @@ private:
 	float m_zoomFactor;
 	float m_appZoomFactor = 1.0f;
 
-	bool m_up = false;
-	bool m_down = false;
-	bool m_left = false;
-	bool m_right = false;
-
-	bool m_shift = false;
-	bool m_ctrl = false;
+	Action m_lastAction = Action::Unknown;
 
 	std::string m_clipboardNodeName;
 	Id m_openInTabNodeId;
@@ -148,9 +139,6 @@ private:
 	QtSelfRefreshIconButton* m_zoomOutButton;
 
 	QtSelfRefreshIconButton* m_legendButton;
-
-	float m_zoomInButtonSpeed = 20.0f;
-	float m_zoomOutButtonSpeed = -20.0f;
 
 	QImage m_imageCached;
 	TabId m_tabId;
