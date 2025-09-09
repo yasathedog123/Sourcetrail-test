@@ -1709,8 +1709,8 @@ TEST_CASE("cxx parser finds deduced type of auto variables")
 	REQUIRE(containsElement(client->typeUses, "f::auto_double_var2 -> double <4:4 4:7>"s));
 	REQUIRE(containsElement(client->typeUses, "f::auto_int_var -> int <6:4 6:7>"s));
 	REQUIRE(containsElement(client->typeUses, "f::auto_int_ptr1 -> int <7:4 7:7>"s));
-	REQUIRE(containsElement(client->typeUses, "f::auto_int_ptr2 -> int <8:4 8:9>"s));
-	REQUIRE(containsElement(client->typeUses, "f::auto_int_ref -> int <9:4 9:9>"s));
+	REQUIRE(containsElement(client->typeUses, "f::auto_int_ptr2 -> int <8:4 8:7>"s));
+	REQUIRE(containsElement(client->typeUses, "f::auto_int_ref -> int <9:4 9:7>"s));
 }
 
 TEST_CASE("cxx parser finds class default private inheritance")
@@ -2409,13 +2409,49 @@ TEST_CASE("cxx parser finds usage of member in dependent scope member expression
 TEST_CASE("cxx parser finds return type use in function")
 {
 	std::shared_ptr<TestStorage> client = parseCode(
-		"double PI()\n"
-		"{\n"
-		"	return 3.14159265359;\n"
-		"}\n");
+		R"(double PI()
+		{
+			return 3.14159265359;
+		})");
 
-	REQUIRE(utility::containsElement<std::string>(
-		client->typeUses, "double PI() -> double <1:1 1:6>"));
+	REQUIRE(containsElement(client->functions, "double PI() <1:1 <1:1 <1:8 1:9> 1:11> 4:3>"s));
+	REQUIRE(containsElement(client->typeUses, "double PI() -> double <1:1 1:6>"s));
+}
+
+TEST_CASE("cxx parser finds return type auto use in function")
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		R"(auto PI()
+		{
+			return 3.14159265359;
+		})");
+
+	REQUIRE(containsElement(client->functions, "double PI() <1:1 <1:1 <1:6 1:7> 1:9> 4:3>"s));
+	REQUIRE(containsElement(client->typeUses, "double PI() -> double <1:1 1:4>"s));
+}
+
+TEST_CASE("cxx parser finds return type auto/trailing use in function")
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		R"(auto PI() -> int
+		{
+			return 3.14159265359;
+		})");
+
+	REQUIRE(containsElement(client->functions, "int PI() <1:1 <1:1 <1:6 1:7> 1:16> 4:3>"s));
+	REQUIRE(containsElement(client->typeUses, "int PI() -> int <1:14 1:16>"s));
+}
+
+TEST_CASE("cxx parser finds return type decltype(auto) use in function")
+{
+	std::shared_ptr<TestStorage> client = parseCode(
+		R"(decltype(auto) PI()
+		{
+			return 3.14159265359;
+		})");
+
+	REQUIRE(containsElement(client->functions, "double PI() <1:1 <1:1 <1:16 1:17> 1:19> 4:3>"s));
+	REQUIRE(containsElement(client->typeUses, "double PI() -> double <1:1 1:14>"s));
 }
 
 TEST_CASE("cxx parser finds parameter type uses in function")

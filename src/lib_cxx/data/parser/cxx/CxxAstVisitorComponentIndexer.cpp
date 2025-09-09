@@ -264,18 +264,17 @@ void CxxAstVisitorComponentIndexer::visitVarDecl(clang::VarDecl* d)
 		// string _typeName = d->getType().getAsString();
 
 		// Handle 'auto/deduced' types:
-		if (const DeducedType *deducedType = d->getType().getTypePtr()->getContainedDeducedType(); deducedType != nullptr)
+		if (const DeducedType *containedDeducedType = d->getType().getTypePtr()->getContainedDeducedType())
 		{
-			if (QualType deducedQualType = deducedType->getDeducedType(); !deducedQualType.isNull())
+			if (QualType deducedType = containedDeducedType->getDeducedType(); !deducedType.isNull())
 			{
 				// Record the deduced type location:
-				Id deducedTypeId = getOrCreateSymbolId(deducedQualType.getTypePtr());
-				ParseLocation typeLocation = getParseLocation(d->getTypeSourceInfo()->getTypeLoc().getSourceRange());
-				m_client->recordLocation(deducedTypeId, typeLocation, ParseLocationType::TOKEN);
+				Id deducedTypeId = getOrCreateSymbolId(deducedType.getTypePtr());
+
 				m_client->recordDefinitionKind(deducedTypeId, DefinitionKind::EXPLICIT);
 
 				// Record a reference to the type declaration:
-				m_client->recordReference(ReferenceKind::REFERENCE_TYPE_USAGE, deducedTypeId, getOrCreateSymbolId(d), typeLocation);
+				m_client->recordReference(ReferenceKind::REFERENCE_TYPE_USAGE, deducedTypeId, getOrCreateSymbolId(d), getParseLocation(d->getBeginLoc()));
 
 				// 'auto' variables are always local variables, so record them:
 				m_client->recordLocalSymbol(getLocalSymbolName(d->getLocation()), getParseLocation(d->getLocation()));
@@ -431,6 +430,20 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 				}
 			}
 		}
+
+		// Record the 'auto' return types:
+
+		if (const AutoType *returnType = d->getReturnType()->getAs<AutoType>())
+		{
+			if (QualType deducedReturnType = returnType->getDeducedType(); !deducedReturnType.isNull())
+			{
+				Id deducedReturnTypeId = getOrCreateSymbolId(deducedReturnType.getTypePtr());
+
+				m_client->recordDefinitionKind(deducedReturnTypeId, DefinitionKind::EXPLICIT);
+				m_client->recordReference(ReferenceKind::REFERENCE_TYPE_USAGE, deducedReturnTypeId, symbolId, getParseLocation(d->getReturnTypeSourceRange()));
+			}
+		}
+
 		recordNonTrivialDestructorCalls(d);
 	}
 }
@@ -470,7 +483,7 @@ void CxxAstVisitorComponentIndexer::recordNonTrivialDestructorCalls(const Functi
 				{
 					// It should not be necessary to special-case 'CFGBaseDtor'. But 'CFGImplicitDtor::getDestructorDecl' 
 					// is simply missing the implementation of that case. See 'CFGImplicitDtor::getDestructorDecl()':
-					// https://github.com/llvm/llvm-project/blob/cf2f13a867fb86b5c7ce33df8a569477dce71f4f/clang/lib/Analysis/CFG.cpp#L5406
+					// https://github.com/llvm/llvm-project/blob/a0b8d548fd250c92c8f9274b57e38ad3f0b215e9/clang/lib/Analysis/CFG.cpp#L5465
 					if (optional<CFGBaseDtor> baseDtor = ref->getAs<CFGBaseDtor>())
 					{
 						const CXXBaseSpecifier *baseSpec = baseDtor->getBaseSpecifier();
