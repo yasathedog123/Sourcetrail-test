@@ -189,11 +189,8 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 				}
 			}
 		}
-		else if (clang::isa<clang::FunctionDecl>(declaration))
+		else if (const clang::FunctionDecl* functionDecl = clang::dyn_cast<clang::FunctionDecl>(declaration))
 		{
-			const clang::FunctionDecl* functionDecl = clang::dyn_cast<clang::FunctionDecl>(
-				declaration);
-
 			std::string functionName = declNameString;
 			std::vector<std::string> templateArguments;
 
@@ -248,10 +245,10 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 			else
 				isStatic = functionDecl->getStorageClass() == clang::SC_Static;
 
-			CxxTypeNameResolver typenNameResolver(this);
-			typenNameResolver.ignoreContextDecl(functionDecl);
+			CxxTypeNameResolver typeNameResolver(this);
+			typeNameResolver.ignoreContextDecl(functionDecl);
 			std::unique_ptr<CxxTypeName> returnTypeName = CxxTypeName::makeUnsolvedIfNull(
-				typenNameResolver.getName(functionDecl->getReturnType()));
+				typeNameResolver.getName(functionDecl->getReturnType()));
 
 			std::vector<std::unique_ptr<CxxTypeName>> parameterTypeNames;
 			for (unsigned int i = 0; i < functionDecl->param_size(); i++)
@@ -271,7 +268,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 					}
 				}
 				parameterTypeNames.push_back(CxxTypeName::makeUnsolvedIfNull(
-					typenNameResolver.getName(functionDecl->parameters()[i]->getType())));
+					typeNameResolver.getName(functionDecl->parameters()[i]->getType())));
 			}
 
 			if (!clang::isa<clang::CXXMethodDecl>(declaration) && isStatic)

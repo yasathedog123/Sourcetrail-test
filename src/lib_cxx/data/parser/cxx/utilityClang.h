@@ -5,6 +5,7 @@
 
 #include "AccessKind.h"
 #include "SymbolKind.h"
+#include "DefinitionKind.h"
 
 struct ParseLocation;
 struct ParseLocation;
@@ -26,6 +27,7 @@ clang::PrintingPolicy makePrintingPolicyForCPlusPlus();
 template <typename T>
 const T* getFirstDecl(const T* decl);
 bool isImplicit(const clang::Decl* d);
+DefinitionKind getDefinitionKind(const clang::Decl *d);
 AccessKind convertAccessSpecifier(clang::AccessSpecifier access);
 SymbolKind convertTagKind(const clang::TagTypeKind tagKind);
 bool isLocalVariable(const clang::ValueDecl* d);

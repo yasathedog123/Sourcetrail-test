@@ -202,7 +202,7 @@ void CxxAstVisitorComponentIndexer::visitTagDecl(clang::TagDecl* d)
 		DefinitionKind definitionKind = DefinitionKind::NONE;
 		if (d->isThisDeclarationADefinition())
 		{
-			definitionKind = utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT;
+			definitionKind = utility::getDefinitionKind(d);
 		}
 
 		const SymbolKind symbolKind = utility::convertTagKind(d->getTagKind());
@@ -297,7 +297,7 @@ void CxxAstVisitorComponentIndexer::visitVarDecl(clang::VarDecl* d)
 			m_client->recordSymbolKind(symbolId, symbolKind);
 			m_client->recordLocation(symbolId, location, ParseLocationType::TOKEN);
 			m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-			m_client->recordDefinitionKind(symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+			m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 
 			recordTemplateMemberSpecialization(d->getMemberSpecializationInfo(), symbolId, location, symbolKind);
 		}
@@ -346,8 +346,7 @@ void CxxAstVisitorComponentIndexer::visitFieldDecl(clang::FieldDecl* d)
 		m_client->recordSymbolKind(fieldId, SymbolKind::FIELD);
 		m_client->recordLocation(fieldId, location, ParseLocationType::TOKEN);
 		m_client->recordAccessKind(fieldId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			fieldId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(fieldId, utility::getDefinitionKind(d));
 
 		if (clang::CXXRecordDecl* declaringRecordDecl =
 				clang::dyn_cast_or_null<clang::CXXRecordDecl>(d->getParent()))
@@ -382,7 +381,7 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 		m_client->recordLocation(symbolId, getParseLocation(d->getNameInfo().getSourceRange()), ParseLocationType::TOKEN);
 		m_client->recordLocation(symbolId, getParseLocationOfFunctionBody(d), ParseLocationType::SCOPE);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 
 		if (d->isFirstDecl())
 		{
@@ -532,10 +531,8 @@ void CxxAstVisitorComponentIndexer::visitEnumConstantDecl(clang::EnumConstantDec
 	{
 		Id symbolId = getOrCreateSymbolId(d);
 		m_client->recordSymbolKind(symbolId, SymbolKind::ENUM_CONSTANT);
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordLocation(symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 	}
 }
 
@@ -545,13 +542,10 @@ void CxxAstVisitorComponentIndexer::visitNamespaceDecl(clang::NamespaceDecl* d)
 	{
 		Id symbolId = getOrCreateSymbolId(d);
 		m_client->recordSymbolKind(symbolId, SymbolKind::NAMESPACE);
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getSourceRange()), ParseLocationType::SCOPE);
+		m_client->recordLocation(symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocation(d->getSourceRange()), ParseLocationType::SCOPE);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 	}
 }
 
@@ -561,11 +555,9 @@ void CxxAstVisitorComponentIndexer::visitNamespaceAliasDecl(clang::NamespaceAlia
 	{
 		Id symbolId = getOrCreateSymbolId(d);
 		m_client->recordSymbolKind(symbolId, SymbolKind::NAMESPACE);
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 
 		m_client->recordReference(
 			REFERENCE_USAGE,
@@ -587,11 +579,9 @@ void CxxAstVisitorComponentIndexer::visitTypedefDecl(clang::TypedefDecl* d)
 			d->getAnonDeclWithTypedefName() == nullptr
 				? SymbolKind::TYPEDEF
 				: utility::convertTagKind(d->getAnonDeclWithTypedefName()->getTagKind()));
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 	}
 }
 
@@ -605,11 +595,9 @@ void CxxAstVisitorComponentIndexer::visitTypeAliasDecl(clang::TypeAliasDecl* d)
 			d->getAnonDeclWithTypedefName() == nullptr
 				? SymbolKind::TYPEDEF
 				: utility::convertTagKind(d->getAnonDeclWithTypedefName()->getTagKind()));
-		m_client->recordLocation(
-			symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocation(d->getLocation()), ParseLocationType::TOKEN);
 		m_client->recordAccessKind(symbolId, utility::convertAccessSpecifier(d->getAccess()));
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(d));
 	}
 }
 
@@ -718,8 +706,7 @@ void CxxAstVisitorComponentIndexer::visitTypeLoc(clang::TypeLoc tl)
 				if (tst)
 				{
 					const clang::TemplateName tln = tst->getTemplateName();
-					if (tln.isDependent())	  // e.g. T<int> where the template name T depends on a
-											  // template parameter
+					if (tln.isDependent()) // e.g. T<int> where the template name T depends on a template parameter
 					{
 						clang::TemplateDecl* decl = tln.getAsTemplateDecl();
 						if (decl)
@@ -940,12 +927,9 @@ void CxxAstVisitorComponentIndexer::visitLambdaExpr(clang::LambdaExpr* s)
 	{
 		Id symbolId = getOrCreateSymbolId(methodDecl);
 		m_client->recordSymbolKind(symbolId, SymbolKind::FUNCTION);
-		m_client->recordLocation(
-			symbolId, getParseLocation(s->getBeginLoc()), ParseLocationType::TOKEN);
-		m_client->recordLocation(
-			symbolId, getParseLocationOfFunctionBody(methodDecl), ParseLocationType::SCOPE);
-		m_client->recordDefinitionKind(
-			symbolId, utility::isImplicit(methodDecl) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT);
+		m_client->recordLocation(symbolId, getParseLocation(s->getBeginLoc()), ParseLocationType::TOKEN);
+		m_client->recordLocation(symbolId, getParseLocationOfFunctionBody(methodDecl), ParseLocationType::SCOPE);
+		m_client->recordDefinitionKind(symbolId, utility::getDefinitionKind(methodDecl));
 	}
 }
 

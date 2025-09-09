@@ -59,6 +59,11 @@ bool utility::isImplicit(const clang::Decl* d)
 	return isImplicit(clang::dyn_cast_or_null<clang::Decl>(d->getDeclContext()));
 }
 
+DefinitionKind utility::getDefinitionKind(const clang::Decl* d)
+{
+	return isImplicit(d) ? DefinitionKind::IMPLICIT : DefinitionKind::EXPLICIT;
+}
+
 AccessKind utility::convertAccessSpecifier(clang::AccessSpecifier access)
 {
 	switch (access)
