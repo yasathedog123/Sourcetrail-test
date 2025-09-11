@@ -10,9 +10,18 @@ namespace utility
 class Platform final
 {
 	public:
+		enum class Architecture
+		{
+			BITS_32,
+			BITS_64
+		};
+
 		static constexpr bool isLinux()
 		{
-			return BOOST_OS_LINUX;
+			// These Unix implementations are similar enough for our purpose, so we don't
+			// distinguish them further for now:
+
+			return BOOST_OS_LINUX || BOOST_OS_BSD_FREE;
 		}
 
 		static constexpr bool isWindows()
@@ -26,12 +35,6 @@ class Platform final
 		}
 
 		static std::string getName();
-
-		enum class Architecture
-		{
-			BITS_32,
-			BITS_64
-		};
 		
 		static Architecture getArchitecture();
 		static std::string getArchitectureName();

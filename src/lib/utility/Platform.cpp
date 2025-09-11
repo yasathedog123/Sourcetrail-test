@@ -5,12 +5,11 @@ namespace utility
 using namespace std;
 using namespace std::string_literals;
 
-// Can't use BOOST_ARCH_WORD_BITS_32/BOOST_ARCH_WORD_BITS_64 because they are *both* defined!
-static_assert(BOOST_ARCH_WORD_BITS == 32 || BOOST_ARCH_WORD_BITS == 64, "Unknown architecture!");
-static_assert(BOOST_OS_WINDOWS || BOOST_OS_MACOS || BOOST_OS_LINUX, "Unknown operating system!");
-
 string Platform::getName()
 {
+	static_assert(Platform::isLinux() || Platform::isWindows() || Platform::isMac(), "Unknown platform!");
+	static_assert((int)Platform::isLinux() + (int)Platform::isWindows() + (int)Platform::isMac() == 1, "Multiple platforms detected!");
+
 	if constexpr (isLinux())
 		return "Linux"s;
 	else if constexpr (isWindows())
@@ -21,6 +20,9 @@ string Platform::getName()
 
 Platform::Architecture Platform::getArchitecture()
 {
+	// Can't use BOOST_ARCH_WORD_BITS_32/BOOST_ARCH_WORD_BITS_64 because they are *both* defined!
+	static_assert(BOOST_ARCH_WORD_BITS == 32 || BOOST_ARCH_WORD_BITS == 64, "Unknown architecture!");
+
 	if constexpr (BOOST_ARCH_WORD_BITS == 32)
 		return Architecture::BITS_32;
 	else if constexpr (BOOST_ARCH_WORD_BITS == 64)
